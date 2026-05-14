@@ -2,7 +2,7 @@
   "name": "AiMaster — Mestre de D&D 5e",
   "short_name": "AiMaster",
   "description": "RPG Solo D&D 5e com Mestre de Inteligência Artificial",
-  "start_url": "/",
+  "start_url": "/aimaster/index.html",
   "display": "standalone",
   "background_color": "#0F0A04",
   "theme_color": "#1A1208",
