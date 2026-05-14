@@ -962,141 +962,42 @@ DIRETRIZES:
 
 // ── MOTOR IA ──
 async function askMaster(acao){
-
   if(thinking) return;
-
   setThinking(true);
+  gameHistory.push({role:'user',content:acao});
 
-  gameHistory.push({
-    role:'user',
-    content:acao
-  });
-
-  const apiKey = localStorage.getItem('aimaster_api_key') || '';
-
-  // Verifica API Key
+  const apiKey=localStorage.getItem('aimaster_api_key')||'';
   if(!apiKey){
-
     setThinking(false);
-
-    addMsg(
-      'msg-dm',
-      '⚠️ Configure sua chave de API em ⚙️ Configurações.'
-    );
-
+    addMsg('msg-dm','⚠️ Configure sua chave de API para ativar o Mestre IA. Toque em ⚙ → Chave de API.');
     return;
   }
 
-  try {
-
-    const cleanKey = apiKey.trim();
-
-    // MODELO NOVO
-    const modelName = 'claude-3-haiku-20240307';
-
-    console.log('Modelo:', modelName);
-    console.log('Enviando requisição...');
-
-    const res = await fetch(
-      'https://api.anthropic.com/v1/messages',
-      {
-        method:'POST',
-
-        headers:{
-          'Content-Type':'application/json',
-          'x-api-key': cleanKey,
-          'anthropic-version':'2023-06-01',
-
-          // Necessário para GitHub Pages / navegador
-          'anthropic-dangerous-direct-browser-access':'true'
-        },
-
-        body: JSON.stringify({
-
-          model: modelName,
-
-          max_tokens: 1024,
-
-          system: buildSystemPrompt(),
-
-          messages: gameHistory.slice(-10)
-
-        })
-      }
-    );
-
-    console.log('STATUS:', res.status);
-
-    // ERRO DA API
-    if(!res.ok){
-
-      const errorText = await res.text();
-
-      console.error('Erro API:', errorText);
-
-      addMsg(
-        'msg-dm',
-        '❌ Erro da API:<br><br>' + errorText
-      );
-
-      setThinking(false);
-
-      gameHistory.pop();
-
-      return;
-    }
-
-    // RESPOSTA OK
-    const data = await res.json();
-
-    console.log('Resposta:', data);
-
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:buildSystemPrompt(),
+        messages:gameHistory.slice(-10)
+      })
+    });
+    const data=await res.json();
     setThinking(false);
-
-    if(
-      data.content &&
-      data.content[0] &&
-      data.content[0].text
-    ){
-
-      const reply = data.content[0].text;
-
-      gameHistory.push({
-        role:'assistant',
-        content:reply
-      });
-
-      // Formata quebra de linha
-      const formatted = reply
-        .replace(/\n\n/g,'<br><br>')
-        .replace(/\n/g,'<br>');
-
-      addMsg('msg-dm', formatted);
-
-      // Salva progresso
-      if(typeof salvarProgresso === "function"){
-        salvarProgresso();
-      }
-
+    if(data.content&&data.content[0]&&data.content[0].text){
+      const reply=data.content[0].text;
+      gameHistory.push({role:'assistant',content:reply});
+      const formatted=reply.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+      addMsg('msg-dm',formatted);
     } else {
-
-      addMsg(
-        'msg-dm',
-        '⚠️ A IA respondeu sem conteúdo.'
-      );
+      addMsg('msg-dm','O Mestre hesita... Verifique sua chave de API e tente novamente.');
+      gameHistory.pop();
     }
-
   } catch(e){
-
-    console.error('Erro conexão:', e);
-
     setThinking(false);
-
-    addMsg(
-      'msg-dm',
-      '❌ Erro de conexão:<br><br>' + e.message
-    );
-
+    addMsg('msg-dm','Falha na conexão. Verifique sua chave de API em ⚙ → Chave de API.');
     gameHistory.pop();
   }
 }
