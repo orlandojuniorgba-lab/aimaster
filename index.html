@@ -976,28 +976,39 @@ async function askMaster(acao){
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
+        model:'claude-3-5-sonnet-latest', // Nome oficial e atualizado
         max_tokens:1000,
         system:buildSystemPrompt(),
         messages:gameHistory.slice(-10)
       })
     });
-    const data=await res.json();
+
+    const data = await res.json();
     setThinking(false);
-    if(data.content&&data.content[0]&&data.content[0].text){
-      const reply=data.content[0].text;
+
+    if (res.ok && data.content && data.content[0]) {
+      const reply = data.content[0].text;
       gameHistory.push({role:'assistant',content:reply});
-      const formatted=reply.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+      const formatted = reply.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
       addMsg('msg-dm',formatted);
+      if(typeof salvarProgresso === "function") salvarProgresso(); // Salva se a função existir
     } else {
-      addMsg('msg-dm','O Mestre hesita... Verifique sua chave de API e tente novamente.');
+      // Se a API retornar erro de saldo ou chave, mostrará aqui
+      const erroMsg = data.error ? data.error.message : 'Erro desconhecido';
+      addMsg('msg-dm', `❌ O Mestre hesita... Motivo: ${erroMsg}`);
       gameHistory.pop();
     }
   } catch(e){
     setThinking(false);
-    addMsg('msg-dm','Falha na conexão. Verifique sua chave de API em ⚙ → Chave de API.');
+    addMsg('msg-dm','Falha na conexão. Verifique se o seu celular está online.');
+    console.error("Erro na API:", e);
     gameHistory.pop();
   }
 }
