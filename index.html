@@ -976,14 +976,37 @@ async function askMaster(acao){
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:1024,
         system:buildSystemPrompt(),
-        messages:gameHistory.slice(-10)
+        messages:gameHistory.slice(-12)
       })
     });
+
+    if(!res.ok){
+      const err=await res.json().catch(()=>({}));
+      const msg=err?.error?.message||'Erro desconhecido';
+      setThinking(false);
+      if(res.status===401){
+        addMsg('msg-dm','🔑 Chave de API inválida ou expirada. Vá em ⚙ → Chave de API e verifique.');
+      } else if(res.status===429){
+        addMsg('msg-dm','⏳ Limite de requisições atingido. Aguarde alguns segundos e tente novamente.');
+      } else if(res.status===400){
+        addMsg('msg-dm','⚠️ Erro na requisição: '+msg+'. Tente novamente.');
+      } else {
+        addMsg('msg-dm','❌ Erro '+res.status+': '+msg);
+      }
+      gameHistory.pop();
+      return;
+    }
+
     const data=await res.json();
     setThinking(false);
     if(data.content&&data.content[0]&&data.content[0].text){
@@ -992,12 +1015,16 @@ async function askMaster(acao){
       const formatted=reply.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
       addMsg('msg-dm',formatted);
     } else {
-      addMsg('msg-dm','O Mestre hesita... Verifique sua chave de API e tente novamente.');
+      addMsg('msg-dm','O Mestre hesita nas sombras... Tente uma ação diferente.');
       gameHistory.pop();
     }
   } catch(e){
     setThinking(false);
-    addMsg('msg-dm','Falha na conexão. Verifique sua chave de API em ⚙ → Chave de API.');
+    if(e.name==='TypeError'&&e.message.includes('fetch')){
+      addMsg('msg-dm','🌐 Sem conexão com a internet. Verifique sua rede e tente novamente.');
+    } else {
+      addMsg('msg-dm','❌ Erro inesperado: '+e.message+'. Tente novamente.');
+    }
     gameHistory.pop();
   }
 }
