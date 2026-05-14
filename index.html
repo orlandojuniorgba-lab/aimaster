@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta name="theme-color" content="#1A1208"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="AiMaster"/>
+  <meta name="description" content="AiMaster — Mestre de D&D 5e com Inteligência Artificial"/>
+  <title>AiMaster</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+    /* ══ RESET & BASE ══ */
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+    html,body{height:100%;overflow:hidden;background:#1A1208;}
+    :root{
+      /* Paleta unificada — quente e épica */
+      --bg:#0F0A04;
+      --bg2:#1A1208;
+      --bg3:#2A1E0E;
+      --bg4:#3D2E18;
+      --gold:#C8922A;--gold-l:#E8B84B;--gold-d:#7A5518;--gold-dim:#4A3010;
+      --parch:#F0E6D0;--parch-d:#C8B898;--parch-dim:#8A7860;
+      --hp:#C0392B;--hp-l:#E74C3C;
+      --mp:#5B3FA0;--mp-l:#8B6FD0;
+      --cyan:#00CFFF;--purple:#7B5FFF;--magenta:#BF00FF;
+      --green:#2ECC71;--green-d:#1A7A40;
+      --ink:#0D0800;
+      --gold-glow:rgba(200,146,42,0.2);
+      --border:rgba(200,146,42,0.2);
+    }
+
+    /* ══ APP SHELL ══ */
+    #app{
+      width:100%;max-width:430px;height:100vh;
+      margin:0 auto;
+      background:var(--bg2);
+      position:relative;overflow:hidden;
+      display:flex;flex-direction:column;
+    }
+    .screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
+    .screen.active{display:flex;}
+
+    /* ══ TIPOGRAFIA ══ */
+    body{font-family:'Crimson Pro',Georgia,serif;color:var(--parch);}
+    .cinzel{font-family:'Cinzel',serif;}
+
+    /* ══ TELA INICIAL ══ */
+    #s-title{
+      background:
+        radial-gradient(ellipse 100% 70% at 50% 20%, #1A2810 0%, var(--bg) 65%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, #200A00 0%, transparent 60%);
+      align-items:center;justify-content:center;text-align:center;
+      padding:2rem 2rem 2.5rem;gap:0;position:relative;overflow:hidden;
+    }
+    /* Partículas douradas de fundo */
+    #particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+    .particle{position:absolute;border-radius:50%;background:var(--gold);opacity:0;
+      animation:particle-float linear infinite;}
+    @keyframes particle-float{
+      0%{transform:translateY(100vh) scale(0);opacity:0;}
+      10%{opacity:0.6;}
+      90%{opacity:0.2;}
+      100%{transform:translateY(-20px) scale(1);opacity:0;}
+    }
+    /* Bordas decorativas cantos */
+    #s-title::before,#s-title::after{
+      content:'';position:absolute;width:60px;height:60px;
+      border-color:var(--gold-d);border-style:solid;opacity:0.4;
+    }
+    #s-title::before{top:16px;left:16px;border-width:2px 0 0 2px;}
+    #s-title::after{bottom:16px;right:16px;border-width:0 2px 2px 0;}
+
+    .logo-bg{
+      width:150px;height:150px;border-radius:28px;
+      background:radial-gradient(ellipse at 40% 30%, #0D1628 0%, #06090F 70%);
+      border:1px solid rgba(0,207,255,0.18);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:1.6rem;
+      box-shadow:0 0 50px rgba(0,100,200,0.15), 0 0 0 1px rgba(0,207,255,0.06),
+                 inset 0 1px 0 rgba(0,207,255,0.12);
+    }
+    .cube-svg{filter:drop-shadow(0 0 8px rgba(0,207,255,0.45)) drop-shadow(0 0 20px rgba(123,95,255,0.25));}
+
+    .t-main{
+      font-family:'Cinzel',serif;font-size:32px;font-weight:700;
+      color:var(--gold-l);letter-spacing:5px;margin-bottom:4px;
+      text-shadow:0 0 30px var(--gold-glow);
+    }
+    .t-sub{
+      font-size:11px;color:var(--gold-d);letter-spacing:3px;
+      text-transform:uppercase;font-family:'Cinzel',serif;margin-bottom:1.4rem;
+    }
+    .t-divider{
+      width:120px;height:1px;
+      background:linear-gradient(90deg,transparent,var(--gold-d),var(--gold),var(--gold-d),transparent);
+      margin:0 auto 1.4rem;
+    }
+    .t-desc{
+      font-size:15px;color:var(--parch-d);font-style:italic;
+      line-height:1.75;max-width:280px;margin-bottom:2.2rem;
+    }
+    .btn-start{
+      background:linear-gradient(135deg,rgba(200,146,42,0.15),rgba(200,146,42,0.08));
+      border:1px solid var(--gold-d);
+      color:var(--gold-l);
+      padding:15px 52px;
+      font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2.5px;
+      border-radius:6px;cursor:pointer;
+      transition:all 0.2s;margin-bottom:1rem;
+      text-shadow:0 0 12px var(--gold-glow);
+      box-shadow:0 0 0 1px rgba(200,146,42,0.08), inset 0 1px 0 rgba(200,146,42,0.1);
+    }
+    .btn-start:hover,btn-start:active{
+      background:linear-gradient(135deg,rgba(200,146,42,0.25),rgba(200,146,42,0.15));
+      border-color:var(--gold);box-shadow:0 0 20px var(--gold-glow);
+    }
+    .ver-tag{font-size:10px;color:var(--gold-dim);letter-spacing:2px;font-family:'Cinzel',serif;}
+
+    /* ══ CRIAÇÃO DE PERSONAGEM ══ */
+    #s-char{
+      background:
+        linear-gradient(180deg, #160E04 0%, var(--bg2) 12%, var(--bg2) 100%);
+    }
+    .screen-hdr{
+      background:linear-gradient(180deg,#120A02 0%,var(--bg3) 100%);
+      padding:14px 18px 12px;flex-shrink:0;
+      border-bottom:1px solid var(--border);
+    }
+    .sec-hdr{
+      font-family:'Cinzel',serif;font-size:11px;color:var(--gold);
+      letter-spacing:2.5px;text-transform:uppercase;
+      display:flex;align-items:center;gap:8px;
+    }
+    .screen-body{flex:1;overflow-y:auto;padding:14px 16px 20px;display:flex;flex-direction:column;gap:12px;}
+
+    /* Grid de campos */
+    .char-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .cf{display:flex;flex-direction:column;gap:4px;}
+    .cf.full{grid-column:1/-1;}
+    .cf label{font-size:10px;color:var(--gold-d);letter-spacing:1.5px;text-transform:uppercase;font-family:'Cinzel',serif;}
+    .cf input,.cf select{
+      background:var(--bg4);
+      border:1px solid var(--border);
+      border-radius:5px;padding:10px 12px;
+      color:var(--parch);font-family:'Crimson Pro',serif;font-size:15px;outline:none;
+      transition:border-color 0.2s;
+      -webkit-appearance:none;appearance:none;
+    }
+    .cf input:focus,.cf select:focus{border-color:var(--gold-d);background:rgba(61,46,24,0.8);}
+    .cf select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A5518'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+    .cf select option{background:#2A1E0E;color:#F0E6D0;}
+
+    /* Preview de perfil */
+    #profile-preview{
+      background:linear-gradient(135deg,rgba(26,18,8,0.9),rgba(42,30,14,0.7));
+      border:1px solid var(--border);border-radius:10px;padding:12px 14px;
+      display:flex;flex-direction:column;gap:8px;
+      box-shadow:inset 0 1px 0 rgba(200,146,42,0.08);
+    }
+    .pp-header{display:flex;align-items:center;gap:10px;}
+    .pp-avatar{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg4);flex-shrink:0;}
+    .pp-name{font-family:'Cinzel',serif;font-size:13px;color:var(--gold-l);font-weight:600;}
+    .pp-arch{font-size:12px;color:var(--parch-d);font-style:italic;}
+    .pp-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+    .tag{font-size:10px;padding:3px 9px;border-radius:12px;font-family:'Cinzel',serif;letter-spacing:.5px;white-space:nowrap;}
+    .tag-dark{background:rgba(100,0,150,0.22);border:1px solid rgba(150,50,200,0.3);color:#C090F0;}
+    .tag-light{background:rgba(200,160,0,0.12);border:1px solid rgba(200,146,42,0.28);color:var(--gold-l);}
+    .tag-combat{background:rgba(180,0,0,0.16);border:1px solid rgba(200,50,50,0.3);color:#E08080;}
+    .tag-social{background:rgba(0,120,180,0.16);border:1px solid rgba(0,150,220,0.28);color:#80C0E0;}
+    .tag-divine{background:rgba(220,200,0,0.1);border:1px solid rgba(220,200,50,0.28);color:#E0D060;}
+    .tag-nature{background:rgba(0,140,60,0.15);border:1px solid rgba(0,180,80,0.28);color:#60D090;}
+    .pp-bonuses{display:flex;flex-direction:column;gap:4px;}
+    .bonus-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--parch-d);}
+    .b-icon{font-size:13px;flex-shrink:0;}
+    .b-val{font-family:'Cinzel',serif;font-size:10px;margin-left:auto;flex-shrink:0;}
+    .b-pos{color:#60D090;}.b-neg{color:#E08080;}.b-neu{color:var(--gold);}
+
+    /* Atributos */
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+    .sb{
+      background:var(--bg4);border:1px solid var(--border);border-radius:7px;
+      padding:10px 6px;text-align:center;
+      transition:border-color 0.2s;
+    }
+    .sb.rolling{border-color:var(--gold);animation:pulse-gold 0.3s ease;}
+    @keyframes pulse-gold{0%,100%{box-shadow:none}50%{box-shadow:0 0 10px var(--gold-glow);}}
+    .sn{font-size:10px;color:var(--gold-d);letter-spacing:1px;font-family:'Cinzel',serif;}
+    .sv{font-size:22px;font-weight:600;color:var(--parch);line-height:1.2;}
+    .sm{font-size:12px;color:var(--gold);}
+
+    .btn-roll{
+      background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);
+      padding:11px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;
+      border-radius:5px;cursor:pointer;width:100%;transition:all 0.2s;
+    }
+    .btn-roll:hover{border-color:var(--gold-d);color:var(--gold);background:rgba(200,146,42,0.06);}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--gold),#B8820A);
+      color:var(--ink);border:none;padding:14px;
+      font-family:'Cinzel',serif;font-size:13px;font-weight:700;letter-spacing:1.5px;
+      border-radius:6px;cursor:pointer;width:100%;
+      box-shadow:0 2px 12px rgba(200,146,42,0.3);
+      transition:all 0.2s;
+    }
+    .btn-primary:hover{background:linear-gradient(135deg,var(--gold-l),var(--gold));box-shadow:0 4px 20px rgba(200,146,42,0.4);}
+
+    /* ══ TELA DE JOGO ══ */
+    #s-game{background:var(--bg2);}
+
+    .thinking-bar{
+      height:2px;flex-shrink:0;display:none;
+      background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),var(--gold),transparent);
+      background-size:200% 100%;
+      animation:shimmer 1.2s linear infinite;
+    }
+    .thinking-bar.active{display:block;}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+    /* Cena de ambiente */
+    .hdr-scene{
+      width:100%;height:80px;position:relative;overflow:hidden;flex-shrink:0;
+      background:linear-gradient(180deg,#060B02 0%,#0C1A08 50%,#152008 100%);
+    }
+    .moon{
+      position:absolute;top:10px;right:40px;width:20px;height:20px;
+      background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);
+      border-radius:50%;box-shadow:0 0 14px rgba(220,200,100,0.4);
+    }
+    .ia-badge{
+      position:absolute;top:8px;left:14px;
+      background:rgba(0,0,0,0.4);border:1px solid rgba(46,204,113,0.3);
+      border-radius:20px;padding:3px 10px;
+      font-size:10px;font-family:'Cinzel',serif;letter-spacing:1px;
+      display:flex;align-items:center;gap:5px;
+    }
+    .ia-dot{
+      width:6px;height:6px;border-radius:50%;
+      background:var(--green);
+      animation:blink 2s infinite;
+    }
+    .ia-dot.thinking{background:#F39C12;animation:blink 0.4s infinite;}
+    #ia-lbl{color:var(--green);}
+    #ia-lbl.thinking-txt{color:#F39C12;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
+    .forest-svg{position:absolute;bottom:0;left:0;width:100%;height:56px;}
+
+    /* Strip do personagem */
+    .char-strip{
+      display:flex;align-items:center;gap:11px;padding:9px 14px 10px;
+      background:linear-gradient(180deg,var(--bg3) 0%,rgba(26,18,8,0.95) 100%);
+      border-top:1px solid var(--border);border-bottom:1px solid rgba(200,146,42,0.1);
+      flex-shrink:0;
+    }
+    .portrait{
+      width:42px;height:42px;border-radius:50%;
+      border:2px solid var(--gold-d);
+      display:flex;align-items:center;justify-content:center;font-size:20px;
+      flex-shrink:0;background:var(--bg4);
+      box-shadow:0 0 0 3px rgba(200,146,42,0.06);
+    }
+    .char-info{flex:1;min-width:0;}
+    .c-name{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--gold-l);line-height:1.15;}
+    .c-meta{font-size:10px;color:var(--gold-d);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel',serif;margin-bottom:5px;}
+    .bars{display:flex;flex-direction:column;gap:4px;}
+    .bar-row{display:flex;align-items:center;gap:6px;}
+    .bar-lbl{font-size:9px;color:var(--parch-dim);font-family:'Cinzel',serif;letter-spacing:1px;width:16px;flex-shrink:0;}
+    .bar-track{flex:1;height:6px;background:rgba(0,0,0,0.6);border-radius:3px;overflow:hidden;border:1px solid rgba(255,255,255,0.04);}
+    .bar-fill{height:100%;border-radius:3px;transition:width 0.7s cubic-bezier(.4,0,.2,1);}
+    .bar-fill.hp{background:linear-gradient(90deg,var(--hp),var(--hp-l));box-shadow:0 0 4px rgba(231,76,60,0.3);}
+    .bar-fill.mp{background:linear-gradient(90deg,var(--mp),var(--mp-l));box-shadow:0 0 4px rgba(91,63,160,0.3);}
+    .bar-val{font-size:10px;color:var(--parch-dim);min-width:30px;text-align:right;font-variant-numeric:tabular-nums;}
+    .gold-pill{
+      display:flex;align-items:center;gap:4px;
+      background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.2);
+      border-radius:20px;padding:4px 10px;
+      font-size:13px;color:var(--gold-l);font-weight:600;flex-shrink:0;
+    }
+
+    .narr-border{
+      height:1px;flex-shrink:0;
+      background:linear-gradient(90deg,transparent,var(--gold-d),rgba(200,146,42,0.5),var(--gold-d),transparent);
+    }
+
+    /* Área narrativa */
+    .narr{
+      flex:1;overflow-y:auto;padding:12px 14px;
+      display:flex;flex-direction:column;gap:10px;
+      background:var(--bg2);
+      scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;
+      -webkit-overflow-scrolling:touch;
+    }
+    .narr::-webkit-scrollbar{width:3px;}
+    .narr::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
+
+    .msg{animation:fade-in 0.35s ease;max-width:100%;}
+    @keyframes fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+    .msg-dm .lbl{
+      font-family:'Cinzel',serif;font-size:9px;color:var(--gold-d);
+      letter-spacing:2px;margin-bottom:4px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .msg-dm .lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,146,42,0.15),transparent);}
+    .msg-dm .bbl{
+      background:rgba(15,10,4,0.7);
+      border-left:2px solid var(--gold-d);
+      border-radius:0 8px 8px 8px;
+      padding:10px 13px;
+      font-style:italic;font-size:15px;color:var(--parch);
+      line-height:1.75;white-space:pre-wrap;
+    }
+    .msg-pl{text-align:right;}
+    .msg-pl .bbl{
+      background:rgba(91,63,160,0.2);border:1px solid rgba(91,63,160,0.32);
+      border-radius:8px 0 0 8px;padding:8px 13px;
+      font-size:14px;color:#C8B8F0;display:inline-block;max-width:88%;
+    }
+    .roll-wrap{align-self:center;width:100%;display:flex;justify-content:center;}
+    .roll-card{
+      background:var(--bg3);border:1px solid var(--gold-d);border-radius:10px;
+      padding:10px 18px;display:flex;align-items:center;gap:14px;
+      box-shadow:0 2px 12px rgba(0,0,0,0.4);
+    }
+    .dice-face{
+      width:44px;height:44px;background:var(--bg4);
+      border:2px solid var(--gold);border-radius:8px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Cinzel',serif;font-size:20px;font-weight:700;color:var(--gold-l);
+      box-shadow:0 0 10px var(--gold-glow);flex-shrink:0;
+    }
+    .roll-info .roll-type{font-family:'Cinzel',serif;font-size:9px;color:var(--gold-d);letter-spacing:1.5px;}
+    .roll-info .roll-res{font-family:'Cinzel',serif;font-size:15px;color:var(--parch);font-weight:600;margin-top:2px;}
+
+    /* Ações */
+    .actions-wrap{
+      background:linear-gradient(180deg,rgba(26,18,8,0.98) 0%,var(--bg3) 100%);
+      border-top:1px solid var(--border);padding:9px 12px 8px;flex-shrink:0;
+    }
+    .acts-lbl{font-family:'Cinzel',serif;font-size:9px;color:var(--gold-dim);letter-spacing:2px;text-align:center;margin-bottom:7px;}
+    .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;}
+    .act-btn{
+      background:var(--bg2);
+      border:1px solid rgba(200,146,42,0.16);
+      border-radius:9px;padding:10px 7px 9px;
+      cursor:pointer;text-align:center;color:var(--parch);
+      transition:all 0.18s;position:relative;overflow:hidden;
+    }
+    .act-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,146,42,0.06),transparent);opacity:0;transition:opacity 0.2s;}
+    .act-btn:hover::before,.act-btn:active::before{opacity:1;}
+    .act-btn:hover{border-color:var(--gold-d);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+    .act-btn:active{transform:translateY(0);}
+    .act-btn:disabled{opacity:0.32;cursor:not-allowed;transform:none;}
+    .a-icon{font-size:18px;display:block;margin-bottom:3px;}
+    .a-title{font-family:'Cinzel',serif;font-size:11px;color:var(--gold-l);display:block;font-weight:600;}
+    .a-hint{font-size:10px;color:var(--gold-d);font-style:italic;display:block;margin-top:1px;}
+
+    .free-row{display:flex;gap:7px;align-items:center;}
+    .free-in{
+      flex:1;background:var(--bg2);border:1px solid rgba(200,146,42,0.18);
+      border-radius:7px;padding:9px 12px;color:var(--parch);
+      font-family:'Crimson Pro',serif;font-size:15px;outline:none;
+      transition:border-color 0.2s;
+    }
+    .free-in::placeholder{color:rgba(200,146,42,0.25);font-style:italic;}
+    .free-in:focus{border-color:var(--gold-d);background:rgba(42,30,14,0.6);}
+    .free-in:disabled,.free-send:disabled{opacity:0.3;cursor:not-allowed;}
+    .free-send{
+      background:var(--gold-d);border:none;border-radius:7px;
+      padding:9px 14px;color:var(--parch);cursor:pointer;font-size:16px;
+      flex-shrink:0;transition:background 0.15s;
+    }
+    .free-send:hover{background:var(--gold);}
+
+    /* Footer */
+    .footer-bar{
+      height:46px;background:var(--bg);border-top:1px solid rgba(200,146,42,0.08);
+      display:flex;align-items:center;padding:0 14px;flex-shrink:0;position:relative;
+    }
+    .footer-stats{display:flex;gap:14px;}
+    .fstat{font-size:10px;color:var(--gold-d);font-family:'Cinzel',serif;letter-spacing:1px;}
+    .fstat span{color:var(--parch-d);}
+    .fab{
+      position:absolute;right:14px;top:50%;transform:translateY(-50%);
+      width:34px;height:34px;
+      background:linear-gradient(135deg,rgba(200,146,42,0.2),rgba(200,146,42,0.1));
+      border:1px solid rgba(200,146,42,0.3);
+      border-radius:50%;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      font-size:15px;color:var(--gold);
+      transition:transform 0.2s,background 0.2s;
+    }
+    .fab:hover{background:rgba(200,146,42,0.25);}
+    .fab.open{transform:translateY(-50%) rotate(45deg);}
+    .fab-menu{
+      position:absolute;bottom:50px;right:14px;
+      background:var(--bg3);border:1px solid var(--border);
+      border-radius:10px;padding:5px;min-width:200px;z-index:99;
+      display:none;flex-direction:column;gap:3px;
+      box-shadow:0 4px 20px rgba(0,0,0,0.7);
+    }
+    .fab-menu.open{display:flex;}
+    .fab-item{
+      display:flex;align-items:center;gap:10px;padding:10px 12px;
+      border-radius:7px;cursor:pointer;font-size:14px;color:var(--parch);
+      border:none;background:transparent;text-align:left;
+      font-family:'Crimson Pro',serif;width:100%;transition:background 0.15s;
+    }
+    .fab-item:hover{background:rgba(200,146,42,0.1);}
+    .fab-item>span:first-child{font-size:17px;flex-shrink:0;}
+    .fi-t{font-weight:600;font-size:13px;color:var(--parch);display:block;}
+    .fi-s{font-size:11px;color:var(--gold-d);display:block;}
+
+    /* ══ MODAIS ══ */
+    .mo{
+      position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:200;
+      display:none;align-items:flex-end;
+    }
+    .mo.open{display:flex;}
+    .ms{
+      background:var(--bg3);border-radius:18px 18px 0 0;
+      border-top:2px solid var(--gold-d);padding:1.4rem;
+      width:100%;max-height:80vh;overflow-y:auto;
+      display:flex;flex-direction:column;gap:12px;
+      animation:slide-up 0.25s ease;
+    }
+    @keyframes slide-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .mt{
+      font-family:'Cinzel',serif;font-size:15px;color:var(--gold-l);
+      letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;
+    }
+    .mc{background:none;border:none;color:var(--gold-d);font-size:22px;cursor:pointer;line-height:1;padding:0;}
+    .mo-note{font-size:12px;color:var(--gold-d);font-style:italic;text-align:center;}
+
+    .sp-pack{
+      background:var(--bg2);border:1px solid var(--border);border-radius:9px;
+      padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .sp-pack.featured{border-color:rgba(200,146,42,0.4);box-shadow:0 0 0 1px rgba(200,146,42,0.1);}
+    .sp-nm{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);}
+    .sp-cr{font-size:13px;color:var(--parch-d);}
+    .sp-pr{font-size:11px;color:var(--gold-d);}
+    .btn-buy{
+      background:var(--gold);border:none;border-radius:5px;padding:8px 14px;
+      font-family:'Cinzel',serif;font-size:11px;font-weight:700;color:var(--ink);
+      cursor:pointer;flex-shrink:0;transition:background 0.15s;
+    }
+    .btn-buy:hover{background:var(--gold-l);}
+
+    .rep-bar-wrap{background:var(--bg2);border-radius:8px;padding:10px 12px;}
+    .rep-current{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);margin-bottom:6px;}
+    .rep-track{height:6px;background:rgba(0,0,0,0.5);border-radius:3px;overflow:hidden;}
+    .rep-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:3px;transition:width 0.5s;}
+    .rt{background:var(--bg2);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gold-dim);}
+    .rt.active{border-left-color:var(--gold);}
+    .rt .rn{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);}
+    .rt .rb{font-size:13px;color:var(--parch-d);margin-top:2px;}
+
+    .sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .sf-lbl{font-size:10px;color:var(--gold-d);font-family:'Cinzel',serif;letter-spacing:1px;}
+    .sf-val{color:var(--parch);font-size:15px;}
+    .sf-val.big{font-size:22px;font-family:'Cinzel',serif;font-weight:700;}
+    .sf-val.ca-col{color:rgba(0,200,255,0.9);}
+    .sf-val.hp-col{color:var(--hp-l);}
+
+    /* API config */
+    .api-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;gap:14px;text-align:center;}
+    .api-icon{font-size:48px;}
+    .api-title{font-family:'Cinzel',serif;font-size:22px;color:var(--gold-l);}
+    .api-desc{font-size:14px;color:var(--parch-d);line-height:1.6;max-width:280px;}
+    .api-field{width:100%;display:flex;flex-direction:column;gap:6px;text-align:left;}
+    .api-field label{font-size:11px;color:var(--gold-d);letter-spacing:1.5px;text-transform:uppercase;font-family:'Cinzel',serif;}
+    .api-field input{background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:11px 14px;color:var(--parch);font-size:14px;outline:none;width:100%;}
+    .api-field input:focus{border-color:var(--gold-d);}
+    .api-link{font-size:12px;color:var(--gold-d);}
+    .btn-secondary{background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);padding:11px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;border-radius:5px;cursor:pointer;width:100%;}
+
+    /* Toast */
+    .toast{
+      position:fixed;top:20px;left:50%;transform:translateX(-50%);
+      background:var(--bg3);border:1px solid var(--gold-d);border-radius:8px;
+      padding:10px 20px;font-family:'Cinzel',serif;font-size:12px;color:var(--gold);
+      z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;
+    }
+    .toast.show{opacity:1;}
+
+    /* Animação de dado rolando */
+    @keyframes dice-roll{
+      0%{transform:rotate(0deg) scale(1.2);}
+      25%{transform:rotate(90deg) scale(0.9);}
+      50%{transform:rotate(180deg) scale(1.2);}
+      75%{transform:rotate(270deg) scale(0.9);}
+      100%{transform:rotate(360deg) scale(1);}
+    }
+    .rolling{animation:dice-roll 0.5s ease-out;}
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- SPLASH -->
+  <div id="s-title" class="screen active">
+    <div id="particles"></div>
+    <div class="logo-bg">
+      <svg class="cube-svg" width="106" height="106" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00E5FF"/><stop offset="60%" stop-color="#7B5FFF"/><stop offset="100%" stop-color="#BF00FF"/></linearGradient>
+          <linearGradient id="cg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00CFFF" stop-opacity="0.7"/><stop offset="100%" stop-color="#9B6FFF" stop-opacity="0.7"/></linearGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <polygon points="55,8 88,27 55,46 22,27" fill="rgba(0,207,255,0.04)" stroke="url(#cg1)" stroke-width="1.5" stroke-linejoin="round"/>
+        <polygon points="22,27 55,46 55,82 22,63" fill="rgba(123,95,255,0.06)" stroke="url(#cg2)" stroke-width="1.5" stroke-linejoin="round"/>
+        <polygon points="88,27 55,46 55,82 88,63" fill="rgba(0,180,255,0.04)" stroke="url(#cg1)" stroke-width="1.5" stroke-linejoin="round"/>
+        <polygon points="55,8 88,27 88,63 55,82 22,63 22,27" fill="none" stroke="url(#cg1)" stroke-width="1.8" stroke-linejoin="round" filter="url(#glow)"/>
+        <g stroke="url(#cg1)" stroke-width="1.2" filter="url(#glow)">
+          <line x1="55" y1="8" x2="55" y2="46"/><line x1="22" y1="27" x2="55" y2="46"/><line x1="88" y1="27" x2="55" y2="46"/>
+          <line x1="55" y1="46" x2="55" y2="82"/><line x1="55" y1="46" x2="22" y2="63"/><line x1="55" y1="46" x2="88" y2="63"/>
+        </g>
+        <g stroke="#00CFFF" stroke-width="0.7" fill="none" opacity="0.6">
+          <polyline points="55,8 55,2 65,2"/><polyline points="88,27 96,27 96,20"/><polyline points="22,27 14,27 14,20"/>
+          <polyline points="55,82 55,90 45,90"/><polyline points="88,63 96,63 96,70"/><polyline points="22,63 14,63 14,70"/>
+        </g>
+        <g filter="url(#glow)">
+          <circle cx="55" cy="8" r="2.8" fill="#00E5FF"/><circle cx="88" cy="27" r="2.8" fill="#00D0FF"/>
+          <circle cx="22" cy="27" r="2.8" fill="#00D0FF"/><circle cx="55" cy="46" r="3.2" fill="#7B5FFF"/>
+          <circle cx="88" cy="63" r="2.8" fill="#9B6FFF"/><circle cx="22" cy="63" r="2.8" fill="#9B6FFF"/>
+          <circle cx="55" cy="82" r="2.8" fill="#BF00FF"/>
+        </g>
+        <line x1="22" y1="45" x2="88" y2="45" stroke="#7B5FFF" stroke-width="0.6" opacity="0.3"/>
+        <line x1="40" y1="30" x2="70" y2="65" stroke="#00CFFF" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.35"/>
+      </svg>
+    </div>
+    <h1 class="t-main">AiMaster</h1>
+    <div class="t-sub">Motor D&amp;D 5e · IA Narrador</div>
+    <div class="t-divider"></div>
+    <p class="t-desc">Raça, classe e antecedente moldam cada evento, teste e diálogo.<br>O dado decide o destino.</p>
+    <button class="btn-start" onclick="goTo('s-char')">CRIAR PERSONAGEM</button>
+    <div class="ver-tag">MVP v0.6 · PWA · Motor Vivo</div>
+  </div>
+
+  <!-- CRIAÇÃO DE PERSONAGEM -->
+  <div id="s-char" class="screen">
+    <div class="screen-hdr">
+      <div class="sec-hdr">⚔ &nbsp;Forja do Herói</div>
+    </div>
+    <div class="screen-body">
+      <div class="char-grid">
+        <div class="cf full">
+          <label>Nome do Herói</label>
+          <input type="text" id="inp-name" placeholder="Seu nome na história..." autocomplete="off"/>
+        </div>
+        <div class="cf">
+          <label>Raça</label>
+          <select id="inp-race" onchange="updatePreview()">
+            <option>Humano</option><option>Elfo</option><option>Meio-Elfo</option><option>Anão</option>
+            <option>Halfling</option><option>Gnomo</option><option>Meio-Orc</option><option>Tiefling</option><option>Draconato</option>
+          </select>
+        </div>
+        <div class="cf">
+          <label>Classe</label>
+          <select id="inp-class" onchange="updatePreview()">
+            <option>Guerreiro</option><option>Mago</option><option>Ladino</option><option>Clérigo</option>
+            <option>Bardo</option><option>Paladino</option><option>Druida</option><option>Ranger</option>
+            <option>Bárbaro</option><option>Feiticeiro</option>
+          </select>
+        </div>
+        <div class="cf">
+          <label>Antecedente</label>
+          <select id="inp-bg" onchange="updatePreview()">
+            <option>Forasteiro</option><option>Nobre</option><option>Sábio</option><option>Criminoso</option>
+            <option>Herói do Povo</option><option>Soldado</option>
+          </select>
+        </div>
+        <div class="cf">
+          <label>Alinhamento</label>
+          <select id="inp-align">
+            <option>Leal e Bom</option><option>Neutro e Bom</option><option>Caótico e Bom</option>
+            <option>Leal e Neutro</option><option>Neutro</option><option>Caótico e Mau</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="profile-preview">
+        <div class="pp-header">
+          <div class="pp-avatar" id="pp-av">⚔️</div>
+          <div><div class="pp-name" id="pp-name">Guerreiro Humano</div><div class="pp-arch" id="pp-arch">Forasteiro das estradas</div></div>
+        </div>
+        <div class="pp-tags" id="pp-tags"></div>
+        <div class="pp-bonuses" id="pp-bonuses"></div>
+      </div>
+
+      <div class="sec-hdr">🎲 &nbsp;Atributos</div>
+      <div class="stats-row">
+        <div class="sb" id="sb-str"><div class="sn">FOR</div><div class="sv" id="s-str">—</div><div class="sm" id="m-str">+0</div></div>
+        <div class="sb" id="sb-dex"><div class="sn">DES</div><div class="sv" id="s-dex">—</div><div class="sm" id="m-dex">+0</div></div>
+        <div class="sb" id="sb-con"><div class="sn">CON</div><div class="sv" id="s-con">—</div><div class="sm" id="m-con">+0</div></div>
+        <div class="sb" id="sb-int"><div class="sn">INT</div><div class="sv" id="s-int">—</div><div class="sm" id="m-int">+0</div></div>
+        <div class="sb" id="sb-wis"><div class="sn">SAB</div><div class="sv" id="s-wis">—</div><div class="sm" id="m-wis">+0</div></div>
+        <div class="sb" id="sb-cha"><div class="sn">CAR</div><div class="sv" id="s-cha">—</div><div class="sm" id="m-cha">+0</div></div>
+      </div>
+      <button class="btn-roll" onclick="rollStatsAnimated()">🎲 &nbsp;ROLAR (4d6, descarta o menor)</button>
+      <button class="btn-primary" onclick="startAdventure()">INICIAR AVENTURA →</button>
+      <button class="btn-secondary" onclick="openMo('mo-api')" style="margin-top:-4px">🔑 &nbsp;Configurar Chave de API</button>
+    </div>
+  </div>
+
+  <!-- JOGO -->
+  <div id="s-game" class="screen">
+    <div class="thinking-bar" id="thinking-bar"></div>
+    <div class="hdr-scene">
+      <div class="moon"></div>
+      <div class="ia-badge"><div class="ia-dot" id="ia-dot"></div><span id="ia-lbl">IA ATIVA</span></div>
+      <svg class="forest-svg" viewBox="0 0 390 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <polygon points="0,56 0,34 18,20 36,31 55,11 74,27 90,7 108,21 125,5 143,19 160,9 178,23 195,13 213,27 230,6 248,21 265,14 283,29 300,17 318,31 335,19 353,33 370,21 390,27 390,56" fill="#0A1505" opacity="0.88"/>
+        <polygon points="0,56 0,42 15,31 30,43 48,27 65,39 82,21 100,35 118,25 136,39 153,29 170,43 188,31 205,45 222,27 240,41 257,33 274,47 292,35 310,49 327,37 344,51 362,39 390,45 390,56" fill="#152008"/>
+      </svg>
+    </div>
+    <div class="char-strip">
+      <div class="portrait" id="g-av">⚔️</div>
+      <div class="char-info">
+        <div class="c-name" id="g-nm">Herói</div>
+        <div class="c-meta" id="g-mt">Nível 1</div>
+        <div class="bars">
+          <div class="bar-row"><span class="bar-lbl">PV</span><div class="bar-track"><div class="bar-fill hp" id="bar-hp" style="width:100%"></div></div><span class="bar-val" id="g-hp-txt">10/10</span></div>
+          <div class="bar-row"><span class="bar-lbl">MP</span><div class="bar-track"><div class="bar-fill mp" id="bar-mp" style="width:100%"></div></div><span class="bar-val" id="g-mp-txt">2/2</span></div>
+        </div>
+      </div>
+      <div class="gold-pill">🪙 <span id="g-gd">50</span></div>
+    </div>
+    <div class="narr-border"></div>
+    <div class="narr" id="narr"></div>
+    <div class="actions-wrap">
+      <div class="acts-lbl">— O QUE VOCÊ FAZ? —</div>
+      <div class="act-grid">
+        <button class="act-btn" id="ab1" onclick="doAct('Examinar os arredores')"><span class="a-icon">👁️</span><span class="a-title">Examinar</span><span class="a-hint">Percepção/Investigação</span></button>
+        <button class="act-btn" id="ab2" onclick="doAct('Seguir em frente')"><span class="a-icon">🚶</span><span class="a-title">Avançar</span><span class="a-hint">Seguir a missão</span></button>
+        <button class="act-btn" id="ab3" onclick="doAct('Descansar e recuperar forças')"><span class="a-icon">🏕️</span><span class="a-title">Descansar</span><span class="a-hint">Recupera PV e feitiços</span></button>
+        <button class="act-btn" id="ab4" onclick="doAct('Procurar um Mercador')"><span class="a-icon">🛒</span><span class="a-title">Mercador</span><span class="a-hint" id="merch-hint">Sobrevivência CD 12</span></button>
+      </div>
+      <div class="free-row">
+        <input class="free-in" id="free-in" type="text" placeholder="Ação livre — descreva o que faz..." autocomplete="off"/>
+        <button class="free-send" id="free-send" onclick="sendFree()">➤</button>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <div class="footer-stats">
+        <span class="fstat">CA <span id="f-ca">—</span></span>
+        <span class="fstat">FOR <span id="f-str">—</span></span>
+        <span class="fstat">DES <span id="f-dex">—</span></span>
+        <span class="fstat">SAB <span id="f-wis">—</span></span>
+      </div>
+      <button class="fab" id="fab" onclick="toggleFab()">⚙</button>
+      <div class="fab-menu" id="fab-menu">
+        <button class="fab-item" onclick="openMo('mo-shop')"><span>💎</span><span><span class="fi-t">Comprar Créditos</span><span class="fi-s">Ouro real para aventura</span></span></button>
+        <button class="fab-item" onclick="openMo('mo-rep')"><span>🏅</span><span><span class="fi-t">Reputação</span><span class="fi-s">Nível de fidelidade</span></span></button>
+        <button class="fab-item" onclick="openMo('mo-char')"><span>📜</span><span><span class="fi-t">Ficha do Herói</span><span class="fi-s">Atributos e perfil</span></span></button>
+        <button class="fab-item" onclick="openMo('mo-api')"><span>🔑</span><span><span class="fi-t">Chave de API</span><span class="fi-s">Configurar Mestre IA</span></span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL LOJA -->
+  <div class="mo" id="mo-shop"><div class="ms">
+    <div class="mt">💎 Comprar Créditos <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+    <p class="mo-note">1 Crédito = 10 Peças de Ouro (GP)</p>
+    <div class="sp-pack"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy">COMPRAR</button></div>
+    <div class="sp-pack"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90 · melhor valor</div></div><button class="btn-buy">COMPRAR</button></div>
+    <div class="sp-pack featured"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy">COMPRAR</button></div>
+    <p class="mo-note">⚠ Role Sobrevivência para encontrar Mercador</p>
+  </div></div>
+
+  <!-- MODAL REPUTAÇÃO -->
+  <div class="mo" id="mo-rep"><div class="ms">
+    <div class="mt">🏅 Reputação <button class="mc" onclick="closeMo('mo-rep')">×</button></div>
+    <div class="rep-bar-wrap"><div class="rep-current" id="rep-display">0 pontos · Viajante</div><div class="rep-track"><div class="rep-fill" id="rep-fill" style="width:0%"></div></div></div>
+    <div class="rt active" id="rt0"><div class="rn">🧳 Viajante (0–100)</div><div class="rb">Preço normal</div></div>
+    <div class="rt" id="rt1"><div class="rn">🤝 Negociante (101–500)</div><div class="rb">5% desconto</div></div>
+    <div class="rt" id="rt2"><div class="rn">🏛 Patrono (501–1500)</div><div class="rb">10% desconto · CD –2</div></div>
+    <div class="rt" id="rt3"><div class="rn">💼 Sócio (1501+)</div><div class="rb">15% desconto · Itens raros</div></div>
+    <p class="mo-note">Compras reais geram muito mais reputação.</p>
+  </div></div>
+
+  <!-- MODAL FICHA -->
+  <div class="mo" id="mo-char"><div class="ms">
+    <div class="mt">📜 Ficha Completa <button class="mc" onclick="closeMo('mo-char')">×</button></div>
+    <div class="sheet-grid">
+      <div><div class="sf-lbl">Nome</div><div class="sf-val" id="sh-nm">—</div></div>
+      <div><div class="sf-lbl">Raça · Classe</div><div class="sf-val" id="sh-cl">—</div></div>
+      <div><div class="sf-lbl">CA</div><div class="sf-val big ca-col" id="sh-ca">—</div></div>
+      <div><div class="sf-lbl">PV Máximo</div><div class="sf-val big hp-col" id="sh-hp">—</div></div>
+    </div>
+    <div class="stats-row" id="sh-stats"></div>
+    <div class="sec-hdr" style="margin-top:6px">PERFIL ATIVO</div>
+    <div id="sh-profile-tags" class="pp-tags" style="margin-top:6px"></div>
+    <div id="sh-profile-bonuses" class="pp-bonuses" style="margin-top:6px"></div>
+  </div></div>
+
+  <!-- MODAL API -->
+  <div class="mo" id="mo-api"><div class="ms">
+    <div class="mt">🔑 Mestre IA — Configuração <button class="mc" onclick="closeMo('mo-api')">×</button></div>
+    <p class="mo-note" style="text-align:left;color:var(--parch-d)">Sua chave fica salva apenas neste dispositivo. Nunca é enviada a terceiros.</p>
+    <div class="api-field">
+      <label>Chave Anthropic (sk-ant-...)</label>
+      <input type="password" id="api-key-input" placeholder="sk-ant-api03-..."/>
+    </div>
+    <button class="btn-primary" onclick="saveApiKey()">SALVAR CHAVE</button>
+    <p class="mo-note">Obtenha em: <strong style="color:var(--gold)">console.anthropic.com</strong></p>
+    <p class="mo-note" id="api-status" style="color:var(--green)"></p>
+  </div></div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// MOTOR DE PERFIS — Raça × Classe × Antecedente
+// ══════════════════════════════════════════════════════
+const PROFILES = {
+  race:{
+    Humano:{tags:[{l:'Versátil',c:'tag-light'},{l:'Adaptável',c:'tag-light'}],bonuses:[{i:'🎯',t:'Bônus extra em 1 habilidade',v:'+1',c:'b-pos'},{i:'📜',t:'Proficiência adicional',v:'Bônus',c:'b-neu'}],flavor:'adaptável e determinado',events:['aliança com mercenários','oportunidade de liderança','encontro diplomático']},
+    Elfo:{tags:[{l:'Visão Noturna',c:'tag-nature'},{l:'Furtivo',c:'tag-dark'},{l:'Antigo',c:'tag-light'}],bonuses:[{i:'👁️',t:'Percepção +2',v:'+2',c:'b-pos'},{i:'💤',t:'Transe élfico: descanso em 4h',v:'4h',c:'b-pos'},{i:'🧝',t:'Resistência a encantamentos',v:'Vantagem',c:'b-pos'}],flavor:'elegante e antigo como as estrelas',events:['visão profética','ruínas élficas','encontro com elfos']},
+    'Meio-Elfo':{tags:[{l:'Diplomático',c:'tag-social'},{l:'Carismático',c:'tag-social'}],bonuses:[{i:'💬',t:'Persuasão e Enganação +1',v:'+1',c:'b-pos'},{i:'🌗',t:'Aceito em dois mundos',v:'Bônus Social',c:'b-pos'}],flavor:'entre dois mundos, aceito em ambos',events:['dilema de identidade','aliança incomum']},
+    Anão:{tags:[{l:'Resistente',c:'tag-combat'},{l:'Ferreiro',c:'tag-light'}],bonuses:[{i:'🍺',t:'Resistência a veneno',v:'Vantagem',c:'b-pos'},{i:'⛏️',t:'Conhecimento de pedras +2',v:'+2',c:'b-pos'}],flavor:'duro como rocha e fiel como aço',events:['forja lendária','tesouro perdido dos anões']},
+    Halfling:{tags:[{l:'Sortudo',c:'tag-light'},{l:'Corajoso',c:'tag-combat'}],bonuses:[{i:'🍀',t:'Relança 1s em ataques',v:'Sorte',c:'b-pos'},{i:'🤫',t:'Furtividade +1',v:'+1',c:'b-pos'}],flavor:'pequeno mas sortudo e surpreendente',events:['esconderijo secreto','ajuda inesperada']},
+    Gnomo:{tags:[{l:'Inventor',c:'tag-light'},{l:'Ilusionista',c:'tag-dark'}],bonuses:[{i:'🔧',t:'Arcanismo e ferramentas +1',v:'+1',c:'b-pos'},{i:'🎭',t:'Ilusões menores à vontade',v:'Feitiço',c:'b-pos'}],flavor:'curioso e inventivo além da medida',events:['invenção mágica','laboratório abandonado']},
+    'Meio-Orc':{tags:[{l:'Brutal',c:'tag-combat'},{l:'Inabalável',c:'tag-combat'}],bonuses:[{i:'💪',t:'Força +1',v:'+1',c:'b-pos'},{i:'💀',t:'Sobrevive 1× com 1 PV',v:'Inabalável',c:'b-pos'},{i:'😤',t:'Intimidação vantagem',v:'Vantagem',c:'b-pos'}],flavor:'forjado na brutalidade, temperado na honra',events:['desafio de força','batalha campal']},
+    Tiefling:{tags:[{l:'Infernal',c:'tag-dark'},{l:'Resistente ao Fogo',c:'tag-combat'},{l:'Mercado Negro',c:'tag-dark'}],bonuses:[{i:'🔥',t:'Resistência a fogo',v:'Resistência',c:'b-pos'},{i:'💰',t:'Desconto no mercado negro',v:'-10%',c:'b-pos'},{i:'⚠️',t:'NPCs religiosos desconfiados',v:'-1 Rep',c:'b-neg'}],flavor:'marcado pelo inferno, moldado pelo destino',events:['culto demoníaco','mercado negro','perseguição religiosa','contrato infernal']},
+    Draconato:{tags:[{l:'Sopro Dracônico',c:'tag-combat'},{l:'Imponente',c:'tag-social'}],bonuses:[{i:'🐉',t:'Sopro de elemento (1×/desc)',v:'2d6',c:'b-pos'},{i:'🛡️',t:'Resistência elemental',v:'Resistência',c:'b-pos'}],flavor:'descendente de dragões',events:['encontro com dragão','culto dos dragões']}
+  },
+  class:{
+    Guerreiro:{tags:[{l:'Combate',c:'tag-combat'},{l:'Segundo Fôlego',c:'tag-combat'}],bonuses:[{i:'⚔️',t:'Ataques extras',v:'+1 ataque',c:'b-pos'},{i:'❤️',t:'Segundo Fôlego: recupera PV',v:'1d10+nível',c:'b-pos'}],flavor:'mestre das armas e da guerra'},
+    Mago:{tags:[{l:'Arcano',c:'tag-dark'},{l:'Estudioso',c:'tag-social'}],bonuses:[{i:'📚',t:'Arcanismo e História +2',v:'+2',c:'b-pos'},{i:'✨',t:'Feitiços poderosos',v:'Magia',c:'b-pos'}],flavor:'repositório vivo de conhecimento arcano'},
+    Ladino:{tags:[{l:'Furtivo',c:'tag-dark'},{l:'Ataque Furtivo',c:'tag-combat'},{l:'Submundo',c:'tag-dark'}],bonuses:[{i:'🗡️',t:'Ataque furtivo +1d6',v:'+1d6',c:'b-pos'},{i:'🔓',t:'Ferramentas de ladrão',v:'Proficiência',c:'b-pos'},{i:'💰',t:'Desconto mercado negro',v:'-5%',c:'b-pos'}],flavor:'sombra que golpeia antes de ser vista'},
+    Clérigo:{tags:[{l:'Divino',c:'tag-divine'},{l:'Curandeiro',c:'tag-divine'},{l:'Sagrado',c:'tag-divine'}],bonuses:[{i:'✝️',t:'Cura e feitiços divinos',v:'Cura',c:'b-pos'},{i:'🙏',t:'Acesso a templos',v:'Religioso',c:'b-pos'},{i:'☀️',t:'Reputação santa',v:'+20 Rep',c:'b-pos'},{i:'👻',t:'Expulsa mortos-vivos',v:'Habilidade',c:'b-pos'}],flavor:'canal da vontade divina'},
+    Bardo:{tags:[{l:'Carismático',c:'tag-social'},{l:'Músico',c:'tag-social'}],bonuses:[{i:'🎵',t:'Inspiração barda',v:'Bônus',c:'b-pos'},{i:'💬',t:'Persuasão e Enganação +2',v:'+2',c:'b-pos'},{i:'🎭',t:'Acesso a rumores e tavernas',v:'Info',c:'b-pos'}],flavor:'contador de histórias que molda a realidade'},
+    Paladino:{tags:[{l:'Sagrado',c:'tag-divine'},{l:'Combate',c:'tag-combat'},{l:'Juramento',c:'tag-divine'}],bonuses:[{i:'✨',t:'Ataque Divino +1d8',v:'+1d8',c:'b-pos'},{i:'🙏',t:'Imposição de mãos: cura',v:'Cura',c:'b-pos'},{i:'🛡️',t:'Aura de proteção',v:'Aura',c:'b-pos'}],flavor:'guerreiro sagrado do juramento'},
+    Druida:{tags:[{l:'Natureza',c:'tag-nature'},{l:'Forma Selvagem',c:'tag-nature'}],bonuses:[{i:'🌿',t:'Natureza e Sobrevivência +2',v:'+2',c:'b-pos'},{i:'🐺',t:'Transforma em animal',v:'Forma Selvagem',c:'b-pos'}],flavor:'voz da natureza que fala com a terra'},
+    Ranger:{tags:[{l:'Explorador',c:'tag-nature'},{l:'Rastreador',c:'tag-nature'},{l:'Arqueiro',c:'tag-combat'}],bonuses:[{i:'🏹',t:'Ataque arco +1',v:'+1',c:'b-pos'},{i:'🗺️',t:'Sobrevivência e Rastreamento +2',v:'+2',c:'b-pos'}],flavor:'sentinela dos limites selvagens'},
+    Bárbaro:{tags:[{l:'Fúria',c:'tag-combat'},{l:'Brutal',c:'tag-combat'}],bonuses:[{i:'😤',t:'Fúria: +2 dano, resistência',v:'Fúria',c:'b-pos'},{i:'💪',t:'Força e Constituição +1',v:'+1',c:'b-pos'},{i:'👊',t:'Nunca surpreendido',v:'Vantagem',c:'b-pos'}],flavor:'tempestade de carne e fúria'},
+    Feiticeiro:{tags:[{l:'Magia Inata',c:'tag-dark'},{l:'Imprevisível',c:'tag-dark'}],bonuses:[{i:'✨',t:'Metamagia: modifica feitiços',v:'Metamagia',c:'b-pos'},{i:'💥',t:'Pontos de feitiçaria',v:'Bônus',c:'b-pos'},{i:'🌀',t:'Surges de magia selvagem',v:'Imprevisível',c:'b-neu'}],flavor:'a magia não é aprendida — ela É você'}
+  },
+  bg:{
+    Forasteiro:{bonus:{i:'🗺️',t:'Sobrevivência e Natureza +1',v:'+1',c:'b-pos'},flavor:'dos quatro ventos, sem lar fixo'},
+    Nobre:{bonus:{i:'👑',t:'Reputação nobre +2',v:'+2',c:'b-pos'},flavor:'herdeiro de nome e responsabilidade'},
+    Sábio:{bonus:{i:'📚',t:'Arcanismo e História +2',v:'+2',c:'b-pos'},flavor:'de pergaminhos e conhecimento antigo'},
+    Criminoso:{bonus:{i:'💰',t:'Desconto extra mercado negro -5%',v:'-5%',c:'b-pos'},flavor:'das ruelas escuras'},
+    'Herói do Povo':{bonus:{i:'❤️',t:'Reputação com plebeus +2',v:'+2',c:'b-pos'},flavor:'voz dos humildes'},
+    Soldado:{bonus:{i:'⚔️',t:'Atletismo e Intimidação +1',v:'+1',c:'b-pos'},flavor:'da disciplina e do campo de batalha'}
+  }
+};
+
+const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨'};
+const classHP={Guerreiro:10,Mago:6,Ladino:8,Clérigo:8,Bardo:8,Paladino:10,Druida:8,Ranger:10,Bárbaro:12,Feiticeiro:6};
+const classMP={Guerreiro:0,Mago:4,Ladino:0,Clérigo:3,Bardo:3,Paladino:2,Druida:3,Ranger:2,Bárbaro:0,Feiticeiro:4};
+
+let hero={}, stats={}, fabOpen=false, thinking=false;
+let merchantCD=12, gameHistory=[];
+
+// ── PARTÍCULAS DOURADAS ──
+(function(){
+  const c=document.getElementById('particles');
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');p.className='particle';
+    const sz=(Math.random()*3+1)+'px';
+    p.style.cssText=`width:${sz};height:${sz};left:${Math.random()*100}%;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s;`;
+    c.appendChild(p);
+  }
+})();
+
+// ── NAVEGAÇÃO ──
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── MOTOR DE DADOS D&D 5e ──
+function rollD(sides){return Math.ceil(Math.random()*sides);}
+function roll4d6drop(){let r=[rollD(6),rollD(6),rollD(6),rollD(6)];r.sort((a,b)=>a-b);return r[1]+r[2]+r[3];}
+function mod(v){return Math.floor((v-10)/2);}
+function modStr(v){let m=mod(v);return(m>=0?'+':'')+m;}
+
+async function rollStatsAnimated(){
+  const keys=['str','dex','con','int','wis','cha'];
+  for(let k of keys){
+    const sb=document.getElementById('sb-'+k);
+    const svEl=document.getElementById('s-'+k);
+    const smEl=document.getElementById('m-'+k);
+    sb.classList.add('rolling');
+    svEl.textContent='?';
+    await new Promise(r=>setTimeout(r,80));
+    const v=roll4d6drop();
+    stats[k]=v;
+    svEl.textContent=v;
+    smEl.textContent=modStr(v);
+    sb.classList.remove('rolling');
+    await new Promise(r=>setTimeout(r,60));
+  }
+  showToast('🎲 Atributos rolados!');
+}
+
+// ── PREVIEW DE PERFIL ──
+function updatePreview(){
+  const race=document.getElementById('inp-race').value;
+  const cls=document.getElementById('inp-class').value;
+  const bg=document.getElementById('inp-bg').value;
+  const rp=PROFILES.race[race];const cp=PROFILES.class[cls];const bp=PROFILES.bg[bg];
+  if(!rp||!cp||!bp)return;
+  document.getElementById('pp-av').textContent=classAv[cls]||'⚔️';
+  document.getElementById('pp-name').textContent=cls+' '+race;
+  document.getElementById('pp-arch').textContent=bp.flavor;
+  const allTags=[...rp.tags,...cp.tags];
+  document.getElementById('pp-tags').innerHTML=allTags.slice(0,6).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  const allBonuses=[...rp.bonuses,...cp.bonuses,bp.bonus].filter(Boolean);
+  document.getElementById('pp-bonuses').innerHTML=allBonuses.slice(0,4).map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
+}
+
+// ── INICIAR AVENTURA ──
+function startAdventure(){
+  const name=document.getElementById('inp-name').value.trim()||'Herói Desconhecido';
+  const race=document.getElementById('inp-race').value;
+  const cls=document.getElementById('inp-class').value;
+  const bg=document.getElementById('inp-bg').value;
+  const align=document.getElementById('inp-align').value;
+  if(!Object.keys(stats).length) {
+    ['str','dex','con','int','wis','cha'].forEach(k=>{stats[k]=roll4d6drop();});
+  }
+  const maxHP=Math.max(1,(classHP[cls]||8)+mod(stats.con||10));
+  const maxMP=classMP[cls]||0;
+  const ca=10+mod(stats.dex||10);
+  let repBonus=0;
+  if(cls==='Clérigo'||cls==='Paladino') repBonus=20;
+  if(race==='Tiefling') repBonus-=10;
+  if(bg==='Nobre') repBonus+=15;
+  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:50,rep:Math.max(0,repBonus)};
+  merchantCD=(cls==='Paladino'||cls==='Clérigo')?10:(race==='Tiefling'?14:12);
+  gameHistory=[];
+
+  // Preenche UI
+  document.getElementById('g-av').textContent=classAv[cls]||'⚔️';
+  document.getElementById('g-nm').textContent=name;
+  document.getElementById('g-mt').textContent=`${race} · ${cls} · Nível 1`;
+  updateVitals();
+  document.getElementById('f-ca').textContent=ca;
+  document.getElementById('f-str').textContent=modStr(stats.str||10);
+  document.getElementById('f-dex').textContent=modStr(stats.dex||10);
+  document.getElementById('f-wis').textContent=modStr(stats.wis||10);
+  document.getElementById('merch-hint').textContent=`Sobrevivência CD ${merchantCD}`;
+
+  // Ficha modal
+  document.getElementById('sh-nm').textContent=name;
+  document.getElementById('sh-cl').textContent=`${race} · ${cls}`;
+  document.getElementById('sh-ca').textContent=ca;
+  document.getElementById('sh-hp').textContent=maxHP;
+  const lb={str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
+  document.getElementById('sh-stats').innerHTML=
+    ['str','dex','con','int','wis','cha'].map(k=>`<div class="sb"><div class="sn">${lb[k]}</div><div class="sv">${stats[k]||10}</div><div class="sm">${modStr(stats[k]||10)}</div></div>`).join('');
+  const rp=PROFILES.race[race]||{};const cp=PROFILES.class[cls]||{};const bp=PROFILES.bg[bg]||{};
+  const allTags=[...(rp.tags||[]),...(cp.tags||[])];
+  document.getElementById('sh-profile-tags').innerHTML=allTags.map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  const allBonuses=[...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean);
+  document.getElementById('sh-profile-bonuses').innerHTML=allBonuses.map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
+
+  goTo('s-game');
+  askMaster(`Inicie a aventura. Apresente a cena de abertura personalizada para ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil para criar uma abertura ÚNICA. Termine com uma situação que exige decisão imediata.`);
+}
+
+// ── VITAIS ──
+function updateVitals(){
+  const hpPct=Math.max(0,Math.round((hero.hp/hero.maxHP)*100));
+  const mpPct=hero.maxMP>0?Math.max(0,Math.round((hero.mp/hero.maxMP)*100)):100;
+  document.getElementById('bar-hp').style.width=hpPct+'%';
+  document.getElementById('bar-mp').style.width=mpPct+'%';
+  document.getElementById('g-hp-txt').textContent=`${hero.hp}/${hero.maxHP}`;
+  document.getElementById('g-mp-txt').textContent=`${hero.mp}/${hero.maxMP}`;
+  document.getElementById('g-gd').textContent=hero.gold;
+}
+
+// ── MODO THINKING ──
+function setThinking(v){
+  thinking=v;
+  document.getElementById('thinking-bar').classList.toggle('active',v);
+  const dot=document.getElementById('ia-dot');
+  const lbl=document.getElementById('ia-lbl');
+  dot.className='ia-dot'+(v?' thinking':'');
+  lbl.textContent=v?'PENSANDO...':'IA ATIVA';
+  lbl.className=v?'thinking-txt':'';
+  ['ab1','ab2','ab3','ab4'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=v;});
+  const fi=document.getElementById('free-in'),fs=document.getElementById('free-send');
+  if(fi)fi.disabled=v;if(fs)fs.disabled=v;
+}
+
+// ── MENSAGENS ──
+function addMsg(type,html,rollNum,rollMeta){
+  const a=document.getElementById('narr');
+  const m=document.createElement('div');m.className='msg '+type;
+  if(type==='msg-dm'){
+    m.innerHTML=`<div class="lbl">✦ MESTRE IA</div><div class="bbl">${html}</div>`;
+  } else if(type==='msg-pl'){
+    m.innerHTML=`<div class="bbl">${html}</div>`;
+  } else if(type==='roll'){
+    m.className='msg roll-wrap';
+    m.innerHTML=`<div class="roll-card"><div class="dice-face">${rollNum}</div><div class="roll-info"><div class="roll-type">${rollMeta}</div><div class="roll-res">${html}</div></div></div>`;
+  }
+  a.appendChild(m);
+  requestAnimationFrame(()=>{a.scrollTop=a.scrollHeight;});
+  return m;
+}
+
+// ── SISTEMA PROMPT COM PERFIL ──
+function buildSystemPrompt(){
+  const rp=PROFILES.race[hero.race]||{};
+  const cp=PROFILES.class[hero.cls]||{};
+  const bp=PROFILES.bg[hero.bg]||{};
+  const allTags=[...(rp.tags||[]),...(cp.tags||[])].map(t=>t.l).join(', ');
+  const allBonuses=[...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean).map(b=>`${b.t}(${b.v})`).join('; ');
+  const events=(rp.events||[]).join(', ');
+  const lb={str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
+  const atrs=['str','dex','con','int','wis','cha'].map(k=>`${lb[k]}:${stats[k]||10}(${modStr(stats[k]||10)})`).join(', ');
+
+  let especiais='';
+  if(hero.race==='Tiefling') especiais+='\n- NPCs religiosos reagem com DESCONFIANÇA. Criminosos e cultistas são receptivos.\n- Acesso a mercado negro com 10% de desconto.';
+  if(hero.race==='Elfo'||hero.race==='Meio-Elfo') especiais+='\n- Conceda informações extras em Percepção.';
+  if(hero.race==='Anão') especiais+='\n- Detecta passagens secretas em pedra automaticamente.';
+  if(hero.race==='Meio-Orc') especiais+='\n- Ao chegar a 0 PV pela primeira vez: mantém-se de pé com 1 PV (Inabalável).';
+  if(hero.cls==='Clérigo'||hero.cls==='Paladino') especiais+='\n- Acesso a templos e ordens religiosas. Mortos-vivos ficam em desvantagem.\n- Eventos divinos ocorrem com mais frequência.';
+  if(hero.cls==='Ladino') especiais+='\n- Pode tentar furtos furtivos (Prestidigitação vs Percepção). Conhece o submundo.';
+  if(hero.cls==='Druida'||hero.cls==='Ranger') especiais+='\n- Animais selvagens não atacam primeiro.';
+  if(hero.cls==='Bárbaro') especiais+='\n- Pode entrar em FÚRIA (+2 dano, resistência física, 3×/descanso longo).';
+  if(hero.bg==='Criminoso') especiais+='\n- Conhece receptadores, mercado negro e informantes.';
+  if(hero.bg==='Nobre') especiais+='\n- Guardas e comerciantes tratam com mais respeito.';
+
+  return `Você é o Mestre de Dungeons do AiMaster — RPG solo D&D 5e. Responda APENAS como Mestre, em português brasileiro, tom épico e imersivo.
+
+PERSONAGEM: ${hero.name} | ${hero.race} ${hero.cls} | ${hero.bg} | ${hero.align}
+PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | Ouro: ${hero.gold}gp | Reputação: ${hero.rep||0}pts
+Atributos: ${atrs}
+
+PERFIL ATIVO:
+Traços: ${allTags}
+Bônus: ${allBonuses}
+Eventos prioritários: ${events||'aventura geral'}
+Essência: ${rp.flavor||''}, ${cp.flavor||''}
+
+REGRAS ESPECIAIS DESTE PERSONAGEM:${especiais}
+
+MISSÃO ATUAL: Recuperar o Amuleto do Amanhecer nas ruínas do Templo Esquecido, a 3 dias de Millhaven.
+
+DIRETRIZES:
+- Narre em 3-4 parágrafos curtos, vívidos, imersivos
+- SEMPRE aplique os traços e bônus do perfil — raça/classe/antecedente influenciam TUDO
+- Testes: d20+modificador vs CD. Informe qual atributo e CD antes do resultado
+- Mercador: Sobrevivência CD ${merchantCD} (CD desta sessão)
+- Combate: d20+mod vs CA do inimigo, narre narrativamente
+- Termine SEMPRE com uma decisão clara para o jogador`;
+}
+
+// ── MOTOR IA ──
+async function askMaster(acao){
+  if(thinking) return;
+  setThinking(true);
+  gameHistory.push({role:'user',content:acao});
+
+  const apiKey=localStorage.getItem('aimaster_api_key')||'';
+  if(!apiKey){
+    setThinking(false);
+    addMsg('msg-dm','⚠️ Configure sua chave de API para ativar o Mestre IA. Toque em ⚙ → Chave de API.');
+    return;
+  }
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:buildSystemPrompt(),
+        messages:gameHistory.slice(-10)
+      })
+    });
+    const data=await res.json();
+    setThinking(false);
+    if(data.content&&data.content[0]&&data.content[0].text){
+      const reply=data.content[0].text;
+      gameHistory.push({role:'assistant',content:reply});
+      const formatted=reply.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+      addMsg('msg-dm',formatted);
+    } else {
+      addMsg('msg-dm','O Mestre hesita... Verifique sua chave de API e tente novamente.');
+      gameHistory.pop();
+    }
+  } catch(e){
+    setThinking(false);
+    addMsg('msg-dm','Falha na conexão. Verifique sua chave de API em ⚙ → Chave de API.');
+    gameHistory.pop();
+  }
+}
+
+// ── AÇÕES DO JOGO ──
+function doAct(acao){
+  if(thinking) return;
+  addMsg('msg-pl','> '+acao);
+  if(acao.includes('Mercador')){
+    const dr=rollD(20);
+    const wm=mod(stats.wis||10);
+    const tot=dr+wm;
+    const ok=tot>=merchantCD;
+    addMsg('roll',`d20(${dr}) ${wm>=0?'+':''}${wm} = ${tot} — ${ok?'✓ Sucesso':'✗ Falha'} vs CD ${merchantCD}`,tot,`SOBREVIVÊNCIA · CD ${merchantCD}`);
+    if(!ok&&merchantCD<25) merchantCD=merchantCD===12?17:25;
+    askMaster(`Procurou Mercador. Sobrevivência: ${ok?'SUCESSO':'FALHA'} (${tot} vs CD ${merchantCD}). Narre considerando o perfil.`);
+  } else {
+    askMaster(acao);
+  }
+}
+
+function sendFree(){
+  if(thinking) return;
+  const inp=document.getElementById('free-in');
+  const txt=inp.value.trim();
+  if(!txt) return;
+  inp.value='';
+  addMsg('msg-pl','> '+txt);
+  askMaster(txt);
+}
+
+// ── API KEY ──
+function saveApiKey(){
+  const key=document.getElementById('api-key-input').value.trim();
+  if(!key){showToast('⚠ Digite sua chave!');return;}
+  localStorage.setItem('aimaster_api_key',key);
+  document.getElementById('api-status').textContent='✅ Chave salva com sucesso!';
+  showToast('✅ Chave salva!');
+  setTimeout(()=>closeMo('mo-api'),1500);
+}
+
+// ── UTILITÁRIOS ──
+function updateVitalsAndRep(){
+  updateVitals();
+  const rep=hero.rep||0;
+  document.getElementById('rep-display').textContent=`${rep} pontos`;
+  const pct=Math.min(100,(rep/100)*100);
+  document.getElementById('rep-fill').style.width=pct+'%';
+  ['rt0','rt1','rt2','rt3'].forEach((id,i)=>{
+    const thresholds=[0,100,500,1500];
+    document.getElementById(id).className='rt'+(rep>=thresholds[i]?' active':'');
+  });
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function toggleFab(){
+  fabOpen=!fabOpen;
+  document.getElementById('fab').classList.toggle('open',fabOpen);
+  document.getElementById('fab-menu').classList.toggle('open',fabOpen);
+}
+function openMo(id){
+  fabOpen=false;
+  document.getElementById('fab').classList.remove('open');
+  document.getElementById('fab-menu').classList.remove('open');
+  if(id==='mo-rep') updateVitalsAndRep();
+  if(id==='mo-api'){
+    const k=localStorage.getItem('aimaster_api_key')||'';
+    if(k) document.getElementById('api-status').textContent='✅ Chave configurada';
+  }
+  document.getElementById(id).classList.add('open');
+}
+function closeMo(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+document.getElementById('free-in').addEventListener('keydown',e=>{if(e.key==='Enter')sendFree();});
+
+// Init preview
+updatePreview();
+</script>
+
+<!-- Service Worker -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js')
+      .then(()=>console.log('SW registrado'))
+      .catch(()=>console.log('SW falhou (ok em dev)'));
+  });
+}
+</script>
+</body>
+</html>
