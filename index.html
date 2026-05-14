@@ -973,42 +973,50 @@ async function askMaster(acao){
     return;
   }
 
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
+  try {
+    const cleanKey = apiKey.trim(); 
+    // Usando o modelo Haiku, que é mais barato e rápido para teste inicial
+    const modelName = 'claude-3-haiku-20240307'; 
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': cleanKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
       },
-      body:JSON.stringify({
-        model: 'claude-3-5-sonnet-20241022', // Nome oficial e atualizado
-        max_tokens:1000,
-        system:buildSystemPrompt(),
-        messages:gameHistory.slice(-10)
+      body: JSON.stringify({
+        model: modelName,
+        max_tokens: 1024,
+        system: buildSystemPrompt(),
+        messages: gameHistory.slice(-10)
       })
     });
 
+    if (!res.ok) {
+      const errorDetail = await res.json();
+      // Se der erro de saldo ou permissão, ele vai escrever o texto exato aqui
+      addMsg('msg-dm', '❌ Erro da API: ' + (errorDetail.error ? errorDetail.error.message : 'Falha desconhecida'));
+      setThinking(false);
+      gameHistory.pop();
+      return;
+    }
+
     const data = await res.json();
     setThinking(false);
-
-    if (res.ok && data.content && data.content[0]) {
+    
+    if (data.content && data.content[0]) {
       const reply = data.content[0].text;
-      gameHistory.push({role:'assistant',content:reply});
+      gameHistory.push({role:'assistant', content:reply});
       const formatted = reply.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-      addMsg('msg-dm',formatted);
-      if(typeof salvarProgresso === "function") salvarProgresso(); // Salva se a função existir
-    } else {
-      // Se a API retornar erro de saldo ou chave, mostrará aqui
-      const erroMsg = data.error ? data.error.message : 'Erro desconhecido';
-      addMsg('msg-dm', `❌ O Mestre hesita... Motivo: ${erroMsg}`);
-      gameHistory.pop();
+      addMsg('msg-dm', formatted);
+      if(typeof salvarProgresso === "function") salvarProgresso();
     }
-  } catch(e){
+
+  } catch(e) {
     setThinking(false);
-    addMsg('msg-dm','Falha na conexão. Verifique se o seu celular está online.');
-    console.error("Erro na API:", e);
+    addMsg('msg-dm', '❌ Erro de Conexão: ' + e.message);
     gameHistory.pop();
   }
 }
