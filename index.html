@@ -1,584 +1,704 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-  <meta name="theme-color" content="#1A1208"/>
-  <meta name="mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-  <meta name="apple-mobile-web-app-title" content="AiMaster"/>
-  <title>AiMaster</title>
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-  <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap');
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  html,body{height:100%;overflow:hidden;background:#1A1208;}
-  :root{
-    --bg:#0F0A04;--bg2:#1A1208;--bg3:#2A1E0E;--bg4:#3D2E18;
-    --gold:#C8922A;--gold-l:#E8B84B;--gold-d:#7A5518;--gold-dim:#4A3010;
-    --parch:#F0E6D0;--parch-d:#C8B898;--parch-dim:#8A7860;
-    --hp:#C0392B;--hp-l:#E74C3C;--mp:#5B3FA0;--mp-l:#8B6FD0;
-    --green:#2ECC71;--ink:#0D0800;
-    --gold-glow:rgba(200,146,42,0.2);--border:rgba(200,146,42,0.2);
-  }
-  #app{width:100%;max-width:430px;height:100vh;margin:0 auto;background:var(--bg2);position:relative;overflow:hidden;display:flex;flex-direction:column;}
-  .screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
-  .screen.active{display:flex;}
-  body{font-family:'Crimson Pro',Georgia,serif;color:var(--parch);}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="theme-color" content="#1A1208"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="AiMaster"/>
+<title>AiMaster</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:#0F0A04;}
+:root{
+  --bg:#0F0A04;--bg2:#1A1208;--bg3:#2A1E0E;--bg4:#3D2E18;
+  --gold:#C8922A;--gold-l:#E8B84B;--gold-d:#7A5518;--gold-dim:#4A3010;
+  --parch:#F2E8D6;--parch-d:#C8B898;--parch-dim:#8A7860;
+  --hp:#C0392B;--hp-l:#E74C3C;--mp:#5B3FA0;--mp-l:#8B6FD0;
+  --green:#2ECC71;--ink:#0D0800;--red:#E74C3C;--yellow:#F1C40F;
+  --gold-glow:rgba(200,146,42,0.25);--border:rgba(200,146,42,0.22);
+  /* Fonte WhatsApp-like = Inter */
+  --font-narr:'Inter',system-ui,sans-serif;
+  --font-title:'Cinzel',serif;
+}
+#app{width:100%;max-width:430px;height:100vh;margin:0 auto;background:var(--bg2);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
+.screen.active{display:flex;}
+body{font-family:var(--font-narr);color:var(--parch);}
 
-  /* SPLASH */
-  #s-title{background:radial-gradient(ellipse 100% 70% at 50% 20%,#1A2810 0%,var(--bg) 65%),radial-gradient(ellipse 60% 40% at 80% 80%,#200A00 0%,transparent 60%);align-items:center;justify-content:center;text-align:center;padding:2rem 2rem 2.5rem;gap:0;position:relative;overflow:hidden;}
-  #s-title::before,#s-title::after{content:'';position:absolute;width:60px;height:60px;border-color:var(--gold-d);border-style:solid;opacity:0.4;}
-  #s-title::before{top:16px;left:16px;border-width:2px 0 0 2px;}
-  #s-title::after{bottom:16px;right:16px;border-width:0 2px 2px 0;}
-  #particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-  .particle{position:absolute;border-radius:50%;background:var(--gold);opacity:0;animation:pfloat linear infinite;}
-  @keyframes pfloat{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:0.5;}90%{opacity:0.15;}100%{transform:translateY(-20px) scale(1);opacity:0;}}
-  .logo-bg{width:150px;height:150px;border-radius:28px;background:radial-gradient(ellipse at 40% 30%,#0D1628 0%,#06090F 70%);border:1px solid rgba(0,207,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:1.6rem;box-shadow:0 0 50px rgba(0,100,200,0.15),inset 0 1px 0 rgba(0,207,255,0.12);}
-  .cube-svg{filter:drop-shadow(0 0 8px rgba(0,207,255,0.45)) drop-shadow(0 0 20px rgba(123,95,255,0.25));}
-  .t-main{font-family:'Cinzel',serif;font-size:32px;font-weight:700;color:var(--gold-l);letter-spacing:5px;margin-bottom:4px;text-shadow:0 0 30px var(--gold-glow);}
-  .t-sub{font-size:11px;color:var(--gold-d);letter-spacing:3px;text-transform:uppercase;font-family:'Cinzel',serif;margin-bottom:1.4rem;}
-  .t-divider{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-d),var(--gold),var(--gold-d),transparent);margin:0 auto 1.4rem;}
-  .t-desc{font-size:15px;color:var(--parch-d);font-style:italic;line-height:1.75;max-width:280px;margin-bottom:2.2rem;}
-  .btn-start{background:linear-gradient(135deg,rgba(200,146,42,0.15),rgba(200,146,42,0.08));border:1px solid var(--gold-d);color:var(--gold-l);padding:15px 52px;font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:2.5px;border-radius:6px;cursor:pointer;margin-bottom:1rem;text-shadow:0 0 12px var(--gold-glow);}
-  .ver-tag{font-size:10px;color:var(--gold-dim);letter-spacing:2px;font-family:'Cinzel',serif;}
+/* ══ SPLASH ══ */
+#s-title{background:radial-gradient(ellipse 100% 70% at 50% 20%,#1A2810 0%,var(--bg) 65%);align-items:center;justify-content:center;text-align:center;padding:2rem 2rem 2.5rem;position:relative;overflow:hidden;}
+#s-title::before,#s-title::after{content:'';position:absolute;width:60px;height:60px;border-color:var(--gold-d);border-style:solid;opacity:0.4;}
+#s-title::before{top:16px;left:16px;border-width:2px 0 0 2px;}
+#s-title::after{bottom:16px;right:16px;border-width:0 2px 2px 0;}
+#particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;background:var(--gold);opacity:0;animation:pfloat linear infinite;}
+@keyframes pfloat{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:0.5;}90%{opacity:0.1;}100%{transform:translateY(-20px);opacity:0;}}
+.logo-bg{width:150px;height:150px;border-radius:28px;background:radial-gradient(ellipse at 40% 30%,#0D1628,#06090F);border:1px solid rgba(0,207,255,0.18);display:flex;align-items:center;justify-content:center;margin-bottom:1.6rem;box-shadow:0 0 50px rgba(0,100,200,0.15),inset 0 1px 0 rgba(0,207,255,0.12);}
+.cube-svg{filter:drop-shadow(0 0 8px rgba(0,207,255,0.45)) drop-shadow(0 0 20px rgba(123,95,255,0.25));}
+.t-main{font-family:var(--font-title);font-size:32px;font-weight:700;color:var(--gold-l);letter-spacing:5px;margin-bottom:4px;}
+.t-sub{font-size:11px;color:var(--gold-d);letter-spacing:3px;text-transform:uppercase;font-family:var(--font-title);margin-bottom:1.4rem;}
+.t-divider{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 1.4rem;}
+.t-desc{font-size:15px;color:var(--parch-d);line-height:1.75;max-width:280px;margin-bottom:2.2rem;}
+.btn-start{background:linear-gradient(135deg,rgba(200,146,42,0.18),rgba(200,146,42,0.08));border:1px solid var(--gold-d);color:var(--gold-l);padding:15px 52px;font-family:var(--font-title);font-size:13px;font-weight:600;letter-spacing:2px;border-radius:6px;cursor:pointer;margin-bottom:1rem;}
+.ver-tag{font-size:10px;color:var(--gold-dim);letter-spacing:2px;font-family:var(--font-title);}
 
-  /* CHAR */
-  #s-char{background:linear-gradient(180deg,#160E04 0%,var(--bg2) 12%,var(--bg2) 100%);}
-  .screen-hdr{background:linear-gradient(180deg,#120A02 0%,var(--bg3) 100%);padding:14px 18px 12px;flex-shrink:0;border-bottom:1px solid var(--border);}
-  .sec-hdr{font-family:'Cinzel',serif;font-size:11px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
-  .screen-body{flex:1;overflow-y:auto;padding:14px 16px 20px;display:flex;flex-direction:column;gap:12px;}
-  .char-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .cf{display:flex;flex-direction:column;gap:4px;}
-  .cf.full{grid-column:1/-1;}
-  .cf label{font-size:10px;color:var(--gold-d);letter-spacing:1.5px;text-transform:uppercase;font-family:'Cinzel',serif;}
-  .cf input,.cf select{background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:10px 12px;color:var(--parch);font-family:'Crimson Pro',serif;font-size:15px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
-  .cf input:focus,.cf select:focus{border-color:var(--gold-d);}
-  .cf select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A5518'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
-  .cf select option{background:#2A1E0E;color:#F0E6D0;}
-  #profile-preview{background:linear-gradient(135deg,rgba(26,18,8,0.9),rgba(42,30,14,0.7));border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:inset 0 1px 0 rgba(200,146,42,0.08);}
-  .pp-header{display:flex;align-items:center;gap:10px;}
-  .pp-avatar{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg4);flex-shrink:0;}
-  .pp-name{font-family:'Cinzel',serif;font-size:13px;color:var(--gold-l);font-weight:600;}
-  .pp-arch{font-size:12px;color:var(--parch-d);font-style:italic;}
-  .pp-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
-  .tag{font-size:10px;padding:3px 9px;border-radius:12px;font-family:'Cinzel',serif;letter-spacing:.5px;white-space:nowrap;}
-  .tag-dark{background:rgba(100,0,150,0.22);border:1px solid rgba(150,50,200,0.3);color:#C090F0;}
-  .tag-light{background:rgba(200,160,0,0.12);border:1px solid rgba(200,146,42,0.28);color:var(--gold-l);}
-  .tag-combat{background:rgba(180,0,0,0.16);border:1px solid rgba(200,50,50,0.3);color:#E08080;}
-  .tag-social{background:rgba(0,120,180,0.16);border:1px solid rgba(0,150,220,0.28);color:#80C0E0;}
-  .tag-divine{background:rgba(220,200,0,0.1);border:1px solid rgba(220,200,50,0.28);color:#E0D060;}
-  .tag-nature{background:rgba(0,140,60,0.15);border:1px solid rgba(0,180,80,0.28);color:#60D090;}
-  .pp-bonuses{display:flex;flex-direction:column;gap:4px;}
-  .bonus-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--parch-d);}
-  .b-icon{font-size:13px;flex-shrink:0;}
-  .b-val{font-family:'Cinzel',serif;font-size:10px;margin-left:auto;flex-shrink:0;}
-  .b-pos{color:#60D090;}.b-neg{color:#E08080;}.b-neu{color:var(--gold);}
-  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
-  .sb{background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:10px 6px;text-align:center;transition:border-color 0.2s;}
-  .sb.rolling{border-color:var(--gold);animation:pulse-gold 0.3s ease;}
-  @keyframes pulse-gold{0%,100%{box-shadow:none}50%{box-shadow:0 0 10px var(--gold-glow);}}
-  .sn{font-size:10px;color:var(--gold-d);letter-spacing:1px;font-family:'Cinzel',serif;}
-  .sv{font-size:22px;font-weight:600;color:var(--parch);line-height:1.2;}
-  .sm{font-size:12px;color:var(--gold);}
-  .btn-roll{background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);padding:11px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:1.5px;border-radius:5px;cursor:pointer;width:100%;transition:all 0.2s;}
-  .btn-roll:hover{border-color:var(--gold-d);color:var(--gold);}
-  .btn-primary{background:linear-gradient(135deg,var(--gold),#B8820A);color:var(--ink);border:none;padding:14px;font-family:'Cinzel',serif;font-size:13px;font-weight:700;letter-spacing:1.5px;border-radius:6px;cursor:pointer;width:100%;box-shadow:0 2px 12px rgba(200,146,42,0.3);}
-  .btn-primary:hover{background:linear-gradient(135deg,var(--gold-l),var(--gold));}
-  .btn-secondary{background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);padding:11px;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;border-radius:5px;cursor:pointer;width:100%;}
+/* ══ CHAR ══ */
+#s-char{background:linear-gradient(180deg,#160E04 0%,var(--bg2) 10%);}
+.screen-hdr{background:linear-gradient(180deg,#120A02,var(--bg3));padding:14px 18px 12px;flex-shrink:0;border-bottom:1px solid var(--border);}
+.sec-hdr{font-family:var(--font-title);font-size:11px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.screen-body{flex:1;overflow-y:auto;padding:14px 16px 20px;display:flex;flex-direction:column;gap:12px;}
+.char-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cf{display:flex;flex-direction:column;gap:4px;}
+.cf.full{grid-column:1/-1;}
+.cf label{font-size:10px;color:var(--gold-d);letter-spacing:1.5px;text-transform:uppercase;font-family:var(--font-title);}
+.cf input,.cf select{background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:10px 12px;color:var(--parch);font-family:var(--font-narr);font-size:15px;outline:none;-webkit-appearance:none;appearance:none;}
+.cf input:focus,.cf select:focus{border-color:var(--gold-d);}
+.cf select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237A5518'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.cf select option{background:#2A1E0E;}
+#profile-preview{background:rgba(26,18,8,0.85);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+.pp-header{display:flex;align-items:center;gap:10px;}
+.pp-avatar{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:20px;background:var(--bg4);flex-shrink:0;}
+.pp-name{font-family:var(--font-title);font-size:13px;color:var(--gold-l);font-weight:600;}
+.pp-arch{font-size:12px;color:var(--parch-d);}
+.pp-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{font-size:10px;padding:3px 9px;border-radius:12px;font-family:var(--font-title);letter-spacing:.5px;white-space:nowrap;}
+.tag-dark{background:rgba(100,0,150,0.22);border:1px solid rgba(150,50,200,0.3);color:#C090F0;}
+.tag-light{background:rgba(200,160,0,0.12);border:1px solid rgba(200,146,42,0.28);color:var(--gold-l);}
+.tag-combat{background:rgba(180,0,0,0.16);border:1px solid rgba(200,50,50,0.3);color:#E08080;}
+.tag-social{background:rgba(0,120,180,0.16);border:1px solid rgba(0,150,220,0.28);color:#80C0E0;}
+.tag-divine{background:rgba(220,200,0,0.1);border:1px solid rgba(220,200,50,0.28);color:#E0D060;}
+.tag-nature{background:rgba(0,140,60,0.15);border:1px solid rgba(0,180,80,0.28);color:#60D090;}
+.pp-bonuses{display:flex;flex-direction:column;gap:4px;}
+.bonus-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--parch-d);}
+.b-icon{font-size:13px;flex-shrink:0;}
+.b-val{font-family:var(--font-title);font-size:10px;margin-left:auto;}
+.b-pos{color:#60D090;}.b-neg{color:#E08080;}.b-neu{color:var(--gold);}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.sb{background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:10px 6px;text-align:center;}
+.sb.rolling{border-color:var(--gold);animation:pgold .3s ease;}
+@keyframes pgold{50%{box-shadow:0 0 10px var(--gold-glow);}}
+.sn{font-size:10px;color:var(--gold-d);letter-spacing:1px;font-family:var(--font-title);}
+.sv{font-size:22px;font-weight:600;color:var(--parch);line-height:1.2;}
+.sm{font-size:12px;color:var(--gold);}
+.btn-roll{background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);padding:11px;font-family:var(--font-title);font-size:11px;letter-spacing:1px;border-radius:5px;cursor:pointer;width:100%;}
+.btn-primary{background:linear-gradient(135deg,var(--gold),#B8820A);color:var(--ink);border:none;padding:14px;font-family:var(--font-title);font-size:13px;font-weight:700;letter-spacing:1px;border-radius:6px;cursor:pointer;width:100%;}
+.btn-secondary{background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);padding:11px;font-family:var(--font-title);font-size:12px;border-radius:5px;cursor:pointer;width:100%;}
 
-  /* GAME */
-  #s-game{background:var(--bg2);}
-  .thinking-bar{height:2px;flex-shrink:0;display:none;background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),var(--gold),transparent);background-size:200% 100%;animation:shimmer 1.2s linear infinite;}
-  .thinking-bar.active{display:block;}
-  @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+/* ══ GAME ══ */
+#s-game{background:var(--bg2);}
+.thinking-bar{height:2px;flex-shrink:0;display:none;background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),var(--gold),transparent);background-size:200% 100%;animation:shimmer 1.2s linear infinite;}
+.thinking-bar.active{display:block;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-  /* Scene */
-  .hdr-scene{width:100%;height:80px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#060B02 0%,#0C1A08 50%,#152008 100%);}
-  .moon{position:absolute;top:10px;right:40px;width:20px;height:20px;background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);border-radius:50%;box-shadow:0 0 14px rgba(220,200,100,0.4);}
-  .ia-badge{position:absolute;top:8px;left:14px;background:rgba(0,0,0,0.4);border:1px solid rgba(46,204,113,0.3);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'Cinzel',serif;letter-spacing:1px;display:flex;align-items:center;gap:5px;}
-  .ia-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
-  .ia-dot.thinking{background:#F39C12;animation:blink 0.4s infinite;}
-  #ia-lbl{color:var(--green);}
-  #ia-lbl.thinking-txt{color:#F39C12;}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.25}}
-  .forest-svg{position:absolute;bottom:0;left:0;width:100%;height:56px;}
+/* Scene header */
+.hdr-scene{width:100%;height:80px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#060B02,#0C1A08 50%,#152008);}
+.moon{position:absolute;top:10px;right:40px;width:20px;height:20px;background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);border-radius:50%;box-shadow:0 0 14px rgba(220,200,100,0.4);}
+.ia-badge{position:absolute;top:8px;right:14px;background:rgba(0,0,0,0.4);border:1px solid rgba(46,204,113,0.3);border-radius:20px;padding:3px 10px;font-size:10px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:5px;}
+.ia-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+.ia-dot.thinking{background:#F39C12;animation:blink .4s infinite;}
+#ia-lbl{color:var(--green);}
+#ia-lbl.thinking-txt{color:#F39C12;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.forest-svg{position:absolute;bottom:0;left:0;width:100%;height:56px;}
 
-  /* Char strip */
-  .char-strip{display:flex;align-items:center;gap:11px;padding:9px 14px 10px;background:linear-gradient(180deg,var(--bg3) 0%,rgba(26,18,8,0.95) 100%);border-top:1px solid var(--border);border-bottom:1px solid rgba(200,146,42,0.1);flex-shrink:0;}
-  .portrait{width:42px;height:42px;border-radius:50%;border:2px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:var(--bg4);box-shadow:0 0 0 3px rgba(200,146,42,0.06);}
-  .char-info{flex:1;min-width:0;}
-  .c-name{font-family:'Cinzel',serif;font-size:13px;font-weight:600;color:var(--gold-l);line-height:1.15;}
-  .c-meta{font-size:10px;color:var(--gold-d);letter-spacing:1px;text-transform:uppercase;font-family:'Cinzel',serif;margin-bottom:4px;}
-  .bars{display:flex;flex-direction:column;gap:4px;}
-  .bar-row{display:flex;align-items:center;gap:6px;}
-  .bar-lbl{font-size:9px;color:var(--parch-dim);font-family:'Cinzel',serif;letter-spacing:1px;width:16px;flex-shrink:0;}
-  .bar-track{flex:1;height:6px;background:rgba(0,0,0,0.6);border-radius:3px;overflow:hidden;}
-  .bar-fill{height:100%;border-radius:3px;transition:width 0.7s;}
-  .bar-fill.hp{background:linear-gradient(90deg,var(--hp),var(--hp-l));}
-  .bar-fill.mp{background:linear-gradient(90deg,var(--mp),var(--mp-l));}
-  .bar-val{font-size:10px;color:var(--parch-dim);min-width:30px;text-align:right;}
-  /* ★ NOVO: mini stats abaixo das barras */
-  .mini-stats{display:flex;gap:10px;margin-top:4px;}
-  .mstat{font-size:10px;color:var(--gold-d);font-family:'Cinzel',serif;letter-spacing:0.5px;}
-  .mstat span{color:var(--parch-d);font-weight:600;}
-  .gold-pill{display:flex;align-items:center;gap:4px;background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.2);border-radius:20px;padding:4px 10px;font-size:13px;color:var(--gold-l);font-weight:600;flex-shrink:0;}
-  .narr-border{height:1px;flex-shrink:0;background:linear-gradient(90deg,transparent,var(--gold-d),rgba(200,146,42,0.5),var(--gold-d),transparent);}
+/* ★ XP Ring + Portrait */
+.char-strip{display:flex;align-items:center;gap:11px;padding:9px 14px 10px;background:linear-gradient(180deg,var(--bg3),rgba(26,18,8,.95));border-top:1px solid var(--border);border-bottom:1px solid rgba(200,146,42,.1);flex-shrink:0;}
+.xp-portrait-wrap{position:relative;width:50px;height:50px;flex-shrink:0;cursor:pointer;}
+.xp-ring{position:absolute;inset:0;}
+.portrait{position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg4);}
+.xp-label{position:absolute;bottom:-13px;left:50%;transform:translateX(-50%);font-size:8px;color:var(--gold-d);font-family:var(--font-title);white-space:nowrap;letter-spacing:.5px;}
+.char-info{flex:1;min-width:0;}
+.c-name{font-family:var(--font-title);font-size:13px;font-weight:600;color:var(--gold-l);line-height:1.15;}
+.c-meta{font-size:10px;color:var(--gold-d);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-title);margin-bottom:4px;}
+.bars{display:flex;flex-direction:column;gap:4px;}
+.bar-row{display:flex;align-items:center;gap:6px;}
+.bar-lbl{font-size:9px;color:var(--parch-dim);font-family:var(--font-title);letter-spacing:1px;width:16px;flex-shrink:0;}
+.bar-track{flex:1;height:6px;background:rgba(0,0,0,.6);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;transition:width .7s;}
+.bar-fill.hp{background:linear-gradient(90deg,var(--hp),var(--hp-l));}
+.bar-fill.mp{background:linear-gradient(90deg,var(--mp),var(--mp-l));}
+.bar-val{font-size:10px;color:var(--parch-dim);min-width:30px;text-align:right;}
+.mini-stats{display:flex;gap:10px;margin-top:4px;}
+.mstat{font-size:10px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:.5px;}
+.mstat span{color:var(--parch-d);font-weight:600;}
+/* Gold pill top right */
+.gold-pill{display:flex;align-items:center;gap:4px;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.22);border-radius:20px;padding:4px 10px;font-size:13px;color:var(--gold-l);font-weight:600;flex-shrink:0;cursor:default;}
+.narr-border{height:1px;flex-shrink:0;background:linear-gradient(90deg,transparent,var(--gold-d),rgba(200,146,42,.5),var(--gold-d),transparent);}
 
-  /* ★ NARRATIVA — fonte maior, bolhas com aura */
-  .narr{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
-  .narr::-webkit-scrollbar{width:3px;}
-  .narr::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
-  .msg{animation:fade-in 0.35s ease;max-width:100%;}
-  @keyframes fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+/* ══ NARRATIVA ══ */
+.narr{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;}
+.narr::-webkit-scrollbar{width:3px;}
+.narr::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
+.msg{animation:fadein .35s ease;max-width:100%;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
-  /* Mensagem DM — aura dourada sutil */
-  .msg-dm .lbl{font-family:'Cinzel',serif;font-size:10px;color:var(--gold-d);letter-spacing:2px;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
-  .msg-dm .lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,146,42,0.2),transparent);}
-  .msg-dm .bbl{
-    background:rgba(18,12,4,0.85);
-    border:1px solid rgba(200,146,42,0.18);
-    border-left:3px solid var(--gold-d);
-    border-radius:0 10px 10px 10px;
-    padding:13px 15px;
-    font-style:italic;
-    font-size:17px;        /* ★ maior */
-    color:var(--parch);
-    line-height:1.8;       /* ★ mais espaçado */
-    box-shadow:0 0 18px rgba(200,146,42,0.07), inset 0 0 30px rgba(200,146,42,0.02);
-  }
+/* Mensagem DM */
+.msg-dm .lbl{font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:2px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.msg-dm .lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,146,42,.2),transparent);}
+.msg-dm .bbl{
+  background:rgba(20,14,6,.88);
+  border:1px solid rgba(200,146,42,.2);
+  border-left:3px solid var(--gold-d);
+  border-radius:0 12px 12px 12px;
+  padding:14px 16px;
+  font-family:var(--font-narr);
+  font-size:17px;
+  font-weight:400;
+  color:var(--parch);
+  line-height:1.85;
+  box-shadow:0 0 20px rgba(200,146,42,.06),inset 0 0 30px rgba(200,146,42,.02);
+  letter-spacing:.01em;
+}
+/* NPC speech destaque */
+.npc-speech{
+  display:block;
+  background:rgba(91,63,160,.18);
+  border-left:3px solid rgba(139,111,208,.7);
+  border-radius:0 8px 8px 8px;
+  padding:8px 12px;
+  margin:6px 0;
+  font-style:italic;
+  color:#D4C8F8;
+  font-size:16px;
+}
+.npc-name{font-family:var(--font-title);font-size:10px;color:#A090D8;letter-spacing:1.5px;display:block;margin-bottom:3px;}
 
-  /* Mensagem Jogador — aura roxa sutil */
-  .msg-pl{text-align:right;}
-  .msg-pl .bbl{
-    background:rgba(60,35,120,0.3);
-    border:1px solid rgba(91,63,160,0.35);
-    border-right:3px solid rgba(139,111,208,0.6);
-    border-radius:10px 0 0 10px;
-    padding:10px 14px;
-    font-size:16px;        /* ★ maior */
-    color:#D4C8F8;
-    display:inline-block;max-width:90%;
-    box-shadow:0 0 14px rgba(91,63,160,0.1);
-    line-height:1.6;
-  }
+/* Mensagem jogador */
+.msg-pl{text-align:right;}
+.msg-pl .bbl{background:rgba(60,35,120,.32);border:1px solid rgba(91,63,160,.38);border-right:3px solid rgba(139,111,208,.65);border-radius:12px 0 0 12px;padding:10px 14px;font-family:var(--font-narr);font-size:16px;color:#D4C8F8;display:inline-block;max-width:90%;line-height:1.65;box-shadow:0 0 14px rgba(91,63,160,.1);}
 
-  /* ★ CARD DE DADO — novo visual conforme screenshot */
-  .roll-wrap{align-self:center;width:100%;display:flex;justify-content:center;margin:4px 0;}
-  .roll-card{
-    background:linear-gradient(135deg,rgba(26,18,8,0.95),rgba(42,30,14,0.9));
-    border:1px solid var(--gold-d);
-    border-radius:12px;
-    padding:12px 18px;
-    display:flex;align-items:center;gap:16px;
-    box-shadow:0 0 20px rgba(200,146,42,0.12), inset 0 1px 0 rgba(200,146,42,0.1);
-    min-width:220px;
-  }
-  .dice-face{
-    width:48px;height:48px;background:var(--bg4);
-    border:2px solid var(--gold);border-radius:8px;
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--gold-l);
-    box-shadow:0 0 12px var(--gold-glow);flex-shrink:0;
-  }
-  .dice-face.crit{border-color:#2ECC71;color:#2ECC71;box-shadow:0 0 16px rgba(46,204,113,0.4);}
-  .dice-face.fail{border-color:#E74C3C;color:#E74C3C;box-shadow:0 0 16px rgba(231,76,60,0.3);}
-  .roll-info{flex:1;}
-  .roll-type{font-family:'Cinzel',serif;font-size:10px;color:var(--gold-d);letter-spacing:1.5px;margin-bottom:3px;}
-  .roll-formula{font-size:15px;color:var(--parch);font-weight:600;font-family:'Cinzel',serif;}
-  .roll-outcome{font-size:12px;margin-top:3px;font-family:'Cinzel',serif;letter-spacing:1px;}
-  .roll-outcome.suc{color:#2ECC71;}
-  .roll-outcome.fail{color:#E74C3C;}
+/* ★ CARD DE DADO */
+.roll-wrap{align-self:center;width:100%;display:flex;justify-content:center;margin:4px 0;}
+.roll-card{background:linear-gradient(135deg,rgba(26,18,8,.97),rgba(42,30,14,.92));border:1px solid var(--gold-d);border-radius:14px;padding:13px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 0 22px rgba(200,146,42,.14),inset 0 1px 0 rgba(200,146,42,.1);min-width:230px;}
+.dice-face{width:52px;height:52px;background:var(--bg4);border:2px solid var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:24px;font-weight:700;color:var(--gold-l);box-shadow:0 0 14px var(--gold-glow);flex-shrink:0;transition:all .3s;}
+.dice-face.d-crit{border-color:#2ECC71;color:#2ECC71;box-shadow:0 0 20px rgba(46,204,113,.5);}
+.dice-face.d-fail{border-color:#E74C3C;color:#E74C3C;box-shadow:0 0 20px rgba(231,76,60,.4);}
+@keyframes dice-spin{0%{transform:rotateY(0)}100%{transform:rotateY(720deg)}}
+.dice-face.spinning{animation:dice-spin .5s ease-out;}
+.roll-info{flex:1;}
+.roll-type{font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:1.5px;margin-bottom:4px;}
+.roll-formula{font-size:15px;color:var(--parch);font-weight:600;font-family:var(--font-title);}
+.roll-outcome{font-size:13px;margin-top:4px;font-family:var(--font-title);letter-spacing:1px;font-weight:700;}
+.roll-outcome.suc{color:#2ECC71;}
+.roll-outcome.fal{color:#E74C3C;}
 
-  /* ★ AÇÕES DINÂMICAS */
-  .actions-wrap{background:linear-gradient(180deg,rgba(26,18,8,0.98) 0%,var(--bg3) 100%);border-top:1px solid var(--border);padding:8px 12px 6px;flex-shrink:0;}
-  .acts-lbl{font-family:'Cinzel',serif;font-size:9px;color:var(--gold-dim);letter-spacing:2px;text-align:center;margin-bottom:6px;}
-  .act-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;}
-  .act-btn{background:var(--bg2);border:1px solid rgba(200,146,42,0.16);border-radius:9px;padding:9px 7px 8px;cursor:pointer;text-align:center;color:var(--parch);transition:all 0.18s;position:relative;overflow:hidden;}
-  .act-btn:hover{border-color:var(--gold-d);transform:translateY(-1px);}
-  .act-btn:active{transform:translateY(0);}
-  .act-btn:disabled{opacity:0.32;cursor:not-allowed;transform:none;}
-  /* ★ Botão de ação sugerida pelo Mestre — destaque */
-  .act-btn.suggested{border-color:var(--gold);box-shadow:0 0 10px rgba(200,146,42,0.2);}
-  .a-icon{font-size:18px;display:block;margin-bottom:2px;}
-  .a-title{font-family:'Cinzel',serif;font-size:11px;color:var(--gold-l);display:block;font-weight:600;}
-  .a-hint{font-size:10px;color:var(--gold-d);font-style:italic;display:block;margin-top:1px;}
-  .free-row{display:flex;gap:7px;align-items:center;}
-  .free-in{flex:1;background:var(--bg2);border:1px solid rgba(200,146,42,0.18);border-radius:7px;padding:9px 12px;color:var(--parch);font-family:'Crimson Pro',serif;font-size:16px;outline:none;transition:border-color 0.2s;}
-  .free-in::placeholder{color:rgba(200,146,42,0.25);font-style:italic;}
-  .free-in:focus{border-color:var(--gold-d);}
-  .free-in:disabled,.free-send:disabled{opacity:0.3;cursor:not-allowed;}
-  .free-send{background:var(--gold-d);border:none;border-radius:7px;padding:9px 14px;color:var(--parch);cursor:pointer;font-size:17px;flex-shrink:0;transition:background 0.15s;}
-  .free-send:hover{background:var(--gold);}
+/* ★ PAINEL DE COMBATE */
+.combat-panel{
+  position:relative;overflow:hidden;border-radius:14px;
+  border:1px solid rgba(220,30,30,.45);
+  background:linear-gradient(180deg,rgba(80,0,0,.65) 0%,rgba(30,5,5,.9) 60%,rgba(15,5,5,.97) 100%);
+  padding:16px 16px 14px;
+  box-shadow:0 0 40px rgba(200,0,0,.25),inset 0 0 60px rgba(200,0,0,.08);
+  animation:combat-appear .5s ease;
+}
+@keyframes combat-appear{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+/* Aura vermelha pulsante */
+.combat-panel::before{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 40px rgba(220,0,0,.18);animation:aura-pulse 2s ease-in-out infinite;pointer-events:none;}
+@keyframes aura-pulse{0%,100%{box-shadow:inset 0 0 40px rgba(220,0,0,.18);}50%{box-shadow:inset 0 0 60px rgba(220,0,0,.35);}}
+.combat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.combat-badge{font-family:var(--font-title);font-size:9px;color:#FF6B6B;letter-spacing:2.5px;display:flex;align-items:center;gap:5px;}
+.combat-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#E74C3C;animation:blink .6s infinite;}
+.enemy-section{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+/* Emoji inimigo grande ao fundo */
+.enemy-bg-emoji{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:100px;opacity:.07;pointer-events:none;user-select:none;filter:grayscale(1);}
+.enemy-icon{width:52px;height:52px;border-radius:50%;background:rgba(200,0,0,.15);border:2px solid rgba(220,50,50,.45);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;position:relative;z-index:1;}
+.enemy-info{flex:1;position:relative;z-index:1;}
+.enemy-name{font-family:var(--font-title);font-size:18px;font-weight:700;color:#FF9999;letter-spacing:.5px;text-shadow:0 0 20px rgba(255,50,50,.4);}
+.enemy-type{font-size:11px;color:rgba(255,150,150,.7);margin-top:2px;font-family:var(--font-title);letter-spacing:1px;}
+.enemy-hp-bar{height:8px;background:rgba(0,0,0,.5);border-radius:4px;overflow:hidden;margin-top:8px;border:1px solid rgba(200,0,0,.3);}
+.enemy-hp-fill{height:100%;background:linear-gradient(90deg,#8B0000,#E74C3C);border-radius:4px;transition:width .6s;box-shadow:0 0 8px rgba(231,76,60,.5);}
+.combat-text{font-family:var(--font-narr);font-size:16px;color:rgba(255,220,220,.9);line-height:1.75;position:relative;z-index:1;}
 
-  /* ★ FOOTER COM ÍCONES */
-  .footer-bar{height:54px;background:var(--bg);border-top:1px solid rgba(200,146,42,0.1);display:flex;align-items:center;justify-content:space-around;padding:0 6px;flex-shrink:0;}
-  .fbar-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:8px;transition:background 0.15s;flex:1;}
-  .fbar-btn:hover{background:rgba(200,146,42,0.08);}
-  .fbar-btn .fbi{font-size:20px;line-height:1;}
-  .fbar-btn .fbl{font-size:9px;color:var(--gold-d);font-family:'Cinzel',serif;letter-spacing:0.5px;}
-  /* ★ botão d20 especial */
-  .fbar-btn.d20-btn .fbi{font-size:17px;background:var(--bg3);border:1px solid var(--gold-d);border-radius:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--gold-l);font-family:'Cinzel',serif;font-weight:700;}
+/* ★ AÇÕES */
+.actions-wrap{background:linear-gradient(180deg,rgba(26,18,8,.98),var(--bg3));border-top:1px solid var(--border);padding:8px 12px 6px;flex-shrink:0;}
+.acts-lbl{font-family:var(--font-title);font-size:9px;color:var(--gold-dim);letter-spacing:2px;text-align:center;margin-bottom:6px;}
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;}
+.act-btn{
+  background:linear-gradient(135deg,rgba(26,18,8,.9),rgba(42,30,14,.8));
+  border:1px solid rgba(200,146,42,.2);
+  border-radius:12px;padding:10px 8px 9px;
+  cursor:pointer;text-align:center;color:var(--parch);
+  transition:all .18s;position:relative;overflow:hidden;
+}
+.act-btn:hover{border-color:var(--gold-d);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.5);}
+.act-btn:active{transform:translateY(0);}
+.act-btn:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+.act-btn.suggested{border-color:rgba(200,146,42,.45);box-shadow:0 0 12px rgba(200,146,42,.12);}
+.a-icon{font-size:20px;display:block;margin-bottom:3px;}
+.a-title{font-family:var(--font-title);font-size:11px;color:var(--gold-l);display:block;font-weight:600;}
+.a-hint{font-size:10px;color:var(--gold-d);display:block;margin-top:1px;}
+.free-row{display:flex;gap:7px;align-items:center;}
+.free-in{flex:1;background:rgba(26,18,8,.8);border:1px solid rgba(200,146,42,.2);border-radius:8px;padding:10px 13px;color:var(--parch);font-family:var(--font-narr);font-size:16px;outline:none;}
+.free-in::placeholder{color:rgba(200,146,42,.28);}
+.free-in:focus{border-color:var(--gold-d);}
+.free-in:disabled,.free-send:disabled{opacity:.3;cursor:not-allowed;}
+.free-send{background:var(--gold-d);border:none;border-radius:8px;padding:10px 15px;color:var(--parch);cursor:pointer;font-size:17px;flex-shrink:0;}
+.free-send:hover{background:var(--gold);}
 
-  /* MODAIS */
-  .mo{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:200;display:none;align-items:flex-end;}
-  .mo.open{display:flex;}
-  .ms{background:var(--bg3);border-radius:18px 18px 0 0;border-top:2px solid var(--gold-d);padding:1.4rem;width:100%;max-height:82vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;animation:slide-up 0.25s ease;}
-  @keyframes slide-up{from{transform:translateY(100%)}to{transform:translateY(0)}}
-  .mt{font-family:'Cinzel',serif;font-size:15px;color:var(--gold-l);letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;}
-  .mc{background:none;border:none;color:var(--gold-d);font-size:22px;cursor:pointer;line-height:1;padding:0;}
-  .mo-note{font-size:13px;color:var(--gold-d);font-style:italic;text-align:center;}
-  .sp-pack{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .sp-pack.featured{border-color:rgba(200,146,42,0.4);}
-  .sp-nm{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);}
-  .sp-cr{font-size:13px;color:var(--parch-d);}
-  .sp-pr{font-size:11px;color:var(--gold-d);}
-  .btn-buy{background:var(--gold);border:none;border-radius:5px;padding:8px 14px;font-family:'Cinzel',serif;font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;flex-shrink:0;}
-  .rep-bar-wrap{background:var(--bg2);border-radius:8px;padding:10px 12px;}
-  .rep-current{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);margin-bottom:6px;}
-  .rep-track{height:6px;background:rgba(0,0,0,0.5);border-radius:3px;overflow:hidden;}
-  .rep-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:3px;transition:width 0.5s;}
-  .rt{background:var(--bg2);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gold-dim);}
-  .rt.active{border-left-color:var(--gold);}
-  .rt .rn{font-family:'Cinzel',serif;font-size:12px;color:var(--gold);}
-  .rt .rb{font-size:13px;color:var(--parch-d);margin-top:2px;}
-  .sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .sf-lbl{font-size:10px;color:var(--gold-d);font-family:'Cinzel',serif;letter-spacing:1px;}
-  .sf-val{color:var(--parch);font-size:15px;}
-  .sf-val.big{font-size:22px;font-family:'Cinzel',serif;font-weight:700;}
-  .sf-val.ca-col{color:rgba(0,200,255,0.9);}
-  .sf-val.hp-col{color:var(--hp-l);}
-  .api-field{width:100%;display:flex;flex-direction:column;gap:6px;}
-  .api-field label{font-size:11px;color:var(--gold-d);letter-spacing:1.5px;text-transform:uppercase;font-family:'Cinzel',serif;}
-  .api-field input{background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:11px 14px;color:var(--parch);font-size:14px;outline:none;width:100%;}
-  .api-field input:focus{border-color:var(--gold-d);}
+/* ★ FOOTER MELHORADO */
+.footer-bar{height:58px;background:linear-gradient(180deg,var(--bg),#080502);border-top:1px solid rgba(200,146,42,.12);display:flex;align-items:center;justify-content:space-around;padding:0 4px;flex-shrink:0;}
+.fbar-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:10px;transition:background .15s;flex:1;min-width:0;}
+.fbar-btn:active{background:rgba(200,146,42,.12);}
+.fbi{font-size:22px;line-height:1;display:block;}
+.fbl{font-size:8px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:.5px;white-space:nowrap;}
+/* ★ D20 SVG especial */
+.d20-icon-svg{width:28px;height:28px;display:block;margin:0 auto;}
 
-  /* ★ MODAL D20 */
-  .d20-modal-inner{display:flex;flex-direction:column;align-items:center;gap:16px;padding:8px 0;}
-  .d20-big{width:90px;height:90px;background:var(--bg4);border:3px solid var(--gold);border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:42px;font-weight:700;color:var(--gold-l);box-shadow:0 0 24px var(--gold-glow);cursor:pointer;transition:transform 0.1s;}
-  .d20-big:active{transform:scale(0.93);}
-  .d20-result-txt{font-family:'Cinzel',serif;font-size:16px;color:var(--parch);text-align:center;min-height:24px;}
-  .d20-hint{font-size:13px;color:var(--gold-d);font-style:italic;text-align:center;}
-  .d20-attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;}
-  .d20-attr{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;transition:border-color 0.15s;}
-  .d20-attr:hover{border-color:var(--gold-d);}
-  .d20-attr.sel{border-color:var(--gold);background:rgba(200,146,42,0.08);}
-  .d20-attr .an{font-family:'Cinzel',serif;font-size:10px;color:var(--gold-d);}
-  .d20-attr .av{font-size:18px;font-weight:700;color:var(--parch);}
-  .d20-attr .am{font-size:12px;color:var(--gold);}
+/* ══ MODAIS ══ */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:200;display:none;align-items:flex-end;}
+.mo.open{display:flex;}
+.ms{background:var(--bg3);border-radius:20px 20px 0 0;border-top:2px solid var(--gold-d);padding:1.4rem;width:100%;max-height:85vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;animation:slideup .25s ease;}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mt{font-family:var(--font-title);font-size:15px;color:var(--gold-l);letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;}
+.mc{background:none;border:none;color:var(--gold-d);font-size:22px;cursor:pointer;line-height:1;padding:0;}
+.mo-note{font-size:13px;color:var(--gold-d);text-align:center;}
+.sp-pack{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.sp-pack.featured{border-color:rgba(200,146,42,.45);}
+.sp-nm{font-family:var(--font-title);font-size:12px;color:var(--gold);}
+.sp-cr{font-size:13px;color:var(--parch-d);}
+.sp-pr{font-size:11px;color:var(--gold-d);}
+.btn-buy{background:var(--gold);border:none;border-radius:6px;padding:9px 15px;font-family:var(--font-title);font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;flex-shrink:0;}
+.rep-bar-wrap{background:var(--bg2);border-radius:8px;padding:10px 12px;}
+.rep-current{font-family:var(--font-title);font-size:12px;color:var(--gold);margin-bottom:6px;}
+.rep-track{height:6px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden;}
+.rep-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:3px;transition:width .5s;}
+.rt{background:var(--bg2);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gold-dim);}
+.rt.active{border-left-color:var(--gold);}
+.rt .rn{font-family:var(--font-title);font-size:12px;color:var(--gold);}
+.rt .rb{font-size:13px;color:var(--parch-d);margin-top:2px;}
 
-  /* Descanso modal */
-  .rest-opt{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:border-color 0.15s;}
-  .rest-opt:hover{border-color:var(--gold-d);}
-  .rest-title{font-family:'Cinzel',serif;font-size:14px;color:var(--gold-l);margin-bottom:4px;}
-  .rest-desc{font-size:13px;color:var(--parch-d);line-height:1.5;}
-
-  /* Mapa modal */
-  .map-frame{width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--gold-d);}
-  .map-frame img{width:100%;display:block;}
-  .map-note{font-size:12px;color:var(--gold-d);text-align:center;font-style:italic;}
-
-  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--gold-d);border-radius:8px;padding:10px 20px;font-family:'Cinzel',serif;font-size:12px;color:var(--gold);z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;}
-  .toast.show{opacity:1;}
-  @keyframes dice-spin{0%{transform:rotate(0) scale(1.1);}50%{transform:rotate(180deg) scale(0.9);}100%{transform:rotate(360deg) scale(1);}}
-  .spinning{animation:dice-spin 0.45s ease-out;}
-  </style>
+/* ★ FICHA COM ABAS DESLIZÁVEIS */
+.sheet-tabs{display:flex;gap:4px;margin-bottom:4px;}
+.stab{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:.5px;transition:all .15s;}
+.stab.active{background:rgba(200,146,42,.15);border-color:var(--gold-d);color:var(--gold-l);}
+.sheet-page{display:none;}
+.sheet-page.active{display:block;}
+.sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.sf-lbl{font-size:10px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:1px;}
+.sf-val{color:var(--parch);font-size:15px;}
+.sf-val.big{font-size:22px;font-family:var(--font-title);font-weight:700;}
+.sf-val.ca-col{color:rgba(0,200,255,.9);}
+.sf-val.hp-col{color:var(--hp-l);}
+/* Inventário */
+.inv-capacity{background:var(--bg2);border-radius:8px;padding:10px 12px;margin-bottom:8px;}
+.inv-cap-row{display:flex;justify-content:space-between;font-size:12px;color:var(--gold-d);font-family:var(--font-title);margin-bottom:6px;letter-spacing:.5px;}
+.inv-bar{height:6px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden;}
+.inv-fill{height:100%;background:linear-gradient(90deg,#27AE60,#F39C12,#E74C3C);border-radius:3px;transition:width .5s;}
+.inv-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;}
+.inv-item-icon{font-size:18px;flex-shrink:0;}
+.inv-item-name{font-family:var(--font-title);font-size:12px;color:var(--gold-l);}
+.inv-item-desc{font-size:12px;color:var(--parch-d);margin-top:2px;}
+.inv-item-weight{font-size:11px;color:var(--gold-d);margin-left:auto;font-family:var(--font-title);flex-shrink:0;}
+.inv-item.equipped{border-color:rgba(200,146,42,.45);background:rgba(200,146,42,.06);}
+.equipped-badge{font-size:9px;color:var(--gold);font-family:var(--font-title);letter-spacing:.5px;background:rgba(200,146,42,.15);border-radius:4px;padding:1px 5px;}
+/* Magias */
+.spell-slot-row{display:flex;gap:6px;flex-wrap:wrap;}
+.spell-slot{width:28px;height:28px;border-radius:50%;border:2px solid var(--mp-l);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mp-l);font-family:var(--font-title);}
+.spell-slot.used{border-color:rgba(91,63,160,.3);color:rgba(91,63,160,.3);background:rgba(0,0,0,.3);}
+.spell-card{background:var(--bg2);border:1px solid rgba(91,63,160,.35);border-radius:8px;padding:10px 12px;}
+.spell-name{font-family:var(--font-title);font-size:13px;color:#C0A0FF;}
+.spell-meta{font-size:11px;color:var(--gold-d);margin-top:2px;font-family:var(--font-title);}
+.spell-desc{font-size:13px;color:var(--parch-d);margin-top:4px;line-height:1.5;}
+/* XP Modal */
+.xp-bar-modal{height:10px;background:rgba(0,0,0,.5);border-radius:5px;overflow:hidden;margin:6px 0;}
+.xp-fill-modal{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold-l));border-radius:5px;transition:width .5s;}
+.xp-label-row{display:flex;justify-content:space-between;font-size:12px;color:var(--gold-d);font-family:var(--font-title);}
+.level-badge{background:linear-gradient(135deg,rgba(200,146,42,.2),rgba(200,146,42,.1));border:1px solid var(--gold-d);border-radius:12px;padding:10px 16px;text-align:center;}
+.level-num{font-family:var(--font-title);font-size:36px;font-weight:700;color:var(--gold-l);line-height:1;}
+.level-txt{font-size:11px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:1px;}
+.ability-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;}
+.ability-name{font-family:var(--font-title);font-size:13px;color:var(--gold);}
+.ability-desc{font-size:13px;color:var(--parch-d);margin-top:4px;line-height:1.55;}
+/* Descanso */
+.rest-opt{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;cursor:pointer;transition:border-color .15s;}
+.rest-opt:hover{border-color:var(--gold-d);}
+.rest-title{font-family:var(--font-title);font-size:14px;color:var(--gold-l);margin-bottom:4px;}
+.rest-desc{font-size:13px;color:var(--parch-d);line-height:1.5;}
+/* Mapa */
+.map-frame{width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--gold-d);}
+.map-frame img{width:100%;display:block;}
+/* D20 modal */
+.d20-modal-inner{display:flex;flex-direction:column;align-items:center;gap:14px;padding:4px 0;}
+.d20-attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;}
+.d20-attr{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;cursor:pointer;transition:border-color .15s;}
+.d20-attr.sel{border-color:var(--gold);background:rgba(200,146,42,.08);}
+.d20-attr .an{font-family:var(--font-title);font-size:10px;color:var(--gold-d);}
+.d20-attr .av{font-size:18px;font-weight:700;color:var(--parch);}
+.d20-attr .am{font-size:12px;color:var(--gold);}
+.d20-launch{background:linear-gradient(135deg,rgba(200,146,42,.2),rgba(200,146,42,.1));border:2px solid var(--gold-d);border-radius:14px;padding:16px 32px;cursor:pointer;transition:all .2s;}
+.d20-launch:active{transform:scale(.93);}
+.d20-result-txt{font-family:var(--font-title);font-size:15px;color:var(--parch);text-align:center;min-height:22px;letter-spacing:.5px;}
+.d20-hint{font-size:13px;color:var(--gold-d);text-align:center;}
+/* API */
+.api-field{width:100%;display:flex;flex-direction:column;gap:6px;}
+.api-field label{font-size:11px;color:var(--gold-d);letter-spacing:1.5px;text-transform:uppercase;font-family:var(--font-title);}
+.api-field input{background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:11px 14px;color:var(--parch);font-size:14px;outline:none;width:100%;}
+.api-field input:focus{border-color:var(--gold-d);}
+/* Toast */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--gold-d);border-radius:8px;padding:10px 20px;font-family:var(--font-title);font-size:12px;color:var(--gold);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+</style>
 </head>
 <body>
 <div id="app">
 
-  <!-- SPLASH -->
-  <div id="s-title" class="screen active">
-    <div id="particles"></div>
-    <div class="logo-bg">
-      <svg class="cube-svg" width="106" height="106" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00E5FF"/><stop offset="60%" stop-color="#7B5FFF"/><stop offset="100%" stop-color="#BF00FF"/></linearGradient>
-          <linearGradient id="cg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00CFFF" stop-opacity="0.7"/><stop offset="100%" stop-color="#9B6FFF" stop-opacity="0.7"/></linearGradient>
-          <filter id="glow"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <polygon points="55,8 88,27 55,46 22,27" fill="rgba(0,207,255,0.04)" stroke="url(#cg1)" stroke-width="1.5" stroke-linejoin="round"/>
-        <polygon points="22,27 55,46 55,82 22,63" fill="rgba(123,95,255,0.06)" stroke="url(#cg2)" stroke-width="1.5" stroke-linejoin="round"/>
-        <polygon points="88,27 55,46 55,82 88,63" fill="rgba(0,180,255,0.04)" stroke="url(#cg1)" stroke-width="1.5" stroke-linejoin="round"/>
-        <polygon points="55,8 88,27 88,63 55,82 22,63 22,27" fill="none" stroke="url(#cg1)" stroke-width="1.8" stroke-linejoin="round" filter="url(#glow)"/>
-        <g stroke="url(#cg1)" stroke-width="1.2" filter="url(#glow)">
-          <line x1="55" y1="8" x2="55" y2="46"/><line x1="22" y1="27" x2="55" y2="46"/><line x1="88" y1="27" x2="55" y2="46"/>
-          <line x1="55" y1="46" x2="55" y2="82"/><line x1="55" y1="46" x2="22" y2="63"/><line x1="55" y1="46" x2="88" y2="63"/>
-        </g>
-        <g stroke="#00CFFF" stroke-width="0.7" fill="none" opacity="0.6">
-          <polyline points="55,8 55,2 65,2"/><polyline points="88,27 96,27 96,20"/><polyline points="22,27 14,27 14,20"/>
-          <polyline points="55,82 55,90 45,90"/><polyline points="88,63 96,63 96,70"/><polyline points="22,63 14,63 14,70"/>
-        </g>
-        <g filter="url(#glow)">
-          <circle cx="55" cy="8" r="2.8" fill="#00E5FF"/><circle cx="88" cy="27" r="2.8" fill="#00D0FF"/>
-          <circle cx="22" cy="27" r="2.8" fill="#00D0FF"/><circle cx="55" cy="46" r="3.2" fill="#7B5FFF"/>
-          <circle cx="88" cy="63" r="2.8" fill="#9B6FFF"/><circle cx="22" cy="63" r="2.8" fill="#9B6FFF"/>
-          <circle cx="55" cy="82" r="2.8" fill="#BF00FF"/>
-        </g>
-        <line x1="22" y1="45" x2="88" y2="45" stroke="#7B5FFF" stroke-width="0.6" opacity="0.3"/>
-        <line x1="40" y1="30" x2="70" y2="65" stroke="#00CFFF" stroke-width="0.8" stroke-dasharray="3,4" opacity="0.35"/>
-      </svg>
-    </div>
-    <h1 class="t-main">AiMaster</h1>
-    <div class="t-sub">Motor D&amp;D 5e · IA Narrador</div>
-    <div class="t-divider"></div>
-    <p class="t-desc">Raça, classe e antecedente moldam cada evento, teste e diálogo.<br>O dado decide o destino.</p>
-    <button class="btn-start" onclick="goTo('s-char')">CRIAR PERSONAGEM</button>
-    <div class="ver-tag">MVP v0.7 · PWA · Motor Vivo</div>
+<!-- SPLASH -->
+<div id="s-title" class="screen active">
+  <div id="particles"></div>
+  <div class="logo-bg">
+    <svg class="cube-svg" width="106" height="106" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00E5FF"/><stop offset="60%" stop-color="#7B5FFF"/><stop offset="100%" stop-color="#BF00FF"/></linearGradient>
+        <linearGradient id="cg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00CFFF" stop-opacity=".7"/><stop offset="100%" stop-color="#9B6FFF" stop-opacity=".7"/></linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <polygon points="55,8 88,27 55,46 22,27" fill="rgba(0,207,255,.04)" stroke="url(#cg1)" stroke-width="1.5" stroke-linejoin="round"/>
+      <polygon points="22,27 55,46 55,82 22,63" fill="rgba(123,95,255,.06)" stroke="url(#cg2)" stroke-width="1.5" stroke-linejoin="round"/>
+      <polygon points="88,27 55,46 55,82 88,63" fill="rgba(0,180,255,.04)" stroke="url(#cg1)" stroke-width="1.5" stroke-linejoin="round"/>
+      <polygon points="55,8 88,27 88,63 55,82 22,63 22,27" fill="none" stroke="url(#cg1)" stroke-width="1.8" stroke-linejoin="round" filter="url(#glow)"/>
+      <g stroke="url(#cg1)" stroke-width="1.2" filter="url(#glow)">
+        <line x1="55" y1="8" x2="55" y2="46"/><line x1="22" y1="27" x2="55" y2="46"/><line x1="88" y1="27" x2="55" y2="46"/>
+        <line x1="55" y1="46" x2="55" y2="82"/><line x1="55" y1="46" x2="22" y2="63"/><line x1="55" y1="46" x2="88" y2="63"/>
+      </g>
+      <g filter="url(#glow)">
+        <circle cx="55" cy="8" r="2.8" fill="#00E5FF"/><circle cx="88" cy="27" r="2.8" fill="#00D0FF"/>
+        <circle cx="22" cy="27" r="2.8" fill="#00D0FF"/><circle cx="55" cy="46" r="3.2" fill="#7B5FFF"/>
+        <circle cx="88" cy="63" r="2.8" fill="#9B6FFF"/><circle cx="22" cy="63" r="2.8" fill="#9B6FFF"/>
+        <circle cx="55" cy="82" r="2.8" fill="#BF00FF"/>
+      </g>
+    </svg>
   </div>
+  <h1 class="t-main">AiMaster</h1>
+  <div class="t-sub">Motor D&amp;D 5e · IA Narrador</div>
+  <div class="t-divider"></div>
+  <p class="t-desc">Raça, classe e antecedente moldam cada evento, teste e diálogo. O dado decide o destino.</p>
+  <button class="btn-start" onclick="goTo('s-char')">CRIAR PERSONAGEM</button>
+  <div class="ver-tag">MVP v0.8 · PWA · Motor Vivo</div>
+</div>
 
-  <!-- CRIAÇÃO DE PERSONAGEM -->
-  <div id="s-char" class="screen">
-    <div class="screen-hdr"><div class="sec-hdr">⚔ &nbsp;Forja do Herói</div></div>
-    <div class="screen-body">
-      <div class="char-grid">
-        <div class="cf full"><label>Nome do Herói</label><input type="text" id="inp-name" placeholder="Seu nome na história..." autocomplete="off"/></div>
-        <div class="cf"><label>Raça</label>
-          <select id="inp-race" onchange="updatePreview()">
-            <option>Humano</option><option>Elfo</option><option>Meio-Elfo</option><option>Anão</option>
-            <option>Halfling</option><option>Gnomo</option><option>Meio-Orc</option><option>Tiefling</option><option>Draconato</option>
-          </select></div>
-        <div class="cf"><label>Classe</label>
-          <select id="inp-class" onchange="updatePreview()">
-            <option>Guerreiro</option><option>Mago</option><option>Ladino</option><option>Clérigo</option>
-            <option>Bardo</option><option>Paladino</option><option>Druida</option><option>Ranger</option>
-            <option>Bárbaro</option><option>Feiticeiro</option>
-          </select></div>
-        <div class="cf"><label>Antecedente</label>
-          <select id="inp-bg" onchange="updatePreview()">
-            <option>Forasteiro</option><option>Nobre</option><option>Sábio</option><option>Criminoso</option>
-            <option>Herói do Povo</option><option>Soldado</option>
-          </select></div>
-        <div class="cf"><label>Alinhamento</label>
-          <select id="inp-align">
-            <option>Leal e Bom</option><option>Neutro e Bom</option><option>Caótico e Bom</option>
-            <option>Leal e Neutro</option><option>Neutro e Neutro</option><option>Caótico e Neutro</option>
-            <option>Leal e Mau</option><option>Neutro e Mau</option><option>Caótico e Mau</option>
-          </select></div>
-      </div>
-      <div id="profile-preview">
-        <div class="pp-header">
-          <div class="pp-avatar" id="pp-av">⚔️</div>
-          <div><div class="pp-name" id="pp-name">Guerreiro Humano</div><div class="pp-arch" id="pp-arch">Forasteiro das estradas</div></div>
-        </div>
-        <div class="pp-tags" id="pp-tags"></div>
-        <div class="pp-bonuses" id="pp-bonuses"></div>
-      </div>
-      <div class="sec-hdr">🎲 &nbsp;Atributos</div>
-      <div class="stats-row">
-        <div class="sb" id="sb-str"><div class="sn">FOR</div><div class="sv" id="s-str">—</div><div class="sm" id="m-str">+0</div></div>
-        <div class="sb" id="sb-dex"><div class="sn">DES</div><div class="sv" id="s-dex">—</div><div class="sm" id="m-dex">+0</div></div>
-        <div class="sb" id="sb-con"><div class="sn">CON</div><div class="sv" id="s-con">—</div><div class="sm" id="m-con">+0</div></div>
-        <div class="sb" id="sb-int"><div class="sn">INT</div><div class="sv" id="s-int">—</div><div class="sm" id="m-int">+0</div></div>
-        <div class="sb" id="sb-wis"><div class="sn">SAB</div><div class="sv" id="s-wis">—</div><div class="sm" id="m-wis">+0</div></div>
-        <div class="sb" id="sb-cha"><div class="sn">CAR</div><div class="sv" id="s-cha">—</div><div class="sm" id="m-cha">+0</div></div>
-      </div>
-      <button class="btn-roll" onclick="rollStatsAnimated()">🎲 &nbsp;ROLAR (4d6, descarta o menor · mín. 11)</button>
-      <button class="btn-primary" onclick="startAdventure()">INICIAR AVENTURA →</button>
-      <button class="btn-secondary" onclick="openMo('mo-api')" style="margin-top:-4px">🔑 &nbsp;Configurar Chave de API</button>
+<!-- CRIAÇÃO DE PERSONAGEM -->
+<div id="s-char" class="screen">
+  <div class="screen-hdr"><div class="sec-hdr">⚔ &nbsp;Forja do Herói</div></div>
+  <div class="screen-body">
+    <div class="char-grid">
+      <div class="cf full"><label>Nome do Herói</label><input type="text" id="inp-name" placeholder="Seu nome na história..." autocomplete="off"/></div>
+      <div class="cf"><label>Raça</label>
+        <select id="inp-race" onchange="updatePreview()">
+          <option>Humano</option><option>Elfo</option><option>Meio-Elfo</option><option>Anão</option>
+          <option>Halfling</option><option>Gnomo</option><option>Meio-Orc</option><option>Tiefling</option><option>Draconato</option>
+        </select></div>
+      <div class="cf"><label>Classe</label>
+        <select id="inp-class" onchange="updatePreview()">
+          <option>Guerreiro</option><option>Mago</option><option>Ladino</option><option>Clérigo</option>
+          <option>Bardo</option><option>Paladino</option><option>Druida</option><option>Ranger</option>
+          <option>Bárbaro</option><option>Feiticeiro</option>
+        </select></div>
+      <div class="cf"><label>Antecedente</label>
+        <select id="inp-bg" onchange="updatePreview()">
+          <option>Forasteiro</option><option>Nobre</option><option>Sábio</option><option>Criminoso</option>
+          <option>Herói do Povo</option><option>Soldado</option>
+        </select></div>
+      <div class="cf"><label>Alinhamento</label>
+        <select id="inp-align">
+          <option>Leal e Bom</option><option>Neutro e Bom</option><option>Caótico e Bom</option>
+          <option>Leal e Neutro</option><option>Neutro e Neutro</option><option>Caótico e Neutro</option>
+          <option>Leal e Mau</option><option>Neutro e Mau</option><option>Caótico e Mau</option>
+        </select></div>
     </div>
+    <div id="profile-preview">
+      <div class="pp-header">
+        <div class="pp-avatar" id="pp-av">⚔️</div>
+        <div><div class="pp-name" id="pp-name">Guerreiro Humano</div><div class="pp-arch" id="pp-arch">Forasteiro das estradas</div></div>
+      </div>
+      <div class="pp-tags" id="pp-tags"></div>
+      <div class="pp-bonuses" id="pp-bonuses"></div>
+    </div>
+    <div class="sec-hdr">🎲 &nbsp;Atributos</div>
+    <div class="stats-row">
+      <div class="sb" id="sb-str"><div class="sn">FOR</div><div class="sv" id="s-str">—</div><div class="sm" id="m-str">+0</div></div>
+      <div class="sb" id="sb-dex"><div class="sn">DES</div><div class="sv" id="s-dex">—</div><div class="sm" id="m-dex">+0</div></div>
+      <div class="sb" id="sb-con"><div class="sn">CON</div><div class="sv" id="s-con">—</div><div class="sm" id="m-con">+0</div></div>
+      <div class="sb" id="sb-int"><div class="sn">INT</div><div class="sv" id="s-int">—</div><div class="sm" id="m-int">+0</div></div>
+      <div class="sb" id="sb-wis"><div class="sn">SAB</div><div class="sv" id="s-wis">—</div><div class="sm" id="m-wis">+0</div></div>
+      <div class="sb" id="sb-cha"><div class="sn">CAR</div><div class="sv" id="s-cha">—</div><div class="sm" id="m-cha">+0</div></div>
+    </div>
+    <button class="btn-roll" onclick="rollStatsAnimated()">🎲 &nbsp;ROLAR (4d6 · mín. 11)</button>
+    <button class="btn-primary" onclick="startAdventure()">INICIAR AVENTURA →</button>
+    <button class="btn-secondary" onclick="openMo('mo-api')" style="margin-top:-4px">🔑 &nbsp;Configurar Chave de API</button>
   </div>
+</div>
 
-  <!-- JOGO -->
-  <div id="s-game" class="screen">
-    <div class="thinking-bar" id="thinking-bar"></div>
-    <div class="hdr-scene">
-      <div class="moon"></div>
-      <div class="ia-badge"><div class="ia-dot" id="ia-dot"></div><span id="ia-lbl">IA ATIVA</span></div>
-      <svg class="forest-svg" viewBox="0 0 390 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <polygon points="0,56 0,34 18,20 36,31 55,11 74,27 90,7 108,21 125,5 143,19 160,9 178,23 195,13 213,27 230,6 248,21 265,14 283,29 300,17 318,31 335,19 353,33 370,21 390,27 390,56" fill="#0A1505" opacity="0.88"/>
-        <polygon points="0,56 0,42 15,31 30,43 48,27 65,39 82,21 100,35 118,25 136,39 153,29 170,43 188,31 205,45 222,27 240,41 257,33 274,47 292,35 310,49 327,37 344,51 362,39 390,45 390,56" fill="#152008"/>
+<!-- JOGO -->
+<div id="s-game" class="screen">
+  <div class="thinking-bar" id="thinking-bar"></div>
+  <div class="hdr-scene">
+    <div class="moon"></div>
+    <div class="ia-badge"><div class="ia-dot" id="ia-dot"></div><span id="ia-lbl">IA ATIVA</span></div>
+    <svg class="forest-svg" viewBox="0 0 390 56" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <polygon points="0,56 0,34 18,20 36,31 55,11 74,27 90,7 108,21 125,5 143,19 160,9 178,23 195,13 213,27 230,6 248,21 265,14 283,29 300,17 318,31 335,19 353,33 370,21 390,27 390,56" fill="#0A1505" opacity=".88"/>
+      <polygon points="0,56 0,42 15,31 30,43 48,27 65,39 82,21 100,35 118,25 136,39 153,29 170,43 188,31 205,45 222,27 240,41 257,33 274,47 292,35 310,49 327,37 344,51 362,39 390,45 390,56" fill="#152008"/>
+    </svg>
+  </div>
+  <!-- Char strip com XP ring -->
+  <div class="char-strip">
+    <div class="xp-portrait-wrap" onclick="openMo('mo-xp')">
+      <svg class="xp-ring" viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="22" fill="none" stroke="rgba(200,146,42,.15)" stroke-width="3"/>
+        <circle id="xp-ring-circle" cx="25" cy="25" r="22" fill="none" stroke="url(#xpgrad)" stroke-width="3"
+          stroke-dasharray="138" stroke-dashoffset="138" stroke-linecap="round" transform="rotate(-90 25 25)"/>
+        <defs><linearGradient id="xpgrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#C8922A"/><stop offset="100%" stop-color="#E8B84B"/>
+        </linearGradient></defs>
       </svg>
-    </div>
-
-    <!-- Char strip com mini stats -->
-    <div class="char-strip">
       <div class="portrait" id="g-av">⚔️</div>
-      <div class="char-info">
-        <div class="c-name" id="g-nm">Herói</div>
-        <div class="c-meta" id="g-mt">Nível 1</div>
-        <div class="bars">
-          <div class="bar-row"><span class="bar-lbl">PV</span><div class="bar-track"><div class="bar-fill hp" id="bar-hp" style="width:100%"></div></div><span class="bar-val" id="g-hp-txt">10/10</span></div>
-          <div class="bar-row"><span class="bar-lbl">MP</span><div class="bar-track"><div class="bar-fill mp" id="bar-mp" style="width:100%"></div></div><span class="bar-val" id="g-mp-txt">2/2</span></div>
-        </div>
-        <!-- ★ mini stats movidos para cá -->
-        <div class="mini-stats">
-          <span class="mstat">CA <span id="f-ca">—</span></span>
-          <span class="mstat">FOR <span id="f-str">—</span></span>
-          <span class="mstat">DES <span id="f-dex">—</span></span>
-          <span class="mstat">SAB <span id="f-wis">—</span></span>
-        </div>
-      </div>
-      <div class="gold-pill">🪙 <span id="g-gd">50</span></div>
+      <div class="xp-label" id="xp-label">0/300 XP</div>
     </div>
-
-    <div class="narr-border"></div>
-    <div class="narr" id="narr"></div>
-
-    <!-- Área de ações dinâmicas -->
-    <div class="actions-wrap">
-      <div class="acts-lbl" id="acts-lbl">— O QUE VOCÊ FAZ? —</div>
-      <div class="act-grid" id="act-grid">
-        <button class="act-btn" id="ab1" onclick="doAct('Examinar os arredores')"><span class="a-icon">👁️</span><span class="a-title">Examinar</span><span class="a-hint">Percepção</span></button>
-        <button class="act-btn" id="ab2" onclick="doAct('Seguir em frente')"><span class="a-icon">🚶</span><span class="a-title">Avançar</span><span class="a-hint">Seguir missão</span></button>
-        <button class="act-btn" id="ab3" onclick="doAct('Falar com NPC')"><span class="a-icon">💬</span><span class="a-title">Conversar</span><span class="a-hint">Diplomacia</span></button>
-        <button class="act-btn" id="ab4" onclick="doAct('Investigar o local')"><span class="a-icon">🔍</span><span class="a-title">Investigar</span><span class="a-hint">Investigação</span></button>
+    <div class="char-info">
+      <div class="c-name" id="g-nm">Herói</div>
+      <div class="c-meta" id="g-mt">Nível 1</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-lbl">PV</span><div class="bar-track"><div class="bar-fill hp" id="bar-hp" style="width:100%"></div></div><span class="bar-val" id="g-hp-txt">10/10</span></div>
+        <div class="bar-row"><span class="bar-lbl">MP</span><div class="bar-track"><div class="bar-fill mp" id="bar-mp" style="width:100%"></div></div><span class="bar-val" id="g-mp-txt">2/2</span></div>
       </div>
-      <div class="free-row">
-        <input class="free-in" id="free-in" type="text" placeholder="Ação livre — descreva o que faz..." autocomplete="off"/>
-        <button class="free-send" id="free-send" onclick="sendFree()">➤</button>
+      <div class="mini-stats">
+        <span class="mstat">CA <span id="f-ca">—</span></span>
+        <span class="mstat">FOR <span id="f-str">—</span></span>
+        <span class="mstat">DES <span id="f-dex">—</span></span>
+        <span class="mstat">SAB <span id="f-wis">—</span></span>
       </div>
     </div>
-
-    <!-- ★ Footer com ícones individuais -->
-    <div class="footer-bar">
-      <button class="fbar-btn" onclick="openMo('mo-rest')">
-        <span class="fbi">🏕️</span><span class="fbl">Descanso</span>
-      </button>
-      <button class="fbar-btn" onclick="openMo('mo-char')">
-        <span class="fbi">📜</span><span class="fbl">Ficha</span>
-      </button>
-      <button class="fbar-btn" onclick="openMo('mo-rep')">
-        <span class="fbi">🏅</span><span class="fbl">Reputação</span>
-      </button>
-      <button class="fbar-btn" onclick="openMo('mo-shop')">
-        <span class="fbi">💎</span><span class="fbl">Créditos</span>
-      </button>
-      <button class="fbar-btn" onclick="openMo('mo-map')">
-        <span class="fbi">🗺️</span><span class="fbl">Mapa</span>
-      </button>
-      <button class="fbar-btn d20-btn" onclick="openMo('mo-d20')">
-        <span class="fbi">d20</span><span class="fbl">Rolar</span>
-      </button>
-      <button class="fbar-btn" onclick="openMo('mo-api')">
-        <span class="fbi">🔑</span><span class="fbl">API</span>
-      </button>
+    <div class="gold-pill" id="gold-pill-display">🪙 <span id="g-gd">50</span></div>
+  </div>
+  <div class="narr-border"></div>
+  <div class="narr" id="narr"></div>
+  <div class="actions-wrap">
+    <div class="acts-lbl" id="acts-lbl">— O QUE VOCÊ FAZ? —</div>
+    <div class="act-grid" id="act-grid">
+      <button class="act-btn" id="ab1" onclick="doAct('Examinar os arredores')"><span class="a-icon">👁️</span><span class="a-title">Examinar</span><span class="a-hint">Percepção</span></button>
+      <button class="act-btn" id="ab2" onclick="doAct('Seguir em frente')"><span class="a-icon">🚶</span><span class="a-title">Avançar</span><span class="a-hint">Missão</span></button>
+      <button class="act-btn" id="ab3" onclick="doAct('Falar com NPC')"><span class="a-icon">💬</span><span class="a-title">Conversar</span><span class="a-hint">Diplomacia</span></button>
+      <button class="act-btn" id="ab4" onclick="doAct('Investigar o local')"><span class="a-icon">🔍</span><span class="a-title">Investigar</span><span class="a-hint">Investigação</span></button>
+    </div>
+    <div class="free-row">
+      <input class="free-in" id="free-in" type="text" placeholder="Ação livre..." autocomplete="off"/>
+      <button class="free-send" id="free-send" onclick="sendFree()">➤</button>
     </div>
   </div>
+  <!-- ★ FOOTER COM ÍCONES MELHORADOS -->
+  <div class="footer-bar">
+    <button class="fbar-btn" onclick="openMo('mo-d20')" title="Rolar D20">
+      <svg class="d20-icon-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.12)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/>
+        <line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/>
+        <line x1="2" y1="13" x2="38" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/>
+        <line x1="38" y1="13" x2="2" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/>
+        <text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text>
+      </svg>
+      <span class="fbl">D20</span>
+    </button>
+    <button class="fbar-btn" onclick="openMo('mo-char')" title="Ficha"><span class="fbi">📜</span><span class="fbl">Ficha</span></button>
+    <button class="fbar-btn" onclick="openMo('mo-rep')" title="Reputação"><span class="fbi">🏅</span><span class="fbl">Reputação</span></button>
+    <button class="fbar-btn" onclick="openMo('mo-shop')" title="Créditos"><span class="fbi">💎</span><span class="fbl">Créditos</span></button>
+    <button class="fbar-btn" onclick="openMo('mo-map')" title="Mapa"><span class="fbi">🗺️</span><span class="fbl">Mapa</span></button>
+    <button class="fbar-btn" onclick="openMo('mo-rest')" title="Descanso"><span class="fbi">🏕️</span><span class="fbl">Descanso</span></button>
+    <button class="fbar-btn" onclick="openMo('mo-api')" title="API"><span class="fbi">🔑</span><span class="fbl">API</span></button>
+  </div>
+</div>
 
-  <!-- MODAL DESCANSO -->
-  <div class="mo" id="mo-rest"><div class="ms">
-    <div class="mt">🏕️ Descanso <button class="mc" onclick="closeMo('mo-rest')">×</button></div>
-    <div class="rest-opt" onclick="doRest('curto')">
-      <div class="rest-title">⏱ Descanso Curto (1 hora)</div>
-      <div class="rest-desc">Recupera PV com Dados de Vida. Não recupera feitiços.<br><em>Role seus Dados de Vida + mod. CON</em></div>
+<!-- MODAL D20 -->
+<div class="mo" id="mo-d20"><div class="ms">
+  <div class="mt">🎲 Rolar Teste <button class="mc" onclick="closeMo('mo-d20')">×</button></div>
+  <div class="d20-modal-inner">
+    <div class="d20-hint">Escolha o atributo e lance o dado</div>
+    <div class="d20-attr-grid" id="d20-attrs"></div>
+    <div class="d20-launch" onclick="rollD20Modal()">
+      <svg viewBox="0 0 60 60" width="70" height="70" xmlns="http://www.w3.org/2000/svg" id="d20-big-svg">
+        <polygon points="30,3 57,17 57,43 30,57 3,43 3,17" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="2" stroke-linejoin="round"/>
+        <line x1="30" y1="3" x2="30" y2="57" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
+        <line x1="3" y1="17" x2="57" y2="43" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
+        <line x1="57" y1="17" x2="3" y2="43" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
+        <text id="d20-svg-num" x="30" y="36" text-anchor="middle" fill="#E8B84B" font-size="18" font-family="Cinzel,serif" font-weight="700">?</text>
+      </svg>
     </div>
-    <div class="rest-opt" onclick="doRest('longo')">
-      <div class="rest-title">🌙 Descanso Longo (8 horas)</div>
-      <div class="rest-desc">Recupera todos os PV, feitiços e habilidades.<br>CD do Mercador reseta. Requer local seguro.</div>
-    </div>
-  </div></div>
+    <div class="d20-result-txt" id="d20-result-txt"></div>
+  </div>
+</div></div>
 
-  <!-- MODAL LOJA -->
-  <div class="mo" id="mo-shop"><div class="ms">
-    <div class="mt">💎 Comprar Créditos <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
-    <p class="mo-note">1 Crédito = 10 Peças de Ouro (GP)</p>
-    <div class="sp-pack"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy">COMPRAR</button></div>
-    <div class="sp-pack"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90 · melhor valor</div></div><button class="btn-buy">COMPRAR</button></div>
-    <div class="sp-pack featured"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy">COMPRAR</button></div>
-    <p class="mo-note">⚠ Role Sobrevivência para encontrar Mercador (CD <span id="merch-hint">12</span>)</p>
-  </div></div>
+<!-- MODAL DESCANSO -->
+<div class="mo" id="mo-rest"><div class="ms">
+  <div class="mt">🏕️ Descanso <button class="mc" onclick="closeMo('mo-rest')">×</button></div>
+  <div class="rest-opt" onclick="doRest('curto')">
+    <div class="rest-title">⏱ Descanso Curto (1 hora)</div>
+    <div class="rest-desc">Recupera PV com Dado de Vida + mod. CON.<br>Não recupera feitiços.</div>
+  </div>
+  <div class="rest-opt" onclick="doRest('longo')">
+    <div class="rest-title">🌙 Descanso Longo (8 horas)</div>
+    <div class="rest-desc">Recupera todos os PV e feitiços.<br>CD do Mercador reseta para 12.</div>
+  </div>
+</div></div>
 
-  <!-- MODAL REPUTAÇÃO -->
-  <div class="mo" id="mo-rep"><div class="ms">
-    <div class="mt">🏅 Reputação <button class="mc" onclick="closeMo('mo-rep')">×</button></div>
-    <div class="rep-bar-wrap"><div class="rep-current" id="rep-display">0 pontos · Viajante</div><div class="rep-track"><div class="rep-fill" id="rep-fill" style="width:0%"></div></div></div>
-    <div class="rt active" id="rt0"><div class="rn">🧳 Viajante (0–100)</div><div class="rb">Preço normal</div></div>
-    <div class="rt" id="rt1"><div class="rn">🤝 Negociante (101–500)</div><div class="rb">5% desconto</div></div>
-    <div class="rt" id="rt2"><div class="rn">🏛 Patrono (501–1500)</div><div class="rb">10% desconto · CD –2</div></div>
-    <div class="rt" id="rt3"><div class="rn">💼 Sócio (1501+)</div><div class="rb">15% desconto · Itens raros</div></div>
-    <p class="mo-note">Compras reais geram muito mais reputação.</p>
-  </div></div>
+<!-- MODAL LOJA -->
+<div class="mo" id="mo-shop"><div class="ms">
+  <div class="mt">💎 Comprar Créditos <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+  <p class="mo-note">1 Crédito = 10 Peças de Ouro (GP)</p>
+  <div class="sp-pack"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy">COMPRAR</button></div>
+  <div class="sp-pack"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy">COMPRAR</button></div>
+  <div class="sp-pack featured"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy">COMPRAR</button></div>
+  <p class="mo-note">CD Mercador atual: <span id="merch-hint">12</span></p>
+</div></div>
 
-  <!-- MODAL FICHA -->
-  <div class="mo" id="mo-char"><div class="ms">
-    <div class="mt">📜 Ficha Completa <button class="mc" onclick="closeMo('mo-char')">×</button></div>
+<!-- MODAL REPUTAÇÃO -->
+<div class="mo" id="mo-rep"><div class="ms">
+  <div class="mt">🏅 Reputação <button class="mc" onclick="closeMo('mo-rep')">×</button></div>
+  <div class="rep-bar-wrap"><div class="rep-current" id="rep-display">0 pts · Viajante</div><div class="rep-track"><div class="rep-fill" id="rep-fill" style="width:0%"></div></div></div>
+  <div class="rt active" id="rt0"><div class="rn">🧳 Viajante (0–100)</div><div class="rb">Preço normal</div></div>
+  <div class="rt" id="rt1"><div class="rn">🤝 Negociante (101–500)</div><div class="rb">5% desconto</div></div>
+  <div class="rt" id="rt2"><div class="rn">🏛 Patrono (501–1500)</div><div class="rb">10% desconto · CD –2</div></div>
+  <div class="rt" id="rt3"><div class="rn">💼 Sócio (1501+)</div><div class="rb">15% desconto · Itens raros</div></div>
+</div></div>
+
+<!-- ★ MODAL FICHA COM ABAS -->
+<div class="mo" id="mo-char"><div class="ms">
+  <div class="mt">📜 Ficha do Herói <button class="mc" onclick="closeMo('mo-char')">×</button></div>
+  <div class="sheet-tabs">
+    <div class="stab active" onclick="switchTab('tab-stats')">Status</div>
+    <div class="stab" onclick="switchTab('tab-inv')">Inventário</div>
+    <div class="stab" onclick="switchTab('tab-spells')">Magias</div>
+  </div>
+  <!-- Status -->
+  <div class="sheet-page active" id="tab-stats">
     <div class="sheet-grid">
       <div><div class="sf-lbl">Nome</div><div class="sf-val" id="sh-nm">—</div></div>
       <div><div class="sf-lbl">Raça · Classe</div><div class="sf-val" id="sh-cl">—</div></div>
       <div><div class="sf-lbl">🛡 CA</div><div class="sf-val big ca-col" id="sh-ca">—</div></div>
-      <div><div class="sf-lbl">❤️ PV Máximo</div><div class="sf-val big hp-col" id="sh-hp">—</div></div>
+      <div><div class="sf-lbl">❤️ PV Máx</div><div class="sf-val big hp-col" id="sh-hp">—</div></div>
     </div>
     <div class="stats-row" id="sh-stats"></div>
-    <div class="sec-hdr" style="margin-top:6px">PERFIL ATIVO</div>
-    <div id="sh-profile-tags" class="pp-tags" style="margin-top:6px"></div>
+    <div class="sec-hdr" style="margin-top:10px;margin-bottom:6px">PERFIL ATIVO</div>
+    <div id="sh-profile-tags" class="pp-tags"></div>
     <div id="sh-profile-bonuses" class="pp-bonuses" style="margin-top:6px"></div>
-  </div></div>
-
-  <!-- ★ MODAL D20 -->
-  <div class="mo" id="mo-d20"><div class="ms">
-    <div class="mt">🎲 Rolar Teste <button class="mc" onclick="closeMo('mo-d20')">×</button></div>
-    <div class="d20-modal-inner">
-      <div class="d20-hint">Escolha o atributo e toque no dado</div>
-      <div class="d20-attr-grid" id="d20-attrs"></div>
-      <div class="d20-big" id="d20-face" onclick="rollD20Modal()">20</div>
-      <div class="d20-result-txt" id="d20-result-txt"></div>
+  </div>
+  <!-- Inventário -->
+  <div class="sheet-page" id="tab-inv">
+    <div class="inv-capacity">
+      <div class="inv-cap-row"><span>CARGA</span><span id="inv-weight-txt">0 / 75 kg</span></div>
+      <div class="inv-bar"><div class="inv-fill" id="inv-bar" style="width:0%"></div></div>
     </div>
-  </div></div>
-
-  <!-- ★ MODAL MAPA -->
-  <div class="mo" id="mo-map"><div class="ms">
-    <div class="mt">🗺️ Mapa de Faerûn <button class="mc" onclick="closeMo('mo-map')">×</button></div>
-    <div class="map-frame">
-      <img src="https://www.worldanvil.com/uploads/images/2c8c87dbce7df6c50b1218e1c6d0dcfe.jpg" alt="Mapa de Faerûn D&D 5e" loading="lazy" onerror="this.src='https://i.imgur.com/0vEDd0N.jpg'"/>
+    <div style="display:flex;flex-direction:column;gap:8px" id="inv-list">
+      <div class="inv-item equipped">
+        <span class="inv-item-icon">🎒</span>
+        <div><div class="inv-item-name">Mochila do Aventureiro <span class="equipped-badge">EQUIPADO</span></div><div class="inv-item-desc">Contém equipamentos básicos</div></div>
+        <span class="inv-item-weight">5kg</span>
+      </div>
+      <div class="inv-item"><span class="inv-item-icon">⚔️</span><div><div class="inv-item-name" id="inv-weapon">Espada Longa</div><div class="inv-item-desc">1d8 cortante · Versátil (1d10)</div></div><span class="inv-item-weight">2kg</span></div>
+      <div class="inv-item"><span class="inv-item-icon">🧪</span><div><div class="inv-item-name">Poção de Cura ×2</div><div class="inv-item-desc">Recupera 2d4+2 PV</div></div><span class="inv-item-weight">0.5kg</span></div>
+      <div class="inv-item"><span class="inv-item-icon">🕯️</span><div><div class="inv-item-name">Tochas ×5</div><div class="inv-item-desc">1 hora de luz, raio 6m</div></div><span class="inv-item-weight">0.25kg</span></div>
+      <div class="inv-item"><span class="inv-item-icon">🍞</span><div><div class="inv-item-name">Rações ×5</div><div class="inv-item-desc">Alimentação para 5 dias</div></div><span class="inv-item-weight">1kg</span></div>
+      <p style="font-size:12px;color:var(--gold-d);text-align:center;font-style:italic;margin-top:4px">Itens adicionados automaticamente conforme a narrativa</p>
     </div>
-    <p class="map-note">Mapa oficial de Faerûn · Forgotten Realms D&D 5e</p>
-    <p class="map-note" style="margin-top:4px">📍 Missão atual: Ruínas do Templo Esquecido, próximo a Millhaven</p>
-  </div></div>
-
-  <!-- MODAL API -->
-  <div class="mo" id="mo-api"><div class="ms">
-    <div class="mt">🔑 Mestre IA <button class="mc" onclick="closeMo('mo-api')">×</button></div>
-    <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo.</p>
-    <div class="api-field">
-      <label>Chave Anthropic</label>
-      <input type="password" id="api-key-input" placeholder="sk-ant-..."/>
+  </div>
+  <!-- Magias -->
+  <div class="sheet-page" id="tab-spells">
+    <div id="spells-content">
+      <p style="font-size:13px;color:var(--parch-d);text-align:center;font-style:italic;padding:20px 0">Magias e truques aparecem aqui conforme sua classe e nível.</p>
     </div>
-    <button class="btn-primary" onclick="saveApiKey()">SALVAR CHAVE</button>
-    <p class="mo-note">console.anthropic.com</p>
-    <p class="mo-note" id="api-status" style="color:var(--green)"></p>
-  </div></div>
+  </div>
+</div></div>
 
-</div>
+<!-- MODAL XP / NÍVEL -->
+<div class="mo" id="mo-xp"><div class="ms">
+  <div class="mt">⭐ Nível &amp; Experiência <button class="mc" onclick="closeMo('mo-xp')">×</button></div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <div class="level-badge"><div class="level-num" id="xp-level-num">1</div><div class="level-txt">NÍVEL</div></div>
+    <div style="flex:1">
+      <div class="xp-label-row"><span>XP ATUAL</span><span id="xp-cur-txt">0</span></div>
+      <div class="xp-bar-modal"><div class="xp-fill-modal" id="xp-fill-modal" style="width:0%"></div></div>
+      <div class="xp-label-row"><span>PRÓXIMO NÍVEL</span><span id="xp-next-txt">300</span></div>
+    </div>
+  </div>
+  <div class="sec-hdr" style="margin-top:4px">HABILIDADES DO NÍVEL ATUAL</div>
+  <div id="level-abilities" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
+  <div class="sec-hdr" style="margin-top:4px">NO PRÓXIMO NÍVEL</div>
+  <div id="next-level-abilities" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
+</div></div>
+
+<!-- MODAL MAPA -->
+<div class="mo" id="mo-map"><div class="ms">
+  <div class="mt">🗺️ Mapa de Faerûn <button class="mc" onclick="closeMo('mo-map')">×</button></div>
+  <div class="map-frame"><img src="https://upload.wikimedia.org/wikipedia/en/2/2b/Faerun_map.jpg" alt="Mapa Faerûn D&D" loading="lazy" onerror="this.src='https://i.imgur.com/0vEDd0N.jpg'"/></div>
+  <p class="mo-note" style="margin-top:4px">Mapa oficial de Faerûn · Forgotten Realms D&D 5e</p>
+  <p class="mo-note">📍 Missão: Templo Esquecido — próximo a Millhaven</p>
+</div></div>
+
+<!-- MODAL API -->
+<div class="mo" id="mo-api"><div class="ms">
+  <div class="mt">🔑 Mestre IA <button class="mc" onclick="closeMo('mo-api')">×</button></div>
+  <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo.</p>
+  <div class="api-field"><label>Chave Anthropic</label><input type="password" id="api-key-input" placeholder="sk-ant-..."/></div>
+  <button class="btn-primary" onclick="saveApiKey()">SALVAR CHAVE</button>
+  <p class="mo-note">console.anthropic.com</p>
+  <p class="mo-note" id="api-status" style="color:var(--green)"></p>
+</div></div>
+
+</div><!-- #app -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ══ PERFIS ══
+// ══ DADOS DE PERFIS ══
 const PROFILES={
   race:{
-    Humano:{tags:[{l:'Versátil',c:'tag-light'},{l:'Adaptável',c:'tag-light'}],bonuses:[{i:'🎯',t:'Bônus extra em 1 habilidade',v:'+1',c:'b-pos'}],flavor:'adaptável e determinado',events:['aliança com mercenários','oportunidade de liderança','encontro diplomático']},
-    Elfo:{tags:[{l:'Visão Noturna',c:'tag-nature'},{l:'Furtivo',c:'tag-dark'},{l:'Antigo',c:'tag-light'}],bonuses:[{i:'👁️',t:'Percepção +2',v:'+2',c:'b-pos'},{i:'💤',t:'Transe élfico 4h',v:'4h',c:'b-pos'}],flavor:'elegante e antigo como as estrelas',events:['visão profética','ruínas élficas','encontro com elfos']},
-    'Meio-Elfo':{tags:[{l:'Diplomático',c:'tag-social'},{l:'Carismático',c:'tag-social'}],bonuses:[{i:'💬',t:'Persuasão +1',v:'+1',c:'b-pos'}],flavor:'entre dois mundos, aceito em ambos',events:['dilema de identidade','aliança incomum']},
-    Anão:{tags:[{l:'Resistente',c:'tag-combat'},{l:'Ferreiro',c:'tag-light'}],bonuses:[{i:'🍺',t:'Resistência a veneno',v:'Vantagem',c:'b-pos'},{i:'⛏️',t:'Conhecimento de pedras +2',v:'+2',c:'b-pos'}],flavor:'duro como rocha e fiel como aço',events:['forja lendária','tesouro perdido']},
-    Halfling:{tags:[{l:'Sortudo',c:'tag-light'},{l:'Corajoso',c:'tag-combat'}],bonuses:[{i:'🍀',t:'Relança 1s',v:'Sorte',c:'b-pos'}],flavor:'pequeno mas sortudo',events:['esconderijo secreto','ajuda inesperada']},
-    Gnomo:{tags:[{l:'Inventor',c:'tag-light'},{l:'Ilusionista',c:'tag-dark'}],bonuses:[{i:'🔧',t:'Arcanismo +1',v:'+1',c:'b-pos'}],flavor:'curioso e inventivo',events:['invenção mágica','laboratório abandonado']},
-    'Meio-Orc':{tags:[{l:'Brutal',c:'tag-combat'},{l:'Inabalável',c:'tag-combat'}],bonuses:[{i:'💀',t:'Sobrevive 1× com 1 PV',v:'Inabalável',c:'b-pos'}],flavor:'forjado na brutalidade',events:['desafio de força','batalha campal']},
-    Tiefling:{tags:[{l:'Infernal',c:'tag-dark'},{l:'Resistente ao Fogo',c:'tag-combat'},{l:'Mercado Negro',c:'tag-dark'}],bonuses:[{i:'🔥',t:'Resistência a fogo',v:'Resistência',c:'b-pos'},{i:'💰',t:'Desconto mercado negro',v:'-10%',c:'b-pos'},{i:'⚠️',t:'NPCs religiosos desconfiados',v:'-1 Rep',c:'b-neg'}],flavor:'marcado pelo inferno, moldado pelo destino',events:['culto demoníaco','mercado negro','perseguição religiosa']},
-    Draconato:{tags:[{l:'Sopro Dracônico',c:'tag-combat'},{l:'Imponente',c:'tag-social'}],bonuses:[{i:'🐉',t:'Sopro elemental 2d6',v:'2d6',c:'b-pos'}],flavor:'descendente de dragões',events:['encontro com dragão','culto dos dragões']}
+    Humano:{tags:[{l:'Versátil',c:'tag-light'},{l:'Adaptável',c:'tag-light'}],bonuses:[{i:'🎯',t:'Bônus em 1 habilidade',v:'+1',c:'b-pos'}],flavor:'adaptável e determinado',events:['aliança mercenária','liderança','diplomacia']},
+    Elfo:{tags:[{l:'Visão Noturna',c:'tag-nature'},{l:'Furtivo',c:'tag-dark'},{l:'Antigo',c:'tag-light'}],bonuses:[{i:'👁️',t:'Percepção +2',v:'+2',c:'b-pos'},{i:'💤',t:'Transe 4h',v:'4h',c:'b-pos'}],flavor:'elegante e antigo como as estrelas',events:['visão profética','ruínas élficas']},
+    'Meio-Elfo':{tags:[{l:'Diplomático',c:'tag-social'},{l:'Carismático',c:'tag-social'}],bonuses:[{i:'💬',t:'Persuasão +1',v:'+1',c:'b-pos'}],flavor:'entre dois mundos',events:['dilema de identidade']},
+    Anão:{tags:[{l:'Resistente',c:'tag-combat'},{l:'Ferreiro',c:'tag-light'}],bonuses:[{i:'🍺',t:'Resist. veneno',v:'Vantagem',c:'b-pos'}],flavor:'duro como rocha',events:['forja lendária','tesouro perdido']},
+    Halfling:{tags:[{l:'Sortudo',c:'tag-light'},{l:'Corajoso',c:'tag-combat'}],bonuses:[{i:'🍀',t:'Relança 1s',v:'Sorte',c:'b-pos'}],flavor:'pequeno mas sortudo',events:['esconderijo','ajuda inesperada']},
+    Gnomo:{tags:[{l:'Inventor',c:'tag-light'},{l:'Ilusionista',c:'tag-dark'}],bonuses:[{i:'🔧',t:'Arcanismo +1',v:'+1',c:'b-pos'}],flavor:'curioso e inventivo',events:['invenção mágica']},
+    'Meio-Orc':{tags:[{l:'Brutal',c:'tag-combat'},{l:'Inabalável',c:'tag-combat'}],bonuses:[{i:'💀',t:'1× sobrevive com 1PV',v:'Inabalável',c:'b-pos'}],flavor:'forjado na brutalidade',events:['batalha campal']},
+    Tiefling:{tags:[{l:'Infernal',c:'tag-dark'},{l:'Resist. Fogo',c:'tag-combat'}],bonuses:[{i:'🔥',t:'Resist. fogo',v:'Resistência',c:'b-pos'},{i:'⚠️',t:'NPCs desconfiados',v:'-1Rep',c:'b-neg'}],flavor:'marcado pelo inferno',events:['culto demoníaco','mercado negro']},
+    Draconato:{tags:[{l:'Sopro Dracônico',c:'tag-combat'},{l:'Imponente',c:'tag-social'}],bonuses:[{i:'🐉',t:'Sopro elemental',v:'2d6',c:'b-pos'}],flavor:'descendente de dragões',events:['encontro dragão']}
   },
   class:{
-    Guerreiro:{tags:[{l:'Combate',c:'tag-combat'},{l:'Segundo Fôlego',c:'tag-combat'}],bonuses:[{i:'⚔️',t:'Segundo Fôlego',v:'1d10+nível',c:'b-pos'}],flavor:'mestre das armas'},
-    Mago:{tags:[{l:'Arcano',c:'tag-dark'},{l:'Estudioso',c:'tag-social'}],bonuses:[{i:'📚',t:'Arcanismo +2',v:'+2',c:'b-pos'}],flavor:'repositório de conhecimento arcano'},
-    Ladino:{tags:[{l:'Furtivo',c:'tag-dark'},{l:'Ataque Furtivo',c:'tag-combat'}],bonuses:[{i:'🗡️',t:'Ataque furtivo +1d6',v:'+1d6',c:'b-pos'},{i:'💰',t:'Desconto mercado negro',v:'-5%',c:'b-pos'}],flavor:'sombra que golpeia antes de ser vista'},
-    Clérigo:{tags:[{l:'Divino',c:'tag-divine'},{l:'Curandeiro',c:'tag-divine'}],bonuses:[{i:'✝️',t:'Cura e feitiços divinos',v:'Cura',c:'b-pos'},{i:'☀️',t:'Reputação santa',v:'+20 Rep',c:'b-pos'}],flavor:'canal da vontade divina'},
-    Bardo:{tags:[{l:'Carismático',c:'tag-social'},{l:'Músico',c:'tag-social'}],bonuses:[{i:'🎵',t:'Inspiração barda',v:'Bônus',c:'b-pos'},{i:'💬',t:'Persuasão +2',v:'+2',c:'b-pos'}],flavor:'contador de histórias'},
-    Paladino:{tags:[{l:'Sagrado',c:'tag-divine'},{l:'Combate',c:'tag-combat'}],bonuses:[{i:'✨',t:'Ataque Divino +1d8',v:'+1d8',c:'b-pos'},{i:'🛡️',t:'Aura de proteção',v:'Aura',c:'b-pos'}],flavor:'guerreiro sagrado do juramento'},
-    Druida:{tags:[{l:'Natureza',c:'tag-nature'},{l:'Forma Selvagem',c:'tag-nature'}],bonuses:[{i:'🌿',t:'Sobrevivência +2',v:'+2',c:'b-pos'},{i:'🐺',t:'Forma Selvagem',v:'Animal',c:'b-pos'}],flavor:'voz da natureza'},
-    Ranger:{tags:[{l:'Explorador',c:'tag-nature'},{l:'Arqueiro',c:'tag-combat'}],bonuses:[{i:'🏹',t:'Ataque arco +1',v:'+1',c:'b-pos'},{i:'🗺️',t:'Rastreamento +2',v:'+2',c:'b-pos'}],flavor:'sentinela dos limites selvagens'},
-    Bárbaro:{tags:[{l:'Fúria',c:'tag-combat'},{l:'Brutal',c:'tag-combat'}],bonuses:[{i:'😤',t:'Fúria: +2 dano, resistência',v:'Fúria',c:'b-pos'}],flavor:'tempestade de carne e fúria'},
-    Feiticeiro:{tags:[{l:'Magia Inata',c:'tag-dark'},{l:'Imprevisível',c:'tag-dark'}],bonuses:[{i:'✨',t:'Metamagia',v:'Metamagia',c:'b-pos'}],flavor:'a magia É você'}
+    Guerreiro:{tags:[{l:'Combate',c:'tag-combat'},{l:'Segundo Fôlego',c:'tag-combat'}],bonuses:[{i:'⚔️',t:'Segundo Fôlego',v:'1d10+nível',c:'b-pos'}],flavor:'mestre das armas',spells:[]},
+    Mago:{tags:[{l:'Arcano',c:'tag-dark'},{l:'Estudioso',c:'tag-social'}],bonuses:[{i:'📚',t:'Arcanismo +2',v:'+2',c:'b-pos'}],flavor:'repositório arcano',spells:['Míssil Mágico','Mãos Ardentes','Sono','Charmar Pessoas']},
+    Ladino:{tags:[{l:'Furtivo',c:'tag-dark'},{l:'Ataque Furtivo',c:'tag-combat'}],bonuses:[{i:'🗡️',t:'Ataque Furtivo +1d6',v:'+1d6',c:'b-pos'}],flavor:'sombra que golpeia',spells:[]},
+    Clérigo:{tags:[{l:'Divino',c:'tag-divine'},{l:'Curandeiro',c:'tag-divine'}],bonuses:[{i:'✝️',t:'Cura divina',v:'Cura',c:'b-pos'},{i:'☀️',t:'Rep. santa',v:'+20Rep',c:'b-pos'}],flavor:'canal divino',spells:['Cura Ferimentos','Luz','Sagração','Palavra Sagrada']},
+    Bardo:{tags:[{l:'Carismático',c:'tag-social'},{l:'Músico',c:'tag-social'}],bonuses:[{i:'🎵',t:'Inspiração barda',v:'Bônus',c:'b-pos'}],flavor:'contador de histórias',spells:['Charmar Pessoas','Sono','Dissonância']},
+    Paladino:{tags:[{l:'Sagrado',c:'tag-divine'},{l:'Combate',c:'tag-combat'}],bonuses:[{i:'✨',t:'Ataque Divino +1d8',v:'+1d8',c:'b-pos'}],flavor:'guerreiro sagrado',spells:['Cura Ferimentos','Detectar Mal']},
+    Druida:{tags:[{l:'Natureza',c:'tag-nature'},{l:'Forma Selvagem',c:'tag-nature'}],bonuses:[{i:'🌿',t:'Sobrevivência +2',v:'+2',c:'b-pos'}],flavor:'voz da natureza',spells:['Cura Ferimentos','Druida de Chamas','Controlar Chamas']},
+    Ranger:{tags:[{l:'Explorador',c:'tag-nature'},{l:'Arqueiro',c:'tag-combat'}],bonuses:[{i:'🏹',t:'Ataque arco +1',v:'+1',c:'b-pos'}],flavor:'sentinela dos limites',spells:[]},
+    Bárbaro:{tags:[{l:'Fúria',c:'tag-combat'},{l:'Brutal',c:'tag-combat'}],bonuses:[{i:'😤',t:'Fúria +2 dano',v:'Fúria',c:'b-pos'}],flavor:'tempestade de fúria',spells:[]},
+    Feiticeiro:{tags:[{l:'Magia Inata',c:'tag-dark'},{l:'Imprevisível',c:'tag-dark'}],bonuses:[{i:'✨',t:'Metamagia',v:'Metamagia',c:'b-pos'}],flavor:'a magia É você',spells:['Rajada Elétrica','Bola de Fogo','Voar','Raio do Caos']}
   },
   bg:{
-    Forasteiro:{bonus:{i:'🗺️',t:'Sobrevivência +1',v:'+1',c:'b-pos'},flavor:'dos quatro ventos, sem lar fixo'},
-    Nobre:{bonus:{i:'👑',t:'Reputação nobre +2',v:'+2',c:'b-pos'},flavor:'herdeiro de nome e responsabilidade'},
-    Sábio:{bonus:{i:'📚',t:'Arcanismo e História +2',v:'+2',c:'b-pos'},flavor:'de pergaminhos e conhecimento'},
-    Criminoso:{bonus:{i:'💰',t:'Desconto mercado negro -5%',v:'-5%',c:'b-pos'},flavor:'das ruelas escuras'},
-    'Herói do Povo':{bonus:{i:'❤️',t:'Reputação plebeus +2',v:'+2',c:'b-pos'},flavor:'voz dos humildes'},
-    Soldado:{bonus:{i:'⚔️',t:'Atletismo e Intimidação +1',v:'+1',c:'b-pos'},flavor:'da disciplina e do campo'}
+    Forasteiro:{bonus:{i:'🗺️',t:'Sobrevivência +1',v:'+1',c:'b-pos'},flavor:'dos quatro ventos'},
+    Nobre:{bonus:{i:'👑',t:'Reputação nobre',v:'+2',c:'b-pos'},flavor:'herdeiro de nome'},
+    Sábio:{bonus:{i:'📚',t:'Arcanismo +2',v:'+2',c:'b-pos'},flavor:'de pergaminhos'},
+    Criminoso:{bonus:{i:'💰',t:'Mercado negro -5%',v:'-5%',c:'b-pos'},flavor:'das ruelas'},
+    'Herói do Povo':{bonus:{i:'❤️',t:'Rep. plebeus +2',v:'+2',c:'b-pos'},flavor:'voz dos humildes'},
+    Soldado:{bonus:{i:'⚔️',t:'Atletismo +1',v:'+1',c:'b-pos'},flavor:'da disciplina'}
   }
 };
+
+const CLASS_ABILITIES={
+  Guerreiro:[{lv:1,name:'Estilo de Combate',desc:'Escolha um estilo: Arqueria (+2 ataques), Defesa (+1 CA), Duelo (+2 dano), etc.'},{lv:1,name:'Segundo Fôlego',desc:'Use ação bônus para recuperar 1d10 + nível de PV (1×/descanso curto).'},{lv:2,name:'Surto de Ação',desc:'Na sua vez, faça uma ação adicional completa (1×/descanso curto).'}],
+  Mago:[{lv:1,name:'Recuperação Arcana',desc:'Recupere slots de magia totalizando metade do seu nível (1×/descanso curto).'},{lv:2,name:'Tradição Arcana',desc:'Escolha uma escola de magia. Ganhe benefícios especiais nessa escola.'}],
+  Ladino:[{lv:1,name:'Ataque Furtivo',desc:'1d6 dano extra quando tem vantagem ou aliado adjacente ao alvo.'},{lv:1,name:'Linguagem dos Ladrões',desc:'Sistema secreto de comunicação entre criminosos.'},{lv:2,name:'Ação Ardilosa',desc:'Use Desviar, Desengajar ou Correr como ação bônus.'}],
+  Clérigo:[{lv:1,name:'Magia Divina',desc:'Prepare feitiços divinos baseados em Sabedoria + nível de clérigo.'},{lv:1,name:'Expulsar Mortos-Vivos',desc:'Mortos-vivos devem fazer Salvaguarda de Sabedoria ou fugir por 1 minuto.'}],
+  Bardo:[{lv:1,name:'Inspiração Barda',desc:'Conceda 1d6 para um aliado usar em teste, ataque ou salvaguarda.'},{lv:2,name:'Canções Conhecidas',desc:'Aprenda feitiços adicionais de qualquer lista.'}],
+  Paladino:[{lv:1,name:'Sentido Divino',desc:'Detecte presença de celestiais, demônios e mortos-vivos em 18m.'},{lv:1,name:'Imposição de Mãos',desc:'Cura total de 5× nível de PV por descanso longo.'},{lv:2,name:'Ataque Divino',desc:'Adicione 1d8 dano radiante ou necrótico em um ataque.'}],
+  Druida:[{lv:2,name:'Forma Selvagem',desc:'Transforme-se em besta de CR 1/4 sem velocidade natatória (2×/descanso curto).'}],
+  Ranger:[{lv:1,name:'Inimigo Favorito',desc:'Vantagem em rastreamento e memória sobre tipo escolhido.'},{lv:1,name:'Explorador Natural',desc:'Bônus em terreno favorito: não pode se perder, movimento dobrado, etc.'}],
+  Bárbaro:[{lv:1,name:'Fúria',desc:'Bônus +2 dano, resistência a dano físico. 2 usos/descanso longo.'},{lv:1,name:'Defesa sem Armadura',desc:'CA = 10 + mod. DES + mod. CON sem armadura.'}],
+  Feiticeiro:[{lv:1,name:'Pontos de Feitiçaria',desc:'Gerencie sua magia com pontos (igual ao nível). Converta slots por pontos.'},{lv:1,name:'Origem de Feiticeiro',desc:'Linhagem dracônica ou magia selvagem. Define poderes especiais.'}]
+};
+
+const XP_TABLE=[0,300,900,2700,6500,14000,23000,34000,48000,64000,85000,100000,120000,140000,165000,195000,225000,265000,305000,355000];
 
 const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨'};
 const classHP={Guerreiro:10,Mago:6,Ladino:8,Clérigo:8,Bardo:8,Paladino:10,Druida:8,Ranger:10,Bárbaro:12,Feiticeiro:6};
@@ -586,43 +706,36 @@ const classMP={Guerreiro:0,Mago:4,Ladino:0,Clérigo:3,Bardo:3,Paladino:2,Druida:
 const attrNames={str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
 const attrLabels={str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
 
-let hero={}, stats={}, fabOpen=false, thinking=false;
+let hero={xp:0,level:1}, stats={}, thinking=false;
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
+let pendingRollAttr=null; // atributo pedido pelo mestre
 
 // Partículas
 (function(){
   const c=document.getElementById('particles');
-  for(let i=0;i<18;i++){
-    const p=document.createElement('div');p.className='particle';
-    const sz=(Math.random()*3+1)+'px';
-    p.style.cssText=`width:${sz};height:${sz};left:${Math.random()*100}%;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s;`;
-    c.appendChild(p);
-  }
+  for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const s=(Math.random()*3+1)+'px';p.style.cssText=`width:${s};height:${s};left:${Math.random()*100}%;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s;`;c.appendChild(p);}
 })();
 
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function rollD(s){return Math.ceil(Math.random()*s);}
-// ★ mínimo 11 nos atributos
 function roll4d6drop(){let r=[rollD(6),rollD(6),rollD(6),rollD(6)];r.sort((a,b)=>a-b);return Math.max(11,r[1]+r[2]+r[3]);}
 function mod(v){return Math.floor((v-10)/2);}
 function modStr(v){let m=mod(v);return(m>=0?'+':'')+m;}
 
 async function rollStatsAnimated(){
-  const keys=['str','dex','con','int','wis','cha'];
-  for(let k of keys){
+  for(let k of ['str','dex','con','int','wis','cha']){
     const sb=document.getElementById('sb-'+k);
     sb.classList.add('rolling');
     document.getElementById('s-'+k).textContent='?';
     await new Promise(r=>setTimeout(r,80));
-    const v=roll4d6drop();
-    stats[k]=v;
+    const v=roll4d6drop();stats[k]=v;
     document.getElementById('s-'+k).textContent=v;
     document.getElementById('m-'+k).textContent=modStr(v);
     sb.classList.remove('rolling');
     await new Promise(r=>setTimeout(r,60));
   }
-  showToast('🎲 Atributos rolados! (mín. 11)');
+  showToast('🎲 Atributos rolados!');
 }
 
 function updatePreview(){
@@ -634,10 +747,8 @@ function updatePreview(){
   document.getElementById('pp-av').textContent=classAv[cls]||'⚔️';
   document.getElementById('pp-name').textContent=cls+' '+race;
   document.getElementById('pp-arch').textContent=bp.flavor;
-  const allTags=[...rp.tags,...cp.tags];
-  document.getElementById('pp-tags').innerHTML=allTags.slice(0,6).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
-  const allBonuses=[...rp.bonuses,...cp.bonuses,bp.bonus].filter(Boolean);
-  document.getElementById('pp-bonuses').innerHTML=allBonuses.slice(0,4).map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
+  document.getElementById('pp-tags').innerHTML=[...rp.tags,...cp.tags].slice(0,6).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  document.getElementById('pp-bonuses').innerHTML=[...rp.bonuses,...cp.bonuses,bp.bonus].filter(Boolean).slice(0,4).map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
 }
 
 function startAdventure(){
@@ -651,10 +762,10 @@ function startAdventure(){
   const maxMP=classMP[cls]||0;
   const ca=10+mod(stats.dex||10);
   let repBonus=0;
-  if(cls==='Clérigo'||cls==='Paladino') repBonus=20;
-  if(race==='Tiefling') repBonus-=10;
-  if(bg==='Nobre') repBonus+=15;
-  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:50,rep:Math.max(0,repBonus)};
+  if(cls==='Clérigo'||cls==='Paladino')repBonus=20;
+  if(race==='Tiefling')repBonus-=10;
+  if(bg==='Nobre')repBonus+=15;
+  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:50,rep:Math.max(0,repBonus),xp:0,level:1};
   merchantCD=(cls==='Paladino'||cls==='Clérigo')?10:(race==='Tiefling'?14:12);
   gameHistory=[];
 
@@ -667,126 +778,231 @@ function startAdventure(){
   document.getElementById('f-dex').textContent=modStr(stats.dex||10);
   document.getElementById('f-wis').textContent=modStr(stats.wis||10);
   document.getElementById('merch-hint').textContent=merchantCD;
-
+  document.getElementById('inv-weapon').textContent=cls==='Mago'?'Cajado':'cls'==='Ranger'?'Arco Longo':'Espada Longa';
+  // Arma por classe
+  const weapons={Guerreiro:'Espada Longa',Mago:'Cajado',Ladino:'Adaga',Clérigo:'Maça',Bardo:'Rapieira',Paladino:'Espada Longa',Druida:'Cajado',Ranger:'Arco Longo',Bárbaro:'Machado Grande',Feiticeiro:'Varinha'};
+  document.getElementById('inv-weapon').textContent=weapons[cls]||'Espada';
   // Ficha
   document.getElementById('sh-nm').textContent=name;
   document.getElementById('sh-cl').textContent=`${race} · ${cls}`;
   document.getElementById('sh-ca').textContent=ca;
   document.getElementById('sh-hp').textContent=maxHP;
-  document.getElementById('sh-stats').innerHTML=
-    ['str','dex','con','int','wis','cha'].map(k=>`<div class="sb"><div class="sn">${attrLabels[k]}</div><div class="sv">${stats[k]||10}</div><div class="sm">${modStr(stats[k]||10)}</div></div>`).join('');
+  document.getElementById('sh-stats').innerHTML=['str','dex','con','int','wis','cha'].map(k=>`<div class="sb"><div class="sn">${attrLabels[k]}</div><div class="sv">${stats[k]||10}</div><div class="sm">${modStr(stats[k]||10)}</div></div>`).join('');
   const rp=PROFILES.race[race]||{};const cp=PROFILES.class[cls]||{};const bp=PROFILES.bg[bg]||{};
   document.getElementById('sh-profile-tags').innerHTML=[...(rp.tags||[]),...(cp.tags||[])].map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
   document.getElementById('sh-profile-bonuses').innerHTML=[...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean).map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
-
-  // D20 modal attrs
+  // Magias
+  const spells=(cp.spells||[]);
+  if(spells.length>0){
+    document.getElementById('spells-content').innerHTML=`<div style="margin-bottom:8px"><div class="sec-hdr" style="margin-bottom:6px">FEITIÇOS CONHECIDOS</div>${spells.map(s=>`<div class="spell-card" style="margin-bottom:6px"><div class="spell-name">${s}</div><div class="spell-meta">Nível 1 · Ação</div></div>`).join('')}</div>`;
+  } else {
+    document.getElementById('spells-content').innerHTML=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana. Habilidades especiais aparecem ao subir de nível.</p>`;
+  }
+  // XP modal
+  updateXPModal();
   buildD20Attrs();
-
   goTo('s-game');
-  askMaster(`Inicie a aventura. Apresente a cena de abertura personalizada para ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil para criar uma abertura ÚNICA. Termine com uma situação que exige decisão imediata e sugira 4 ações possíveis no formato:\n[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`);
+  askMaster(`Inicie a aventura. Cena de abertura única para ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil. Termine com decisão imediata. Sugira 4 ações:\n[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`);
 }
 
 function updateVitals(){
-  const hpPct=Math.max(0,Math.round((hero.hp/hero.maxHP)*100));
-  const mpPct=hero.maxMP>0?Math.max(0,Math.round((hero.mp/hero.maxMP)*100)):100;
-  document.getElementById('bar-hp').style.width=hpPct+'%';
-  document.getElementById('bar-mp').style.width=mpPct+'%';
+  const hpP=Math.max(0,Math.round((hero.hp/hero.maxHP)*100));
+  const mpP=hero.maxMP>0?Math.max(0,Math.round((hero.mp/hero.maxMP)*100)):100;
+  document.getElementById('bar-hp').style.width=hpP+'%';
+  document.getElementById('bar-mp').style.width=mpP+'%';
   document.getElementById('g-hp-txt').textContent=`${hero.hp}/${hero.maxHP}`;
   document.getElementById('g-mp-txt').textContent=`${hero.mp}/${hero.maxMP}`;
   document.getElementById('g-gd').textContent=hero.gold;
+  updateXPRing();
+}
+
+function updateXPRing(){
+  const cur=hero.xp||0;
+  const next=XP_TABLE[hero.level]||300;
+  const pct=Math.min(1,cur/next);
+  const circumference=138;
+  const offset=circumference-(pct*circumference);
+  document.getElementById('xp-ring-circle').style.strokeDashoffset=offset;
+  document.getElementById('xp-label').textContent=`${cur}/${next}`;
+}
+
+function updateXPModal(){
+  const cur=hero.xp||0;
+  const lv=hero.level||1;
+  const next=XP_TABLE[lv]||300;
+  const pct=Math.min(100,Math.round((cur/next)*100));
+  document.getElementById('xp-level-num').textContent=lv;
+  document.getElementById('xp-cur-txt').textContent=cur;
+  document.getElementById('xp-next-txt').textContent=next;
+  document.getElementById('xp-fill-modal').style.width=pct+'%';
+  const abilities=CLASS_ABILITIES[hero.cls]||[];
+  const curAbilities=abilities.filter(a=>a.lv<=lv);
+  const nextAbilities=abilities.filter(a=>a.lv===lv+1);
+  document.getElementById('level-abilities').innerHTML=curAbilities.map(a=>`<div class="ability-card"><div class="ability-name">${a.name}</div><div class="ability-desc">${a.desc}</div></div>`).join('')||'<p style="color:var(--parch-d);font-size:13px;text-align:center">Nenhuma habilidade especial neste nível.</p>';
+  document.getElementById('next-level-abilities').innerHTML=nextAbilities.map(a=>`<div class="ability-card"><div class="ability-name">${a.name}</div><div class="ability-desc">${a.desc}</div></div>`).join('')||`<p style="color:var(--parch-d);font-size:13px;text-align:center">Complete combates para ganhar XP e subir de nível!</p>`;
+}
+
+function gainXP(amount){
+  hero.xp=(hero.xp||0)+amount;
+  const lv=hero.level||1;
+  if(lv<20&&hero.xp>=XP_TABLE[lv]){
+    hero.level=lv+1;
+    hero.maxHP+=classHP[hero.cls]||8;
+    hero.hp=hero.maxHP;
+    showToast(`🌟 NÍVEL ${hero.level}! Subiu de nível!`);
+  }
+  updateVitals();
+  updateXPModal();
 }
 
 function setThinking(v){
   thinking=v;
   document.getElementById('thinking-bar').classList.toggle('active',v);
-  const dot=document.getElementById('ia-dot');
-  const lbl=document.getElementById('ia-lbl');
+  const dot=document.getElementById('ia-dot');const lbl=document.getElementById('ia-lbl');
   dot.className='ia-dot'+(v?' thinking':'');
-  lbl.textContent=v?'PENSANDO...':'IA ATIVA';
-  lbl.className=v?'thinking-txt':'';
+  lbl.textContent=v?'PENSANDO...':'IA ATIVA';lbl.className=v?'thinking-txt':'';
   ['ab1','ab2','ab3','ab4'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=v;});
   document.getElementById('free-in').disabled=v;
   document.getElementById('free-send').disabled=v;
 }
 
-// ★ PONTO 4: Card de dado detalhado
-function addRollCard(label, diceVal, mod, modLabel, total, cd){
+// ★ CARD DE DADO detalhado
+function addRollCard(label,diceVal,modVal,total,cd){
   const narr=document.getElementById('narr');
-  const ok=cd?total>=cd:null;
-  const isCrit=diceVal===20;
-  const isFumble=diceVal===1;
-  const faceClass=isCrit?'dice-face crit':isFumble?'dice-face fail':'dice-face';
-  const modStr2=mod>=0?`+${mod}`:String(mod);
-  let formula=`d20(${diceVal}) ${modStr2} = ${total}`;
-  if(cd) formula+=` vs CD ${cd}`;
+  const ok=cd!=null?total>=cd:null;
+  const isCrit=diceVal===20;const isFail=diceVal===1;
+  const faceClass=isCrit?'dice-face d-crit':isFail?'dice-face d-fail':'dice-face';
+  const ms=modVal>=0?`+${modVal}`:String(modVal);
+  let formula=`d20(${diceVal}) ${ms} = ${total}`;if(cd!=null)formula+=` vs CD ${cd}`;
   let outcome='';
-  if(cd){
-    if(ok) outcome=`<div class="roll-outcome suc">✓ SUCESSO${isCrit?' · CRÍTICO!':''}</div>`;
-    else outcome=`<div class="roll-outcome fail">✗ FALHA${isFumble?' · FALHA CRÍTICA!':''}</div>`;
-  } else if(isCrit){
-    outcome=`<div class="roll-outcome suc">★ CRÍTICO!</div>`;
-  } else if(isFumble){
-    outcome=`<div class="roll-outcome fail">✗ FALHA CRÍTICA</div>`;
-  }
-  const m=document.createElement('div');
-  m.className='msg roll-wrap';
+  if(cd!=null){outcome=ok?`<div class="roll-outcome suc">✓ SUCESSO${isCrit?' · CRÍTICO!':''}</div>`:`<div class="roll-outcome fal">✗ FALHA${isFail?' CRÍTICA!':''}</div>`;}
+  else if(isCrit){outcome=`<div class="roll-outcome suc">★ CRÍTICO!</div>`;}
+  else if(isFail){outcome=`<div class="roll-outcome fal">✗ FALHA CRÍTICA</div>`;}
+  const m=document.createElement('div');m.className='msg roll-wrap';
   m.innerHTML=`<div class="roll-card"><div class="${faceClass}">${total}</div><div class="roll-info"><div class="roll-type">${label}</div><div class="roll-formula">${formula}</div>${outcome}</div></div>`;
-  narr.appendChild(m);
-  // ★ PONTO 3: scroll para o TOPO da nova mensagem, não para o final
-  m.scrollIntoView({behavior:'smooth',block:'start'});
+  narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ★ PONTO 1 & 3: addMsg com scroll para início
+// ★ Detecta combate na resposta
+function detectCombat(text){
+  const enemies=['lobo','goblin','ogro','bandido','dragão','esqueleto','zumbi','kobold','orc','orc','troll','vampiro','bruxa','necromante','guarda','assassino','demônio','diabo'];
+  const combatWords=['ataca','emerge','avança','rugido','garra','morde','dente','espada'];
+  const tl=text.toLowerCase();
+  let foundEnemy=null;
+  for(const e of enemies){if(tl.includes(e)){foundEnemy=e.charAt(0).toUpperCase()+e.slice(1);break;}}
+  const hasCombat=combatWords.some(w=>tl.includes(w));
+  if(foundEnemy&&hasCombat)return foundEnemy;
+  // Detecta pelo COMBATE: tag
+  const combatMatch=text.match(/\[COMBATE:\s*([^\]]+)\]/);
+  if(combatMatch)return combatMatch[1].trim();
+  return null;
+}
+
+// ★ Ícone por inimigo
+function enemyIcon(name){
+  const n=name.toLowerCase();
+  if(n.includes('lobo')||n.includes('worg'))return'🐺';
+  if(n.includes('dragão'))return'🐉';
+  if(n.includes('goblin'))return'👺';
+  if(n.includes('esqueleto')||n.includes('zumbi'))return'💀';
+  if(n.includes('vampiro'))return'🧛';
+  if(n.includes('demônio')||n.includes('diabo'))return'😈';
+  if(n.includes('ogro')||n.includes('troll'))return'👹';
+  if(n.includes('bruxa'))return'🧙';
+  return'⚔️';
+}
+
+// ★ Painel de combate
+function addCombatPanel(enemyName,text){
+  const narr=document.getElementById('narr');
+  const icon=enemyIcon(enemyName);
+  const hp=Math.floor(Math.random()*30)+15;
+  const m=document.createElement('div');m.className='msg';
+  m.innerHTML=`
+    <div class="combat-panel">
+      <div class="enemy-bg-emoji">${icon}</div>
+      <div class="combat-header">
+        <div class="combat-badge">ENCONTRO ATIVO</div>
+      </div>
+      <div class="enemy-section">
+        <div class="enemy-icon">${icon}</div>
+        <div class="enemy-info">
+          <div class="enemy-name">${enemyName}</div>
+          <div class="enemy-type">Inimigo Hostil · CR ½</div>
+          <div class="enemy-hp-bar"><div class="enemy-hp-fill" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div class="combat-text">${text}</div>
+    </div>`;
+  narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ★ Processar texto NPC: detecta "NomeNPC: fala" e formata
+function formatNarrative(text){
+  // Detecta padrão NPC: "Nome disse:" ou "—Nome:" ou falas com aspas
+  let formatted=text;
+  // Destaca falas de NPCs entre aspas
+  formatted=formatted.replace(/"([^"]+)"/g,'<span class="npc-speech">"$1"</span>');
+  // Detecta NPC nomeado com dois pontos
+  formatted=formatted.replace(/\b([A-ZÁÉÍÓÚÃÕ][a-záéíóúãõ]+(?:\s[A-ZÁÉÍÓÚÃÕ][a-záéíóúãõ]+)?)(?:,?\s+(?:disse|exclamou|murmurou|gritou|sussurrou|respondeu)):/g,'<span class="npc-name">$1</span>');
+  // Parágrafo com quebras
+  formatted=formatted.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  return formatted;
+}
+
+// ★ addMsg com typewriter
 function addMsg(type,html){
   const narr=document.getElementById('narr');
-  const m=document.createElement('div');
-  m.className='msg '+type;
+  const m=document.createElement('div');m.className='msg '+type;
   if(type==='msg-dm'){
     m.innerHTML=`<div class="lbl">✦ MESTRE IA</div><div class="bbl"></div>`;
-    narr.appendChild(m);
-    // ★ PONTO 3: scroll para início da mensagem
-    m.scrollIntoView({behavior:'smooth',block:'start'});
-    return m; // retorna para preenchimento via typewriter
   } else {
-    m.innerHTML=`<div class="bbl">${html}</div>`;
-    narr.appendChild(m);
-    m.scrollIntoView({behavior:'smooth',block:'start'});
-    return m;
+    m.innerHTML=`<div class="bbl">${html||''}</div>`;
   }
+  narr.appendChild(m);
+  m.scrollIntoView({behavior:'smooth',block:'start'});
+  return m;
 }
 
-// ★ PONTO 3: Efeito typewriter — texto aparece gradualmente, jogador rola para ler
-function typewriterMsg(el, text){
-  const bbl=el.querySelector('.bbl');
-  if(!bbl)return;
-  const words=text.split(' ');
-  let i=0;
-  bbl.innerHTML='';
-  const interval=setInterval(()=>{
-    if(i>=words.length){clearInterval(interval);return;}
-    bbl.innerHTML+=words[i]+' ';
-    i++;
-    // Não força scroll — jogador lê do início
-  },28);
+function typewriterMsg(el,text){
+  const bbl=el.querySelector('.bbl');if(!bbl)return;
+  const words=text.split(' ');let i=0;bbl.innerHTML='';
+  const iv=setInterval(()=>{
+    if(i>=words.length){clearInterval(iv);return;}
+    bbl.innerHTML+=words[i]+' ';i++;
+  },25);
 }
 
-// ★ Extrai ações sugeridas do texto do Mestre
 function extractActions(text){
-  const match=text.match(/\[AÇÕES:\s*([^\]]+)\]/);
-  if(!match)return null;
-  return match[1].split('|').map(a=>a.trim()).filter(Boolean);
+  const m=text.match(/\[AÇÕES:\s*([^\]]+)\]/);
+  return m?m[1].split('|').map(a=>a.trim()).filter(Boolean):null;
 }
 
-// ★ Atualiza botões de ação dinamicamente
-const actionIcons=['⚔️','🛡️','💬','🏹','🔍','🏃','🗡️','🌿','✨','🤝','🔓','👁️','🎵','💥','🚪'];
+function extractGoldChange(text){
+  // Detecta ganho/perda de ouro na narrativa
+  const gain=text.match(/(?:ganha|recebe|encontra)\s+(\d+)\s*(?:peças de ouro|gp|ouro)/i);
+  const lose=text.match(/(?:paga|gasta|perde)\s+(\d+)\s*(?:peças de ouro|gp|ouro)/i);
+  if(gain)return +parseInt(gain[1]);
+  if(lose)return -parseInt(lose[1]);
+  return 0;
+}
+
+function extractHPChange(text){
+  const dmg=text.match(/(?:sofre|recebe|toma)\s+(\d+)\s*(?:pontos de dano|de dano|dano)/i);
+  const heal=text.match(/(?:recupera|cura)\s+(\d+)\s*(?:pontos de vida|pv|de vida)/i);
+  if(dmg)return -parseInt(dmg[1]);
+  if(heal)return +parseInt(heal[1]);
+  return 0;
+}
+
+const actionIcons=['⚔️','🛡️','💬','🏹','🔍','🏃','🗡️','🌿','✨','🤝','🔓','👁️','🎵','💥','🚪','🧪'];
 function updateActionButtons(actions){
-  if(!actions||actions.length===0)return;
+  if(!actions||!actions.length)return;
   const grid=document.getElementById('act-grid');
   const btns=grid.querySelectorAll('.act-btn');
   actions.slice(0,4).forEach((action,i)=>{
     if(btns[i]){
-      const icon=actionIcons[i]||'▶️';
-      btns[i].innerHTML=`<span class="a-icon">${icon}</span><span class="a-title">${action}</span><span class="a-hint">Toque para agir</span>`;
+      btns[i].innerHTML=`<span class="a-icon">${actionIcons[i]||'▶️'}</span><span class="a-title">${action}</span><span class="a-hint">Toque para agir</span>`;
       btns[i].onclick=()=>doAct(action);
       btns[i].className='act-btn suggested';
     }
@@ -794,64 +1010,80 @@ function updateActionButtons(actions){
   document.getElementById('acts-lbl').textContent='— ESCOLHA SUA AÇÃO —';
 }
 
-// ★ SISTEMA PROMPT expandido
+// ★ Detecta se mestre pediu um teste e qual atributo
+function detectPendingRoll(text){
+  const tl=text.toLowerCase();
+  const attrs=['força','destreza','constituição','inteligência','sabedoria','carisma','percepção','atletismo','furtividade'];
+  const attrMap={'força':'str','destreza':'dex','constituição':'con','inteligência':'int','sabedoria':'wis','carisma':'cha','percepção':'wis','atletismo':'str','furtividade':'dex'};
+  const rollMatch=text.match(/role\s+(?:um\s+)?(?:teste\s+de\s+)?([A-Za-zÀ-ú]+)(?:\s+\(CD\s*(\d+)\))?/i);
+  if(rollMatch){
+    const attr=rollMatch[1].toLowerCase();
+    pendingRollAttr=attrMap[attr]||'str';
+    pendingRollCD=rollMatch[2]?parseInt(rollMatch[2]):null;
+  }
+}
+let pendingRollCD=null;
+
 function buildSystemPrompt(){
-  const rp=PROFILES.race[hero.race]||{};
-  const cp=PROFILES.class[hero.cls]||{};
-  const bp=PROFILES.bg[hero.bg]||{};
+  const rp=PROFILES.race[hero.race]||{};const cp=PROFILES.class[hero.cls]||{};const bp=PROFILES.bg[hero.bg]||{};
   const allTags=[...(rp.tags||[]),...(cp.tags||[])].map(t=>t.l).join(', ');
   const allBonuses=[...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean).map(b=>`${b.t}(${b.v})`).join('; ');
   const events=(rp.events||[]).join(', ');
   const atrs=['str','dex','con','int','wis','cha'].map(k=>`${attrNames[k]}:${stats[k]||10}(${modStr(stats[k]||10)})`).join(', ');
-
   let especiais='';
-  if(hero.race==='Tiefling') especiais+='\n- NPCs religiosos desconfiados. Criminosos são receptivos. Mercado negro -10%.';
-  if(hero.race==='Elfo'||hero.race==='Meio-Elfo') especiais+='\n- Informações extras em Percepção.';
-  if(hero.race==='Anão') especiais+='\n- Detecta passagens secretas em pedra.';
-  if(hero.race==='Meio-Orc') especiais+='\n- 1× sobrevive com 1 PV (Inabalável).';
-  if(hero.cls==='Clérigo'||hero.cls==='Paladino') especiais+='\n- Acesso a templos. Mortos-vivos em desvantagem. Eventos divinos frequentes.';
-  if(hero.cls==='Ladino') especiais+='\n- Furtos furtivos. Conhece o submundo.';
-  if(hero.cls==='Druida'||hero.cls==='Ranger') especiais+='\n- Animais não atacam primeiro.';
-  if(hero.cls==='Bárbaro') especiais+='\n- Pode entrar em FÚRIA (+2 dano, resistência, 3×/descanso longo).';
-  if(hero.bg==='Criminoso') especiais+='\n- Conhece receptadores e informantes.';
-  if(hero.bg==='Nobre') especiais+='\n- Guardas e comerciantes respeitosos.';
+  if(hero.race==='Tiefling')especiais+='\n- NPCs religiosos desconfiados. Criminosos receptivos. Mercado negro -10%.';
+  if(hero.race==='Elfo'||hero.race==='Meio-Elfo')especiais+='\n- Informações extras em Percepção.';
+  if(hero.race==='Anão')especiais+='\n- Detecta passagens secretas em pedra.';
+  if(hero.race==='Meio-Orc')especiais+='\n- 1× sobrevive com 1 PV.';
+  if(hero.cls==='Clérigo'||hero.cls==='Paladino')especiais+='\n- Acesso a templos. Mortos-vivos em desvantagem.';
+  if(hero.cls==='Ladino')especiais+='\n- Furtos furtivos. Conhece submundo.';
+  if(hero.cls==='Druida'||hero.cls==='Ranger')especiais+='\n- Animais não atacam primeiro.';
+  if(hero.cls==='Bárbaro')especiais+='\n- Pode entrar em FÚRIA (+2 dano, resistência, 3×/desc longo).';
+  if(hero.bg==='Criminoso')especiais+='\n- Conhece receptadores e informantes.';
+  if(hero.bg==='Nobre')especiais+='\n- Guardas e comerciantes respeitosos.';
 
   return `Você é o Mestre de Dungeons do AiMaster — RPG solo D&D 5e. Responda APENAS como Mestre, em português brasileiro, tom épico e imersivo.
 
 PERSONAGEM: ${hero.name} | ${hero.race} ${hero.cls} | ${hero.bg} | ${hero.align}
-PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | Ouro: ${hero.gold}gp | Rep: ${hero.rep||0}pts
+PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | Ouro: ${hero.gold}gp | Rep: ${hero.rep||0}pts | Nível: ${hero.level||1}
 Atributos: ${atrs}
 
-PERFIL ATIVO:
-Traços: ${allTags}
-Bônus: ${allBonuses}
-Eventos prioritários: ${events||'aventura geral'}
+PERFIL ATIVO: Traços: ${allTags} | Bônus: ${allBonuses} | Eventos: ${events||'geral'}
 Essência: ${rp.flavor||''}, ${cp.flavor||''}
-
-REGRAS ESPECIAIS DESTE PERSONAGEM:${especiais}
+REGRAS ESPECIAIS:${especiais}
 
 MISSÃO ATUAL: Recuperar o Amuleto do Amanhecer nas ruínas do Templo Esquecido, 3 dias de Millhaven.
 
 NARRATIVA E INTERPRETAÇÃO:
-- Assuma a interpretação dos NPCs com personalidade e voz própria.
-- Conduza com improviso total baseado nas decisões do jogador, classificação 16 anos (temas maduros, consequências reais).
-- Embora exista história principal, mantenha o mundo aberto para caminhos alternativos.
-- Liberdade total para criar a crônica, reinos, alianças e políticas usando materiais oficiais D&D 5e.
+- Assuma NPCs com personalidade e voz própria. Quando um NPC falar, use o formato: NomeNPC disse: "fala aqui" ou —NomeNPC: "fala"
+- Conduza com improviso total baseado nas decisões, classificação 16 anos (temas maduros, consequências reais).
+- Mundo aberto para caminhos alternativos. Liberdade total para criar crônica, reinos, alianças e políticas usando D&D 5e.
+- Use descrições sensoriais ricas: cheiros, sons, texturas, temperatura.
 
-COERÊNCIA DO MUNDO (ANTI-ALUCINAÇÃO):
-- PROIBIDO teleportar o jogador sem justificativa narrativa.
-- PROIBIDO resolver conflitos abertos (combate, prisão, missão) sem jogar até o fim.
-- PROIBIDO introduzir mudanças de cena abruptas sem transição narrativa.
-- SEMPRE mantenha continuidade: lembre eventos anteriores e personagens já introduzidos.
-- Se o jogador tentar algo impossível ou quebrar imersão, redirecione narrativamente.
+ANTI-ALUCINAÇÃO (COERÊNCIA ABSOLUTA):
+- PROIBIDO teleportar o jogador sem justificativa narrativa real.
+- PROIBIDO resolver conflitos abertos (combate, prisão) abruptamente.
+- PROIBIDO mudar de cena sem transição narrativa.
+- SEMPRE mantenha continuidade dos eventos e personagens já introduzidos.
+- Se o jogador tentar algo impossível, redirecione narrativamente com consequências.
+- O ouro, PV e status do personagem são sagrados — mencione mudanças explicitamente.
+
+QUANDO HOUVER INIMIGO:
+- Inclua no início: [COMBATE: NomeDoInimigo]
+- Descreva o inimigo com detalhes visuais ameaçadores.
+
+QUANDO OURO MUDAR:
+- Mencione explicitamente "ganha X GP" ou "paga X GP" na narrativa.
+
+QUANDO XP FOR CONCEDIDO:
+- Inclua no final: [XP: quantidade]
 
 DIRETRIZES:
-- Narre em 3-4 parágrafos curtos, vívidos, imersivos.
-- APLIQUE os traços do perfil — raça/classe/antecedente influenciam TUDO.
-- Testes: d20+modificador vs CD. Informe qual atributo e CD.
+- Narre em 3-4 parágrafos. Use Inter/sans-serif mental — frases claras e diretas.
+- Testes: informe o atributo e CD: "Role [Atributo] (CD X)"
 - Mercador: Sobrevivência CD ${merchantCD}.
-- Ao final de CADA resposta, sugira 4 ações no formato exato:
-[AÇÕES: Ação curta 1 | Ação curta 2 | Ação curta 3 | Ação curta 4]`;
+- AO FINAL de CADA resposta, inclua:
+[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`;
 }
 
 async function askMaster(acao){
@@ -874,9 +1106,8 @@ async function askMaster(acao){
     if(!res.ok){
       const err=await res.json().catch(()=>({}));
       setThinking(false);
-      const errMsg=res.status===401?'🔑 Chave inválida. Verifique em 🔑 API.':res.status===429?'⏳ Limite atingido. Aguarde e tente novamente.':'❌ Erro '+res.status+': '+(err?.error?.message||'');
-      const m=addMsg('msg-dm','');
-      typewriterMsg(m,errMsg);
+      const errMsg=res.status===401?'🔑 Chave inválida. Toque em 🔑 API.':res.status===429?'⏳ Limite atingido. Aguarde.':'❌ Erro '+res.status;
+      const m=addMsg('msg-dm','');typewriterMsg(m,errMsg);
       gameHistory.pop();return;
     }
     const data=await res.json();
@@ -884,40 +1115,51 @@ async function askMaster(acao){
     if(data.content&&data.content[0]&&data.content[0].text){
       const reply=data.content[0].text;
       gameHistory.push({role:'assistant',content:reply});
-      // Extrai ações e remove do texto
+      // Extrai tags especiais
       const actions=extractActions(reply);
-      const cleanText=reply.replace(/\[AÇÕES:[^\]]+\]/,'').trim();
-      // ★ PONTO 1 & 3: mensagem com typewriter
-      const m=addMsg('msg-dm','');
-      const formatted=cleanText.replace(/\n\n/g,'\n\n').replace(/\n/g,'\n');
-      typewriterMsg(m,formatted);
-      // ★ PONTO 2: atualiza botões dinamicamente
-      if(actions) updateActionButtons(actions);
+      const enemyName=detectCombat(reply);
+      // XP
+      const xpMatch=reply.match(/\[XP:\s*(\d+)\]/);
+      if(xpMatch)gainXP(parseInt(xpMatch[1]));
+      // Ouro
+      const goldDelta=extractGoldChange(reply);
+      if(goldDelta!==0){hero.gold=Math.max(0,hero.gold+goldDelta);updateVitals();}
+      // HP
+      const hpDelta=extractHPChange(reply);
+      if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
+      // Pendente roll
+      detectPendingRoll(reply);
+      // Limpa tags do texto
+      const cleanText=reply.replace(/\[AÇÕES:[^\]]+\]/,'').replace(/\[COMBATE:[^\]]+\]/,'').replace(/\[XP:\s*\d+\]/,'').trim();
+      const formatted=formatNarrative(cleanText);
+      // Exibe
+      if(enemyName){
+        addCombatPanel(enemyName,formatted);
+      } else {
+        const m=addMsg('msg-dm','');
+        typewriterMsg(m,formatted);
+      }
+      if(actions)updateActionButtons(actions);
     } else {
-      const m=addMsg('msg-dm','');
-      typewriterMsg(m,'O Mestre hesita nas sombras... Tente uma ação diferente.');
+      const m=addMsg('msg-dm','');typewriterMsg(m,'O Mestre hesita... Tente novamente.');
       gameHistory.pop();
     }
   }catch(e){
     setThinking(false);
-    const m=addMsg('msg-dm','');
-    typewriterMsg(m,'🌐 Falha na conexão. Verifique sua internet e tente novamente.');
+    const m=addMsg('msg-dm','');typewriterMsg(m,'🌐 Sem conexão. Verifique internet.');
     gameHistory.pop();
   }
 }
 
 function doAct(acao){
   if(thinking)return;
-  const m=addMsg('msg-pl','');
-  m.querySelector('.bbl').textContent='> '+acao;
+  const m=addMsg('msg-pl','');m.querySelector('.bbl').textContent='> '+acao;
   if(acao.toLowerCase().includes('mercador')){
-    const dr=rollD(20);
-    const wm=mod(stats.wis||10);
-    const tot=dr+wm;
-    const ok=tot>=merchantCD;
-    addRollCard('SOBREVIVÊNCIA',dr,wm,modStr(wm),tot,merchantCD);
-    if(!ok&&merchantCD<25) merchantCD=merchantCD===12?17:25;
-    askMaster(`Procurou Mercador. Sobrevivência: ${ok?'SUCESSO':'FALHA'} (${tot} vs CD ${merchantCD}). Narre considerando o perfil.`);
+    const dr=rollD(20);const wm=mod(stats.wis||10);const tot=dr+wm;const ok=tot>=merchantCD;
+    addRollCard('SOBREVIVÊNCIA',dr,wm,tot,merchantCD);
+    if(!ok&&merchantCD<25)merchantCD=merchantCD===12?17:25;
+    document.getElementById('merch-hint').textContent=merchantCD;
+    askMaster(`Procurou Mercador. Sobrevivência: ${ok?'SUCESSO':'FALHA'} (${tot} vs CD ${merchantCD}).`);
   } else {
     askMaster(acao);
   }
@@ -925,29 +1167,25 @@ function doAct(acao){
 
 function sendFree(){
   if(thinking)return;
-  const inp=document.getElementById('free-in');
-  const txt=inp.value.trim();if(!txt)return;
+  const inp=document.getElementById('free-in');const txt=inp.value.trim();if(!txt)return;
   inp.value='';
-  const m=addMsg('msg-pl','');
-  m.querySelector('.bbl').textContent='> '+txt;
+  const m=addMsg('msg-pl','');m.querySelector('.bbl').textContent='> '+txt;
   askMaster(txt);
 }
 
-// ★ Descanso
 function doRest(tipo){
   closeMo('mo-rest');
   if(tipo==='curto'){
-    const hdVal=classHP[hero.cls]||8;
-    const roll=rollD(hdVal);
-    const total=Math.min(hero.maxHP,hero.hp+roll+mod(stats.con||10));
-    addRollCard('DADO DE VIDA',roll,mod(stats.con||10),modStr(mod(stats.con||10)),total,null);
-    hero.hp=total;updateVitals();
-    askMaster('O personagem descansou por 1 hora (descanso curto). Recuperou '+total+' PV. Narre o descanso e o que acontece ao redor.');
+    const hd=classHP[hero.cls]||8;const r=rollD(hd);const heal=r+mod(stats.con||10);
+    const newHP=Math.min(hero.maxHP,hero.hp+Math.max(1,heal));
+    addRollCard('DADO DE VIDA',r,mod(stats.con||10),newHP,null);
+    hero.hp=newHP;updateVitals();
+    askMaster(`O personagem descansou 1h (curto). Recuperou até ${newHP} PV. Narre o descanso.`);
   } else {
     hero.hp=hero.maxHP;hero.mp=hero.maxMP;merchantCD=12;
     document.getElementById('merch-hint').textContent=merchantCD;
     updateVitals();
-    askMaster('O personagem descansou longamente por 8 horas (descanso longo). Recuperou todos os PV e feitiços. Narre o descanso, sonhos ou eventos da noite.');
+    askMaster('O personagem descansou longamente 8h (longo). PV e feitiços recuperados. Narre a noite.');
   }
 }
 
@@ -955,39 +1193,57 @@ function doRest(tipo){
 function buildD20Attrs(){
   const keys=['str','dex','con','int','wis','cha'];
   document.getElementById('d20-attrs').innerHTML=keys.map(k=>`
-    <div class="d20-attr${k===d20SelectedAttr?' sel':''}" onclick="selectD20Attr('${k}')">
+    <div class="d20-attr${k===d20SelectedAttr?' sel':''}" onclick="selectD20Attr('${k}',this)">
       <div class="an">${attrLabels[k]}</div>
       <div class="av">${stats[k]||10}</div>
       <div class="am">${modStr(stats[k]||10)}</div>
     </div>`).join('');
 }
-function selectD20Attr(k){
+
+function selectD20Attr(k,el){
   d20SelectedAttr=k;
-  document.querySelectorAll('.d20-attr').forEach(el=>el.classList.remove('sel'));
-  event.currentTarget.classList.add('sel');
+  document.querySelectorAll('.d20-attr').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
 }
+
 async function rollD20Modal(){
-  const face=document.getElementById('d20-face');
+  const svgNum=document.getElementById('d20-svg-num');
   const resultTxt=document.getElementById('d20-result-txt');
-  face.classList.add('spinning');
-  // Animação de números
-  let anim=setInterval(()=>{face.textContent=Math.ceil(Math.random()*20);},60);
-  await new Promise(r=>setTimeout(r,450));
+  const svg=document.getElementById('d20-big-svg');
+  svg.style.animation='none';svg.style.transition='transform .5s';
+  // Animação visual
+  let anim=setInterval(()=>{svgNum.textContent=rollD(20);svgNum.style.fill=`hsl(${Math.random()*60+30},80%,60%)`;},50);
+  svg.style.transform='rotate(360deg) scale(1.1)';
+  await new Promise(r=>setTimeout(r,500));
   clearInterval(anim);
-  face.classList.remove('spinning');
+  svg.style.transform='scale(1)';
+  // Resultado real
   const dr=rollD(20);
-  const m=mod(stats[d20SelectedAttr]||10);
+  // Usa atributo pedido pelo mestre se houver, senão usa selecionado
+  const attr=pendingRollAttr||d20SelectedAttr;
+  const m=mod(stats[attr]||10);
   const total=dr+m;
-  face.textContent=total;
-  face.className=dr===20?'d20-big crit-color':dr===1?'d20-big fail-color':'d20-big';
-  const label=`${attrLabels[d20SelectedAttr]} · d20(${dr}) ${modStr(m)} = ${total}`;
-  resultTxt.textContent=label;
-  // Adiciona no narr
+  const cd=pendingRollCD;
+  svgNum.textContent=total;
+  svgNum.style.fill=dr===20?'#2ECC71':dr===1?'#E74C3C':'#E8B84B';
+  const outcomeStr=cd?(total>=cd?'✓ SUCESSO':'✗ FALHA'):dr===20?'★ CRÍTICO!':dr===1?'✗ FALHA CRÍTICA':'';
+  resultTxt.textContent=`${attrLabels[attr]}: d20(${dr}) ${modStr(m)} = ${total} ${outcomeStr}`;
+  pendingRollAttr=null;pendingRollCD=null;
+  // Fecha e adiciona no narr após 1s
   setTimeout(()=>{
     closeMo('mo-d20');
-    addRollCard(attrLabels[d20SelectedAttr],dr,m,modStr(m),total,null);
-    askMaster(`O jogador rolou um teste de ${attrNames[d20SelectedAttr]}: d20(${dr}) ${modStr(m)} = ${total}. Aplique o resultado na narrativa atual.`);
-  },800);
+    addRollCard(attrLabels[attr],dr,m,total,cd);
+    askMaster(`Jogador rolou teste de ${attrNames[attr]}: d20(${dr}) ${modStr(m)} = ${total}${cd?` vs CD ${cd}`:''} — ${total>=(cd||0)?'SUCESSO':'FALHA'}. Aplique o resultado na narrativa e continue.`);
+  },900);
+}
+
+// Abas da ficha
+function switchTab(id){
+  document.querySelectorAll('.sheet-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx=['tab-stats','tab-inv','tab-spells'].indexOf(id);
+  document.querySelectorAll('.stab')[idx].classList.add('active');
 }
 
 function saveApiKey(){
@@ -1002,17 +1258,15 @@ function saveApiKey(){
 function updateVitalsAndRep(){
   updateVitals();
   const rep=hero.rep||0;
-  document.getElementById('rep-display').textContent=`${rep} pontos`;
-  const pct=Math.min(100,(rep/100)*100);
-  document.getElementById('rep-fill').style.width=pct+'%';
+  document.getElementById('rep-display').textContent=`${rep} pts`;
+  document.getElementById('rep-fill').style.width=Math.min(100,(rep/100)*100)+'%';
   ['rt0','rt1','rt2','rt3'].forEach((id,i)=>{
     document.getElementById(id).className='rt'+([0,100,500,1500][i]<=rep?' active':'');
   });
 }
 
 function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
 }
 
@@ -1020,6 +1274,7 @@ function openMo(id){
   if(id==='mo-rep')updateVitalsAndRep();
   if(id==='mo-api'){const k=localStorage.getItem('aimaster_api_key')||'';if(k)document.getElementById('api-status').textContent='✅ Chave configurada';}
   if(id==='mo-d20')buildD20Attrs();
+  if(id==='mo-xp')updateXPModal();
   document.getElementById(id).classList.add('open');
 }
 function closeMo(id){document.getElementById(id).classList.remove('open');}
@@ -1028,11 +1283,7 @@ document.getElementById('free-in').addEventListener('keydown',e=>{if(e.key==='En
 updatePreview();
 </script>
 <script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('sw.js').catch(()=>{});
-  });
-}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 </script>
 </body>
 </html>
