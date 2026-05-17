@@ -51,7 +51,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 /* ══ CHAR ══ */
 #s-char{background:linear-gradient(180deg,#160E04 0%,var(--bg2) 10%);}
 .screen-hdr{background:linear-gradient(180deg,#120A02,var(--bg3));padding:14px 18px 12px;flex-shrink:0;border-bottom:1px solid var(--border);}
-.sec-hdr{font-family:var(--font-title);font-size:11px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.sec-hdr{font-family:var(--font-title);font-size:11px;color:var(--gold-l);letter-spacing:2.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px;text-shadow:0 0 8px rgba(200,146,42,0.3);}
 .screen-body{flex:1;overflow-y:auto;padding:14px 16px 20px;display:flex;flex-direction:column;gap:12px;}
 .char-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .cf{display:flex;flex-direction:column;gap:4px;}
@@ -99,7 +99,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 /* Scene header */
 .hdr-scene{width:100%;height:80px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#060B02,#0C1A08 50%,#152008);}
 .moon{position:absolute;top:10px;right:40px;width:20px;height:20px;background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);border-radius:50%;box-shadow:0 0 14px rgba(220,200,100,0.4);}
-.ia-badge{position:absolute;top:8px;right:14px;background:rgba(0,0,0,0.4);border:1px solid rgba(46,204,113,0.3);border-radius:20px;padding:3px 10px;font-size:10px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:5px;}
+.ia-badge{position:absolute;top:8px;left:14px;background:rgba(0,0,0,0.4);border:1px solid rgba(46,204,113,0.3);border-radius:20px;padding:3px 10px;font-size:10px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:5px;}
 .ia-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
 .ia-dot.thinking{background:#F39C12;animation:blink .4s infinite;}
 #ia-lbl{color:var(--green);}
@@ -115,17 +115,17 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .xp-label{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gold-l);font-family:var(--font-title);white-space:nowrap;letter-spacing:.5px;font-weight:600;text-shadow:0 0 6px rgba(200,146,42,0.4);}
 .char-info{flex:1;min-width:0;}
 .c-name{font-family:var(--font-title);font-size:13px;font-weight:600;color:var(--gold-l);line-height:1.15;}
-.c-meta{font-size:10px;color:var(--gold-d);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-title);margin-bottom:4px;}
+.c-meta{font-size:10px;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-title);margin-bottom:4px;opacity:0.9;}
 .bars{display:flex;flex-direction:column;gap:4px;}
 .bar-row{display:flex;align-items:center;gap:6px;}
-.bar-lbl{font-size:9px;color:var(--parch-dim);font-family:var(--font-title);letter-spacing:1px;width:16px;flex-shrink:0;}
+.bar-lbl{font-size:9px;color:var(--parch-d);font-family:var(--font-title);letter-spacing:1px;width:16px;flex-shrink:0;}
 .bar-track{flex:1;height:6px;background:rgba(0,0,0,.6);border-radius:3px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:3px;transition:width .7s;}
 .bar-fill.hp{background:linear-gradient(90deg,var(--hp),var(--hp-l));}
 .bar-fill.mp{background:linear-gradient(90deg,var(--mp),var(--mp-l));}
 .bar-val{font-size:10px;color:var(--parch-dim);min-width:30px;text-align:right;}
 .mini-stats{display:flex;gap:10px;margin-top:4px;}
-.mstat{font-size:10px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:.5px;}
+.mstat{font-size:10px;color:var(--gold);font-family:var(--font-title);letter-spacing:.5px;font-weight:600;}
 .mstat span{color:var(--parch-d);font-weight:600;}
 /* Gold pill top right */
 .gold-pill{display:flex;align-items:center;gap:4px;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.22);border-radius:20px;padding:4px 10px;font-size:13px;color:var(--gold-l);font-weight:600;flex-shrink:0;cursor:default;}
@@ -139,7 +139,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
 /* Mensagem DM */
-.msg-dm .lbl{font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:2px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.msg-dm .lbl{font-family:var(--font-title);font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
 .msg-dm .lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,146,42,.2),transparent);}
 .msg-dm .bbl{
   background:rgba(20,14,6,.88);
@@ -251,7 +251,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .act-btn:hover .a-circle{background:rgba(200,146,42,.2);border-color:rgba(200,146,42,.6);}
 .a-text{flex:1;min-width:0;}
 .a-title{font-family:var(--font-narr);font-size:15px;color:var(--parch);display:block;font-weight:500;line-height:1.2;}
-.a-hint{font-size:10px;color:var(--gold-d);display:block;margin-top:2px;font-family:var(--font-title);letter-spacing:.5px;text-transform:uppercase;}
+.a-hint{font-size:10px;color:var(--gold);display:block;margin-top:2px;font-family:var(--font-title);letter-spacing:.5px;text-transform:uppercase;opacity:0.85;}
 .a-arrow{font-size:13px;color:var(--gold-dim);flex-shrink:0;}
 .free-row{display:flex;gap:7px;align-items:center;}
 .free-in{flex:1;background:rgba(26,18,8,.8);border:1px solid rgba(200,146,42,.2);border-radius:8px;padding:10px 13px;color:var(--parch);font-family:var(--font-narr);font-size:16px;outline:none;}
@@ -363,6 +363,20 @@ body{font-family:var(--font-narr);color:var(--parch);}
 /* Toast */
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--gold-d);border-radius:8px;padding:10px 20px;font-family:var(--font-title);font-size:12px;color:var(--gold);z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
+
+/* ★ Ficha completa de atributos com salvaguardas */
+.stat-full-card{background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:8px 6px;text-align:center;display:flex;flex-direction:column;gap:3px;}
+.sfc-top{display:flex;flex-direction:column;align-items:center;}
+.sfc-name{font-size:9px;color:var(--gold-l);letter-spacing:1.5px;font-family:var(--font-title);font-weight:600;}
+.sfc-val{font-size:22px;font-weight:700;color:var(--parch);line-height:1.1;}
+.sfc-mod{font-size:13px;color:var(--gold);font-weight:600;}
+.sfc-save{font-size:10px;color:var(--parch-dim);display:flex;align-items:center;justify-content:center;gap:4px;font-family:var(--font-title);letter-spacing:.5px;padding-top:3px;border-top:1px solid rgba(200,146,42,.12);}
+.sfc-save-prof{color:var(--gold);}
+.sfc-save-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dot-prof{background:var(--gold);}
+.dot-empty{background:rgba(200,146,42,.2);border:1px solid rgba(200,146,42,.3);}
+/* Racial bonus tag */
+.racial-bonus-tag{display:inline-block;background:rgba(0,180,80,.15);border:1px solid rgba(0,180,80,.3);border-radius:12px;padding:2px 8px;font-size:10px;color:#60D090;font-family:var(--font-title);letter-spacing:.5px;margin-top:2px;}
 </style>
 </head>
 <body>
@@ -688,6 +702,71 @@ body{font-family:var(--font-narr);color:var(--parch);}
 <script>
 // ══ DADOS DE PERFIS ══
 
+
+// ══ BÔNUS RACIAIS DE ATRIBUTO (D&D 5e SRD oficial) ══
+const RACIAL_STAT_BONUS={
+  Humano:    {str:1,dex:1,con:1,int:1,wis:1,cha:1},     // +1 em tudo
+  Elfo:      {dex:2,wis:1},                               // +2 DES, +1 SAB
+  'Meio-Elfo':{cha:2, escolha1:1, escolha2:1},            // +2 CAR, +1 em 2 à escolha (aplicamos STR+CON)
+  Anão:      {con:2,wis:1},                               // +2 CON, +1 SAB
+  Halfling:  {dex:2},                                     // +2 DES
+  Gnomo:     {int:2,con:1},                               // +2 INT, +1 CON
+  'Meio-Orc':{str:2,con:1},                               // +2 FOR, +1 CON
+  Tiefling:  {int:1,cha:2},                               // +1 INT, +2 CAR
+  Draconato: {str:2,cha:1},                               // +2 FOR, +1 CAR
+};
+
+// Proficiency Bonus por nível
+const PROF_BONUS=[0,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6];
+
+// Habilidades e salvaguardas por classe (proficiências)
+const CLASS_SAVES={
+  Guerreiro:['str','con'], Mago:['int','wis'], Ladino:['dex','int'],
+  Clérigo:['wis','cha'], Bardo:['dex','cha'], Paladino:['wis','cha'],
+  Druida:['int','wis'], Ranger:['str','dex'], Bárbaro:['str','con'],
+  Feiticeiro:['con','cha']
+};
+
+// Aplica bônus raciais nos stats e retorna stats finais
+function applyRacialBonuses(baseStats, race){
+  const bonus = RACIAL_STAT_BONUS[race] || {};
+  const final = {...baseStats};
+  for(const [k,v] of Object.entries(bonus)){
+    if(k==='escolha1'){ final.str=(final.str||10)+v; continue; }
+    if(k==='escolha2'){ final.con=(final.con||10)+v; continue; }
+    if(final[k]!==undefined) final[k]=(final[k]||10)+v;
+  }
+  return final;
+}
+
+// Gera HTML detalhado da ficha de atributos com salvaguardas
+function buildFullStatBlock(finalStats, cls, level){
+  const pb = PROF_BONUS[Math.min(level,20)] || 2;
+  const saves = CLASS_SAVES[cls] || [];
+  const keys = ['str','dex','con','int','wis','cha'];
+  const labels = {str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
+  const fullnames = {str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
+  return keys.map(k=>{
+    const val = finalStats[k]||10;
+    const m = mod(val);
+    const mStr = (m>=0?'+':'')+m;
+    const saveBonus = saves.includes(k) ? m+pb : m;
+    const savStr = (saveBonus>=0?'+':'')+saveBonus;
+    const hasSave = saves.includes(k);
+    return `<div class="stat-full-card">
+      <div class="sfc-top">
+        <div class="sfc-name">${labels[k]}</div>
+        <div class="sfc-val">${val}</div>
+        <div class="sfc-mod">${mStr}</div>
+      </div>
+      <div class="sfc-save ${hasSave?'sfc-save-prof':''}">
+        <span class="sfc-save-dot ${hasSave?'dot-prof':'dot-empty'}"></span>
+        <span>Salv. ${savStr}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 // ═══ POOL DE MISSÕES PRINCIPAIS (rotaciona a cada personagem) ═══
 const QUESTS=[
   {title:"O Amuleto do Amanhecer",hook:"Recupere o Amuleto do Amanhecer nas ruínas do Templo Esquecido, 3 dias de Millhaven. O artefato mantém o equilíbrio entre luz e trevas.",location:"Millhaven / Templo Esquecido"},
@@ -832,6 +911,9 @@ function startAdventure(){
   const bg=document.getElementById('inp-bg').value;
   const align=document.getElementById('inp-align').value;
   if(!Object.keys(stats).length){['str','dex','con','int','wis','cha'].forEach(k=>{stats[k]=roll4d6drop();});}
+  // ★ Aplica bônus raciais nos atributos base
+  const finalStats = applyRacialBonuses(stats, race);
+  stats = finalStats; // stats agora inclui bônus raciais
   const maxHP=Math.max(1,(classHP[cls]||8)+mod(stats.con||10));
   const maxMP=classMP[cls]||0;
   const ca=10+mod(stats.dex||10);
@@ -851,6 +933,13 @@ function startAdventure(){
   document.getElementById('f-str').textContent=modStr(stats.str||10);
   document.getElementById('f-dex').textContent=modStr(stats.dex||10);
   document.getElementById('f-wis').textContent=modStr(stats.wis||10);
+  // Atualiza display dos atributos na tela de criação com bônus racial
+  ['str','dex','con','int','wis','cha'].forEach(k=>{
+    const el=document.getElementById('s-'+k);
+    const mel=document.getElementById('m-'+k);
+    if(el) el.textContent=stats[k]||10;
+    if(mel) mel.textContent=modStr(stats[k]||10);
+  });
   document.getElementById('merch-hint').textContent=merchantCD;
   document.getElementById('inv-weapon').textContent=cls==='Mago'?'Cajado':'cls'==='Ranger'?'Arco Longo':'Espada Longa';
   // Arma por classe
@@ -861,10 +950,16 @@ function startAdventure(){
   document.getElementById('sh-cl').textContent=`${race} · ${cls}`;
   document.getElementById('sh-ca').textContent=ca;
   document.getElementById('sh-hp').textContent=maxHP;
-  document.getElementById('sh-stats').innerHTML=['str','dex','con','int','wis','cha'].map(k=>`<div class="sb"><div class="sn">${attrLabels[k]}</div><div class="sv">${stats[k]||10}</div><div class="sm">${modStr(stats[k]||10)}</div></div>`).join('');
+  // Mostra stats com bônus raciais + salvaguardas na ficha
+  document.getElementById('sh-stats').innerHTML = buildFullStatBlock(stats, cls, hero.level||1);
   const rp=PROFILES.race[race]||{};const cp=PROFILES.class[cls]||{};const bp=PROFILES.bg[bg]||{};
   document.getElementById('sh-profile-tags').innerHTML=[...(rp.tags||[]),...(cp.tags||[])].map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
-  document.getElementById('sh-profile-bonuses').innerHTML=[...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean).map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
+  // Bônus raciais de atributo
+  const racialBonusObj=RACIAL_STAT_BONUS[race]||{};
+  const racialBonusList=Object.entries(racialBonusObj).filter(([k])=>!k.startsWith('escolha')).map(([k,v])=>`<span class="racial-bonus-tag">${attrLabels[k]||k} +${v}</span>`).join('');
+  document.getElementById('sh-profile-bonuses').innerHTML=
+    (racialBonusList?`<div style="margin-bottom:6px"><div style="font-size:10px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:1px;margin-bottom:4px">BÔNUS RACIAL</div>${racialBonusList}</div>`:'') +
+    [...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean).map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
   // Magias
   const spells=(cp.spells||[]);
   if(spells.length>0){
@@ -945,7 +1040,8 @@ function setThinking(v){
   const dot=document.getElementById('ia-dot');const lbl=document.getElementById('ia-lbl');
   dot.className='ia-dot'+(v?' thinking':'');
   lbl.textContent=v?'PENSANDO...':'IA ATIVA';lbl.className=v?'thinking-txt':'';
-  ['ab1','ab2','ab3','ab4'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=v;});
+  // Desabilita todos os botões de ação (incluindo dinâmicos)
+  document.querySelectorAll('#act-grid .act-btn').forEach(el=>el.disabled=v);
   document.getElementById('free-in').disabled=v;
   document.getElementById('free-send').disabled=v;
 }
@@ -1012,16 +1108,18 @@ function addCombatPanel(enemyName,text){
   narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ★ formatNarrative - converte quebras de linha, sem injeção de HTML
+// ★ formatNarrative — texto puro, sem injeção de HTML
 function formatNarrative(text){
-  // Escapa HTML para evitar injeção acidental de tags
-  let safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // Quebras de linha viram <br>
-  safe=safe.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-  // Destaca falas entre aspas com cor diferente (sem span com class que vaza)
-  safe=safe.replace(/"([^"]+)"/g,'<em style="color:#D4C8F8;font-style:normal">"$1"</em>');
-  // Destaca travessão de diálogo NPC — Texto
-  safe=safe.replace(/—([^<\n]{1,60}?)(?:<br>|$)/g,'<span style="color:#C0A0FF;font-style:italic">— $1</span><br>');
+  // 1. Escapa TODO html do texto recebido da IA
+  let safe = text
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+  // 2. Quebras de linha → <br>
+  safe = safe.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  // 3. Aspas simples são mantidas como texto — sem styling inline
+  // (estilização de NPC é feita no CSS do .bbl)
   return safe;
 }
 
@@ -1145,7 +1243,13 @@ function buildSystemPrompt(){
   const allTags=[...(rp.tags||[]),...(cp.tags||[])].map(t=>t.l).join(', ');
   const allBonuses=[...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean).map(b=>`${b.t}(${b.v})`).join('; ');
   const events=(rp.events||[]).join(', ');
-  const atrs=['str','dex','con','int','wis','cha'].map(k=>`${attrNames[k]}:${stats[k]||10}(${modStr(stats[k]||10)})`).join(', ');
+  const pb=PROF_BONUS[Math.min(hero.level||1,20)]||2;
+  const saves=CLASS_SAVES[hero.cls]||[];
+  const atrs=['str','dex','con','int','wis','cha'].map(k=>{
+    const v=stats[k]||10;const m=mod(v);
+    const sv=saves.includes(k)?m+pb:m;
+    return `${attrNames[k]}:${v}(${modStr(v)},Salv:${sv>=0?'+'+sv:sv})`;
+  }).join(', ');
   let especiais='';
   if(hero.race==='Tiefling')especiais+='\n- NPCs religiosos desconfiados. Criminosos receptivos. Mercado negro -10%.';
   if(hero.race==='Elfo'||hero.race==='Meio-Elfo')especiais+='\n- Informações extras em Percepção.';
