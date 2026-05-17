@@ -218,21 +218,41 @@ body{font-family:var(--font-narr);color:var(--parch);}
 /* ★ AÇÕES */
 .actions-wrap{background:linear-gradient(180deg,rgba(26,18,8,.98),var(--bg3));border-top:1px solid var(--border);padding:8px 12px 6px;flex-shrink:0;}
 .acts-lbl{font-family:var(--font-title);font-size:9px;color:var(--gold-dim);letter-spacing:2px;text-align:center;margin-bottom:6px;}
-.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;}
+.act-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
 .act-btn{
-  background:linear-gradient(135deg,rgba(26,18,8,.9),rgba(42,30,14,.8));
-  border:1px solid rgba(200,146,42,.2);
-  border-radius:12px;padding:10px 8px 9px;
-  cursor:pointer;text-align:center;color:var(--parch);
-  transition:all .18s;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(22,14,4,.95),rgba(38,26,10,.9));
+  border:1px solid var(--gold-dim);
+  border-left:3px solid var(--gold-d);
+  border-radius:10px;
+  padding:9px 12px;
+  cursor:pointer;
+  text-align:left;
+  color:var(--parch);
+  display:flex;align-items:center;gap:12px;
+  transition:all .18s;
+  position:relative;overflow:hidden;
+  width:100%;
 }
-.act-btn:hover{border-color:var(--gold-d);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.5);}
-.act-btn:active{transform:translateY(0);}
+.act-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(200,146,42,.06),transparent);opacity:0;transition:opacity .2s;}
+.act-btn:hover{border-left-color:var(--gold-l);transform:translateX(2px);box-shadow:-2px 0 12px rgba(200,146,42,.15);}
+.act-btn:hover::before{opacity:1;}
+.act-btn:active{transform:translateX(0);}
 .act-btn:disabled{opacity:.3;cursor:not-allowed;transform:none;}
-.act-btn.suggested{border-color:rgba(200,146,42,.45);box-shadow:0 0 12px rgba(200,146,42,.12);}
-.a-icon{font-size:20px;display:block;margin-bottom:3px;}
-.a-title{font-family:var(--font-title);font-size:11px;color:var(--gold-l);display:block;font-weight:600;}
-.a-hint{font-size:10px;color:var(--gold-d);display:block;margin-top:1px;}
+.act-btn.suggested{border-left-color:var(--gold);box-shadow:0 0 14px rgba(200,146,42,.1);}
+.a-circle{
+  width:36px;height:36px;min-width:36px;
+  border-radius:50%;
+  background:rgba(200,146,42,.1);
+  border:1.5px solid rgba(200,146,42,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;
+  transition:background .18s,border-color .18s;
+}
+.act-btn:hover .a-circle{background:rgba(200,146,42,.2);border-color:rgba(200,146,42,.6);}
+.a-text{flex:1;min-width:0;}
+.a-title{font-family:var(--font-narr);font-size:15px;color:var(--parch);display:block;font-weight:500;line-height:1.2;}
+.a-hint{font-size:10px;color:var(--gold-d);display:block;margin-top:2px;font-family:var(--font-title);letter-spacing:.5px;text-transform:uppercase;}
+.a-arrow{font-size:13px;color:var(--gold-dim);flex-shrink:0;}
 .free-row{display:flex;gap:7px;align-items:center;}
 .free-in{flex:1;background:rgba(26,18,8,.8);border:1px solid rgba(200,146,42,.2);border-radius:8px;padding:10px 13px;color:var(--parch);font-family:var(--font-narr);font-size:16px;outline:none;}
 .free-in::placeholder{color:rgba(200,146,42,.28);}
@@ -483,10 +503,10 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <div class="actions-wrap">
     <div class="acts-lbl" id="acts-lbl">— O QUE VOCÊ FAZ? —</div>
     <div class="act-grid" id="act-grid">
-      <button class="act-btn" id="ab1" onclick="doAct('Examinar os arredores')"><span class="a-icon">👁️</span><span class="a-title">Examinar</span><span class="a-hint">Percepção</span></button>
-      <button class="act-btn" id="ab2" onclick="doAct('Seguir em frente')"><span class="a-icon">🚶</span><span class="a-title">Avançar</span><span class="a-hint">Missão</span></button>
-      <button class="act-btn" id="ab3" onclick="doAct('Falar com NPC')"><span class="a-icon">💬</span><span class="a-title">Conversar</span><span class="a-hint">Diplomacia</span></button>
-      <button class="act-btn" id="ab4" onclick="doAct('Investigar o local')"><span class="a-icon">🔍</span><span class="a-title">Investigar</span><span class="a-hint">Investigação</span></button>
+      <button class="act-btn suggested" id="ab1" onclick="doAct('Examinar os arredores')"><div class="a-circle">👁️</div><div class="a-text"><span class="a-title">Examinar os arredores</span><span class="a-hint">Percepção</span></div><span class="a-arrow">›</span></button>
+      <button class="act-btn suggested" id="ab2" onclick="doAct('Seguir em frente')"><div class="a-circle">🚶</div><div class="a-text"><span class="a-title">Seguir em frente</span><span class="a-hint">Movimento</span></div><span class="a-arrow">›</span></button>
+      <button class="act-btn suggested" id="ab3" onclick="doAct('Falar com alguém')"><div class="a-circle">💬</div><div class="a-text"><span class="a-title">Falar com alguém</span><span class="a-hint">Diplomacia</span></div><span class="a-arrow">›</span></button>
+      <button class="act-btn suggested" id="ab4" onclick="doAct('Investigar o local')"><div class="a-circle">🔍</div><div class="a-text"><span class="a-title">Investigar o local</span><span class="a-hint">Investigação</span></div><span class="a-arrow">›</span></button>
     </div>
     <div class="free-row">
       <input class="free-in" id="free-in" type="text" placeholder="Ação livre..." autocomplete="off"/>
@@ -727,27 +747,30 @@ const CLASS_ABILITIES={
   Feiticeiro:[{lv:1,name:'Pontos de Feitiçaria',desc:'Gerencie sua magia com pontos (igual ao nível). Converta slots por pontos.'},{lv:1,name:'Origem de Feiticeiro',desc:'Linhagem dracônica ou magia selvagem. Define poderes especiais.'}]
 };
 
-// XP para subir de nível em D&D 5e (índice = nível atual, valor = XP necessário para PRÓXIMO nível)
+// XP TOTAL acumulado para cada nível (tabela oficial D&D 5e SRD 5.1)
+// Índice = nível atual do personagem (base 1), valor = XP total para ATINGIR o próximo nível
 const XP_TABLE=[
-  300,   // Nível 1 → 2
-  900,   // Nível 2 → 3
-  2700,  // Nível 3 → 4
-  6500,  // Nível 4 → 5
-  14000, // Nível 5 → 6
-  23000, // Nível 6 → 7
-  34000, // Nível 7 → 8
-  48000, // Nível 8 → 9
-  64000, // Nível 9 → 10
-  85000, // Nível 10 → 11
-  100000,// Nível 11 → 12
-  120000,// Nível 12 → 13
-  140000,// Nível 13 → 14
-  165000,// Nível 14 → 15
-  195000,// Nível 15 → 16
-  225000,// Nível 16 → 17
-  265000,// Nível 17 → 18
-  305000,// Nível 18 → 19
-  355000 // Nível 19 → 20
+  0,      // [0] — placeholder
+  300,    // Nível 1 → precisa de 300 XP para atingir nível 2
+  900,    // Nível 2 → precisa de 900 XP
+  2700,   // Nível 3 → precisa de 2.700 XP
+  6500,   // Nível 4 → precisa de 6.500 XP
+  14000,  // Nível 5 → precisa de 14.000 XP
+  23000,  // Nível 6 → precisa de 23.000 XP
+  34000,  // Nível 7 → precisa de 34.000 XP
+  48000,  // Nível 8 → precisa de 48.000 XP
+  64000,  // Nível 9 → precisa de 64.000 XP
+  85000,  // Nível 10 → precisa de 85.000 XP
+  100000, // Nível 11 → precisa de 100.000 XP
+  120000, // Nível 12 → precisa de 120.000 XP
+  140000, // Nível 13 → precisa de 140.000 XP
+  165000, // Nível 14 → precisa de 165.000 XP
+  195000, // Nível 15 → precisa de 195.000 XP
+  225000, // Nível 16 → precisa de 225.000 XP
+  265000, // Nível 17 → precisa de 265.000 XP
+  305000, // Nível 18 → precisa de 305.000 XP
+  355000, // Nível 19 → precisa de 355.000 XP (nível máximo 20)
+  999999  // Nível 20 — máximo
 ];
 
 const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨'};
@@ -872,19 +895,24 @@ function updateVitals(){
 
 function updateXPRing(){
   const cur=hero.xp||0;
-  const next=XP_TABLE[hero.level]||300;
-  const pct=Math.min(1,cur/next);
+  const lv=hero.level||1;
+  const next=XP_TABLE[lv]||300;
+  const prev=lv>1?XP_TABLE[lv-1]:0;
+  const pct=next>prev?Math.min(1,(cur-prev)/(next-prev)):1;
   const circumference=138;
   const offset=circumference-(pct*circumference);
-  document.getElementById('xp-ring-circle').style.strokeDashoffset=offset;
-  document.getElementById('xp-label').textContent=`${cur}/${next}`;
+  const ring=document.getElementById('xp-ring-circle');
+  if(ring)ring.style.strokeDashoffset=offset;
+  const lbl=document.getElementById('xp-label');
+  if(lbl)lbl.textContent=`${cur}/${next}`;
 }
 
 function updateXPModal(){
   const cur=hero.xp||0;
   const lv=hero.level||1;
   const next=XP_TABLE[lv]||300;
-  const pct=Math.min(100,Math.round((cur/next)*100));
+  const prev=lv>1?XP_TABLE[lv-1]:0;
+  const pct=next>prev?Math.min(100,Math.round(((cur-prev)/(next-prev))*100)):100;
   document.getElementById('xp-level-num').textContent=lv;
   document.getElementById('xp-cur-txt').textContent=cur;
   document.getElementById('xp-next-txt').textContent=next;
@@ -898,12 +926,14 @@ function updateXPModal(){
 
 function gainXP(amount){
   hero.xp=(hero.xp||0)+amount;
-  const lv=hero.level||1;
-  if(lv<20&&hero.xp>=XP_TABLE[lv]){
-    hero.level=lv+1;
-    hero.maxHP+=classHP[hero.cls]||8;
+  let lv=hero.level||1;
+  // Verifica múltiplos level ups
+  while(lv<20&&hero.xp>=XP_TABLE[lv]){
+    lv++;
+    hero.level=lv;
+    hero.maxHP+=(classHP[hero.cls]||8)+mod(stats.con||10);
     hero.hp=hero.maxHP;
-    showToast(`🌟 NÍVEL ${hero.level}! Subiu de nível!`);
+    showToast(`🌟 NÍVEL ${lv}! Parabéns, aventureiro!`);
   }
   updateVitals();
   updateXPModal();
@@ -982,17 +1012,17 @@ function addCombatPanel(enemyName,text){
   narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ★ Processar texto NPC: detecta "NomeNPC: fala" e formata
+// ★ formatNarrative - converte quebras de linha, sem injeção de HTML
 function formatNarrative(text){
-  // Detecta padrão NPC: "Nome disse:" ou "—Nome:" ou falas com aspas
-  let formatted=text;
-  // Destaca falas de NPCs entre aspas
-  formatted=formatted.replace(/"([^"]+)"/g,'<span class="npc-speech">"$1"</span>');
-  // Detecta NPC nomeado com dois pontos
-  formatted=formatted.replace(/\b([A-ZÁÉÍÓÚÃÕ][a-záéíóúãõ]+(?:\s[A-ZÁÉÍÓÚÃÕ][a-záéíóúãõ]+)?)(?:,?\s+(?:disse|exclamou|murmurou|gritou|sussurrou|respondeu)):/g,'<span class="npc-name">$1</span>');
-  // Parágrafo com quebras
-  formatted=formatted.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-  return formatted;
+  // Escapa HTML para evitar injeção acidental de tags
+  let safe=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Quebras de linha viram <br>
+  safe=safe.replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+  // Destaca falas entre aspas com cor diferente (sem span com class que vaza)
+  safe=safe.replace(/"([^"]+)"/g,'<em style="color:#D4C8F8;font-style:normal">"$1"</em>');
+  // Destaca travessão de diálogo NPC — Texto
+  safe=safe.replace(/—([^<\n]{1,60}?)(?:<br>|$)/g,'<span style="color:#C0A0FF;font-style:italic">— $1</span><br>');
+  return safe;
 }
 
 // ★ addMsg com typewriter
@@ -1019,8 +1049,18 @@ function typewriterMsg(el,text){
 }
 
 function extractActions(text){
-  const m=text.match(/\[AÇÕES:\s*([^\]]+)\]/);
-  return m?m[1].split('|').map(a=>a.trim()).filter(Boolean):null;
+  const m=text.match(/\[AÇÕES:\s*([^\]]+)\]/i);
+  return m?m[1].split('|').map(a=>a.trim()).filter(a=>a.length>0&&a.length<80):null;
+}
+
+// Remove todas as tags de controle do texto antes de exibir
+function cleanTextForDisplay(text){
+  return text
+    .replace(/\[AÇÕES:[^\]]+\]/gi,'')
+    .replace(/\[COMBATE:[^\]]+\]/gi,'')
+    .replace(/\[XP:\s*\d+\]/gi,'')
+    .replace(/\[LOCALIZAÇÃO:[^\]]+\]/gi,'')
+    .trim();
 }
 
 function extractGoldChange(text){
@@ -1040,39 +1080,48 @@ function extractHPChange(text){
   return 0;
 }
 
-// ★ Mapeamento inteligente de ícones por contexto da ação
-function getActionIcon(action){
-  const a=action.toLowerCase();
-  if(/atac|combate|lutar|enfrent|golpe|ferir/.test(a))return'⚔️';
-  if(/defender|bloquear|esquivar|proteger|escudo/.test(a))return'🛡️';
-  if(/falar|conversar|negociar|persuad|dialogar|questionar/.test(a))return'💬';
-  if(/atirar|flechar|arco|arremess/.test(a))return'🏹';
-  if(/investigar|examinar|procurar|buscar|inspecionar/.test(a))return'🔍';
-  if(/correr|fugir|recuar|avançar|seguir|mover|caminhar/.test(a))return'🏃';
-  if(/furtiv|escon|infiltr|sigilos|escalar/.test(a))return'🌑';
-  if(/magia|feitiço|invocar|conjurar|lançar/.test(a))return'✨';
-  if(/mercador|comprar|vender|negoc|loja/.test(a))return'🛒';
-  if(/curar|medic|primeiro socorro|tratar/.test(a))return'🩹';
-  if(/descansar|acampar|dormir|repous/.test(a))return'🏕️';
-  if(/abrir|porta|fechadura|arrombar/.test(a))return'🚪';
-  if(/habilidade|usar|ativar|fúria|sagrar/.test(a))return'💥';
-  if(/observar|vigiar|espiar|ouvir|sentir/.test(a))return'👁️';
-  if(/pegar|coletar|apanhar|roubar|saquear/.test(a))return'🖐️';
-  if(/orar|rezar|templo|bençã|divino/.test(a))return'🙏';
-  return'▶️';
+// ★ Mapeamento de ícones por contexto (palavras-chave)
+const ACTION_ICON_MAP=[
+  {re:/atac|lutar|enfrent|golpe|ferir|sacar|espada|combate|duel/i,    icon:'⚔️', hint:'Combate'},
+  {re:/defender|bloquear|esquivar|proteger|escudo|parry|aparar/i,      icon:'🛡️', hint:'Defesa'},
+  {re:/falar|conversar|negociar|persuad|dialogar|questionar|interrogar|interagir|responder/i, icon:'💬', hint:'Diálogo'},
+  {re:/atirar|flechar|arco|arremess|distância/i,                        icon:'🏹', hint:'Ataque ranged'},
+  {re:/investigar|inspecionar|examinar|buscar|procurar|analisar/i,      icon:'🔍', hint:'Investigação'},
+  {re:/observar|olhar|vigiar|espiar|ouvir|perceber|sentir|escutar/i,   icon:'👁️', hint:'Percepção'},
+  {re:/correr|fugir|recuar|mover|caminhar|seguir|avançar|aproximar/i,  icon:'🏃', hint:'Movimento'},
+  {re:/esconder|furtiv|infiltr|sigilos|escalar|ocultar/i,              icon:'🌑', hint:'Furtividade'},
+  {re:/magia|feitiço|invocar|conjurar|lançar|arcano|canalizar/i,       icon:'✨', hint:'Magia'},
+  {re:/mercador|comprar|vender|loja|comércio|item|equipamento/i,       icon:'🛒', hint:'Comércio'},
+  {re:/curar|medic|poção|tratar|bandagem|cura/i,                       icon:'🩹', hint:'Cura'},
+  {re:/descansar|acampar|dormir|repousar/i,                            icon:'🏕️', hint:'Descanso'},
+  {re:/abrir|porta|fechadura|arrombar|destrancar/i,                    icon:'🚪', hint:'Exploração'},
+  {re:/fúria|ativar|habilidade|usar|sagrar|inspirar/i,                 icon:'💥', hint:'Habilidade'},
+  {re:/pegar|coletar|apanhar|roubar|saquear|pegar/i,                  icon:'🖐️', hint:'Coleta'},
+  {re:/orar|rezar|templo|bênção|divino|sagrado/i,                     icon:'🙏', hint:'Divino'},
+  {re:/rastrear|seguir rastro|pista|trilha/i,                          icon:'🐾', hint:'Rastreio'},
+  {re:/acender|tocha|luz|iluminar/i,                                   icon:'🕯️', hint:'Iluminação'},
+];
+
+function getActionIconData(action){
+  for(const m of ACTION_ICON_MAP){
+    if(m.re.test(action)) return {icon:m.icon,hint:m.hint};
+  }
+  return {icon:'🎲',hint:'Ação'};
 }
 
 function updateActionButtons(actions){
   if(!actions||!actions.length)return;
   const grid=document.getElementById('act-grid');
-  const btns=grid.querySelectorAll('.act-btn');
+  // Recria os 4 botões dinamicamente
+  grid.innerHTML='';
   actions.slice(0,4).forEach((action,i)=>{
-    if(btns[i]){
-      const icon=getActionIcon(action);
-      btns[i].innerHTML=`<span class="a-icon">${icon}</span><span class="a-title">${action}</span><span class="a-hint">Toque para agir</span>`;
-      btns[i].onclick=()=>doAct(action);
-      btns[i].className='act-btn suggested';
-    }
+    const {icon,hint}=getActionIconData(action);
+    const btn=document.createElement('button');
+    btn.className='act-btn suggested';
+    btn.id='ab'+(i+1);
+    btn.innerHTML=`<div class="a-circle">${icon}</div><div class="a-text"><span class="a-title">${action}</span><span class="a-hint">${hint}</span></div><span class="a-arrow">›</span>`;
+    btn.onclick=()=>doAct(action);
+    grid.appendChild(btn);
   });
   document.getElementById('acts-lbl').textContent='— ESCOLHA SUA AÇÃO —';
 }
@@ -1149,8 +1198,14 @@ DIRETRIZES:
 - Narre em 3-4 parágrafos. Use Inter/sans-serif mental — frases claras e diretas.
 - Testes: informe o atributo e CD: "Role [Atributo] (CD X)"
 - Mercador: Sobrevivência CD ${merchantCD}.
-- AO FINAL de CADA resposta, inclua:
-[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`;
+- AO FINAL de CADA resposta, inclua OBRIGATORIAMENTE em linha separada:
+[AÇÕES: Verbo+Objeto curto | Verbo+Objeto curto | Verbo+Objeto curto | Verbo+Objeto curto]
+IMPORTANTE: As ações NÃO devem aparecer no texto narrativo, APENAS na tag [AÇÕES:].
+Cada ação: máximo 4 palavras, verbo no infinitivo, sem pontuação.
+Exemplos válidos: "Atacar o goblin | Fugir pela floresta | Inspecionar o baú | Falar com o mercador"
+
+- Se estiver em cidade/vilarejo/taverna: inclua [LOCALIZAÇÃO:cidade]
+- Se estiver em floresta/estrada/ruínas: inclua [LOCALIZAÇÃO:campo]`;
 }
 
 async function askMaster(acao){
@@ -1196,12 +1251,17 @@ async function askMaster(acao){
       if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
       // Pendente roll
       detectPendingRoll(reply);
-      // ★ Detecta contexto: combate e cidade
-      inCombat=!!enemyName||(inCombat&&!/(?:derrota|foge|escapa|encerrado|resolvido)/i.test(reply));
-      inCity=/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto)/i.test(reply)||inCity&&!/(?:floresta|estrada|ruínas|caverna|campo aberto)/i.test(reply);
+      // ★ Detecta contexto via tag e palavras-chave
+      const locMatch=reply.match(/\[LOCALIZAÇÃO:\s*([^\]]+)\]/i);
+      if(locMatch){inCity=locMatch[1].trim()==='cidade';}
+      else{
+        if(/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto)/i.test(reply))inCity=true;
+        if(/(?:floresta|estrada aberta|ruínas|caverna|campo aberto|matagal)/i.test(reply))inCity=false;
+      }
+      inCombat=!!enemyName||(inCombat&&!/(?:derrota|foge|escapa|encerrado|resolvido|vence|vitória)/i.test(reply));
       updateContextUI();
       // Limpa tags do texto
-      const cleanText=reply.replace(/\[AÇÕES:[^\]]+\]/,'').replace(/\[COMBATE:[^\]]+\]/,'').replace(/\[XP:\s*\d+\]/,'').trim();
+      const cleanText=cleanTextForDisplay(reply);
       const formatted=formatNarrative(cleanText);
       // Exibe
       if(enemyName){
