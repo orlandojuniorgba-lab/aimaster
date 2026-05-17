@@ -112,7 +112,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .xp-portrait-wrap{position:relative;width:50px;height:50px;flex-shrink:0;cursor:pointer;}
 .xp-ring{position:absolute;inset:0;}
 .portrait{position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg4);}
-.xp-label{position:absolute;bottom:-13px;left:50%;transform:translateX(-50%);font-size:8px;color:var(--gold-d);font-family:var(--font-title);white-space:nowrap;letter-spacing:.5px;}
+.xp-label{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gold-l);font-family:var(--font-title);white-space:nowrap;letter-spacing:.5px;font-weight:600;text-shadow:0 0 6px rgba(200,146,42,0.4);}
 .char-info{flex:1;min-width:0;}
 .c-name{font-family:var(--font-title);font-size:13px;font-weight:600;color:var(--gold-l);line-height:1.15;}
 .c-meta{font-size:10px;color:var(--gold-d);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-title);margin-bottom:4px;}
@@ -473,7 +473,10 @@ body{font-family:var(--font-narr);color:var(--parch);}
         <span class="mstat">SAB <span id="f-wis">—</span></span>
       </div>
     </div>
-    <div class="gold-pill" id="gold-pill-display">🪙 <span id="g-gd">50</span></div>
+    <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">
+      <div class="gold-pill" id="gold-pill-display">🪙 <span id="g-gd">50</span></div>
+      <div class="gold-pill" style="background:rgba(100,60,180,0.15);border-color:rgba(100,60,180,0.35);font-size:12px;padding:3px 8px;">💎 <span id="g-credits">0</span></div>
+    </div>
   </div>
   <div class="narr-border"></div>
   <div class="narr" id="narr"></div>
@@ -515,8 +518,13 @@ body{font-family:var(--font-narr);color:var(--parch);}
 <div class="mo" id="mo-d20"><div class="ms">
   <div class="mt">🎲 Rolar Teste <button class="mc" onclick="closeMo('mo-d20')">×</button></div>
   <div class="d20-modal-inner">
-    <div class="d20-hint">Escolha o atributo e lance o dado</div>
+    <div class="d20-hint" id="d20-hint-txt">Escolha o atributo e lance o dado</div>
     <div class="d20-attr-grid" id="d20-attrs"></div>
+    <!-- Habilidades disponíveis neste nível -->
+    <div id="d20-abilities-panel" style="width:100%;display:none">
+      <div style="font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:2px;margin-bottom:6px">HABILIDADES DISPONÍVEIS</div>
+      <div id="d20-abilities-list" style="display:flex;flex-direction:column;gap:6px;max-height:140px;overflow-y:auto"></div>
+    </div>
     <div class="d20-launch" onclick="rollD20Modal()">
       <svg viewBox="0 0 60 60" width="70" height="70" xmlns="http://www.w3.org/2000/svg" id="d20-big-svg">
         <polygon points="30,3 57,17 57,43 30,57 3,43 3,17" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="2" stroke-linejoin="round"/>
@@ -545,12 +553,20 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
 <!-- MODAL LOJA -->
 <div class="mo" id="mo-shop"><div class="ms">
-  <div class="mt">💎 Comprar Créditos <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+  <div class="mt">💎 Créditos &amp; Mercador <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+  <!-- Contexto de localização -->
+  <div id="shop-context-banner" style="background:rgba(200,146,42,0.08);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--gold-d);text-align:center;font-family:var(--font-title);letter-spacing:.5px"></div>
   <p class="mo-note">1 Crédito = 10 Peças de Ouro (GP)</p>
-  <div class="sp-pack"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy">COMPRAR</button></div>
-  <div class="sp-pack"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy">COMPRAR</button></div>
-  <div class="sp-pack featured"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy">COMPRAR</button></div>
-  <p class="mo-note">CD Mercador atual: <span id="merch-hint">12</span></p>
+  <div class="sp-pack" id="shop-pack1" style="transition:opacity .3s"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy">COMPRAR</button></div>
+  <div class="sp-pack" id="shop-pack2" style="transition:opacity .3s"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy">COMPRAR</button></div>
+  <div class="sp-pack featured" id="shop-pack3" style="transition:opacity .3s"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy">COMPRAR</button></div>
+  <!-- Procurar Mercador dentro da loja -->
+  <div id="shop-mercador-btn" style="transition:opacity .3s;cursor:pointer" onclick="closeMo('mo-shop');doAct('Procurar um Mercador na região')">
+    <div class="sp-pack" style="background:rgba(0,180,80,0.08);border-color:rgba(0,180,80,0.3)">
+      <div><div class="sp-nm" style="color:#60D090">🛒 Procurar Mercador</div><div class="sp-cr">Role Sobrevivência CD <span id="merch-hint">12</span></div><div class="sp-pr">Troca ouro do personagem por itens</div></div>
+      <div style="font-size:22px">→</div>
+    </div>
+  </div>
 </div></div>
 
 <!-- MODAL REPUTAÇÃO -->
@@ -651,6 +667,19 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
 <script>
 // ══ DADOS DE PERFIS ══
+
+// ═══ POOL DE MISSÕES PRINCIPAIS (rotaciona a cada personagem) ═══
+const QUESTS=[
+  {title:"O Amuleto do Amanhecer",hook:"Recupere o Amuleto do Amanhecer nas ruínas do Templo Esquecido, 3 dias de Millhaven. O artefato mantém o equilíbrio entre luz e trevas.",location:"Millhaven / Templo Esquecido"},
+  {title:"A Coroa Maldita de Valdros",hook:"O rei de Valdros foi corrompido por uma coroa élfica amaldiçoada. Você foi contratado para infiltrar o castelo e remover o artefato antes que o reino sucumba à guerra civil.",location:"Reino de Valdros / Castelo Thornheim"},
+  {title:"Os Portões do Submundo",hook:"Um culto demoníaco abriu fissuras para o plano infernal na cidade portuária de Kharven. Feche os portões antes que os demônios tomem o mundo dos mortais.",location:"Kharven / Porto das Almas"},
+  {title:"A Praga da Floresta Cinzenta",hook:"A Floresta Cinzenta está morrendo — árvores apodrecem, animais enlouquecem. Uma criatura anciente desperta em seu coração. Apenas você pode descobrir a verdade.",location:"Floresta Cinzenta / Árvore-Mãe"},
+  {title:"O Ladrão de Memórias",hook:"Pessoas ao redor do continente acordam sem suas memórias. Um feiticeiro renegado coleta almas para construir um exército de fantoches. Rastreie-o até sua torre.",location:"Continente livre / Torre do Esquecimento"},
+  {title:"A Herança dos Dragões",hook:"Um ovo de dragão foi roubado de seu ninho sagrado. Dois clãs rivais culpam um ao outro. Encontre o ovo e descubra o verdadeiro ladrão antes que uma guerra dragônica destrua a região.",location:"Montanhas Dracônicas / Vale do Fogo"},
+  {title:"O Julgamento dos Deuses",hook:"Um deus menor foi assassinado — seu domínio começa a desmoronar. Os Celestiais exigem que um mortal investigue o crime no plano divino antes que o caos se espalhe.",location:"Plano Material / Templo Celestial"},
+  {title:"A Conspiração da Guilda",hook:"A Guilda dos Mercadores controla a cidade com mão de ferro. Mercadores independentes desaparecem. Infiltre-se, descubra as provas e exponha a conspiração.",location:"Cidade de Ashford / Guilda Secreta"}
+];
+
 const PROFILES={
   race:{
     Humano:{tags:[{l:'Versátil',c:'tag-light'},{l:'Adaptável',c:'tag-light'}],bonuses:[{i:'🎯',t:'Bônus em 1 habilidade',v:'+1',c:'b-pos'}],flavor:'adaptável e determinado',events:['aliança mercenária','liderança','diplomacia']},
@@ -698,7 +727,28 @@ const CLASS_ABILITIES={
   Feiticeiro:[{lv:1,name:'Pontos de Feitiçaria',desc:'Gerencie sua magia com pontos (igual ao nível). Converta slots por pontos.'},{lv:1,name:'Origem de Feiticeiro',desc:'Linhagem dracônica ou magia selvagem. Define poderes especiais.'}]
 };
 
-const XP_TABLE=[0,300,900,2700,6500,14000,23000,34000,48000,64000,85000,100000,120000,140000,165000,195000,225000,265000,305000,355000];
+// XP para subir de nível em D&D 5e (índice = nível atual, valor = XP necessário para PRÓXIMO nível)
+const XP_TABLE=[
+  300,   // Nível 1 → 2
+  900,   // Nível 2 → 3
+  2700,  // Nível 3 → 4
+  6500,  // Nível 4 → 5
+  14000, // Nível 5 → 6
+  23000, // Nível 6 → 7
+  34000, // Nível 7 → 8
+  48000, // Nível 8 → 9
+  64000, // Nível 9 → 10
+  85000, // Nível 10 → 11
+  100000,// Nível 11 → 12
+  120000,// Nível 12 → 13
+  140000,// Nível 13 → 14
+  165000,// Nível 14 → 15
+  195000,// Nível 15 → 16
+  225000,// Nível 16 → 17
+  265000,// Nível 17 → 18
+  305000,// Nível 18 → 19
+  355000 // Nível 19 → 20
+];
 
 const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨'};
 const classHP={Guerreiro:10,Mago:6,Ladino:8,Clérigo:8,Bardo:8,Paladino:10,Druida:8,Ranger:10,Bárbaro:12,Feiticeiro:6};
@@ -706,7 +756,8 @@ const classMP={Guerreiro:0,Mago:4,Ladino:0,Clérigo:3,Bardo:3,Paladino:2,Druida:
 const attrNames={str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
 const attrLabels={str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
 
-let hero={xp:0,level:1}, stats={}, thinking=false;
+let hero={xp:0,level:1,credits:0}, stats={}, thinking=false;
+let inCombat=false, inCity=false; // estados de contexto
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
 let pendingRollAttr=null; // atributo pedido pelo mestre
@@ -802,7 +853,9 @@ function startAdventure(){
   updateXPModal();
   buildD20Attrs();
   goTo('s-game');
-  askMaster(`Inicie a aventura. Cena de abertura única para ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil. Termine com decisão imediata. Sugira 4 ações:\n[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`);
+  hero.questId=Math.floor(Math.random()*QUESTS.length);
+  const q=QUESTS[hero.questId];
+  askMaster(`Inicie a aventura com ESTA MISSÃO PRINCIPAL: "${q.title}". ${q.hook}. Personagem: ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil para personalizar. Termine com decisão imediata. Sugira 4 ações:\n[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`);
 }
 
 function updateVitals(){
@@ -813,6 +866,7 @@ function updateVitals(){
   document.getElementById('g-hp-txt').textContent=`${hero.hp}/${hero.maxHP}`;
   document.getElementById('g-mp-txt').textContent=`${hero.mp}/${hero.maxMP}`;
   document.getElementById('g-gd').textContent=hero.gold;
+  document.getElementById('g-credits').textContent=hero.credits||0;
   updateXPRing();
 }
 
@@ -883,19 +937,10 @@ function addRollCard(label,diceVal,modVal,total,cd){
   narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ★ Detecta combate na resposta
+// ★ Combate APENAS via tag [COMBATE:Nome] explícita da IA — sem falsos positivos
 function detectCombat(text){
-  const enemies=['lobo','goblin','ogro','bandido','dragão','esqueleto','zumbi','kobold','orc','orc','troll','vampiro','bruxa','necromante','guarda','assassino','demônio','diabo'];
-  const combatWords=['ataca','emerge','avança','rugido','garra','morde','dente','espada'];
-  const tl=text.toLowerCase();
-  let foundEnemy=null;
-  for(const e of enemies){if(tl.includes(e)){foundEnemy=e.charAt(0).toUpperCase()+e.slice(1);break;}}
-  const hasCombat=combatWords.some(w=>tl.includes(w));
-  if(foundEnemy&&hasCombat)return foundEnemy;
-  // Detecta pelo COMBATE: tag
-  const combatMatch=text.match(/\[COMBATE:\s*([^\]]+)\]/);
-  if(combatMatch)return combatMatch[1].trim();
-  return null;
+  const m=text.match(/\[COMBATE:\s*([^\]]+)\]/);
+  return m?m[1].trim():null;
 }
 
 // ★ Ícone por inimigo
@@ -995,14 +1040,36 @@ function extractHPChange(text){
   return 0;
 }
 
-const actionIcons=['⚔️','🛡️','💬','🏹','🔍','🏃','🗡️','🌿','✨','🤝','🔓','👁️','🎵','💥','🚪','🧪'];
+// ★ Mapeamento inteligente de ícones por contexto da ação
+function getActionIcon(action){
+  const a=action.toLowerCase();
+  if(/atac|combate|lutar|enfrent|golpe|ferir/.test(a))return'⚔️';
+  if(/defender|bloquear|esquivar|proteger|escudo/.test(a))return'🛡️';
+  if(/falar|conversar|negociar|persuad|dialogar|questionar/.test(a))return'💬';
+  if(/atirar|flechar|arco|arremess/.test(a))return'🏹';
+  if(/investigar|examinar|procurar|buscar|inspecionar/.test(a))return'🔍';
+  if(/correr|fugir|recuar|avançar|seguir|mover|caminhar/.test(a))return'🏃';
+  if(/furtiv|escon|infiltr|sigilos|escalar/.test(a))return'🌑';
+  if(/magia|feitiço|invocar|conjurar|lançar/.test(a))return'✨';
+  if(/mercador|comprar|vender|negoc|loja/.test(a))return'🛒';
+  if(/curar|medic|primeiro socorro|tratar/.test(a))return'🩹';
+  if(/descansar|acampar|dormir|repous/.test(a))return'🏕️';
+  if(/abrir|porta|fechadura|arrombar/.test(a))return'🚪';
+  if(/habilidade|usar|ativar|fúria|sagrar/.test(a))return'💥';
+  if(/observar|vigiar|espiar|ouvir|sentir/.test(a))return'👁️';
+  if(/pegar|coletar|apanhar|roubar|saquear/.test(a))return'🖐️';
+  if(/orar|rezar|templo|bençã|divino/.test(a))return'🙏';
+  return'▶️';
+}
+
 function updateActionButtons(actions){
   if(!actions||!actions.length)return;
   const grid=document.getElementById('act-grid');
   const btns=grid.querySelectorAll('.act-btn');
   actions.slice(0,4).forEach((action,i)=>{
     if(btns[i]){
-      btns[i].innerHTML=`<span class="a-icon">${actionIcons[i]||'▶️'}</span><span class="a-title">${action}</span><span class="a-hint">Toque para agir</span>`;
+      const icon=getActionIcon(action);
+      btns[i].innerHTML=`<span class="a-icon">${icon}</span><span class="a-title">${action}</span><span class="a-hint">Toque para agir</span>`;
       btns[i].onclick=()=>doAct(action);
       btns[i].className='act-btn suggested';
     }
@@ -1052,7 +1119,7 @@ PERFIL ATIVO: Traços: ${allTags} | Bônus: ${allBonuses} | Eventos: ${events||'
 Essência: ${rp.flavor||''}, ${cp.flavor||''}
 REGRAS ESPECIAIS:${especiais}
 
-MISSÃO ATUAL: Recuperar o Amuleto do Amanhecer nas ruínas do Templo Esquecido, 3 dias de Millhaven.
+MISSÃO ATUAL: ${QUESTS[hero.questId!==undefined?hero.questId:0].title} — ${QUESTS[hero.questId!==undefined?hero.questId:0].hook}
 
 NARRATIVA E INTERPRETAÇÃO:
 - Assuma NPCs com personalidade e voz própria. Quando um NPC falar, use o formato: NomeNPC disse: "fala aqui" ou —NomeNPC: "fala"
@@ -1129,6 +1196,10 @@ async function askMaster(acao){
       if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
       // Pendente roll
       detectPendingRoll(reply);
+      // ★ Detecta contexto: combate e cidade
+      inCombat=!!enemyName||(inCombat&&!/(?:derrota|foge|escapa|encerrado|resolvido)/i.test(reply));
+      inCity=/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto)/i.test(reply)||inCity&&!/(?:floresta|estrada|ruínas|caverna|campo aberto)/i.test(reply);
+      updateContextUI();
       // Limpa tags do texto
       const cleanText=reply.replace(/\[AÇÕES:[^\]]+\]/,'').replace(/\[COMBATE:[^\]]+\]/,'').replace(/\[XP:\s*\d+\]/,'').trim();
       const formatted=formatNarrative(cleanText);
@@ -1190,10 +1261,46 @@ function doRest(tipo){
 }
 
 // ★ D20 Modal
+function buildD20AbilitiesPanel(){
+  const abilities=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv<=(hero.level||1));
+  const panel=document.getElementById('d20-abilities-panel');
+  const list=document.getElementById('d20-abilities-list');
+  const hintEl=document.getElementById('d20-hint-txt');
+  if(abilities.length>0){
+    panel.style.display='block';
+    list.innerHTML=abilities.map(a=>`
+      <div style="background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.2);border-radius:8px;padding:8px 10px;cursor:pointer" onclick="useAbility('${a.name}')">
+        <div style="font-family:var(--font-title);font-size:11px;color:var(--gold-l);margin-bottom:2px">${a.name}</div>
+        <div style="font-size:11px;color:var(--parch-d)">${a.desc}</div>
+      </div>`).join('');
+  } else {
+    panel.style.display='none';
+  }
+  if(pendingRollAttr){
+    const attrName=attrLabels[pendingRollAttr];
+    hintEl.textContent=`⚠️ Mestre pediu: Role ${attrName} (CD ${pendingRollCD||'?'}) — toque no dado!`;
+    hintEl.style.color='var(--gold-l)';
+    // Seleciona atributo correto automaticamente
+    d20SelectedAttr=pendingRollAttr;
+    document.querySelectorAll('.d20-attr').forEach(el=>el.classList.remove('sel'));
+    const attrEl=document.querySelector(`.d20-attr[data-key="${pendingRollAttr}"]`);
+    if(attrEl)attrEl.classList.add('sel');
+  } else {
+    hintEl.textContent='Escolha o atributo e lance o dado';
+    hintEl.style.color='var(--gold-d)';
+  }
+}
+
+function useAbility(abilityName){
+  closeMo('mo-d20');
+  const ability=(CLASS_ABILITIES[hero.cls]||[]).find(a=>a.name===abilityName);
+  if(ability) askMaster(`O jogador usa a habilidade "${ability.name}": ${ability.desc}. Aplique o efeito na narrativa atual e descreva o resultado.`);
+}
+
 function buildD20Attrs(){
   const keys=['str','dex','con','int','wis','cha'];
   document.getElementById('d20-attrs').innerHTML=keys.map(k=>`
-    <div class="d20-attr${k===d20SelectedAttr?' sel':''}" onclick="selectD20Attr('${k}',this)">
+    <div class="d20-attr${k===d20SelectedAttr?' sel':''}" onclick="selectD20Attr('${k}',this)" data-key="${k}">
       <div class="an">${attrLabels[k]}</div>
       <div class="av">${stats[k]||10}</div>
       <div class="am">${modStr(stats[k]||10)}</div>
@@ -1265,6 +1372,20 @@ function updateVitalsAndRep(){
   });
 }
 
+// ★ Atualiza UI baseada no contexto atual
+function updateContextUI(){
+  // Descanso desabilitado em combate
+  const restBtns=document.querySelectorAll('.fbar-btn');
+  restBtns.forEach(b=>{
+    if(b.getAttribute('title')==='Descanso'){
+      b.style.opacity=inCombat?'0.35':'1';
+      b.style.pointerEvents=inCombat?'none':'auto';
+    }
+  });
+  // Botão mercador aparece nas ações se não estiver em combate e não estiver já listado
+  // (o mestre sugere via AÇÕES, mas garantimos aqui)
+}
+
 function showToast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),2200);
@@ -1273,9 +1394,27 @@ function showToast(msg){
 function openMo(id){
   if(id==='mo-rep')updateVitalsAndRep();
   if(id==='mo-api'){const k=localStorage.getItem('aimaster_api_key')||'';if(k)document.getElementById('api-status').textContent='✅ Chave configurada';}
-  if(id==='mo-d20')buildD20Attrs();
+  if(id==='mo-d20'){buildD20Attrs();buildD20AbilitiesPanel();}
   if(id==='mo-xp')updateXPModal();
+  if(id==='mo-shop')updateShopContext();
   document.getElementById(id).classList.add('open');
+}
+
+function updateShopContext(){
+  const banner=document.getElementById('shop-context-banner');
+  const packs=['shop-pack1','shop-pack2','shop-pack3'];
+  const mercBtn=document.getElementById('shop-mercador-btn');
+  if(inCity){
+    banner.textContent='🏙️ Você está em uma cidade — compras disponíveis!';
+    banner.style.borderColor='rgba(46,204,113,0.4)';banner.style.color='#60D090';
+    packs.forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='1';el.style.filter='none';}});
+    if(mercBtn){mercBtn.style.opacity='0.4';mercBtn.style.filter='grayscale(1)';}
+  } else {
+    banner.textContent='🌲 Você está fora da cidade — procure um mercador primeiro';
+    banner.style.borderColor='rgba(200,146,42,0.2)';banner.style.color='var(--gold-d)';
+    packs.forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='0.35';el.style.filter='grayscale(0.5)';}});
+    if(mercBtn){mercBtn.style.opacity='1';mercBtn.style.filter='none';}
+  }
 }
 function closeMo(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
