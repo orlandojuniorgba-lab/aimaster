@@ -97,15 +97,15 @@ body{font-family:var(--font-narr);color:var(--parch);}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* Scene header */
-.hdr-scene{width:100%;height:80px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#060B02,#0C1A08 50%,#152008);}
-.moon{position:absolute;top:10px;right:40px;width:20px;height:20px;background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);border-radius:50%;box-shadow:0 0 14px rgba(220,200,100,0.4);}
-.ia-badge{position:absolute;top:8px;left:14px;background:rgba(0,0,0,0.4);border:1px solid rgba(46,204,113,0.3);border-radius:20px;padding:3px 10px;font-size:10px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:5px;}
+.hdr-scene{width:100%;height:36px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#050A02,#0A1506 60%,#101C08);}
+.moon{position:absolute;top:8px;right:16px;width:14px;height:14px;background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);border-radius:50%;box-shadow:0 0 10px rgba(220,200,100,0.5);}
+.ia-badge{position:absolute;top:50%;left:12px;transform:translateY(-50%);background:rgba(0,0,0,0.5);border:1px solid rgba(46,204,113,0.35);border-radius:20px;padding:2px 8px;font-size:9px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:4px;}
 .ia-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
 .ia-dot.thinking{background:#F39C12;animation:blink .4s infinite;}
 #ia-lbl{color:var(--green);}
 #ia-lbl.thinking-txt{color:#F39C12;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.forest-svg{position:absolute;bottom:0;left:0;width:100%;height:56px;}
+.forest-svg{position:absolute;bottom:0;left:0;width:100%;height:28px;}
 
 /* ★ XP Ring + Portrait */
 .char-strip{display:flex;align-items:center;gap:11px;padding:9px 14px 10px;background:linear-gradient(180deg,var(--bg3),rgba(26,18,8,.95));border-top:1px solid var(--border);border-bottom:1px solid rgba(200,146,42,.1);flex-shrink:0;}
@@ -456,6 +456,17 @@ body{font-family:var(--font-narr);color:var(--parch);}
   border-color:rgba(139,111,208,.3);
 }
 .msg-dm.ooc-reply .lbl{color:rgba(180,160,255,.8);}
+
+/* ★ Botão de ação de teste — destaque especial */
+.act-btn.test-action{
+  border-left-color:var(--gold-l);
+  background:linear-gradient(135deg,rgba(30,20,5,.95),rgba(50,35,10,.9));
+}
+.a-circle-test{
+  background:rgba(200,146,42,.2)!important;
+  border-color:rgba(200,146,42,.6)!important;
+  box-shadow:0 0 8px rgba(200,146,42,.2);
+}
 </style>
 </head>
 <body>
@@ -702,6 +713,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <div class="sheet-tabs">
     <div class="stab active" onclick="switchTab('tab-stats')">Status</div>
     <div class="stab" onclick="switchTab('tab-inv')">Inventário</div>
+    <div class="stab" onclick="switchTab('tab-skills')">Habilidades</div>
     <div class="stab" onclick="switchTab('tab-spells')">Magias</div>
   </div>
   <!-- Status -->
@@ -734,6 +746,12 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <div class="inv-item"><span class="inv-item-icon">🕯️</span><div><div class="inv-item-name">Tochas ×5</div><div class="inv-item-desc">1 hora de luz, raio 6m</div></div><span class="inv-item-weight">0.25kg</span></div>
       <div class="inv-item"><span class="inv-item-icon">🍞</span><div><div class="inv-item-name">Rações ×5</div><div class="inv-item-desc">Alimentação para 5 dias</div></div><span class="inv-item-weight">1kg</span></div>
       <p style="font-size:12px;color:var(--gold-d);text-align:center;font-style:italic;margin-top:4px">Itens adicionados automaticamente conforme a narrativa</p>
+    </div>
+  </div>
+  <!-- Habilidades -->
+  <div class="sheet-page" id="tab-skills">
+    <div id="skills-content" style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+      <p style="font-size:13px;color:var(--parch-d);text-align:center;font-style:italic;padding:16px 0">Inicie uma aventura para ver as habilidades do seu personagem.</p>
     </div>
   </div>
   <!-- Magias -->
@@ -823,6 +841,74 @@ function applyRacialBonuses(baseStats, race){
 }
 
 // Gera HTML detalhado da ficha de atributos com salvaguardas
+
+// ══ ABA HABILIDADES ══
+// Proficiências por classe
+const CLASS_SKILL_PROFS={
+  Guerreiro:['Atletismo','Intimidação','Percepção','Sobrevivência'],
+  Mago:['Arcanismo','História','Investigação','Percepção'],
+  Ladino:['Acrobacia','Atletismo','Enganação','Furtividade','Investigação','Percepção','Persuasão'],
+  Clérigo:['História','Intuição','Medicina','Persuasão','Religião'],
+  Bardo:['Acrobacia','Enganação','Performance','Persuasão','Percepção'],
+  Paladino:['Atletismo','Intimidação','Medicina','Persuasão','Religião'],
+  Druida:['Adestramento','Medicina','Natureza','Percepção','Sobrevivência'],
+  Ranger:['Adestramento','Atletismo','Furtividade','Natureza','Percepção','Sobrevivência'],
+  Bárbaro:['Adestramento','Atletismo','Intimidação','Natureza','Percepção','Sobrevivência'],
+  Feiticeiro:['Arcanismo','Enganação','Intimidação','Persuasão','Religião']
+};
+
+// Todas as habilidades do D&D 5e com atributo base
+const ALL_SKILLS=[
+  {name:'Acrobacia',attr:'dex'},{name:'Adestramento',attr:'wis'},{name:'Arcanismo',attr:'int'},
+  {name:'Atletismo',attr:'str'},{name:'Enganação',attr:'cha'},{name:'Furtividade',attr:'dex'},
+  {name:'História',attr:'int'},{name:'Intimidação',attr:'cha'},{name:'Intuição',attr:'wis'},
+  {name:'Investigação',attr:'int'},{name:'Medicina',attr:'wis'},{name:'Natureza',attr:'int'},
+  {name:'Percepção',attr:'wis'},{name:'Performance',attr:'cha'},{name:'Persuasão',attr:'cha'},
+  {name:'Prestidigitação',attr:'dex'},{name:'Religião',attr:'int'},{name:'Sobrevivência',attr:'wis'},
+];
+
+function buildSkillsTab(cls, race, level){
+  const pb=PROF_BONUS[Math.min(level,20)]||2;
+  const profs=new Set(CLASS_SKILL_PROFS[cls]||[]);
+  const el=document.getElementById('skills-content');
+  if(!el)return;
+
+  // Habilidades de classe do nível atual
+  const classAbils=(CLASS_ABILITIES[cls]||[]).filter(a=>a.lv<=level);
+  
+  let html='';
+  // Seção habilidades de classe
+  if(classAbils.length>0){
+    html+=`<div class="sec-hdr" style="margin-bottom:8px">HABILIDADES DE CLASSE · ${cls.toUpperCase()}</div>`;
+    html+=classAbils.map(a=>`
+      <div class="ability-card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div class="ability-name">${a.name}</div>
+          <span style="font-size:9px;background:rgba(200,146,42,.15);border:1px solid rgba(200,146,42,.3);border-radius:10px;padding:1px 7px;color:var(--gold-d);font-family:var(--font-title)">NÍV ${a.lv}</span>
+        </div>
+        <div class="ability-desc">${a.desc}</div>
+      </div>`).join('');
+  }
+
+  // Seção proficiências
+  html+=`<div class="sec-hdr" style="margin:10px 0 8px">PERÍCIAS TREINADAS</div>`;
+  html+=`<div style="display:flex;flex-direction:column;gap:4px">`;
+  ALL_SKILLS.forEach(sk=>{
+    const hasProfic=profs.has(sk.name);
+    const base=mod(stats[sk.attr]||10);
+    const bonus=hasProfic?base+pb:base;
+    const bonusStr=(bonus>=0?'+':'')+bonus;
+    html+=`
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:${hasProfic?'rgba(200,146,42,.07)':'rgba(0,0,0,.2)'};border-radius:7px;border:1px solid ${hasProfic?'rgba(200,146,42,.25)':'rgba(255,255,255,.04)'}">
+        <div style="width:8px;height:8px;border-radius:50%;background:${hasProfic?'var(--gold)':'rgba(200,146,42,.2)'};border:${hasProfic?'none':'1px solid rgba(200,146,42,.3)'};flex-shrink:0"></div>
+        <span style="flex:1;font-size:13px;color:${hasProfic?'var(--parch)':'var(--parch-dim)'}">${sk.name}</span>
+        <span style="font-size:10px;color:var(--gold-d);font-family:var(--font-title)">${attrLabels[sk.attr]}</span>
+        <span style="font-size:14px;font-weight:600;color:${hasProfic?'var(--gold-l)':'var(--parch-d)'};min-width:28px;text-align:right;font-family:var(--font-title)">${bonusStr}</span>
+      </div>`;
+  });
+  html+=`</div>`;
+  el.innerHTML=html;
+}
 function buildFullStatBlock(finalStats, cls, level){
   const pb = PROF_BONUS[Math.min(level,20)] || 2;
   const saves = CLASS_SAVES[cls] || [];
@@ -1048,8 +1134,10 @@ function startAdventure(){
   if(spells.length>0){
     document.getElementById('spells-content').innerHTML=`<div style="margin-bottom:8px"><div class="sec-hdr" style="margin-bottom:6px">FEITIÇOS CONHECIDOS</div>${spells.map(s=>`<div class="spell-card" style="margin-bottom:6px"><div class="spell-name">${s}</div><div class="spell-meta">Nível 1 · Ação</div></div>`).join('')}</div>`;
   } else {
-    document.getElementById('spells-content').innerHTML=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana. Habilidades especiais aparecem ao subir de nível.</p>`;
+    document.getElementById('spells-content').innerHTML=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana.</p>`;
   }
+  // Preenche aba Habilidades
+  buildSkillsTab(cls, race, hero.level||1);
   // XP modal
   updateXPModal();
   buildD20Attrs();
@@ -1241,23 +1329,31 @@ function cleanTextForDisplay(text){
     .replace(/\[COMBATE:[^\]]+\]/gi,'')
     .replace(/\[XP:\s*\d+\]/gi,'')
     .replace(/\[LOCALIZAÇÃO:[^\]]+\]/gi,'')
+    .replace(/\[TESTE:[^\]]+\]/gi,'')
     .trim();
 }
 
 function extractGoldChange(text){
+  // Detecta tag explícita [OURO:+50] ou [OURO:-30]
+  const tag=text.match(/\[OURO:([+-]?\d+)\]/i);
+  if(tag) return parseInt(tag[1]);
   // Detecta ganho/perda de ouro na narrativa
-  const gain=text.match(/(?:ganha|recebe|encontra)\s+(\d+)\s*(?:peças de ouro|gp|ouro)/i);
-  const lose=text.match(/(?:paga|gasta|perde)\s+(\d+)\s*(?:peças de ouro|gp|ouro)/i);
-  if(gain)return +parseInt(gain[1]);
-  if(lose)return -parseInt(lose[1]);
+  const gain=text.match(/(?:ganha|recebe|encontra|recompensa de|loot de|pilha de)\s+(\d+)\s*(?:peças de ouro|peças|gp|ouro)/i);
+  const lose=text.match(/(?:paga|gasta|perde|custa|custando)\s+(\d+)\s*(?:peças de ouro|peças|gp|ouro)/i);
+  if(gain) return +parseInt(gain[1]);
+  if(lose) return -parseInt(lose[1]);
   return 0;
 }
 
 function extractHPChange(text){
-  const dmg=text.match(/(?:sofre|recebe|toma)\s+(\d+)\s*(?:pontos de dano|de dano|dano)/i);
-  const heal=text.match(/(?:recupera|cura)\s+(\d+)\s*(?:pontos de vida|pv|de vida)/i);
-  if(dmg)return -parseInt(dmg[1]);
-  if(heal)return +parseInt(heal[1]);
+  // Detecta tag explícita [PV:-15] ou [PV:+8]
+  const tag=text.match(/\[PV:([+-]?\d+)\]/i);
+  if(tag) return parseInt(tag[1]);
+  // Detecta dano na narrativa
+  const dmg=text.match(/(?:sofre|recebe|toma|causando)\s+(\d+)\s*(?:pontos de dano|de dano|dano)/i);
+  const heal=text.match(/(?:recupera|cura|restaura)\s+(\d+)\s*(?:pontos de vida|pv|de vida|hp)/i);
+  if(dmg) return -parseInt(dmg[1]);
+  if(heal) return +parseInt(heal[1]);
   return 0;
 }
 
@@ -1296,16 +1392,27 @@ function updateActionButtons(actions){
   const grid=document.getElementById('act-grid');
   // Recria os 4 botões dinamicamente
   grid.innerHTML='';
+  const D20_SVG=`<svg viewBox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/><line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="2" y1="13" x2="38" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="38" y1="13" x2="2" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text></svg>`;
   actions.slice(0,4).forEach((action,i)=>{
+    // ★ Detecta se é uma sugestão de teste ("Rolar X CD Y")
+    const isTestAction=/^rolar\s+\w+/i.test(action.trim());
     const data=getActionIconData(action);
     const btn=document.createElement('button');
-    btn.className='act-btn suggested';
     btn.id='ab'+(i+1);
-    // Se for fallback, usa SVG do d20 no círculo
-    const circleContent = data.isD20
-      ? `<svg viewBox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/><line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="2" y1="13" x2="38" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="38" y1="13" x2="2" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text></svg>`
-      : data.icon;
-    btn.innerHTML=`<div class="a-circle">${circleContent}</div><div class="a-text"><span class="a-title">${action}</span><span class="a-hint">${data.hint}</span></div><span class="a-arrow">›</span>`;
+    
+    let circleContent, hintTxt, btnClass;
+    if(isTestAction){
+      // Ação de teste — destaque especial com d20
+      circleContent=D20_SVG;
+      hintTxt='TESTE D20';
+      btnClass='act-btn suggested test-action';
+    } else {
+      circleContent=data.isD20?D20_SVG:data.icon;
+      hintTxt=data.hint;
+      btnClass='act-btn suggested';
+    }
+    btn.className=btnClass;
+    btn.innerHTML=`<div class="a-circle ${isTestAction?'a-circle-test':''}">${circleContent}</div><div class="a-text"><span class="a-title">${action}</span><span class="a-hint">${hintTxt}</span></div><span class="a-arrow">›</span>`;
     btn.onclick=()=>doAct(action);
     grid.appendChild(btn);
   });
@@ -1392,8 +1499,10 @@ QUANDO XP FOR CONCEDIDO:
 
 DIRETRIZES:
 - Narre em 3-4 parágrafos. Use Inter/sans-serif mental — frases claras e diretas.
-- TESTES: Quando a situação exigir teste, inclua na sua narração: "Role [Atributo] (CD X)". O app rola automaticamente quando o jogador escolhe a ação ou digita ação livre. Não descreva o resultado do teste — aguarde o jogador rolar e então continue com base no resultado que ele enviar.
-- As ações sugeridas em [AÇÕES:] devem ser verbos de ação que impliquem teste quando relevante (ex: "Atacar o goblin", "Procurar pistas", "Escalar o muro")
+- TESTES: Quando a situação exigir teste de habilidade, inclua na narração: "Role [Atributo] (CD X)". O app rola automaticamente.
+- IMPORTANTE: Quando pedir um teste, UMA das 4 ações sugeridas deve ser exatamente o teste pedido, no formato: "Rolar [Atributo] CD X" (ex: "Rolar Percepção CD 13", "Rolar Força CD 15"). Isso permite ao jogador rolar direto pelo botão.
+- Use a tag [TESTE:Atributo:CD] no final quando pedir teste (ex: [TESTE:Percepção:13]). Isso ativa o dado automaticamente.
+- As demais ações sugeridas em [AÇÕES:] devem ser verbos de ação com contexto (ex: "Atacar o goblin", "Fugir pela floresta")
 - Mercador: Sobrevivência CD ${merchantCD}.
 - AO FINAL de CADA resposta, inclua OBRIGATORIAMENTE em linha separada:
 [AÇÕES: Verbo+Objeto curto | Verbo+Objeto curto | Verbo+Objeto curto | Verbo+Objeto curto]
@@ -1402,7 +1511,11 @@ Cada ação: máximo 4 palavras, verbo no infinitivo, sem pontuação.
 Exemplos válidos: "Atacar o goblin | Fugir pela floresta | Inspecionar o baú | Falar com o mercador"
 
 - Se estiver em cidade/vilarejo/taverna: inclua [LOCALIZAÇÃO:cidade]
-- Se estiver em floresta/estrada/ruínas: inclua [LOCALIZAÇÃO:campo]`;
+- Se estiver em floresta/estrada/ruínas: inclua [LOCALIZAÇÃO:campo]
+- Quando o personagem SOFRER DANO: inclua [PV:-X] (ex: [PV:-8])
+- Quando o personagem SE CURAR: inclua [PV:+X] (ex: [PV:+6])
+- Quando GANHAR OURO: inclua [OURO:+X] (ex: [OURO:+25])
+- Quando GASTAR OURO: inclua [OURO:-X] (ex: [OURO:-10])`;
 }
 
 async function askMaster(acao, oocMode=false){
@@ -1448,6 +1561,14 @@ async function askMaster(acao, oocMode=false){
       if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
       // Pendente roll
       detectPendingRoll(reply);
+      // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
+      const testeMatch=reply.match(/\[TESTE:([^:]+):?(\d+)?\]/i);
+      if(testeMatch){
+        const attrName=testeMatch[1].trim().toLowerCase();
+        const attrMap2={'força':'str','destreza':'dex','constituição':'con','inteligência':'int','sabedoria':'wis','carisma':'cha','percepção':'wis','furtividade':'dex','atletismo':'str','intimidação':'cha','persuasão':'cha','enganação':'cha','arcanismo':'int','história':'int','natureza':'int','religião':'int','medicina':'wis','sobrevivência':'wis','percepção de animais':'wis'};
+        pendingRollAttr=attrMap2[attrName]||'str';
+        pendingRollCD=testeMatch[2]?parseInt(testeMatch[2]):null;
+      }
       // ★ Detecta contexto via tag e palavras-chave
       const locMatch=reply.match(/\[LOCALIZAÇÃO:\s*([^\]]+)\]/i);
       if(locMatch){inCity=locMatch[1].trim()==='cidade';}
@@ -1786,8 +1907,8 @@ function switchTab(id){
   document.querySelectorAll('.sheet-page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const idx=['tab-stats','tab-inv','tab-spells'].indexOf(id);
-  document.querySelectorAll('.stab')[idx].classList.add('active');
+  const idx=['tab-stats','tab-inv','tab-skills','tab-spells'].indexOf(id);
+  if(idx>=0) document.querySelectorAll('.stab')[idx].classList.add('active');
 }
 
 function saveApiKey(){
