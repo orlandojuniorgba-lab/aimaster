@@ -467,6 +467,67 @@ body{font-family:var(--font-narr);color:var(--parch);}
   border-color:rgba(200,146,42,.6)!important;
   box-shadow:0 0 8px rgba(200,146,42,.2);
 }
+
+/* ══ D20 MODAL REDESIGN ══ */
+.d20-context-box{background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--gold-l);text-align:center;font-family:var(--font-title);letter-spacing:.5px;margin-bottom:10px;}
+.d20-section-lbl{font-family:var(--font-title);font-size:9px;color:var(--gold-d);letter-spacing:2px;margin-bottom:7px;}
+.d20-action-section{margin-bottom:12px;}
+.d20-action-row{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;}
+.d20-action-btn{background:var(--bg2);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:10px 4px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .18s;color:var(--parch);}
+.d20-action-btn:hover{border-color:var(--gold-d);background:rgba(200,146,42,.08);}
+.d20-action-btn.active{border-color:var(--gold);background:rgba(200,146,42,.15);box-shadow:0 0 10px rgba(200,146,42,.15);}
+.d20-action-btn span{font-size:9px;font-family:var(--font-title);color:var(--gold-d);letter-spacing:.5px;text-align:center;}
+.d20-launch{background:linear-gradient(135deg,rgba(200,146,42,.15),rgba(200,146,42,.08));border:2px solid var(--gold-d);border-radius:16px;padding:14px 28px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;}
+.d20-launch:hover{border-color:var(--gold);box-shadow:0 0 20px rgba(200,146,42,.2);}
+.d20-launch:active{transform:scale(.94);}
+
+/* ══ INVENTORY AVATAR ══ */
+.equip-avatar-wrap{display:flex;align-items:flex-start;gap:12px;background:rgba(26,18,8,.6);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;}
+.equip-avatar{position:relative;flex-shrink:0;}
+.eq-slot-labels{position:absolute;inset:0;pointer-events:none;}
+.eq-slot-lbl{position:absolute;font-size:7px;color:rgba(200,146,42,.4);font-family:var(--font-title);letter-spacing:.3px;}
+.equip-stats{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;}
+.equip-stat-lbl{font-size:9px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:1px;}
+.equip-stat-val{font-family:var(--font-title);font-size:15px;color:var(--gold-l);font-weight:600;}
+.inv-bar{height:80px;width:14px;background:rgba(0,0,0,.5);border-radius:7px;overflow:hidden;border:1px solid rgba(200,146,42,.15);}
+.inv-fill{width:100%;height:0%;background:linear-gradient(180deg,#E74C3C,#F39C12,#2ECC71);border-radius:7px;transition:height .7s;}
+.inv-section-lbl{font-family:var(--font-title);font-size:10px;color:var(--gold);letter-spacing:2px;margin:4px 0 8px;display:flex;align-items:center;gap:6px;}
+.inv-section-lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,146,42,.2),transparent);}
+.inv-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s;}
+.inv-item:hover{border-color:var(--gold-d);}
+.inv-item.equipped{border-color:rgba(200,146,42,.4);background:rgba(200,146,42,.05);}
+.inv-item-icon{font-size:18px;flex-shrink:0;}
+.inv-item-name{font-family:var(--font-title);font-size:12px;color:var(--gold-l);}
+.inv-item-desc{font-size:11px;color:var(--parch-d);margin-top:2px;line-height:1.4;}
+.inv-item-weight{font-size:11px;color:var(--gold-d);margin-left:auto;flex-shrink:0;font-family:var(--font-title);}
+.equipped-badge{font-size:8px;color:var(--gold);font-family:var(--font-title);background:rgba(200,146,42,.15);border-radius:4px;padding:1px 5px;margin-left:4px;letter-spacing:.5px;}
+
+/* ══ MAP MEDIEVAL ══ */
+.map-header{background:linear-gradient(135deg,#1A0E04,#2A1A08);border-bottom:2px solid var(--gold-d);padding:12px 16px;position:relative;}
+.map-title-wrap{display:flex;align-items:center;justify-content:center;gap:12px;}
+.map-deco{font-size:18px;color:var(--gold-d);}
+.map-title{font-family:var(--font-title);font-size:20px;color:var(--gold-l);letter-spacing:3px;font-weight:700;}
+.map-subtitle{font-size:10px;color:var(--gold-d);letter-spacing:2px;font-family:var(--font-title);text-align:center;}
+.map-controls{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(26,14,4,.8);border-bottom:1px solid rgba(200,146,42,.15);}
+.map-ctrl-btn{background:rgba(200,146,42,.12);border:1px solid rgba(200,146,42,.3);border-radius:6px;color:var(--gold-l);font-size:16px;font-weight:700;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.map-ctrl-btn:hover{background:rgba(200,146,42,.22);}
+.map-zoom-lbl{font-family:var(--font-title);font-size:11px;color:var(--gold-d);margin-left:auto;}
+.map-viewport{width:100%;height:300px;overflow:hidden;position:relative;cursor:grab;background:#1a1208;}
+.map-viewport:active{cursor:grabbing;}
+.map-inner{transform-origin:center center;transition:transform .15s;display:flex;align-items:center;justify-content:center;position:relative;}
+#map-img{width:100%;display:block;user-select:none;}
+.map-pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;}
+.map-pin-dot{width:12px;height:12px;background:#E74C3C;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px rgba(231,76,60,.6);animation:blink 1.5s infinite;}
+.map-pin-label{background:rgba(0,0,0,.7);border:1px solid var(--gold-d);border-radius:4px;padding:2px 6px;font-size:9px;color:var(--gold);font-family:var(--font-title);white-space:nowrap;margin-top:2px;}
+.map-legend{background:rgba(26,14,4,.9);border-top:1px solid rgba(200,146,42,.15);padding:8px 14px;font-size:12px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:.5px;}
+
+/* ══ REST MODAL ══ */
+.rest-status-bar{display:flex;justify-content:space-around;background:rgba(26,18,8,.6);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:8px;}
+.rst-stat{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.rst-lbl{font-size:9px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:1px;}
+.rst-val{font-size:14px;color:var(--parch);font-weight:600;font-family:var(--font-title);}
+.rest-icon-circle{width:46px;height:46px;border-radius:50%;background:rgba(200,146,42,.12);border:1.5px solid rgba(200,146,42,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rest-duration{font-size:11px;color:rgba(200,146,42,.6);font-family:var(--font-title);margin:2px 0;}
 </style>
 </head>
 <body>
@@ -637,45 +698,117 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <button class="fbar-btn" onclick="openMo('mo-rep')" title="Reputação"><span class="fbi">🏅</span><span class="fbl">Reputação</span></button>
     <button class="fbar-btn" onclick="openMo('mo-shop')" title="Créditos"><span class="fbi">💎</span><span class="fbl">Créditos</span></button>
     <button class="fbar-btn" onclick="openMo('mo-map')" title="Mapa"><span class="fbi">🗺️</span><span class="fbl">Mapa</span></button>
-    <button class="fbar-btn" onclick="openMo('mo-rest')" title="Descanso"><span class="fbi">🏕️</span><span class="fbl">Descanso</span></button>
+    <button class="fbar-btn" onclick="openRestModal()" title="Descanso" id="rest-footer-btn">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.6" style="display:block;margin:0 auto">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="rgba(200,146,42,.15)"/>
+        <line x1="12" y1="10" x2="12" y2="12" stroke-linecap="round"/>
+        <circle cx="12" cy="14" r=".5" fill="var(--gold)" stroke="none"/>
+      </svg>
+      <span class="fbl">Descanso</span>
+    </button>
     <button class="fbar-btn" onclick="openMo('mo-api')" title="API"><span class="fbi">🔑</span><span class="fbl">API</span></button>
   </div>
 </div>
 
-<!-- MODAL D20 -->
-<div class="mo" id="mo-d20"><div class="ms">
-  <div class="mt">🎲 Rolar Teste <button class="mc" onclick="closeMo('mo-d20')">×</button></div>
-  <div class="d20-modal-inner">
-    <div class="d20-hint" id="d20-hint-txt">Escolha o atributo e lance o dado</div>
-    <div class="d20-attr-grid" id="d20-attrs"></div>
-    <!-- Habilidades disponíveis neste nível -->
-    <div id="d20-abilities-panel" style="width:100%;display:none">
-      <div style="font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:2px;margin-bottom:6px">HABILIDADES DISPONÍVEIS</div>
-      <div id="d20-abilities-list" style="display:flex;flex-direction:column;gap:6px;max-height:140px;overflow-y:auto"></div>
+<!-- MODAL D20 REDESENHADO -->
+<div class="mo" id="mo-d20"><div class="ms" style="padding:1rem 1rem 1.2rem">
+  <div class="mt">🎲 Centro de Ação <button class="mc" onclick="closeMo('mo-d20')">×</button></div>
+
+  <!-- Contexto narrativo / hint -->
+  <div class="d20-context-box" id="d20-hint-txt">Toque em uma ação ou lance o dado livre</div>
+
+  <!-- Botões de ação de combate/habilidade -->
+  <div class="d20-action-section">
+    <div class="d20-section-lbl">AÇÕES DE COMBATE</div>
+    <div class="d20-action-row" id="d20-combat-btns">
+      <button class="d20-action-btn" id="d20-melee" onclick="d20QuickAction('melee')">
+        <svg viewBox="0 0 32 32" width="22" height="22"><line x1="4" y1="28" x2="24" y2="8" stroke="#E8B84B" stroke-width="2.5" stroke-linecap="round"/><polygon points="24,4 28,8 22,10 18,6" fill="#E8B84B"/><line x1="4" y1="24" x2="8" y2="28" stroke="#E8B84B" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Corpo a Corpo</span>
+      </button>
+      <button class="d20-action-btn" id="d20-ranged" onclick="d20QuickAction('ranged')">
+        <svg viewBox="0 0 32 32" width="22" height="22"><line x1="2" y1="16" x2="28" y2="16" stroke="#E8B84B" stroke-width="2" stroke-linecap="round"/><polyline points="22,10 28,16 22,22" fill="none" stroke="#E8B84B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><line x1="10" y1="11" x2="10" y2="21" stroke="#C8922A" stroke-width="1.5"/><line x1="6" y1="13" x2="6" y2="19" stroke="#C8922A" stroke-width="1.5"/></svg>
+        <span>À Distância</span>
+      </button>
+      <button class="d20-action-btn" id="d20-spell" onclick="d20QuickAction('spell')">
+        <svg viewBox="0 0 32 32" width="22" height="22"><circle cx="16" cy="16" r="4" fill="#A080FF" opacity=".8"/><line x1="16" y1="4" x2="16" y2="10" stroke="#A080FF" stroke-width="1.5"/><line x1="16" y1="22" x2="16" y2="28" stroke="#A080FF" stroke-width="1.5"/><line x1="4" y1="16" x2="10" y2="16" stroke="#A080FF" stroke-width="1.5"/><line x1="22" y1="16" x2="28" y2="16" stroke="#A080FF" stroke-width="1.5"/><line x1="8" y1="8" x2="12" y2="12" stroke="#A080FF" stroke-width="1.2"/><line x1="20" y1="20" x2="24" y2="24" stroke="#A080FF" stroke-width="1.2"/><line x1="24" y1="8" x2="20" y2="12" stroke="#A080FF" stroke-width="1.2"/><line x1="8" y1="24" x2="12" y2="20" stroke="#A080FF" stroke-width="1.2"/></svg>
+        <span>Magia</span>
+      </button>
+      <button class="d20-action-btn" id="d20-skill-btn" onclick="d20QuickAction('skill')">
+        <svg viewBox="0 0 32 32" width="22" height="22"><circle cx="16" cy="10" r="5" fill="none" stroke="#E8B84B" stroke-width="1.8"/><path d="M8 28 Q16 18 24 28" fill="none" stroke="#E8B84B" stroke-width="1.8" stroke-linecap="round"/><line x1="16" y1="15" x2="16" y2="20" stroke="#E8B84B" stroke-width="1.5"/></svg>
+        <span>Habilidade</span>
+      </button>
     </div>
-    <div class="d20-launch" onclick="rollD20Modal()">
-      <svg viewBox="0 0 60 60" width="70" height="70" xmlns="http://www.w3.org/2000/svg" id="d20-big-svg">
-        <polygon points="30,3 57,17 57,43 30,57 3,43 3,17" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="2" stroke-linejoin="round"/>
-        <line x1="30" y1="3" x2="30" y2="57" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
-        <line x1="3" y1="17" x2="57" y2="43" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
-        <line x1="57" y1="17" x2="3" y2="43" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
-        <text id="d20-svg-num" x="30" y="36" text-anchor="middle" fill="#E8B84B" font-size="18" font-family="Cinzel,serif" font-weight="700">?</text>
+  </div>
+
+  <!-- Atributos -->
+  <div class="d20-section-lbl">ATRIBUTO DO TESTE</div>
+  <div class="d20-attr-grid" id="d20-attrs"></div>
+
+  <!-- D20 central -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+    <div class="d20-launch" onclick="rollD20Modal()" id="d20-launch-btn">
+      <svg viewBox="0 0 60 60" width="80" height="80" xmlns="http://www.w3.org/2000/svg" id="d20-big-svg">
+        <defs>
+          <filter id="d20glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <polygon points="30,3 57,17 57,43 30,57 3,43 3,17" fill="rgba(200,146,42,.12)" stroke="#C8922A" stroke-width="2" stroke-linejoin="round" filter="url(#d20glow)"/>
+        <line x1="30" y1="3" x2="30" y2="57" stroke="rgba(200,146,42,.22)" stroke-width="1.2"/>
+        <line x1="3" y1="17" x2="57" y2="43" stroke="rgba(200,146,42,.22)" stroke-width="1.2"/>
+        <line x1="57" y1="17" x2="3" y2="43" stroke="rgba(200,146,42,.22)" stroke-width="1.2"/>
+        <text id="d20-svg-num" x="30" y="37" text-anchor="middle" fill="#E8B84B" font-size="20" font-family="Cinzel,serif" font-weight="700">?</text>
       </svg>
+      <div style="font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:1.5px;margin-top:4px">TOQUE PARA ROLAR</div>
     </div>
     <div class="d20-result-txt" id="d20-result-txt"></div>
   </div>
 </div></div>
 
-<!-- MODAL DESCANSO -->
+<!-- MODAL DESCANSO MELHORADO -->
 <div class="mo" id="mo-rest"><div class="ms">
-  <div class="mt">🏕️ Descanso <button class="mc" onclick="closeMo('mo-rest')">×</button></div>
-  <div class="rest-opt" onclick="doRest('curto')">
-    <div class="rest-title">⏱ Descanso Curto (1 hora)</div>
-    <div class="rest-desc">Recupera PV com Dado de Vida + mod. CON.<br>Não recupera feitiços.</div>
+  <div class="mt">
+    <span style="display:flex;align-items:center;gap:8px">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--gold)" stroke-width="1.8">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      Descanso
+    </span>
+    <button class="mc" onclick="closeMo('mo-rest')">×</button>
+  </div>
+  <!-- Status atual -->
+  <div class="rest-status-bar">
+    <div class="rst-stat"><span class="rst-lbl">❤️ PV</span><span class="rst-val" id="rest-hp-display">—</span></div>
+    <div class="rst-stat"><span class="rst-lbl">✨ MP</span><span class="rst-val" id="rest-mp-display">—</span></div>
+    <div class="rst-stat"><span class="rst-lbl">⚔️ Combate</span><span class="rst-val" id="rest-combat-display" style="color:#E08080">—</span></div>
+  </div>
+  <!-- Opções de descanso -->
+  <div class="rest-opt" onclick="doRest('curto')" id="rest-curto-btn">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="rest-icon-circle">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="1.8">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <div>
+        <div class="rest-title">Descanso Curto</div>
+        <div class="rest-duration">⏱ 1 hora</div>
+        <div class="rest-desc">Recupera PV com Dado de Vida + CON<br>Não recupera feitiços</div>
+      </div>
+    </div>
   </div>
   <div class="rest-opt" onclick="doRest('longo')">
-    <div class="rest-title">🌙 Descanso Longo (8 horas)</div>
-    <div class="rest-desc">Recupera todos os PV e feitiços.<br>CD do Mercador reseta para 12.</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="rest-icon-circle" style="background:rgba(91,63,160,.2);border-color:rgba(139,111,208,.4)">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#8B6FD0" stroke-width="1.8">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="rest-title" style="color:#C0A0FF">Descanso Longo</div>
+        <div class="rest-duration" style="color:rgba(139,111,208,.7)">🌙 8 horas</div>
+        <div class="rest-desc">Recupera todos PV e feitiços<br>CD do Mercador reseta · Local seguro</div>
+      </div>
+    </div>
   </div>
 </div></div>
 
@@ -731,22 +864,51 @@ body{font-family:var(--font-narr);color:var(--parch);}
   </div>
   <!-- Inventário -->
   <div class="sheet-page" id="tab-inv">
-    <div class="inv-capacity">
-      <div class="inv-cap-row"><span>CARGA</span><span id="inv-weight-txt">0 / 75 kg</span></div>
-      <div class="inv-bar"><div class="inv-fill" id="inv-bar" style="width:0%"></div></div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px" id="inv-list">
-      <div class="inv-item equipped">
-        <span class="inv-item-icon">🎒</span>
-        <div><div class="inv-item-name">Mochila do Aventureiro <span class="equipped-badge">EQUIPADO</span></div><div class="inv-item-desc">Contém equipamentos básicos</div></div>
-        <span class="inv-item-weight">5kg</span>
+    <!-- Avatar de equipamentos -->
+    <div class="equip-avatar-wrap">
+      <div class="equip-avatar">
+        <!-- Silhueta do personagem -->
+        <svg viewBox="0 0 100 160" width="90" height="144" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="20" r="14" fill="rgba(200,146,42,.1)" stroke="rgba(200,146,42,.3)" stroke-width="1.5"/>
+          <path d="M30 40 Q50 35 70 40 L75 90 Q50 95 25 90 Z" fill="rgba(200,146,42,.08)" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
+          <line x1="30" y1="45" x2="15" y2="85" stroke="rgba(200,146,42,.2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="70" y1="45" x2="85" y2="85" stroke="rgba(200,146,42,.2)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="38" y1="90" x2="35" y2="140" stroke="rgba(200,146,42,.2)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="62" y1="90" x2="65" y2="140" stroke="rgba(200,146,42,.2)" stroke-width="9" stroke-linecap="round"/>
+          <!-- Slots de equipamento -->
+          <text id="eq-head" x="50" y="16" text-anchor="middle" font-size="14">⛑️</text>
+          <text id="eq-body" x="50" y="68" text-anchor="middle" font-size="16">👕</text>
+          <text id="eq-lhand" x="12" y="75" text-anchor="middle" font-size="12">🖐️</text>
+          <text id="eq-rhand" x="88" y="75" text-anchor="middle" font-size="12">⚔️</text>
+          <text id="eq-legs" x="50" y="115" text-anchor="middle" font-size="13">👖</text>
+          <text id="eq-feet" x="50" y="148" text-anchor="middle" font-size="12">👢</text>
+        </svg>
+        <!-- Labels dos slots -->
+        <div class="eq-slot-labels">
+          <div class="eq-slot-lbl" style="top:2px;left:50%;transform:translateX(-50%)">Cabeça</div>
+          <div class="eq-slot-lbl" style="top:38%;left:50%;transform:translateX(-50%)">Corpo</div>
+          <div class="eq-slot-lbl" style="top:42%;left:2px">M.Esq</div>
+          <div class="eq-slot-lbl" style="top:42%;right:2px">M.Dir</div>
+          <div class="eq-slot-lbl" style="bottom:25%;left:50%;transform:translateX(-50%)">Pernas</div>
+          <div class="eq-slot-lbl" style="bottom:2%;left:50%;transform:translateX(-50%)">Pés</div>
+        </div>
       </div>
-      <div class="inv-item"><span class="inv-item-icon">⚔️</span><div><div class="inv-item-name" id="inv-weapon">Espada Longa</div><div class="inv-item-desc">1d8 cortante · Versátil (1d10)</div></div><span class="inv-item-weight">2kg</span></div>
-      <div class="inv-item"><span class="inv-item-icon">🧪</span><div><div class="inv-item-name">Poção de Cura ×2</div><div class="inv-item-desc">Recupera 2d4+2 PV</div></div><span class="inv-item-weight">0.5kg</span></div>
-      <div class="inv-item"><span class="inv-item-icon">🕯️</span><div><div class="inv-item-name">Tochas ×5</div><div class="inv-item-desc">1 hora de luz, raio 6m</div></div><span class="inv-item-weight">0.25kg</span></div>
-      <div class="inv-item"><span class="inv-item-icon">🍞</span><div><div class="inv-item-name">Rações ×5</div><div class="inv-item-desc">Alimentação para 5 dias</div></div><span class="inv-item-weight">1kg</span></div>
-      <p style="font-size:12px;color:var(--gold-d);text-align:center;font-style:italic;margin-top:4px">Itens adicionados automaticamente conforme a narrativa</p>
+      <!-- Carga ao lado do avatar -->
+      <div class="equip-stats">
+        <div class="equip-stat-lbl">CARGA</div>
+        <div class="equip-stat-val" id="inv-weight-txt">0kg</div>
+        <div class="equip-stat-lbl" style="margin-top:4px">MÁXIMO</div>
+        <div class="equip-stat-val" id="inv-max-txt">75kg</div>
+        <div class="inv-bar" style="margin-top:6px;height:80px;width:12px;flex-direction:column;writing-mode:vertical-lr">
+          <div class="inv-fill" id="inv-bar" style="width:100%;height:0%;background:linear-gradient(180deg,#E74C3C,#F39C12,#2ECC71)"></div>
+        </div>
+        <div class="equip-stat-lbl" style="margin-top:4px;font-size:8px;color:var(--gold-dim)" id="inv-carry-status">LEVE</div>
+      </div>
     </div>
+    <!-- Lista de itens -->
+    <div class="inv-section-lbl">ITENS CARREGADOS</div>
+    <div style="display:flex;flex-direction:column;gap:6px" id="inv-list"></div>
+    <p style="font-size:11px;color:var(--gold-dim);text-align:center;font-style:italic;margin-top:8px;font-family:var(--font-title)">⚖️ Itens atualizados automaticamente pela narrativa</p>
   </div>
   <!-- Habilidades -->
   <div class="sheet-page" id="tab-skills">
@@ -779,12 +941,48 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <div id="next-level-abilities" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
 </div></div>
 
-<!-- MODAL MAPA -->
-<div class="mo" id="mo-map"><div class="ms">
-  <div class="mt">🗺️ Mapa de Faerûn <button class="mc" onclick="closeMo('mo-map')">×</button></div>
-  <div class="map-frame"><img src="https://upload.wikimedia.org/wikipedia/en/2/2b/Faerun_map.jpg" alt="Mapa Faerûn D&D" loading="lazy" onerror="this.src='https://i.imgur.com/0vEDd0N.jpg'"/></div>
-  <p class="mo-note" style="margin-top:4px">Mapa oficial de Faerûn · Forgotten Realms D&D 5e</p>
-  <p class="mo-note">📍 Missão: Templo Esquecido — próximo a Millhaven</p>
+<!-- MODAL MAPA MEDIEVAL -->
+<div class="mo" id="mo-map"><div class="ms" style="padding:0;overflow:hidden;border-radius:18px 18px 0 0">
+  <!-- Header medieval -->
+  <div class="map-header">
+    <div class="map-title-wrap">
+      <div class="map-deco">⚜</div>
+      <div>
+        <div class="map-title">Faerûn</div>
+        <div class="map-subtitle">Forgotten Realms · D&D 5e</div>
+      </div>
+      <div class="map-deco">⚜</div>
+    </div>
+    <button class="mc" onclick="closeMo('mo-map')" style="position:absolute;top:12px;right:14px;color:rgba(200,146,42,.6);font-size:20px">×</button>
+  </div>
+  <!-- Zoom controls -->
+  <div class="map-controls">
+    <button class="map-ctrl-btn" onclick="mapZoom(1.3)">＋</button>
+    <button class="map-ctrl-btn" onclick="mapZoom(0.77)">－</button>
+    <button class="map-ctrl-btn" onclick="mapReset()">⌂</button>
+    <span class="map-zoom-lbl" id="map-zoom-lbl">100%</span>
+  </div>
+  <!-- Mapa com scroll/zoom -->
+  <div class="map-viewport" id="map-viewport" ontouchstart="mapTouchStart(event)" ontouchmove="mapTouchMove(event)">
+    <div class="map-inner" id="map-inner">
+      <img id="map-img"
+        src="https://upload.wikimedia.org/wikipedia/en/2/2b/Faerun_map.jpg"
+        alt="Mapa de Faerûn"
+        loading="lazy"
+        draggable="false"
+        onerror="this.src='https://i.imgur.com/0vEDd0N.jpg'"
+      />
+      <!-- Marcador de localização atual -->
+      <div class="map-pin" id="map-pin" style="display:none">
+        <div class="map-pin-dot"></div>
+        <div class="map-pin-label" id="map-pin-label">Você está aqui</div>
+      </div>
+    </div>
+  </div>
+  <!-- Legenda -->
+  <div class="map-legend">
+    <span>📍 <span id="map-location-txt">Localização atual desconhecida</span></span>
+  </div>
 </div></div>
 
 <!-- MODAL API -->
@@ -1138,6 +1336,7 @@ function startAdventure(){
   }
   // Preenche aba Habilidades
   buildSkillsTab(cls, race, hero.level||1);
+  initInventory(cls);
   // XP modal
   updateXPModal();
   buildD20Attrs();
@@ -1515,7 +1714,10 @@ Exemplos válidos: "Atacar o goblin | Fugir pela floresta | Inspecionar o baú |
 - Quando o personagem SOFRER DANO: inclua [PV:-X] (ex: [PV:-8])
 - Quando o personagem SE CURAR: inclua [PV:+X] (ex: [PV:+6])
 - Quando GANHAR OURO: inclua [OURO:+X] (ex: [OURO:+25])
-- Quando GASTAR OURO: inclua [OURO:-X] (ex: [OURO:-10])`;
+- Quando GASTAR OURO: inclua [OURO:-X] (ex: [OURO:-10])
+- Quando o personagem GANHAR um item: inclua [ITEM:+NomeItem:ícone:pesoKg] (ex: [ITEM:+Chave de Ferro:🗝️:0.1])
+- Quando o personagem PERDER/VENDER/QUEBRAR item: inclua [ITEM:-NomeItem] (ex: [ITEM:-Poção de Cura])
+- NUNCA permita que armaduras completas (>10kg) sejam colocadas dentro da mochila sem transporte adequado`;
 }
 
 async function askMaster(acao, oocMode=false){
@@ -1561,6 +1763,8 @@ async function askMaster(acao, oocMode=false){
       if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
       // Pendente roll
       detectPendingRoll(reply);
+      // Processa mudanças de inventário
+      processInventoryChanges(reply);
       // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
       const testeMatch=reply.match(/\[TESTE:([^:]+):?(\d+)?\]/i);
       if(testeMatch){
@@ -1952,7 +2156,7 @@ function showToast(msg){
 function openMo(id){
   if(id==='mo-rep')updateVitalsAndRep();
   if(id==='mo-api'){const k=localStorage.getItem('aimaster_api_key')||'';if(k)document.getElementById('api-status').textContent='✅ Chave configurada';}
-  if(id==='mo-d20'){buildD20Attrs();buildD20AbilitiesPanel();}
+  if(id==='mo-d20'){d20ActionMode=null;buildD20Attrs();buildD20AbilitiesPanel();document.querySelectorAll('.d20-action-btn').forEach(b=>b.classList.remove('active'));}
   if(id==='mo-xp')updateXPModal();
   if(id==='mo-shop')updateShopContext();
   document.getElementById(id).classList.add('open');
@@ -1980,6 +2184,232 @@ document.getElementById('free-in').addEventListener('keydown',e=>{if(e.key==='En
 updatePreview();
 </script>
 <script>
+// ══ D20 QUICK ACTIONS ══
+let d20ActionMode = null; // 'melee','ranged','spell','skill'
+
+function d20QuickAction(mode){
+  d20ActionMode = mode;
+  document.querySelectorAll('.d20-action-btn').forEach(b=>b.classList.remove('active'));
+  const btnId = {melee:'d20-melee',ranged:'d20-ranged',spell:'d20-spell',skill:'d20-skill-btn'}[mode];
+  const btn = document.getElementById(btnId);
+  if(btn) btn.classList.add('active');
+  // Auto-seleciona atributo relevante
+  const attrMap = {melee:'str',ranged:'dex',spell:'int',skill:'wis'};
+  const attr = attrMap[mode]||'str';
+  d20SelectedAttr = attr;
+  buildD20Attrs(); // rebuild para refletir seleção
+  // Atualiza hint
+  const hints = {melee:'Ataque Corpo a Corpo → FOR',ranged:'Ataque à Distância → DES',spell:'Ataque/Teste de Magia → INT',skill:'Teste de Habilidade → SAB'};
+  const hintEl = document.getElementById('d20-hint-txt');
+  if(hintEl) hintEl.textContent = hints[mode];
+}
+
+// ══ MAP ZOOM & PAN ══
+let mapScale=1, mapX=0, mapY=0, mapDragging=false, mapDragStart={x:0,y:0};
+let mapPinchStart=0;
+
+function applyMapTransform(){
+  const inner=document.getElementById('map-inner');
+  if(inner) inner.style.transform=`scale(${mapScale}) translate(${mapX}px,${mapY}px)`;
+  const lbl=document.getElementById('map-zoom-lbl');
+  if(lbl) lbl.textContent=Math.round(mapScale*100)+'%';
+}
+function mapZoom(factor){
+  mapScale=Math.min(4,Math.max(0.8,mapScale*factor));
+  applyMapTransform();
+}
+function mapReset(){mapScale=1;mapX=0;mapY=0;applyMapTransform();}
+
+function mapTouchStart(e){
+  if(e.touches.length===2){
+    mapPinchStart=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+  } else if(e.touches.length===1){
+    mapDragging=true;
+    mapDragStart={x:e.touches[0].clientX-mapX,y:e.touches[0].clientY-mapY};
+  }
+}
+function mapTouchMove(e){
+  e.preventDefault();
+  if(e.touches.length===2){
+    const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    if(mapPinchStart) mapScale=Math.min(4,Math.max(0.8,mapScale*(dist/mapPinchStart)));
+    mapPinchStart=dist;
+    applyMapTransform();
+  } else if(mapDragging&&e.touches.length===1){
+    mapX=e.touches[0].clientX-mapDragStart.x;
+    mapY=e.touches[0].clientY-mapDragStart.y;
+    applyMapTransform();
+  }
+}
+
+// Mouse drag for desktop
+(function setupMapDrag(){
+  setTimeout(()=>{
+    const vp=document.getElementById('map-viewport');
+    if(!vp)return;
+    vp.addEventListener('mousedown',e=>{mapDragging=true;mapDragStart={x:e.clientX-mapX,y:e.clientY-mapY};});
+    document.addEventListener('mousemove',e=>{if(mapDragging){mapX=e.clientX-mapDragStart.x;mapY=e.clientY-mapDragStart.y;applyMapTransform();}});
+    document.addEventListener('mouseup',()=>{mapDragging=false;});
+    vp.addEventListener('wheel',e=>{e.preventDefault();mapZoom(e.deltaY<0?1.15:0.87);},{passive:false});
+  },1000);
+})();
+
+// ══ INVENTORY SYSTEM ══
+let inventory = []; // {name,icon,desc,weight,equipped,slot,qty}
+
+const ITEM_WEIGHT_MAP={
+  // Armas
+  'Espada Longa':2,'Adaga':0.5,'Arco Longo':1,'Machado Grande':3.5,'Cajado':2,'Maça':2,'Rapieira':1,'Varinha':0.5,
+  // Armaduras
+  'Armadura de Couro':4.5,'Cota de Malha':20,'Armadura de Placas':32,'Escudo':2.7,
+  // Consumíveis
+  'Poção de Cura':0.25,'Poção de Força':0.25,'Antídoto':0.05,
+  // Equipamentos
+  'Mochila do Aventureiro':5,'Tocha':0.1,'Corda':2,'Tenda':10,'Ração':0.2,'Lanterna':0.5,
+};
+
+const ITEM_SLOT_MAP={
+  'Espada Longa':'rhand','Adaga':'rhand','Arco Longo':'rhand','Machado Grande':'rhand','Cajado':'rhand','Maça':'rhand','Rapieira':'rhand','Varinha':'rhand',
+  'Armadura de Couro':'body','Cota de Malha':'body','Armadura de Placas':'body',
+  'Escudo':'lhand',
+  'Botas':'feet','Luvas':'lhand',
+};
+
+const SLOT_ICONS={'head':'⛑️','body':'👕','lhand':'🖐️','rhand':'⚔️','legs':'👖','feet':'👢'};
+
+function initInventory(cls){
+  const weaponByClass={Guerreiro:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante · Versátil(1d10)',slot:'rhand'},Mago:{name:'Cajado',icon:'🪄',desc:'1d6 contundente · Foco arcano',slot:'rhand'},Ladino:{name:'Adaga',icon:'🗡️',desc:'1d4 perfurante · Arremessável',slot:'rhand'},Clérigo:{name:'Maça',icon:'🔨',desc:'1d6 contundente',slot:'rhand'},Bardo:{name:'Rapieira',icon:'⚔️',desc:'1d8 perfurante · Finesse',slot:'rhand'},Paladino:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante',slot:'rhand'},Druida:{name:'Cajado',icon:'🪄',desc:'1d6 contundente · Foco druídico',slot:'rhand'},Ranger:{name:'Arco Longo',icon:'🏹',desc:'1d8 perfurante · Alcance 45m',slot:'rhand'},Bárbaro:{name:'Machado Grande',icon:'🪓',desc:'2d6 cortante · Pesado',slot:'rhand'},Feiticeiro:{name:'Varinha',icon:'🪄',desc:'Foco de conjuração',slot:'rhand'}};
+  const w=weaponByClass[cls]||{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante',slot:'rhand'};
+  inventory=[
+    {name:'Mochila do Aventureiro',icon:'🎒',desc:'Capacidade 15kg · Equipamentos básicos',weight:5,equipped:true,slot:'back',qty:1},
+    {name:w.name,icon:w.icon,desc:w.desc,weight:ITEM_WEIGHT_MAP[w.name]||1,equipped:true,slot:w.slot,qty:1},
+    {name:'Poção de Cura',icon:'🧪',desc:'Recupera 2d4+2 PV · Ação',weight:0.25,equipped:false,slot:null,qty:2},
+    {name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m',weight:0.1,equipped:false,slot:null,qty:5},
+    {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação para 1 dia',weight:0.2,equipped:false,slot:null,qty:5},
+  ];
+  renderInventory();
+}
+
+function getMaxCarryWeight(){
+  return (stats.str||10)*2.25; // Regra D&D 5e: FOR × 15 libras ≈ FOR × 6.8kg, simplificado
+}
+
+function getTotalWeight(){
+  return inventory.reduce((sum,item)=>sum+(item.weight||0)*(item.qty||1),0);
+}
+
+function renderInventory(){
+  const listEl=document.getElementById('inv-list');
+  if(!listEl)return;
+  const maxW=getMaxCarryWeight();
+  const totalW=getTotalWeight();
+  const pct=Math.min(100,(totalW/maxW)*100);
+  const wtEl=document.getElementById('inv-weight-txt');
+  const maxEl=document.getElementById('inv-max-txt');
+  const barEl=document.getElementById('inv-bar');
+  const statusEl=document.getElementById('inv-carry-status');
+  if(wtEl) wtEl.textContent=totalW.toFixed(1)+'kg';
+  if(maxEl) maxEl.textContent=maxW.toFixed(0)+'kg';
+  if(barEl) barEl.style.height=pct+'%';
+  if(statusEl){
+    if(pct<34) statusEl.textContent='LEVE';
+    else if(pct<67) statusEl.textContent='NORMAL';
+    else if(pct<100) statusEl.textContent='ENCUMBRADO';
+    else {statusEl.textContent='SOBRECARREGADO';statusEl.style.color='var(--red)';}
+  }
+  // Render items
+  listEl.innerHTML=inventory.map((item,i)=>`
+    <div class="inv-item${item.equipped?' equipped':''}" onclick="toggleEquip(${i})">
+      <span class="inv-item-icon">${item.icon}</span>
+      <div style="flex:1;min-width:0">
+        <div class="inv-item-name">${item.name}${item.qty>1?' ×'+item.qty:''}${item.equipped?'<span class="equipped-badge">EQUIPADO</span>':''}</div>
+        <div class="inv-item-desc">${item.desc}</div>
+      </div>
+      <span class="inv-item-weight">${(item.weight*(item.qty||1)).toFixed(2)}kg</span>
+    </div>`).join('');
+  // Update avatar equipment
+  updateEquipAvatar();
+}
+
+function updateEquipAvatar(){
+  const slots={head:'⛑️',body:'👕',lhand:'🖐️',rhand:'⚔️',legs:'👖',feet:'👢'};
+  inventory.filter(i=>i.equipped&&i.slot&&slots[i.slot]).forEach(item=>{
+    const el=document.getElementById('eq-'+item.slot);
+    if(el) el.textContent=item.icon;
+  });
+}
+
+function toggleEquip(idx){
+  const item=inventory[idx];
+  if(!item) return;
+  const slot=ITEM_SLOT_MAP[item.name];
+  if(!slot){showToast('⚠ '+item.name+' não pode ser equipado');return;}
+  // Verifica armadura pesada: não cabe na mochila
+  const heavyArmor=['Cota de Malha','Armadura de Placas'];
+  if(!item.equipped && heavyArmor.includes(item.name)){
+    askMaster(`O jogador tenta vestir ${item.name} (${item.weight}kg). Isso requer ajuda e tempo. Narre a situação e se é possível equipar agora.`);
+    return;
+  }
+  // Desequipa item no mesmo slot se houver
+  inventory.forEach((it,i)=>{if(it.equipped&&it.slot===slot&&i!==idx)it.equipped=false;});
+  item.equipped=!item.equipped;
+  if(item.equipped) item.slot=slot;
+  renderInventory();
+  showToast(item.equipped?'✅ '+item.name+' equipado':'📦 '+item.name+' guardado');
+}
+
+// Adiciona item ao inventário (chamado pela IA)
+function addInventoryItem(name,icon,desc,weight,qty=1){
+  const existing=inventory.find(i=>i.name===name);
+  if(existing){existing.qty=(existing.qty||1)+(qty||1);}
+  else{inventory.push({name,icon:icon||'📦',desc:desc||'',weight:weight||0.1,equipped:false,slot:ITEM_SLOT_MAP[name]||null,qty});}
+  renderInventory();
+  showToast('📦 +'+name+' adicionado ao inventário');
+}
+
+function removeInventoryItem(name,qty=1){
+  const idx=inventory.findIndex(i=>i.name===name);
+  if(idx>=0){
+    inventory[idx].qty-=qty;
+    if(inventory[idx].qty<=0) inventory.splice(idx,1);
+    renderInventory();
+    showToast('🗑 '+name+' removido');
+  }
+}
+
+// Detecta itens na narrativa e atualiza inventário
+function processInventoryChanges(text){
+  // Ganho de itens
+  const gainPatterns=[
+    /(?:encontra|pega|recebe|ganha|saqueia|compra)\s+(?:uma?|o|a|os|as)?\s*([^,.!?]+?)(?:\s*\(([^)]+)\))?(?:\s*no inventário|\s*em seu inventário)?/gi,
+    /\[ITEM:\+([^\]]+)\]/gi,
+  ];
+  // Perda de itens
+  const loseTag=text.match(/\[ITEM:-([^\]]+)\]/gi);
+  if(loseTag){loseTag.forEach(t=>{const n=t.replace(/\[ITEM:-([^\]]+)\]/,'$1').trim();removeInventoryItem(n);});}
+  const gainTag=text.match(/\[ITEM:\+([^\]]+)\]/gi);
+  if(gainTag){gainTag.forEach(t=>{
+    const parts=t.replace(/\[ITEM:\+([^\]]+)\]/,'$1').trim().split(':');
+    const name=parts[0],icon=parts[1]||'📦',weight=parseFloat(parts[2])||0.1;
+    addInventoryItem(name,icon,'Obtido na aventura',weight);
+  });}
+}
+
+// ══ REST MODAL: update status ══
+function openRestModal(){
+  const hpEl=document.getElementById('rest-hp-display');
+  const mpEl=document.getElementById('rest-mp-display');
+  const combatEl=document.getElementById('rest-combat-display');
+  if(hpEl) hpEl.textContent=`${hero.hp||0}/${hero.maxHP||0}`;
+  if(mpEl) mpEl.textContent=`${hero.mp||0}/${hero.maxMP||0}`;
+  if(combatEl){
+    combatEl.textContent=inCombat?'EM COMBATE':'Seguro';
+    combatEl.style.color=inCombat?'#E08080':'#60D090';
+  }
+  openMo('mo-rest');
+}
+
+
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
 </script>
 </body>
