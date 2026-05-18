@@ -1307,11 +1307,8 @@ function startAdventure(){
     if(el) el.textContent=stats[k]||10;
     if(mel) mel.textContent=modStr(stats[k]||10);
   });
-  document.getElementById('merch-hint').textContent=merchantCD;
-  document.getElementById('inv-weapon').textContent=cls==='Mago'?'Cajado':'cls'==='Ranger'?'Arco Longo':'Espada Longa';
-  // Arma por classe
-  const weapons={Guerreiro:'Espada Longa',Mago:'Cajado',Ladino:'Adaga',Clérigo:'Maça',Bardo:'Rapieira',Paladino:'Espada Longa',Druida:'Cajado',Ranger:'Arco Longo',Bárbaro:'Machado Grande',Feiticeiro:'Varinha'};
-  document.getElementById('inv-weapon').textContent=weapons[cls]||'Espada';
+  const mh=document.getElementById('merch-hint');if(mh)mh.textContent=merchantCD;
+  // (arma definida pelo initInventory)
   // Ficha
   document.getElementById('sh-nm').textContent=name;
   document.getElementById('sh-cl').textContent=`${race} · ${cls}`;
@@ -1820,7 +1817,7 @@ async function doAct(acao){
     // Mercador sempre rola Sobrevivência
     const result = await rollInlineD20('wis','SOBREVIVÊNCIA',merchantCD);
     if(!result.ok&&merchantCD<25) merchantCD=merchantCD===12?17:25;
-    document.getElementById('merch-hint').textContent=merchantCD;
+    const mh=document.getElementById('merch-hint');if(mh)mh.textContent=merchantCD;
     askMaster(`Procurou Mercador. Sobrevivência: ${result.ok?'SUCESSO':'FALHA'} (${result.total} vs CD ${merchantCD}).`);
     return;
   }
@@ -1911,7 +1908,7 @@ function doRest(tipo){
     askMaster(`O personagem descansou 1h (curto). Recuperou até ${newHP} PV. Narre o descanso.`);
   } else {
     hero.hp=hero.maxHP;hero.mp=hero.maxMP;merchantCD=12;
-    document.getElementById('merch-hint').textContent=merchantCD;
+    const mh=document.getElementById('merch-hint');if(mh)mh.textContent=merchantCD;
     updateVitals();
     askMaster('O personagem descansou longamente 8h (longo). PV e feitiços recuperados. Narre a noite.');
   }
