@@ -377,6 +377,85 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .dot-empty{background:rgba(200,146,42,.2);border:1px solid rgba(200,146,42,.3);}
 /* Racial bonus tag */
 .racial-bonus-tag{display:inline-block;background:rgba(0,180,80,.15);border:1px solid rgba(0,180,80,.3);border-radius:12px;padding:2px 8px;font-size:10px;color:#60D090;font-family:var(--font-title);letter-spacing:.5px;margin-top:2px;}
+
+/* ★ Dado inline rolando na narrativa */
+@keyframes inline-spin{
+  0%{transform:rotateY(0deg) scale(1.1);}
+  25%{transform:rotateY(90deg) scale(0.9);}
+  50%{transform:rotateY(180deg) scale(1.1);}
+  75%{transform:rotateY(270deg) scale(0.9);}
+  100%{transform:rotateY(360deg) scale(1);}
+}
+.dice-face.spinning{animation:inline-spin 0.55s ease-out;}
+.inline-rolling{animation:fadein .2s ease;}
+/* D20 SVG no círculo da ação */
+.a-circle svg{display:block;}
+
+/* ★ OOC TOGGLE — alternar ação / pergunta ao mestre */
+.ooc-toggle-row{display:flex;gap:7px;align-items:center;}
+.ooc-toggle{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;
+  background:rgba(26,18,8,.9);
+  border:1px solid rgba(200,146,42,.25);
+  border-radius:10px;
+  padding:6px 8px;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:all .2s;
+  min-width:48px;
+}
+.ooc-toggle:hover{border-color:var(--gold-d);background:rgba(42,30,14,.9);}
+.ooc-toggle.ooc-mode{
+  background:rgba(60,35,120,.35);
+  border-color:rgba(139,111,208,.5);
+  box-shadow:0 0 10px rgba(91,63,160,.2);
+}
+.ooc-icon{font-size:16px;line-height:1;display:block;}
+.ooc-label{
+  font-size:8px;
+  font-family:var(--font-title);
+  letter-spacing:.8px;
+  color:var(--gold-d);
+  white-space:nowrap;
+  line-height:1;
+}
+.ooc-toggle.ooc-mode .ooc-label{color:rgba(180,160,255,.8);}
+/* Input em modo OOC fica com cor roxa sutil */
+.free-in.ooc-active{
+  border-color:rgba(139,111,208,.45);
+  background:rgba(40,25,80,.4);
+  color:#D4C8F8;
+}
+.free-in.ooc-active::placeholder{color:rgba(180,160,255,.35);}
+/* Mensagem OOC no chat */
+.msg-ooc .bbl{
+  background:rgba(40,25,80,.5);
+  border:1px dashed rgba(139,111,208,.4);
+  border-radius:10px;
+  padding:8px 13px;
+  font-size:14px;
+  color:rgba(180,160,255,.9);
+  display:inline-block;
+  max-width:90%;
+  font-style:italic;
+}
+.msg-ooc .ooc-tag{
+  font-size:9px;
+  font-family:var(--font-title);
+  color:rgba(139,111,208,.7);
+  letter-spacing:1.5px;
+  display:block;
+  margin-bottom:3px;
+  text-align:right;
+}
+/* Resposta do mestre em modo OOC */
+.msg-dm.ooc-reply .bbl{
+  background:rgba(40,25,80,.35);
+  border-left:3px solid rgba(139,111,208,.6);
+  border-color:rgba(139,111,208,.3);
+}
+.msg-dm.ooc-reply .lbl{color:rgba(180,160,255,.8);}
 </style>
 </head>
 <body>
@@ -522,10 +601,14 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <button class="act-btn suggested" id="ab3" onclick="doAct('Falar com alguém')"><div class="a-circle">💬</div><div class="a-text"><span class="a-title">Falar com alguém</span><span class="a-hint">Diplomacia</span></div><span class="a-arrow">›</span></button>
       <button class="act-btn suggested" id="ab4" onclick="doAct('Investigar o local')"><div class="a-circle">🔍</div><div class="a-text"><span class="a-title">Investigar o local</span><span class="a-hint">Investigação</span></div><span class="a-arrow">›</span></button>
     </div>
-    <div class="free-row">
-      <input class="free-in" id="free-in" type="text" placeholder="Ação livre..." autocomplete="off"/>
-      <button class="free-send" id="free-send" onclick="sendFree()">➤</button>
-    </div>
+    <div class="ooc-toggle-row">
+        <button class="ooc-toggle" id="ooc-toggle" onclick="toggleOOC()" title="Alternar modo">
+          <span class="ooc-icon" id="ooc-icon">⚔️</span>
+          <span class="ooc-label" id="ooc-label">AÇÃO</span>
+        </button>
+        <input class="free-in" id="free-in" type="text" placeholder="Ação livre..." autocomplete="off"/>
+        <button class="free-send" id="free-send" onclick="sendFree()">➤</button>
+      </div>
   </div>
   <!-- ★ FOOTER COM ÍCONES MELHORADOS -->
   <div class="footer-bar">
@@ -1204,7 +1287,8 @@ function getActionIconData(action){
   for(const m of ACTION_ICON_MAP){
     if(m.re.test(action)) return {icon:m.icon,hint:m.hint};
   }
-  return {icon:'🎲',hint:'Ação'};
+  // Fallback: d20 SVG inline como string de emoji
+  return {icon:'🎲',hint:'Ação', isD20:true};
 }
 
 function updateActionButtons(actions){
@@ -1213,11 +1297,15 @@ function updateActionButtons(actions){
   // Recria os 4 botões dinamicamente
   grid.innerHTML='';
   actions.slice(0,4).forEach((action,i)=>{
-    const {icon,hint}=getActionIconData(action);
+    const data=getActionIconData(action);
     const btn=document.createElement('button');
     btn.className='act-btn suggested';
     btn.id='ab'+(i+1);
-    btn.innerHTML=`<div class="a-circle">${icon}</div><div class="a-text"><span class="a-title">${action}</span><span class="a-hint">${hint}</span></div><span class="a-arrow">›</span>`;
+    // Se for fallback, usa SVG do d20 no círculo
+    const circleContent = data.isD20
+      ? `<svg viewBox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/><line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="2" y1="13" x2="38" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="38" y1="13" x2="2" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text></svg>`
+      : data.icon;
+    btn.innerHTML=`<div class="a-circle">${circleContent}</div><div class="a-text"><span class="a-title">${action}</span><span class="a-hint">${data.hint}</span></div><span class="a-arrow">›</span>`;
     btn.onclick=()=>doAct(action);
     grid.appendChild(btn);
   });
@@ -1280,6 +1368,10 @@ NARRATIVA E INTERPRETAÇÃO:
 - Mundo aberto para caminhos alternativos. Liberdade total para criar crônica, reinos, alianças e políticas usando D&D 5e.
 - Use descrições sensoriais ricas: cheiros, sons, texturas, temperatura.
 
+MODO FORA DO PERSONAGEM:
+- Se receber uma mensagem iniciada com [FORA DO PERSONAGEM], responda diretamente como Mestre, explicando regras, narrativa ou dando dicas. Use tom informal e amigável. Não narre como se fosse dentro do jogo.
+- Após responder ao jogador fora do personagem, retome a narrativa normalmente.
+
 ANTI-ALUCINAÇÃO (COERÊNCIA ABSOLUTA):
 - PROIBIDO teleportar o jogador sem justificativa narrativa real.
 - PROIBIDO resolver conflitos abertos (combate, prisão) abruptamente.
@@ -1300,7 +1392,8 @@ QUANDO XP FOR CONCEDIDO:
 
 DIRETRIZES:
 - Narre em 3-4 parágrafos. Use Inter/sans-serif mental — frases claras e diretas.
-- Testes: informe o atributo e CD: "Role [Atributo] (CD X)"
+- TESTES: Quando a situação exigir teste, inclua na sua narração: "Role [Atributo] (CD X)". O app rola automaticamente quando o jogador escolhe a ação ou digita ação livre. Não descreva o resultado do teste — aguarde o jogador rolar e então continue com base no resultado que ele enviar.
+- As ações sugeridas em [AÇÕES:] devem ser verbos de ação que impliquem teste quando relevante (ex: "Atacar o goblin", "Procurar pistas", "Escalar o muro")
 - Mercador: Sobrevivência CD ${merchantCD}.
 - AO FINAL de CADA resposta, inclua OBRIGATORIAMENTE em linha separada:
 [AÇÕES: Verbo+Objeto curto | Verbo+Objeto curto | Verbo+Objeto curto | Verbo+Objeto curto]
@@ -1312,7 +1405,7 @@ Exemplos válidos: "Atacar o goblin | Fugir pela floresta | Inspecionar o baú |
 - Se estiver em floresta/estrada/ruínas: inclua [LOCALIZAÇÃO:campo]`;
 }
 
-async function askMaster(acao){
+async function askMaster(acao, oocMode=false){
   if(thinking)return;
   setThinking(true);
   gameHistory.push({role:'user',content:acao});
@@ -1372,6 +1465,14 @@ async function askMaster(acao){
         addCombatPanel(enemyName,formatted);
       } else {
         const m=addMsg('msg-dm','');
+        // Se foi resposta OOC, adiciona classe especial
+        if(oocMode){
+          m.classList.add('ooc-reply');
+          const lbl=m.querySelector('.lbl');
+          if(lbl) lbl.textContent='✦ MESTRE (off)';
+          // Desliga OOC automaticamente após resposta
+          if(isOOC) toggleOOC();
+        }
         typewriterMsg(m,formatted);
       }
       if(actions)updateActionButtons(actions);
@@ -1386,26 +1487,93 @@ async function askMaster(acao){
   }
 }
 
-function doAct(acao){
+async function doAct(acao){
   if(thinking)return;
   const m=addMsg('msg-pl','');m.querySelector('.bbl').textContent='> '+acao;
+  
   if(acao.toLowerCase().includes('mercador')){
-    const dr=rollD(20);const wm=mod(stats.wis||10);const tot=dr+wm;const ok=tot>=merchantCD;
-    addRollCard('SOBREVIVÊNCIA',dr,wm,tot,merchantCD);
-    if(!ok&&merchantCD<25)merchantCD=merchantCD===12?17:25;
+    // Mercador sempre rola Sobrevivência
+    const result = await rollInlineD20('wis','SOBREVIVÊNCIA',merchantCD);
+    if(!result.ok&&merchantCD<25) merchantCD=merchantCD===12?17:25;
     document.getElementById('merch-hint').textContent=merchantCD;
-    askMaster(`Procurou Mercador. Sobrevivência: ${ok?'SUCESSO':'FALHA'} (${tot} vs CD ${merchantCD}).`);
+    askMaster(`Procurou Mercador. Sobrevivência: ${result.ok?'SUCESSO':'FALHA'} (${result.total} vs CD ${merchantCD}).`);
+    return;
+  }
+
+  // Detecta se a ação sugere um teste
+  const rollNeeded = detectActionRequiresRoll(acao);
+  if(rollNeeded){
+    const cd = pendingRollCD || null;
+    const result = await rollInlineD20(rollNeeded.attr, rollNeeded.label, cd);
+    const outcome = result.isCrit ? 'CRÍTICO' : result.isFail ? 'FALHA CRÍTICA' : result.ok===true ? 'SUCESSO' : result.ok===false ? 'FALHA' : `total ${result.total}`;
+    askMaster(`${acao}. Teste de ${rollNeeded.label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${cd?' vs CD '+cd:''} — ${outcome}. Continue a narrativa com base neste resultado.`);
   } else {
     askMaster(acao);
   }
 }
 
-function sendFree(){
+
+// ══ MODO OOC (fora do personagem / pergunta ao mestre) ══
+let isOOC = false;
+
+function toggleOOC(){
+  isOOC = !isOOC;
+  const btn  = document.getElementById('ooc-toggle');
+  const icon = document.getElementById('ooc-icon');
+  const lbl  = document.getElementById('ooc-label');
+  const inp  = document.getElementById('free-in');
+
+  if(isOOC){
+    btn.classList.add('ooc-mode');
+    icon.textContent = '💬';
+    lbl.textContent  = 'OFF';
+    inp.classList.add('ooc-active');
+    inp.placeholder  = 'Pergunte ao Mestre (fora do jogo)...';
+  } else {
+    btn.classList.remove('ooc-mode');
+    icon.textContent = '⚔️';
+    lbl.textContent  = 'AÇÃO';
+    inp.classList.remove('ooc-active');
+    inp.placeholder  = 'Ação livre...';
+  }
+  inp.focus();
+}
+
+async function sendFree(){
   if(thinking)return;
-  const inp=document.getElementById('free-in');const txt=inp.value.trim();if(!txt)return;
+  const inp=document.getElementById('free-in');
+  const txt=inp.value.trim();if(!txt)return;
   inp.value='';
+
+  // ★ MODO OOC — pergunta fora do personagem
+  if(isOOC){
+    // Exibe mensagem OOC estilizada
+    const narr=document.getElementById('narr');
+    const oocMsg=document.createElement('div');
+    oocMsg.className='msg msg-ooc';
+    oocMsg.style.textAlign='right';
+    oocMsg.innerHTML=`<span class="ooc-tag">✦ FORA DO PERSONAGEM</span><div class="bbl">${txt}</div>`;
+    narr.appendChild(oocMsg);
+    oocMsg.scrollIntoView({behavior:'smooth',block:'start'});
+
+    // Envia ao mestre com contexto OOC
+    askMaster(`[FORA DO PERSONAGEM — o jogador faz uma pergunta ou comentário como jogador, não como personagem]: "${txt}". Responda de forma direta e amigável, como um Mestre explicando regras, narrativa ou dando dicas. Use tom informal. Não narre como personagem.`, true);
+    return;
+  }
+
+  // Modo normal — ação do personagem
   const m=addMsg('msg-pl','');m.querySelector('.bbl').textContent='> '+txt;
-  askMaster(txt);
+
+  // Detecta se a ação livre implica um teste
+  const rollNeeded = detectFreeActionRoll(txt);
+  if(rollNeeded){
+    const cd = pendingRollCD || null;
+    const result = await rollInlineD20(rollNeeded.attr, rollNeeded.label, cd);
+    const outcome = result.isCrit?'CRÍTICO':result.isFail?'FALHA CRÍTICA':result.ok===true?'SUCESSO':result.ok===false?'FALHA':`total ${result.total}`;
+    askMaster(`${txt}. Teste de ${rollNeeded.label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${cd?' vs CD '+cd:''} — ${outcome}. Continue a narrativa.`);
+  } else {
+    askMaster(txt);
+  }
 }
 
 function doRest(tipo){
@@ -1425,6 +1593,111 @@ function doRest(tipo){
 }
 
 // ★ D20 Modal
+
+// ══ DADOS INLINE NA NARRATIVA ══
+
+// Mapeamento ação → atributo D&D 5e
+const ACTION_ATTR_MAP=[
+  {re:/atac|golpe|espada|machado|lutar|combate|duel|ferir|sacar/i,         attr:'str', label:'FORÇA'},
+  {re:/atirar|arco|flechar|arremess|besta/i,                               attr:'dex', label:'DESTREZA'},
+  {re:/esquivar|esconder|furtiv|sigilos|pickpocket|roubar itens/i,         attr:'dex', label:'DESTREZA'},
+  {re:/investigar|inspecionar|examinar|analisar|decifrar|estudar/i,        attr:'int', label:'INTELIGÊNCIA'},
+  {re:/perceber|observar|ouvir|sentir|notar|vigiar|espreitar/i,            attr:'wis', label:'SABEDORIA'},
+  {re:/procurar|buscar|rastrear|pista|seguir rastro|encontrar/i,           attr:'wis', label:'SABEDORIA'},
+  {re:/falar|persuad|convencer|mentir|enganar|intimidar|negociar/i,        attr:'cha', label:'CARISMA'},
+  {re:/escalar|saltar|nadar|correr|derrubar|empurrar|atletismo/i,          attr:'str', label:'FORÇA'},
+  {re:/curar|tratar|medic|primeiros socorros/i,                            attr:'wis', label:'SABEDORIA'},
+  {re:/magia|feitiço|invocar|conjurar|lançar|arcano/i,                    attr:'int', label:'INTELIGÊNCIA'},
+  {re:/resistir|aguentar|concentrar|suportar|resistência/i,               attr:'con', label:'CONSTITUIÇÃO'},
+  {re:/abrir|arrombar|forçar|destrancar|arrebentar/i,                     attr:'str', label:'FORÇA'},
+];
+
+// Detecta se uma ação requer teste e qual atributo
+function detectActionRequiresRoll(action){
+  // Palavras que sempre pedem teste
+  const testWords=/(tentar|testar|rolar|verificar|checar|fazer um teste|procurar|investigar|atac|golpe|fugir|esconder|perceber)/i;
+  if(!testWords.test(action)) return null;
+  for(const m of ACTION_ATTR_MAP){
+    if(m.re.test(action)) return {attr:m.attr, label:m.label};
+  }
+  // Fallback: verifica se tem atributo sugerido pelo contexto pendente
+  if(pendingRollAttr) return {attr:pendingRollAttr, label: (attrLabels[pendingRollAttr]||'FORÇA')};
+  return null; // não precisa de teste
+}
+
+// Detecta teste em ação livre digitada pelo jogador
+function detectFreeActionRoll(text){
+  for(const m of ACTION_ATTR_MAP){
+    if(m.re.test(text)) return {attr:m.attr, label:m.label};
+  }
+  if(pendingRollAttr) return {attr:pendingRollAttr, label: attrLabels[pendingRollAttr]||'FOR'};
+  return null;
+}
+
+// ★ Rola o dado inline na narrativa com animação
+async function rollInlineD20(attrKey, label, cd){
+  const narr = document.getElementById('narr');
+  
+  // Cria o card de dado com animação
+  const diceEl = document.createElement('div');
+  diceEl.className = 'msg roll-wrap';
+  diceEl.innerHTML = `
+    <div class="roll-card inline-rolling">
+      <div class="dice-face spinning" id="inline-dice-face">?</div>
+      <div class="roll-info">
+        <div class="roll-type">${label} ${cd?'· CD '+cd:''}</div>
+        <div class="roll-formula" id="inline-roll-formula">Rolando...</div>
+        <div class="roll-outcome" id="inline-roll-outcome"></div>
+      </div>
+    </div>`;
+  narr.appendChild(diceEl);
+  diceEl.scrollIntoView({behavior:'smooth', block:'start'});
+
+  // Animação de números aleatórios
+  const faceEl = diceEl.querySelector('#inline-dice-face');
+  const formulaEl = diceEl.querySelector('#inline-roll-formula');
+  const outcomeEl = diceEl.querySelector('#inline-roll-outcome');
+
+  let anim = setInterval(()=>{
+    const rnd = Math.ceil(Math.random()*20);
+    faceEl.textContent = rnd;
+    faceEl.style.color = rnd >= 18 ? '#2ECC71' : rnd <= 2 ? '#E74C3C' : '#E8B84B';
+  }, 60);
+
+  await new Promise(r => setTimeout(r, 600));
+  clearInterval(anim);
+  faceEl.classList.remove('spinning');
+
+  // Resultado real
+  const diceVal = rollD(20);
+  const modVal = mod(stats[attrKey]||10);
+  const total = diceVal + modVal;
+  const isCrit = diceVal === 20;
+  const isFail = diceVal === 1;
+  const ok = cd ? total >= cd : null;
+
+  faceEl.textContent = total;
+  faceEl.className = 'dice-face' + (isCrit ? ' d-crit' : isFail ? ' d-fail' : '');
+
+  const ms = modVal >= 0 ? '+'+modVal : String(modVal);
+  formulaEl.textContent = `d20(${diceVal}) ${ms} = ${total}${cd ? ' vs CD '+cd : ''}`;
+
+  let outcomeText = '';
+  let outcomeClass = '';
+  if(isCrit){ outcomeText = '★ CRÍTICO!'; outcomeClass = 'suc'; }
+  else if(isFail){ outcomeText = '✗ FALHA CRÍTICA'; outcomeClass = 'fal'; }
+  else if(ok === true){ outcomeText = '✓ SUCESSO'; outcomeClass = 'suc'; }
+  else if(ok === false){ outcomeText = '✗ FALHA'; outcomeClass = 'fal'; }
+  outcomeEl.textContent = outcomeText;
+  outcomeEl.className = 'roll-outcome ' + outcomeClass;
+
+  // Limpa estado pendente
+  pendingRollAttr = null;
+  pendingRollCD = null;
+
+  return {diceVal, modVal, total, isCrit, isFail, ok, label, attrKey, cd};
+}
+
 function buildD20AbilitiesPanel(){
   const abilities=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv<=(hero.level||1));
   const panel=document.getElementById('d20-abilities-panel');
