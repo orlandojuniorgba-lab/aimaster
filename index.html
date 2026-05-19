@@ -1205,27 +1205,26 @@ function buildSkillsTab(cls, race, level){
 function buildFullStatBlock(finalStats, cls, level){
   const pb = PROF_BONUS[Math.min(level,20)] || 2;
   const saves = CLASS_SAVES[cls] || [];
-  // Ordena do maior para o menor valor
-  const keys = ['str','dex','con','int','wis','cha'].sort((a,b)=>(finalStats[b]||10)-(finalStats[a]||10));
+  // Ordem canônica D&D 5e
+  const keys = ['str','dex','con','int','wis','cha'];
   const labels = {str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
-  return keys.map(k=>{
+  return `<div class="stats-row" style="margin-bottom:8px">${keys.map(k=>{
     const val = finalStats[k]||10;
     const m = mod(val);
     const mStr = (m>=0?'+':'')+m;
     const saveBonus = saves.includes(k) ? m+pb : m;
     const savStr = (saveBonus>=0?'+':'')+saveBonus;
     const hasSave = saves.includes(k);
-    const isHigh = val >= 14;
-    // Barra proporcional: escala 8-20 → 20-100%
-    const barPct = Math.max(20, Math.min(100, ((val-8)/12)*100));
-    return `<div class="sh-attr-row${isHigh?' sh-hi':''}">
-      <div class="sh-an">${labels[k]}</div>
-      <div class="sh-av">${val}</div>
-      <div class="sh-am">${mStr}</div>
-      <div class="sh-abar"><div class="sh-afill" style="width:${barPct.toFixed(0)}%"></div></div>
-      <div class="sh-asave ${hasSave?'p':'n'}">${savStr}</div>
+    return `<div class="sb" style="background:rgba(15,10,4,.65)">
+      <div class="sn">${labels[k]}</div>
+      <div class="sv">${val}</div>
+      <div class="sm">${mStr}</div>
+      <div style="font-size:9px;margin-top:3px;display:flex;align-items:center;justify-content:center;gap:2px;font-family:var(--font-title);letter-spacing:.3px">
+        <span style="width:5px;height:5px;border-radius:50%;background:${hasSave?'#2ECC71':'rgba(200,146,42,.2)'};border:${hasSave?'none':'1px solid rgba(200,146,42,.3)'};display:inline-block;flex-shrink:0"></span>
+        <span style="color:${hasSave?'#2ECC71':'rgba(200,146,42,.38)'}">Salv. ${savStr}</span>
+      </div>
     </div>`;
-  }).join('');
+  }).join('')}</div>`;
 }
 
 // ═══ POOL DE MISSÕES PRINCIPAIS (rotaciona a cada personagem) ═══
@@ -2610,9 +2609,41 @@ function toggleEquip(idx){
   // Desequipa outro item no mesmo slot
   inventory.forEach((it,i)=>{if(it.equipped&&it.slot===slot&&i!==idx)it.equipped=false;});
   item.equipped=!item.equipped;
-  if(item.equipped)item.slot=slot;
+  if(item.equipped) item.slot=slot;
+  // ★ Recalcula CA ao equipar/desequipar armadura ou escudo
+  recalcCA();
   renderInventory();
   showToast(item.equipped?'✅ '+item.name+' equipado':'📦 '+item.name+' guardado');
+}
+
+// ★ Recalcula CA baseado nos itens equipados (D&D 5e)
+function recalcCA(){
+  const dexMod = mod(stats.dex||10);
+  const armor = inventory.find(i=>i.equipped && i.slot==='body');
+  const shield = inventory.find(i=>i.equipped && (i.slot==='lhand'||i.slot==='shield') && i.name.toLowerCase().includes('escudo'));
+  let baseCA = 10 + dexMod; // sem armadura
+  if(armor){
+    // Armadura leve: CA base + DES completo
+    if(/couro/i.test(armor.name)) baseCA = 11 + dexMod;
+    // Armadura média: CA base + DES (máx +2)
+    else if(/reforçad|escamas|cota de talas/i.test(armor.name)) baseCA = 13 + Math.min(2, dexMod);
+    // Armadura pesada: CA fixo
+    else if(/cota de malha/i.test(armor.name)) baseCA = 16;
+    else if(/armadura de placas/i.test(armor.name)) baseCA = 18;
+    else baseCA = 12 + dexMod; // genérica
+  }
+  if(shield) baseCA += 2;
+  // Bárbaro sem armadura: 10 + DES + CON
+  if(!armor && hero.cls === 'Bárbaro') baseCA = 10 + dexMod + mod(stats.con||10);
+  hero.ca = baseCA;
+  // Atualiza displays
+  const fcaEl = document.getElementById('f-ca');
+  if(fcaEl) fcaEl.textContent = baseCA;
+  const shcaEl = document.getElementById('sh-ca');
+  if(shcaEl) shcaEl.textContent = baseCA;
+  // Atualiza card de combate na ficha
+  const cbca = document.getElementById('sh-ca');
+  if(cbca) cbca.textContent = baseCA;
 }
 
 // Adiciona item ao inventário (chamado pela IA)
