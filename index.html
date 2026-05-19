@@ -1128,8 +1128,12 @@ function applyRacialBonuses(baseStats, race){
   for(const [k,v] of Object.entries(bonus)){
     if(k==='escolha1'){ final.str=(final.str||10)+v; continue; }
     if(k==='escolha2'){ final.con=(final.con||10)+v; continue; }
-    if(final[k]!==undefined) final[k]=(final[k]||10)+v;
+    // Aplica bônus em qualquer chave válida de stats
+    if(['str','dex','con','int','wis','cha'].includes(k)){
+      final[k]=(final[k]||10)+v;
+    }
   }
+  console.log('[AiMaster] Bônus raciais aplicados:', race, bonus, '→', final);
   return final;
 }
 
@@ -1698,14 +1702,17 @@ function cleanTextForDisplay(text){
 }
 
 function extractGoldChange(text){
-  // Detecta tag explícita [OURO:+50] ou [OURO:-30]
+  // Tag explícita [OURO:+50], [OURO:-30] ou [OURO:50]
   const tag=text.match(/\[OURO:([+-]?\d+)\]/i);
   if(tag) return parseInt(tag[1]);
-  // Detecta ganho/perda de ouro na narrativa
-  const gain=text.match(/(?:ganha|recebe|encontra|recompensa de|loot de|pilha de)\s+(\d+)\s*(?:peças de ouro|peças|gp|ouro)/i);
-  const lose=text.match(/(?:paga|gasta|perde|custa|custando)\s+(\d+)\s*(?:peças de ouro|peças|gp|ouro)/i);
+  // Ganho de ouro — múltiplos padrões PT-BR
+  const gain=text.match(/(?:ganha|recebe|encontra|recompensa|loot|pilha|bolsa com|contém)\s+(\d+)\s*(?:peças de ouro|peças|moedas de ouro|moedas|gp|po)/i);
+  const lose=text.match(/(?:paga|gasta|perde|custa|custam|cobrado|desconto|troco)\s+(\d+)\s*(?:peças de ouro|peças|moedas de ouro|moedas|gp|po)/i);
+  // Padrão "X po" ou "X gp" genérico
+  const generic=text.match(/(\d+)\s*(?:po|gp)/i);
   if(gain) return +parseInt(gain[1]);
   if(lose) return -parseInt(lose[1]);
+  // Generic só aplica se há contexto de transação claro
   return 0;
 }
 
@@ -1821,6 +1828,11 @@ function buildSystemPrompt(){
   if(hero.bg==='Criminoso')especiais+='\n- Conhece receptadores e informantes.';
   if(hero.bg==='Nobre')especiais+='\n- Guardas e comerciantes respeitosos.';
 
+  // Build equipped items context
+  const equippedItems=inventory.filter(i=>i.equipped).map(i=>`${i.name}(${i.slot||'?'})`).join(', ')||'nenhum';
+  const spellList=(PROFILES.class[hero.cls]?.spells||[]).join(', ')||'nenhuma';
+  const classAbilsNow=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv<=(hero.level||1)).map(a=>a.name).join(', ')||'nenhuma';
+
   return `Você é o Mestre de Dungeons do AiMaster — RPG solo D&D 5e. Responda APENAS como Mestre, em português brasileiro, tom épico e imersivo.
 
 PERSONAGEM: ${hero.name} | ${hero.race} ${hero.cls} | ${hero.bg} | ${hero.align}
@@ -1829,6 +1841,9 @@ Atributos: ${atrs}
 
 PERFIL ATIVO: Traços: ${allTags} | Bônus: ${allBonuses} | Eventos: ${events||'geral'}
 Essência: ${rp.flavor||''}, ${cp.flavor||''}
+ITENS EQUIPADOS: ${equippedItems}
+MAGIAS CONHECIDAS: ${spellList}
+HABILIDADES DE CLASSE: ${classAbilsNow}
 REGRAS ESPECIAIS:${especiais}
 
 MISSÃO ATUAL: ${QUESTS[hero.questId!==undefined?hero.questId:0].title} — ${QUESTS[hero.questId!==undefined?hero.questId:0].hook}
@@ -1881,8 +1896,14 @@ Exemplos válidos: "Atacar o goblin | Fugir pela floresta | Inspecionar o baú |
 - Quando GANHAR OURO: inclua [OURO:+X] (ex: [OURO:+25])
 - Quando GASTAR OURO: inclua [OURO:-X] (ex: [OURO:-10])
 - Quando o personagem GANHAR um item: inclua [ITEM:+NomeItem:ícone:pesoKg] (ex: [ITEM:+Chave de Ferro:🗝️:0.1])
-- Quando o personagem PERDER/VENDER/QUEBRAR item: inclua [ITEM:-NomeItem] (ex: [ITEM:-Poção de Cura])
-- NUNCA permita que armaduras completas (>10kg) sejam colocadas dentro da mochila sem transporte adequado`;
+- Quando o personagem PERDER/VENDER/QUEBRAR/USAR item: inclua [ITEM:-NomeItem] (ex: [ITEM:-Poção de Cura])
+- Use preços oficiais D&D 5e (PHB/DMG): Espada Longa=15gp, Poção Cura=50gp, Cota de Malha=75gp etc.
+- Itens mágicos (Incomum+) NÃO são vendidos em lojas normais — apenas em lojas especializadas, leilões, ou como recompensa.
+- SEMPRE mencione o peso ao descrever armaduras pesadas (Cota de Malha=18kg, Placas=29kg).
+- As ações do personagem DEVEM refletir seus itens equipados: Guerreiro com Espada Longa ataca com 1d8, Mago sem armadura tem CA=10+DES, etc.
+- Ao usar uma Poção de Cura, remova-a do inventário com [ITEM:-Poção de Cura] e aplique [PV:+valor].
+- NUNCA armaduras pesadas dentro de mochilas — sugerir carroça/cavalo para transporte.
+- Considere os bônus raciais e de classe nas ações: Elfo tem vantagem em Percepção, Ladino tem Ataque Furtivo, etc.\`;
 }
 
 async function askMaster(acao, oocMode=false){
@@ -1940,11 +1961,13 @@ async function askMaster(acao, oocMode=false){
       }
       // ★ Detecta contexto via tag e palavras-chave
       const locMatch=reply.match(/\[LOCALIZAÇÃO:\s*([^\]]+)\]/i);
-      if(locMatch){inCity=locMatch[1].trim()==='cidade';}
+      if(locMatch){inCity=locMatch[1].trim().toLowerCase()==='cidade';}
       else{
-        if(/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto)/i.test(reply))inCity=true;
-        if(/(?:floresta|estrada aberta|ruínas|caverna|campo aberto|matagal)/i.test(reply))inCity=false;
+        if(/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto|estalagem|loja|ferreiro|boticário)/i.test(reply))inCity=true;
+        else if(/(?:floresta|estrada aberta|ruínas|caverna|campo aberto|matagal|deserto|montanha|pântano)/i.test(reply))inCity=false;
       }
+      // Mercador encontrado = contexto de cidade temporário
+      if(/mercador|vendedor|lojista|comerciante/i.test(reply))inCity=true;
       inCombat=!!enemyName||(inCombat&&!/(?:derrota|foge|escapa|encerrado|resolvido|vence|vitória)/i.test(reply));
       updateContextUI();
       // Limpa tags do texto
@@ -2367,15 +2390,22 @@ function updateShopContext(){
   const banner=document.getElementById('shop-context-banner');
   const packs=['shop-pack1','shop-pack2','shop-pack3'];
   const mercBtn=document.getElementById('shop-mercador-btn');
+  // inCity = true se está em cidade OU encontrou mercador
   if(inCity){
-    banner.textContent='🏙️ Você está em uma cidade — compras disponíveis!';
+    banner.innerHTML='🏙️ <strong>Cidade ou Mercador disponível</strong> — compras liberadas!';
     banner.style.borderColor='rgba(46,204,113,0.4)';banner.style.color='#60D090';
-    packs.forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='1';el.style.filter='none';}});
-    if(mercBtn){mercBtn.style.opacity='0.4';mercBtn.style.filter='grayscale(1)';}
+    packs.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.style.opacity='1';el.style.filter='none';el.style.pointerEvents='auto';}
+    });
+    if(mercBtn){mercBtn.style.opacity='0.4';mercBtn.style.filter='grayscale(0.8)';}
   } else {
-    banner.textContent='🌲 Você está fora da cidade — procure um mercador primeiro';
+    banner.innerHTML='🌲 <strong>Fora da civilização</strong> — encontre um mercador primeiro';
     banner.style.borderColor='rgba(200,146,42,0.2)';banner.style.color='var(--gold-d)';
-    packs.forEach(id=>{const el=document.getElementById(id);if(el){el.style.opacity='0.35';el.style.filter='grayscale(0.5)';}});
+    packs.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.style.opacity='0.28';el.style.filter='grayscale(0.7)';el.style.pointerEvents='none';}
+    });
     if(mercBtn){mercBtn.style.opacity='1';mercBtn.style.filter='none';}
   }
 }
@@ -2512,8 +2542,11 @@ function initInventory(cls){
 }
 
 function getMaxCarryWeight(){
-  return (stats.str||10)*2.25; // Regra D&D 5e: FOR × 15 libras ≈ FOR × 6.8kg, simplificado
+  // D&D 5e oficial: FOR × 15 libras = FOR × 6.8 kg (capacidade máxima)
+  return Math.round((stats.str||10)*6.8*10)/10;
 }
+function getEncumberedThreshold(){return Math.round((stats.str||10)*2.27*10)/10;} // Encumbrado
+function getHeavyEncumberedThreshold(){return Math.round((stats.str||10)*4.54*10)/10;} // Muito Encumbrado
 
 function getTotalWeight(){
   return inventory.reduce((sum,item)=>sum+(item.weight||0)*(item.qty||1),0);
@@ -2549,9 +2582,12 @@ function renderInventory(){
   if(barEl) barEl.style.width=pct+'%';
   if(statusEl){
     statusEl.className='inv-wb-status';
-    if(pct<34){statusEl.textContent='LEVE';statusEl.classList.add('leve');}
-    else if(pct<67){statusEl.textContent='NORMAL';statusEl.classList.add('normal');}
-    else {statusEl.textContent='ENCUMBRADO';statusEl.classList.add('encumbrado');}
+    const enc=getEncumberedThreshold();
+    const hEnc=getHeavyEncumberedThreshold();
+    if(totalW<=enc){statusEl.textContent='LEVE';statusEl.classList.add('leve');}
+    else if(totalW<=hEnc){statusEl.textContent='ENCUMBRADO';statusEl.classList.add('normal');showToast('⚠️ Encumbrado — velocidade -3m');}
+    else if(totalW<=maxW){statusEl.textContent='MUITO PESADO';statusEl.classList.add('encumbrado');showToast('⚠️ Muito pesado — velocidade -6m, desvantagem!');}
+    else{statusEl.textContent='SOBRECARREGADO';statusEl.classList.add('encumbrado');}
   }
 
   // Build HTML by category
@@ -2691,22 +2727,117 @@ function removeInventoryItem(name,qty=1){
   }
 }
 
-// Detecta itens na narrativa e atualiza inventário
+// ════ SISTEMA DE INVENTÁRIO VIA NARRATIVA ════
+// Tabela de preços D&D 5e (PHB, XGtE, DMG) em GP
+const ITEM_PRICE_TABLE={
+  // Armas (PHB p.149)
+  'Adaga':2,'Clava':0.1,'Foice Grande':0.2,'Lança':1,'Cajado':0.2,'Machado de Mão':5,
+  'Maça':5,'Maça de Guerra':15,'Espada Curta':10,'Espada Longa':15,'Espada Grande':50,
+  'Rapieira':25,'Florete':25,'Machado Grande':30,'Alabarda':20,'Arco Curto':25,
+  'Arco Longo':50,'Besta de Mão':75,'Besta Leve':25,'Besta Pesada':50,
+  // Armaduras (PHB p.145)
+  'Armadura de Couro':10,'Armadura de Couro Batido':45,'Cota de Malha':75,
+  'Peitoral':400,'Meia Armadura':750,'Armadura de Placas':1500,'Escudo':10,
+  'Armadura Acolchoada':5,'Armadura de Escamas':50,'Cota de Talas':200,
+  // Equipamentos (PHB p.150)
+  'Mochila':2,'Corda de Cânhamo':1,'Corda de Seda':10,'Tocha':0.01,'Lanterna de Capuz':5,
+  'Óleo (frasco)':0.1,'Ração':0.5,'Saco de Dormir':1,'Tenda':2,'Kit de Curandeiro':5,
+  'Kit de Escalada':25,'Kit de Viajante':10,'Correntes':5,'Algemas':2,
+  'Lupa':100,'Pé de Cabra':2,'Martelo':1,'Picareta':2,'Picareta de Mineração':2,
+  // Poções (DMG p.187-188)
+  'Poção de Cura':50,'Poção de Cura Superior':500,'Poção de Cura Suprema':5000,
+  'Poção de Força Gigante de Colina':200,'Poção de Voo':500,'Poção de Invisibilidade':180,
+  'Poção de Resistência':300,'Poção de Velocidade':400,'Poção de Veneno':100,
+  'Antídoto':50,'Pó de Desaparecimento':500,
+  // Itens mágicos comuns (DMG) — NÃO vendidos normalmente
+  'Anel de Proteção':3500,'Cinto de Força do Gigante':200000,
+  'Botas de Velocidade':24000,'Manto de Proteção':3500,
+  // Serviços/Hospedagem
+  'Hospedagem (humilde)':0.05,'Hospedagem (confortável)':0.5,'Hospedagem (rica)':2,
+  'Refeição':0.05,'Bebida (cerveja)':0.04,'Cavalo de Guerra':400,'Cavalo de Corrida':75,
+  'Cavalo de Tiro':50,'Mula':8,'Carroça':35,'Carriola':15,
+};
+
+// Itens mágicos — raridade (não encontrados em lojas comuns)
+const MAGIC_ITEM_RARITY={
+  'Incomum':500,'Raro':5000,'Muito Raro':50000,'Lendário':999999
+};
+const CANNOT_BUY_MAGIC=['Anel de Proteção','Cinto de Força','Manto de Proteção','Botas de Velocidade'];
+
 function processInventoryChanges(text){
-  // Ganho de itens
-  const gainPatterns=[
-    /(?:encontra|pega|recebe|ganha|saqueia|compra)\s+(?:uma?|o|a|os|as)?\s*([^,.!?]+?)(?:\s*\(([^)]+)\))?(?:\s*no inventário|\s*em seu inventário)?/gi,
-    /\[ITEM:\+([^\]]+)\]/gi,
-  ];
-  // Perda de itens
-  const loseTag=text.match(/\[ITEM:-([^\]]+)\]/gi);
-  if(loseTag){loseTag.forEach(t=>{const n=t.replace(/\[ITEM:-([^\]]+)\]/,'$1').trim();removeInventoryItem(n);});}
-  const gainTag=text.match(/\[ITEM:\+([^\]]+)\]/gi);
-  if(gainTag){gainTag.forEach(t=>{
+  // ★ Processa tags explícitas [ITEM:+Nome:ícone:peso] e [ITEM:-Nome]
+  const gainTags=text.match(/\[ITEM:\+([^\]]+)\]/gi)||[];
+  gainTags.forEach(t=>{
     const parts=t.replace(/\[ITEM:\+([^\]]+)\]/,'$1').trim().split(':');
-    const name=parts[0],icon=parts[1]||'📦',weight=parseFloat(parts[2])||0.1;
-    addInventoryItem(name,icon,'Obtido na aventura',weight);
-  });}
+    const name=parts[0].trim();
+    const icon=parts[1]?.trim()||getItemIcon(name);
+    const weight=parseFloat(parts[2])||getItemWeight(name);
+    const price=ITEM_PRICE_TABLE[name]||0;
+    addInventoryItem(name,icon,getItemDesc(name),weight,1,isItemMagic(name));
+  });
+  const loseTags=text.match(/\[ITEM:-([^\]]+)\]/gi)||[];
+  loseTags.forEach(t=>{
+    const name=t.replace(/\[ITEM:-([^\]]+)\]/,'$1').trim();
+    removeInventoryItem(name);
+  });
+}
+
+function getItemIcon(name){
+  const n=name.toLowerCase();
+  if(/espada|florete|rapieira/i.test(n))return'⚔️';
+  if(/machado/i.test(n))return'🪓';
+  if(/arco|besta/i.test(n))return'🏹';
+  if(/adaga|faca/i.test(n))return'🗡️';
+  if(/cajado|bordão/i.test(n))return'🪄';
+  if(/armadura|couro|cota|peitoral|meia armadura|placas/i.test(n))return'🥋';
+  if(/escudo/i.test(n))return'🛡️';
+  if(/poção/i.test(n))return'🧪';
+  if(/anel/i.test(n))return'💍';
+  if(/amuleto|colar|cinto|pescoço/i.test(n))return'📿';
+  if(/manto|capa/i.test(n))return'🪬';
+  if(/botas?/i.test(n))return'👢';
+  if(/luvas?/i.test(n))return'🧤';
+  if(/tocha/i.test(n))return'🕯️';
+  if(/chave/i.test(n))return'🗝️';
+  if(/livro|grimório/i.test(n))return'📚';
+  if(/mapa/i.test(n))return'🗺️';
+  if(/ouro|moeda/i.test(n))return'🪙';
+  if(/ração|comida/i.test(n))return'🍞';
+  if(/cavalo/i.test(n))return'🐴';
+  if(/mochila|bolsa/i.test(n))return'🎒';
+  return'📦';
+}
+
+function getItemWeight(name){
+  const weights={
+    'Adaga':0.45,'Espada Longa':1.8,'Espada Curta':0.9,'Arco Longo':0.9,
+    'Besta Leve':2.7,'Machado Grande':3.2,'Cajado':1.8,'Maça':2.0,
+    'Escudo':2.7,'Armadura de Couro':4.1,'Cota de Malha':18.0,
+    'Armadura de Placas':29.0,'Peitoral':10.0,'Meia Armadura':6.8,
+    'Poção de Cura':0.23,'Tocha':0.45,'Ração':0.23,'Corda de Cânhamo':4.5,
+  };
+  return weights[name]||0.5;
+}
+
+function getItemDesc(name){
+  const descs={
+    'Espada Longa':'1d8 cortante · Versátil (1d10) · 15gp',
+    'Adaga':'1d4 perfurante · Finesse · Arremessável · 2gp',
+    'Arco Longo':'1d8 perfurante · Alcance 45/180m · 50gp',
+    'Poção de Cura':'Recupera 2d4+2 PV · Ação · 50gp',
+    'Poção de Cura Superior':'Recupera 4d4+4 PV · Ação · 500gp',
+    'Cota de Malha':'CA 16 · Sem bônus DES · 75gp',
+    'Armadura de Couro':'CA 11+DES · Leve · 10gp',
+    'Armadura de Placas':'CA 18 · Pesada · 1.500gp',
+    'Escudo':'CA +2 · Requer 1 mão · 10gp',
+    'Kit de Curandeiro':'10 usos · Estabiliza · 5gp',
+    'Tocha':'1h de luz · Raio 6m · 0,01gp',
+  };
+  return descs[name]||`Item obtido na aventura · ${ITEM_PRICE_TABLE[name]?ITEM_PRICE_TABLE[name]+'gp':'preço variável'}`;
+}
+
+function isItemMagic(name){
+  return /\+\d|mágic|encantad|abenzoado|amaldiçoad|da proteção|de força|de velocidade|de invisib|do voo/i.test(name);
 }
 
 // ══ REST MODAL: update status ══
