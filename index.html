@@ -833,6 +833,11 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
   <!-- D20 central -->
   <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+    <!-- Hidden abilities panel (populated by buildD20AbilitiesPanel) -->
+    <div id="d20-abilities-panel" style="width:100%;display:none;margin-bottom:8px">
+      <div style="font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:2px;margin-bottom:6px">HABILIDADES DISPONÍVEIS</div>
+      <div id="d20-abilities-list" style="display:flex;flex-direction:column;gap:6px;max-height:120px;overflow-y:auto"></div>
+    </div>
     <div class="d20-launch" onclick="rollD20Modal()" id="d20-launch-btn">
       <svg viewBox="0 0 60 60" width="80" height="80" xmlns="http://www.w3.org/2000/svg" id="d20-big-svg">
         <defs>
