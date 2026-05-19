@@ -1474,7 +1474,7 @@ function startAdventure(){
   hero.questId=Math.floor(Math.random()*QUESTS.length);
   const q=QUESTS[hero.questId];
   goTo('s-game');
-  askMaster(`Inicie a aventura com ESTA MISSÃO PRINCIPAL: "${q.title}". ${q.hook}. Personagem: ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil. Termine com decisão imediata. Sugira 4 ações:\n[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`);
+  askMaster(`Inicie a aventura com a missão: "${q.title}". ${q.hook}. Personagem: ${name}, ${race} ${cls} Nível 1 (${bg}, ${align}). Siga a estrutura da Jornada do Herói — comece com o Mundo Comum do personagem antes do chamado à aventura. Use as características da raça e classe. Termine com decisão imediata.`);
 }
 
 function updateVitals(){
@@ -1894,13 +1894,28 @@ O que você conta?
 ---
 [AÇÕES: Contar tudo sobre a jornada | Revelar apenas o ritual | Perguntar se ele está bem | Mostrar o medalhão]
 
-━━━ JORNADA DO HERÓI — NÍVEL 1 ━━━
-O personagem está começando sua aventura. Nível 1 = vulnerável, inexperiente, descobrindo o mundo.
-- Desafios condizentes com Nível 1: bandidos, goblins, lobos, armadilhas simples, NPCs com segredos
-- O heroísmo cresce aos poucos — deixe o jogador sentir cada conquista
-- Mortes são possíveis (D&D 5e tem 0 PV + testes de morte)
-- Use os eventos do perfil (${events||'aventura geral'}) para criar ganchos narrativos únicos
-- A essência do personagem (${rp.flavor||''}, ${cp.flavor||''}) deve aparecer nas situações
+━━━ JORNADA DO HERÓI — ESTRUTURA NARRATIVA ━━━
+Siga o Monomito adaptado ao nível atual do personagem:
+
+NÍVEL ${hero.level||1} — ${(hero.level||1)<=4?'A PARTIDA (Mundo Comum → Chamado → Mentor)':(hero.level||1)<=10?'A INICIAÇÃO (Travessia do Limiar → Testes → Aliados)':(hero.level||1)<=16?'A TRANSFORMAÇÃO (Provação → Recompensa → Renascimento)':'O RETORNO (Caminho de Volta → Elixir → Mestre dos Mundos)'}
+
+${(hero.level||1)<=4?`PARTIDA (Níveis 1-4): O personagem é vulnerável, inexperiente, descobrindo o mundo.
+- Mundo Comum: vida rotineira antes da grande aventura
+- Chamado: problema, ameaça ou mistério quebra a rotina
+- Mentor: NPC mais experiente oferece conselho ou item pequeno
+- Desafios: bandidos, goblins CR1/4, lobos, armadilhas simples
+- Recompensas: 5-25 PO por missão, itens comuns, informações
+- Tom: descoberta, vulnerabilidade, primeiras vitórias`
+:(hero.level||1)<=10?`INICIAÇÃO (Níveis 5-10): O personagem deixa a zona segura, cresce, encontra aliados e inimigos.
+- Ambiente desconhecido e perigoso
+- Facções e alianças surgem
+- Itens mágicos Incomuns começam a aparecer como recompensa
+- Desafios: monstros CR2-8, labirintos, vilões com planos`
+:`TRANSFORMAÇÃO (Níveis 11+): Clímax épico, batalhas lendárias, recompensas extraordinárias.`}
+
+- Use os eventos do perfil (${events||'aventura geral'}) para criar ganchos únicos
+- A essência do personagem (${rp.flavor||''}, ${cp.flavor||''}) deve aparecer naturalmente
+- Mortes são possíveis: 0 PV → inconsciente → testes de morte (d20, 10+ sucesso, 3 = estável, 3 falhas = morto)
 
 ━━━ REGRAS D&D 5e — ANTI-ALUCINAÇÃO ━━━
 VOCÊ É UM MESTRE DE D&D 5e RIGOROSO. Respeite as regras do PHB/DMG/XGtE:
@@ -1939,13 +1954,21 @@ TESTES:
 
 ━━━ TAGS DE CONTROLE (obrigatórias) ━━━
 [COMBATE:NomeInimigo] — quando inimigo aparece com intenção hostil
+[FIM_COMBATE] — quando o combate terminar (inimigo derrotado, foge, rendição, fuga do herói)
 [XP:quantidade] — XP ganho (Fácil=25, Médio=50, Difícil=100, Mortal=200 por nível)
 [PV:+X] ou [PV:-X] — quando PV muda
 [OURO:+X] ou [OURO:-X] — quando ouro muda
 [ITEM:+Nome:ícone:peso] — item adquirido
 [ITEM:-Nome] — item perdido/usado/vendido
 [LOCALIZAÇÃO:cidade] ou [LOCALIZAÇÃO:campo]
-[AÇÕES:Opção1|Opção2|Opção3|Opção4] — SEMPRE ao final, obrigatório
+[AÇÕES:Opção1|Opção2|Opção3|O que mais posso fazer?] — SEMPRE ao final, obrigatório
+REGRAS DAS AÇÕES:
+- Máximo 5 palavras por opção, verbo no infinitivo
+- SEMPRE inclua "O que mais posso fazer?" como uma das opções para permitir ações criativas
+- Em combate: 2 ações de combate + 1 alternativa + "O que mais posso fazer?"
+- Em diálogo: 2 respostas diferentes + 1 ação de ambiente + "O que mais posso fazer?"
+- Quando test pedido: 1 opção deve ser "Rolar [Perícia] CD X"
+- Opções NÃO aparecem no texto narrativo — apenas aqui
 
 Mercador: Sobrevivência CD ${merchantCD} para encontrar.`;
 }
@@ -2013,7 +2036,10 @@ async function askMaster(acao, oocMode=false){
       }
       // Mercador encontrado = contexto de cidade temporário
       if(/mercador|vendedor|lojista|comerciante/i.test(reply))inCity=true;
-      inCombat=!!enemyName||(inCombat&&!/(?:derrota|foge|escapa|encerrado|resolvido|vence|vitória)/i.test(reply));
+      // Combat: only ON via [COMBATE:] tag, OFF via keywords or [FIM_COMBATE]
+      if(enemyName) inCombat=true;
+      else if(/\[FIM_COMBATE\]/i.test(reply)||/(?:inimigo derrotado|combate encerrado|foge da batalha|escapa da luta|silêncio volta|ameaça eliminada)/i.test(reply)) inCombat=false;
+      // (inCombat persists until explicitly ended)
       updateContextUI();
       // Limpa tags do texto
       const cleanText=cleanTextForDisplay(reply);
@@ -2545,10 +2571,27 @@ const ITEM_WEIGHT_MAP={
 };
 
 const ITEM_SLOT_MAP={
-  'Espada Longa':'rhand','Adaga':'rhand','Arco Longo':'rhand','Machado Grande':'rhand','Cajado':'rhand','Maça':'rhand','Rapieira':'rhand','Varinha':'rhand',
-  'Armadura de Couro':'body','Cota de Malha':'body','Armadura de Placas':'body',
-  'Escudo':'lhand',
-  'Botas':'feet','Luvas':'lhand',
+  // Armas — mão direita
+  'Espada Longa':'rhand','Espada Curta':'rhand','Espada Grande':'rhand','Adaga':'rhand',
+  'Arco Longo':'rhand','Arco Curto':'rhand','Besta Leve':'rhand','Besta Pesada':'rhand',
+  'Machado Grande':'rhand','Machado de Mão':'rhand','Cajado':'rhand','Cajado Arcano':'rhand',
+  'Cajado de Carvalho':'rhand','Maça':'rhand','Maça de Guerra':'rhand','Rapieira':'rhand',
+  'Florete':'rhand','Varinha':'rhand','Varinha de Cristal':'rhand','Lança':'rhand',
+  'Alabarda':'rhand','Clava':'rhand',
+  // Armaduras — corpo
+  'Armadura de Couro':'body','Armadura de Couro Reforçada':'body','Armadura Acolchoada':'body',
+  'Cota de Malha':'body','Cota de Talas':'body','Armadura de Escamas':'body',
+  'Armadura de Placas':'body','Peitoral':'body','Meia Armadura':'body',
+  // Escudos — mão esquerda
+  'Escudo':'lhand','Escudo de Aço':'lhand','Escudo de Madeira':'lhand','Escudo Mágico':'lhand',
+  // Acessórios
+  'Botas':'feet','Botas de Velocidade':'feet','Botas de Elfo':'feet',
+  'Luvas':'hands','Luvas de Arqueiro':'hands','Luvas de Força':'hands',
+  'Elmo':'head','Capacete':'head','Tiara':'head',
+  'Anel de Proteção':'ring1','Anel de Resistência':'ring2','Anel de Força':'ring1',
+  'Amuleto':'neck','Amuleto de Saúde':'neck','Colar':'neck','Pingente':'neck',
+  'Cinto':'belt','Cinto de Força':'belt','Mochila do Aventureiro':'back',
+  'Manto':'shoulders','Manto de Proteção':'shoulders','Capa':'shoulders',
 };
 
 const SLOT_ICONS={'head':'⛑️','body':'👕','lhand':'🖐️','rhand':'⚔️','legs':'👖','feet':'👢'};
@@ -2584,6 +2627,7 @@ function initInventory(cls){
   inventory.push({name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m · Improvisada como arma 1d4',weight:0.1,equipped:false,slot:null,qty:5,magic:false});
   inventory.push({name:'Ração de Viagem',icon:'🍞',desc:'Alimentação para 1 dia · Não perece em 5 dias',weight:0.2,equipped:false,slot:null,qty:5,magic:false});
   renderInventory();
+  recalcCA(); // ★ Calcula CA inicial com os itens equipados
 }
 
 function getMaxCarryWeight(){
