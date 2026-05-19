@@ -1709,7 +1709,7 @@ function extractGoldChange(text){
   const gain=text.match(/(?:ganha|recebe|encontra|recompensa|loot|pilha|bolsa com|contém)\s+(\d+)\s*(?:peças de ouro|peças|moedas de ouro|moedas|gp|po)/i);
   const lose=text.match(/(?:paga|gasta|perde|custa|custam|cobrado|desconto|troco)\s+(\d+)\s*(?:peças de ouro|peças|moedas de ouro|moedas|gp|po)/i);
   // Padrão "X po" ou "X gp" genérico
-  const generic=text.match(/(\d+)\s*(?:po|gp)/i);
+  // generic pattern removed - use explicit tags [OURO:N] instead
   if(gain) return +parseInt(gain[1]);
   if(lose) return -parseInt(lose[1]);
   // Generic só aplica se há contexto de transação claro
@@ -1963,8 +1963,8 @@ async function askMaster(acao, oocMode=false){
       const locMatch=reply.match(/\[LOCALIZAÇÃO:\s*([^\]]+)\]/i);
       if(locMatch){inCity=locMatch[1].trim().toLowerCase()==='cidade';}
       else{
-        if(/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto|estalagem|loja|ferreiro|boticário)/i.test(reply))inCity=true;
-        else if(/(?:floresta|estrada aberta|ruínas|caverna|campo aberto|matagal|deserto|montanha|pântano)/i.test(reply))inCity=false;
+        if(/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto|estalagem|loja|ferreiro|boticário)/i.test(reply))inCity=true;
+        else if(/(?:floresta|estrada aberta|ruínas|caverna|campo aberto|matagal|deserto|montanha|pântano)/i.test(reply))inCity=false;
       }
       // Mercador encontrado = contexto de cidade temporário
       if(/mercador|vendedor|lojista|comerciante/i.test(reply))inCity=true;
@@ -2837,7 +2837,7 @@ function getItemDesc(name){
 }
 
 function isItemMagic(name){
-  return /\+\d|mágic|encantad|abenzoado|amaldiçoad|da proteção|de força|de velocidade|de invisib|do voo/i.test(name);
+  return /[+][1-9]|mágic|encantad|abenzoado|amaldiçoad|proteção|de força|de velocidade/i.test(name);
 }
 
 // ══ REST MODAL: update status ══
