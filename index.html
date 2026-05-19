@@ -1374,94 +1374,104 @@ function startAdventure(){
   const cls=document.getElementById('inp-class').value;
   const bg=document.getElementById('inp-bg').value;
   const align=document.getElementById('inp-align').value;
-  if(!Object.keys(stats).length){['str','dex','con','int','wis','cha'].forEach(k=>{stats[k]=roll4d6drop();});}
-  // ★ Aplica bônus raciais nos atributos base
-  const finalStats = applyRacialBonuses(stats, race);
-  stats = finalStats; // stats agora inclui bônus raciais
+
+  // Rola atributos se não rolou ainda
+  if(!Object.keys(stats).length){
+    ['str','dex','con','int','wis','cha'].forEach(k=>{stats[k]=roll4d6drop();});
+  }
+  // Aplica bônus raciais
+  stats=applyRacialBonuses(stats,race);
+
   const maxHP=Math.max(1,(classHP[cls]||8)+mod(stats.con||10));
   const maxMP=classMP[cls]||0;
   const ca=10+mod(stats.dex||10);
   let repBonus=0;
-  if(cls==='Clérigo'||cls==='Paladino')repBonus=20;
-  if(race==='Tiefling')repBonus-=10;
-  if(bg==='Nobre')repBonus+=15;
-  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:50,rep:Math.max(0,repBonus),xp:0,level:1};
+  if(cls==='Clérigo'||cls==='Paladino') repBonus=20;
+  if(race==='Tiefling') repBonus-=10;
+  if(bg==='Nobre') repBonus+=15;
+
+  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:50,
+        rep:Math.max(0,repBonus),xp:0,level:1,credits:0,questId:0};
   merchantCD=(cls==='Paladino'||cls==='Clérigo')?10:(race==='Tiefling'?14:12);
   gameHistory=[];
 
+  // ── Game screen top bar ──
   document.getElementById('g-av').textContent=classAv[cls]||'⚔️';
   document.getElementById('g-nm').textContent=name;
   document.getElementById('g-mt').textContent=`${race} · ${cls} · Nível 1`;
-  updateVitals();
   document.getElementById('f-ca').textContent=ca;
   document.getElementById('f-str').textContent=modStr(stats.str||10);
   document.getElementById('f-dex').textContent=modStr(stats.dex||10);
   document.getElementById('f-wis').textContent=modStr(stats.wis||10);
-  // Atualiza display dos atributos na tela de criação com bônus racial
+  const mh=document.getElementById('merch-hint');if(mh)mh.textContent=merchantCD;
+
+  // ── Char creation display update ──
   ['str','dex','con','int','wis','cha'].forEach(k=>{
     const el=document.getElementById('s-'+k);
     const mel=document.getElementById('m-'+k);
     if(el) el.textContent=stats[k]||10;
     if(mel) mel.textContent=modStr(stats[k]||10);
   });
-  const mh=document.getElementById('merch-hint');if(mh)mh.textContent=merchantCD;
-  // (arma definida pelo initInventory)
-  // Ficha
-  document.getElementById('sh-nm').textContent=name;
-  // Novos campos do status tab
+
+  // ── Ficha → Status tab ──
+  const pb=PROF_BONUS[1]||2;
+  const speed=RACE_SPEED[race]||9;
+  const strMod=mod(stats.str||10),dexMod=mod(stats.dex||10),intMod=mod(stats.int||10);
+  const atkMod=Math.max(strMod,dexMod,intMod)+pb;
+  // Campos com null-check (elementos existem só após renderizar a ficha)
+  const setEl=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val;};
+  setEl('sh-nm',name);
+  setEl('sh-cl',`${race} · ${cls}`);
+  setEl('sh-align',align);
+  setEl('sh-level-num',1);
+  setEl('sh-ca',ca);
+  setEl('sh-speed',speed+'m');
+  setEl('sh-prof','+'+pb);
+  setEl('sh-atk',(atkMod>=0?'+':'')+atkMod);
   const shPortrait=document.getElementById('sh-portrait-icon');
   if(shPortrait) shPortrait.textContent=classAv[cls]||'⚔️';
-  const shAlign=document.getElementById('sh-align');
-  if(shAlign) shAlign.textContent=hero.align||'';
-  const shLevelNum=document.getElementById('sh-level-num');
-  if(shLevelNum) shLevelNum.textContent=hero.level||1;
-  // Speed by race
-  const speed=RACE_SPEED[race]||9;
-  const shSpeed=document.getElementById('sh-speed');
-  if(shSpeed) shSpeed.textContent=speed+'m';
-  // Prof bonus
-  const pb2=PROF_BONUS[Math.min(hero.level||1,20)]||2;
-  const shProf=document.getElementById('sh-prof');
-  if(shProf) shProf.textContent='+'+(pb2);
-  // Attack bonus (usar melhor modificador de ataque)
-  const strMod=mod(stats.str||10), dexMod=mod(stats.dex||10), intMod=mod(stats.int||10);
-  const atkMod=Math.max(strMod,dexMod,intMod)+pb2;
-  const shAtk=document.getElementById('sh-atk');
-  if(shAtk) shAtk.textContent=(atkMod>=0?'+':'')+atkMod;
-  document.getElementById('sh-cl').textContent=`${race} · ${cls}`;
-  document.getElementById('sh-ca').textContent=ca;
-  document.getElementById('sh-hp').textContent=maxHP;
-  // Mostra stats com bônus raciais + salvaguardas na ficha
   const shStats=document.getElementById('sh-stats');
-  if(shStats) shStats.innerHTML=buildFullStatBlock(stats,cls,hero.level||1);
-  // Atualiza CA na ficha
-  const shCaEl=document.getElementById('sh-ca');
-  if(shCaEl) shCaEl.textContent=ca;
-  const rp=PROFILES.race[race]||{};const cp=PROFILES.class[cls]||{};const bp=PROFILES.bg[bg]||{};
-  document.getElementById('sh-profile-tags').innerHTML=[...(rp.tags||[]),...(cp.tags||[])].map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
-  // Bônus raciais de atributo
+  if(shStats) shStats.innerHTML=buildFullStatBlock(stats,cls,1);
+
+  // Perfil ativo
+  const rp=PROFILES.race[race]||{};
+  const cp=PROFILES.class[cls]||{};
+  const bp=PROFILES.bg[bg]||{};
+  const shTags=document.getElementById('sh-profile-tags');
+  if(shTags) shTags.innerHTML=[...(rp.tags||[]),...(cp.tags||[])].map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
   const racialBonusObj=RACIAL_STAT_BONUS[race]||{};
-  const racialBonusList=Object.entries(racialBonusObj).filter(([k])=>!k.startsWith('escolha')).map(([k,v])=>`<span class="racial-bonus-tag">${attrLabels[k]||k} +${v}</span>`).join('');
-  document.getElementById('sh-profile-bonuses').innerHTML=
+  const racialBonusList=Object.entries(racialBonusObj)
+    .filter(([k])=>!k.startsWith('escolha'))
+    .map(([k,v])=>`<span class="racial-bonus-tag">${attrLabels[k]||k} +${v}</span>`).join('');
+  const shBonuses=document.getElementById('sh-profile-bonuses');
+  if(shBonuses) shBonuses.innerHTML=
     (racialBonusList?`<div style="margin-bottom:6px"><div style="font-size:10px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:1px;margin-bottom:4px">BÔNUS RACIAL</div>${racialBonusList}</div>`:'') +
-    [...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean).map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
+    [...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean)
+      .map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
+
   // Magias
-  const spells=(cp.spells||[]);
-  if(spells.length>0){
-    document.getElementById('spells-content').innerHTML=`<div style="margin-bottom:8px"><div class="sec-hdr" style="margin-bottom:6px">FEITIÇOS CONHECIDOS</div>${spells.map(s=>`<div class="spell-card" style="margin-bottom:6px"><div class="spell-name">${s}</div><div class="spell-meta">Nível 1 · Ação</div></div>`).join('')}</div>`;
-  } else {
-    document.getElementById('spells-content').innerHTML=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana.</p>`;
+  const spells=cp.spells||[];
+  const spellsEl=document.getElementById('spells-content');
+  if(spellsEl){
+    if(spells.length>0){
+      spellsEl.innerHTML=`<div><div class="sec-hdr" style="margin-bottom:6px">FEITIÇOS CONHECIDOS</div>${spells.map(s=>`<div class="spell-card" style="margin-bottom:6px"><div class="spell-name">${s}</div><div class="spell-meta">Nível 1 · Ação</div></div>`).join('')}</div>`;
+    } else {
+      spellsEl.innerHTML=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana.</p>`;
+    }
   }
-  // Preenche aba Habilidades
-  buildSkillsTab(cls, race, hero.level||1);
+
+  // Abas extras
+  buildSkillsTab(cls,race,1);
   initInventory(cls);
-  // XP modal
+  updateVitals();
   updateXPModal();
   buildD20Attrs();
-  goTo('s-game');
+
+  // Sorteia missão e inicia
   hero.questId=Math.floor(Math.random()*QUESTS.length);
   const q=QUESTS[hero.questId];
-  askMaster(`Inicie a aventura com ESTA MISSÃO PRINCIPAL: "${q.title}". ${q.hook}. Personagem: ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil para personalizar. Termine com decisão imediata. Sugira 4 ações:\n[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`);
+  goTo('s-game');
+  askMaster(`Inicie a aventura com ESTA MISSÃO PRINCIPAL: "${q.title}". ${q.hook}. Personagem: ${name}, ${race} ${cls} (${bg}, ${align}). Use os traços do perfil. Termine com decisão imediata. Sugira 4 ações:\n[AÇÕES: Ação1 | Ação2 | Ação3 | Ação4]`);
 }
 
 function updateVitals(){
