@@ -99,7 +99,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 /* Scene header */
 .hdr-scene{width:100%;height:36px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#050A02,#0A1506 60%,#101C08);}
 .moon{position:absolute;top:8px;right:16px;width:14px;height:14px;background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);border-radius:50%;box-shadow:0 0 10px rgba(220,200,100,0.5);}
-.ia-badge{position:absolute;top:50%;left:12px;transform:translateY(-50%);background:rgba(0,0,0,0.5);border:1px solid rgba(46,204,113,0.35);border-radius:20px;padding:2px 8px;font-size:9px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:4px;}
+.ia-badge{position:absolute;top:50%;left:10px;transform:translateY(-50%);background:rgba(10,20,10,0.85);border:1px solid rgba(46,204,113,0.5);border-radius:20px;padding:3px 10px;font-size:10px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:5px;z-index:10;}
 .ia-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
 .ia-dot.thinking{background:#F39C12;animation:blink .4s infinite;}
 #ia-lbl{color:var(--green);}
@@ -183,7 +183,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .dice-face.spinning{animation:dice-spin .5s ease-out;}
 .roll-info{flex:1;}
 .roll-type{font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:1.5px;margin-bottom:4px;}
-.roll-formula{font-size:15px;color:var(--parch);font-weight:600;font-family:var(--font-title);}
+.roll-formula{font-size:15px;color:var(--parch);font-weight:600;font-family:var(--font-title);line-height:1.4;}
 .roll-outcome{font-size:13px;margin-top:4px;font-family:var(--font-title);letter-spacing:1px;font-weight:700;}
 .roll-outcome.suc{color:#2ECC71;}
 .roll-outcome.fal{color:#E74C3C;}
@@ -528,6 +528,93 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .rst-val{font-size:14px;color:var(--parch);font-weight:600;font-family:var(--font-title);}
 .rest-icon-circle{width:46px;height:46px;border-radius:50%;background:rgba(200,146,42,.12);border:1.5px solid rgba(200,146,42,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .rest-duration{font-size:11px;color:rgba(200,146,42,.6);font-family:var(--font-title);margin:2px 0;}
+
+/* ══ STATUS TAB NOVO VISUAL ══ */
+.sh-hero-banner{background:rgba(15,10,4,.6);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.sh-portrait{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4A3B8C,#1A1040);border:2px solid rgba(139,111,208,.6);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.sh-hero-info{flex:1;min-width:0;}
+.sh-hero-name{font-family:var(--font-title);font-size:16px;font-weight:700;color:var(--gold-l);letter-spacing:.5px;}
+.sh-hero-meta{font-size:10px;color:rgba(200,146,42,.55);font-family:var(--font-title);letter-spacing:.5px;margin-top:1px;}
+.sh-hero-align{font-size:10px;color:rgba(139,111,208,.7);font-style:italic;margin-top:2px;}
+.sh-level-badge{text-align:center;flex-shrink:0;}
+.sh-level-num{font-family:var(--font-title);font-size:28px;font-weight:700;color:var(--gold-l);line-height:1;}
+.sh-level-lbl{font-size:8px;color:rgba(200,146,42,.45);font-family:var(--font-title);letter-spacing:1.5px;}
+
+/* Resource cards */
+.sh-resources{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.sh-res-card{border-radius:10px;padding:8px 7px;display:flex;flex-direction:column;gap:2px;border:1px solid;}
+.sh-res-hp{background:rgba(192,57,43,.1);border-color:rgba(192,57,43,.35);}
+.sh-res-mp{background:rgba(91,63,160,.1);border-color:rgba(91,63,160,.35);}
+.sh-res-xp{background:rgba(200,146,42,.07);border-color:rgba(200,146,42,.25);}
+.sh-res-icon{font-size:14px;line-height:1;}
+.sh-res-val{font-family:var(--font-title);font-size:18px;font-weight:700;line-height:1.1;}
+.sh-res-hp .sh-res-val{color:var(--hp-l);}
+.sh-res-mp .sh-res-val{color:var(--mp-l);}
+.sh-res-xp .sh-res-val{color:var(--gold);}
+.sh-res-sub{font-size:9px;font-family:var(--font-title);letter-spacing:.3px;}
+.sh-res-hp .sh-res-sub{color:rgba(231,76,60,.5);}
+.sh-res-mp .sh-res-sub{color:rgba(139,111,208,.5);}
+.sh-res-xp .sh-res-sub{color:rgba(200,146,42,.45);}
+.sh-res-bar{height:4px;background:rgba(0,0,0,.4);border-radius:2px;overflow:hidden;margin-top:4px;}
+.sh-res-fill{height:100%;border-radius:2px;transition:width .6s;}
+.sh-res-hp .sh-res-fill{background:linear-gradient(90deg,#C0392B,#E74C3C);}
+.sh-res-mp .sh-res-fill{background:linear-gradient(90deg,#5B3FA0,#8B6FD0);}
+.sh-res-xp .sh-res-fill{background:linear-gradient(90deg,#7A5518,#C8922A);}
+
+/* Atributos com barra */
+.sh-attr-row{display:flex;align-items:center;gap:7px;padding:5px 8px;background:rgba(15,10,4,.5);border-radius:7px;border-left:2px solid rgba(200,146,42,.15);margin-bottom:3px;}
+.sh-attr-row.sh-hi{border-left-color:rgba(200,146,42,.7);}
+.sh-an{font-family:var(--font-title);font-size:9px;color:rgba(200,146,42,.5);letter-spacing:1px;width:28px;flex-shrink:0;}
+.sh-av{font-size:15px;font-weight:700;color:var(--parch);font-family:var(--font-title);width:24px;flex-shrink:0;}
+.sh-am{font-size:11px;color:var(--gold);font-family:var(--font-title);font-weight:600;width:26px;flex-shrink:0;}
+.sh-abar{flex:1;height:5px;background:rgba(0,0,0,.45);border-radius:3px;overflow:hidden;}
+.sh-afill{height:100%;border-radius:3px;background:linear-gradient(90deg,rgba(200,146,42,.35),rgba(200,146,42,.8));}
+.sh-asave{font-size:10px;font-family:var(--font-title);width:26px;text-align:right;flex-shrink:0;}
+.sh-asave.p{color:#2ECC71;}
+.sh-asave.n{color:rgba(200,146,42,.38);}
+
+/* Combat bar */
+.sh-combat-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:10px;}
+.sh-cb{background:rgba(15,10,4,.7);border:1px solid rgba(200,146,42,.16);border-radius:9px;padding:8px 4px;text-align:center;}
+.sh-cb-ic{font-size:12px;margin-bottom:2px;}
+.sh-cb-val{font-family:var(--font-title);font-size:16px;font-weight:700;color:var(--gold-l);line-height:1;}
+.sh-cb-lbl{font-size:8px;color:rgba(200,146,42,.4);font-family:var(--font-title);letter-spacing:.5px;margin-top:2px;}
+
+/* ══ INVENTÁRIO NOVO VISUAL ══ */
+.inv-weight-bar{background:rgba(200,146,42,.07);border:1px solid rgba(200,146,42,.18);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.inv-wb-info{display:flex;flex-direction:column;gap:1px;flex-shrink:0;}
+.inv-wb-lbl{font-size:8px;color:rgba(200,146,42,.45);font-family:var(--font-title);letter-spacing:1.5px;}
+.inv-wb-val{font-size:13px;font-weight:700;color:var(--gold-l);font-family:var(--font-title);}
+.inv-wb-track{flex:1;height:6px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden;border:1px solid rgba(200,146,42,.1);}
+.inv-wb-fill{height:100%;background:linear-gradient(90deg,#2ECC71,#F39C12,#E74C3C);border-radius:3px;transition:width .6s;}
+.inv-wb-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.inv-wb-max{font-size:10px;color:rgba(200,146,42,.5);font-family:var(--font-title);}
+.inv-wb-status{font-size:8px;padding:2px 6px;border-radius:8px;font-family:var(--font-title);letter-spacing:.5px;}
+.inv-wb-status.leve{background:rgba(46,204,113,.15);border:1px solid rgba(46,204,113,.3);color:#2ECC71;}
+.inv-wb-status.normal{background:rgba(243,156,18,.15);border:1px solid rgba(243,156,18,.3);color:#F39C12;}
+.inv-wb-status.encumbrado{background:rgba(231,76,60,.15);border:1px solid rgba(231,76,60,.3);color:#E74C3C;}
+
+/* Categoria de inventário */
+.inv-cat-header{font-size:9px;color:rgba(200,146,42,.5);letter-spacing:2px;font-family:var(--font-title);text-transform:uppercase;display:flex;align-items:center;gap:6px;margin:8px 0 5px;}
+.inv-cat-header::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,146,42,.18),transparent);}
+
+/* Item de inventário */
+.inv-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(15,10,4,.6);border:1px solid rgba(200,146,42,.13);border-radius:9px;margin-bottom:4px;cursor:pointer;transition:border-color .15s;}
+.inv-item:hover{border-color:rgba(200,146,42,.3);}
+.inv-item.equipped{border-color:rgba(200,146,42,.38);background:rgba(200,146,42,.05);}
+.inv-item.magic{border-color:rgba(139,111,208,.38);background:rgba(91,63,160,.07);}
+.inv-item-icon-wrap{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.inv-item-icon-wrap.eq-wrap{background:rgba(200,146,42,.14);border:1px solid rgba(200,146,42,.28);}
+.inv-item-icon-wrap.mg-wrap{background:rgba(91,63,160,.18);border:1px solid rgba(139,111,208,.35);}
+.inv-item-icon-wrap.bg-wrap{background:rgba(26,18,8,.8);border:1px solid rgba(200,146,42,.12);}
+.inv-item-info{flex:1;min-width:0;}
+.inv-item-name-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.inv-item-name{font-family:var(--font-title);font-size:12px;color:var(--parch);}
+.inv-slot-badge{font-size:8px;background:rgba(200,146,42,.18);border:1px solid rgba(200,146,42,.35);color:var(--gold-l);border-radius:4px;padding:1px 5px;font-family:var(--font-title);letter-spacing:.3px;white-space:nowrap;}
+.inv-magic-badge{font-size:8px;background:rgba(91,63,160,.22);border:1px solid rgba(139,111,208,.38);color:#C0A0FF;border-radius:4px;padding:1px 5px;font-family:var(--font-title);letter-spacing:.3px;white-space:nowrap;}
+.inv-item-desc{font-size:10px;color:rgba(200,146,42,.48);margin-top:2px;line-height:1.35;}
+.inv-item-weight{font-size:10px;color:rgba(200,146,42,.42);font-family:var(--font-title);flex-shrink:0;text-align:right;}
+.inv-item-weight .kg{display:block;font-size:9px;color:rgba(200,146,42,.28);}
 </style>
 </head>
 <body>
@@ -851,66 +938,74 @@ body{font-family:var(--font-narr);color:var(--parch);}
   </div>
   <!-- Status -->
   <div class="sheet-page active" id="tab-stats">
-    <div class="sheet-grid">
-      <div><div class="sf-lbl">Nome</div><div class="sf-val" id="sh-nm">—</div></div>
-      <div><div class="sf-lbl">Raça · Classe</div><div class="sf-val" id="sh-cl">—</div></div>
-      <div><div class="sf-lbl">🛡 CA</div><div class="sf-val big ca-col" id="sh-ca">—</div></div>
-      <div><div class="sf-lbl">❤️ PV Máx</div><div class="sf-val big hp-col" id="sh-hp">—</div></div>
+    <!-- Hero banner -->
+    <div class="sh-hero-banner">
+      <div class="sh-portrait" id="sh-portrait-icon">🧙</div>
+      <div class="sh-hero-info">
+        <div class="sh-hero-name" id="sh-nm">—</div>
+        <div class="sh-hero-meta" id="sh-cl">—</div>
+        <div class="sh-hero-align" id="sh-align">—</div>
+      </div>
+      <div class="sh-level-badge">
+        <div class="sh-level-num" id="sh-level-num">1</div>
+        <div class="sh-level-lbl">NÍVEL</div>
+      </div>
     </div>
-    <div class="stats-row" id="sh-stats"></div>
+    <!-- 3 resource cards -->
+    <div class="sh-resources">
+      <div class="sh-res-card sh-res-hp">
+        <div class="sh-res-icon">❤️</div>
+        <div class="sh-res-val" id="sh-hp-val">—</div>
+        <div class="sh-res-sub" id="sh-hp-sub">/— PV</div>
+        <div class="sh-res-bar"><div class="sh-res-fill" id="sh-hp-bar" style="width:100%"></div></div>
+      </div>
+      <div class="sh-res-card sh-res-mp">
+        <div class="sh-res-icon">✨</div>
+        <div class="sh-res-val" id="sh-mp-val">—</div>
+        <div class="sh-res-sub" id="sh-mp-sub">/— SLOTS</div>
+        <div class="sh-res-bar"><div class="sh-res-fill" id="sh-mp-bar" style="width:100%"></div></div>
+      </div>
+      <div class="sh-res-card sh-res-xp">
+        <div class="sh-res-icon">⭐</div>
+        <div class="sh-res-val" id="sh-xp-val">0</div>
+        <div class="sh-res-sub" id="sh-xp-sub">/300 XP</div>
+        <div class="sh-res-bar"><div class="sh-res-fill" id="sh-xp-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <!-- Atributos com barra proporcional -->
+    <div class="sec-hdr" style="margin-bottom:6px">ATRIBUTOS</div>
+    <div id="sh-stats"></div>
+    <!-- Combat bar -->
+    <div class="sh-combat-bar">
+      <div class="sh-cb"><div class="sh-cb-ic">🛡️</div><div class="sh-cb-val" id="sh-ca">—</div><div class="sh-cb-lbl">CA</div></div>
+      <div class="sh-cb"><div class="sh-cb-ic">👟</div><div class="sh-cb-val" id="sh-speed">9m</div><div class="sh-cb-lbl">DESL.</div></div>
+      <div class="sh-cb"><div class="sh-cb-ic">🎯</div><div class="sh-cb-val" id="sh-prof">+2</div><div class="sh-cb-lbl">PROF.</div></div>
+      <div class="sh-cb"><div class="sh-cb-ic">⚔️</div><div class="sh-cb-val" id="sh-atk">+2</div><div class="sh-cb-lbl">ATAQUE</div></div>
+    </div>
+    <!-- Perfil ativo -->
     <div class="sec-hdr" style="margin-top:10px;margin-bottom:6px">PERFIL ATIVO</div>
     <div id="sh-profile-tags" class="pp-tags"></div>
     <div id="sh-profile-bonuses" class="pp-bonuses" style="margin-top:6px"></div>
   </div>
-  <!-- Inventário -->
+    <!-- Inventário -->
   <div class="sheet-page" id="tab-inv">
-    <!-- Avatar de equipamentos -->
-    <div class="equip-avatar-wrap">
-      <div class="equip-avatar">
-        <!-- Silhueta do personagem -->
-        <svg viewBox="0 0 100 160" width="90" height="144" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="20" r="14" fill="rgba(200,146,42,.1)" stroke="rgba(200,146,42,.3)" stroke-width="1.5"/>
-          <path d="M30 40 Q50 35 70 40 L75 90 Q50 95 25 90 Z" fill="rgba(200,146,42,.08)" stroke="rgba(200,146,42,.25)" stroke-width="1.2"/>
-          <line x1="30" y1="45" x2="15" y2="85" stroke="rgba(200,146,42,.2)" stroke-width="8" stroke-linecap="round"/>
-          <line x1="70" y1="45" x2="85" y2="85" stroke="rgba(200,146,42,.2)" stroke-width="8" stroke-linecap="round"/>
-          <line x1="38" y1="90" x2="35" y2="140" stroke="rgba(200,146,42,.2)" stroke-width="9" stroke-linecap="round"/>
-          <line x1="62" y1="90" x2="65" y2="140" stroke="rgba(200,146,42,.2)" stroke-width="9" stroke-linecap="round"/>
-          <!-- Slots de equipamento -->
-          <text id="eq-head" x="50" y="16" text-anchor="middle" font-size="14">⛑️</text>
-          <text id="eq-body" x="50" y="68" text-anchor="middle" font-size="16">👕</text>
-          <text id="eq-lhand" x="12" y="75" text-anchor="middle" font-size="12">🖐️</text>
-          <text id="eq-rhand" x="88" y="75" text-anchor="middle" font-size="12">⚔️</text>
-          <text id="eq-legs" x="50" y="115" text-anchor="middle" font-size="13">👖</text>
-          <text id="eq-feet" x="50" y="148" text-anchor="middle" font-size="12">👢</text>
-        </svg>
-        <!-- Labels dos slots -->
-        <div class="eq-slot-labels">
-          <div class="eq-slot-lbl" style="top:2px;left:50%;transform:translateX(-50%)">Cabeça</div>
-          <div class="eq-slot-lbl" style="top:38%;left:50%;transform:translateX(-50%)">Corpo</div>
-          <div class="eq-slot-lbl" style="top:42%;left:2px">M.Esq</div>
-          <div class="eq-slot-lbl" style="top:42%;right:2px">M.Dir</div>
-          <div class="eq-slot-lbl" style="bottom:25%;left:50%;transform:translateX(-50%)">Pernas</div>
-          <div class="eq-slot-lbl" style="bottom:2%;left:50%;transform:translateX(-50%)">Pés</div>
-        </div>
+    <!-- Barra de carga -->
+    <div class="inv-weight-bar">
+      <div class="inv-wb-info">
+        <div class="inv-wb-lbl">CARGA</div>
+        <div class="inv-wb-val" id="inv-weight-txt">0kg</div>
       </div>
-      <!-- Carga ao lado do avatar -->
-      <div class="equip-stats">
-        <div class="equip-stat-lbl">CARGA</div>
-        <div class="equip-stat-val" id="inv-weight-txt">0kg</div>
-        <div class="equip-stat-lbl" style="margin-top:4px">MÁXIMO</div>
-        <div class="equip-stat-val" id="inv-max-txt">75kg</div>
-        <div class="inv-bar" style="margin-top:6px;height:80px;width:12px;flex-direction:column;writing-mode:vertical-lr">
-          <div class="inv-fill" id="inv-bar" style="width:100%;height:0%;background:linear-gradient(180deg,#E74C3C,#F39C12,#2ECC71)"></div>
-        </div>
-        <div class="equip-stat-lbl" style="margin-top:4px;font-size:8px;color:var(--gold-dim)" id="inv-carry-status">LEVE</div>
+      <div class="inv-wb-track"><div class="inv-wb-fill" id="inv-bar" style="width:0%"></div></div>
+      <div class="inv-wb-right">
+        <div class="inv-wb-max" id="inv-max-txt">/ 75kg</div>
+        <div class="inv-wb-status" id="inv-carry-status">LEVE</div>
       </div>
     </div>
-    <!-- Lista de itens -->
-    <div class="inv-section-lbl">ITENS CARREGADOS</div>
-    <div style="display:flex;flex-direction:column;gap:6px" id="inv-list"></div>
-    <p style="font-size:11px;color:var(--gold-dim);text-align:center;font-style:italic;margin-top:8px;font-family:var(--font-title)">⚖️ Itens atualizados automaticamente pela narrativa</p>
+    <!-- Lista de itens por categoria -->
+    <div id="inv-list"></div>
+    <p style="font-size:10px;color:var(--gold-dim);text-align:center;font-style:italic;margin-top:8px;font-family:var(--font-title);letter-spacing:.3px">⚖️ Itens atualizados automaticamente pela narrativa</p>
   </div>
-  <!-- Habilidades -->
+    <!-- Habilidades -->
   <div class="sheet-page" id="tab-skills">
     <div id="skills-content" style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
       <p style="font-size:13px;color:var(--parch-d);text-align:center;font-style:italic;padding:16px 0">Inicie uma aventura para ver as habilidades do seu personagem.</p>
@@ -1110,9 +1205,9 @@ function buildSkillsTab(cls, race, level){
 function buildFullStatBlock(finalStats, cls, level){
   const pb = PROF_BONUS[Math.min(level,20)] || 2;
   const saves = CLASS_SAVES[cls] || [];
-  const keys = ['str','dex','con','int','wis','cha'];
+  // Ordena do maior para o menor valor
+  const keys = ['str','dex','con','int','wis','cha'].sort((a,b)=>(finalStats[b]||10)-(finalStats[a]||10));
   const labels = {str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
-  const fullnames = {str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
   return keys.map(k=>{
     const val = finalStats[k]||10;
     const m = mod(val);
@@ -1120,16 +1215,15 @@ function buildFullStatBlock(finalStats, cls, level){
     const saveBonus = saves.includes(k) ? m+pb : m;
     const savStr = (saveBonus>=0?'+':'')+saveBonus;
     const hasSave = saves.includes(k);
-    return `<div class="stat-full-card">
-      <div class="sfc-top">
-        <div class="sfc-name">${labels[k]}</div>
-        <div class="sfc-val">${val}</div>
-        <div class="sfc-mod">${mStr}</div>
-      </div>
-      <div class="sfc-save ${hasSave?'sfc-save-prof':''}">
-        <span class="sfc-save-dot ${hasSave?'dot-prof':'dot-empty'}"></span>
-        <span>Salv. ${savStr}</span>
-      </div>
+    const isHigh = val >= 14;
+    // Barra proporcional: escala 8-20 → 20-100%
+    const barPct = Math.max(20, Math.min(100, ((val-8)/12)*100));
+    return `<div class="sh-attr-row${isHigh?' sh-hi':''}">
+      <div class="sh-an">${labels[k]}</div>
+      <div class="sh-av">${val}</div>
+      <div class="sh-am">${mStr}</div>
+      <div class="sh-abar"><div class="sh-afill" style="width:${barPct.toFixed(0)}%"></div></div>
+      <div class="sh-asave ${hasSave?'p':'n'}">${savStr}</div>
     </div>`;
   }).join('');
 }
@@ -1219,6 +1313,9 @@ const XP_TABLE=[
   999999  // Nível 20 — máximo
 ];
 
+
+// Deslocamento por raça (D&D 5e em metros)
+const RACE_SPEED={'Humano':9,'Elfo':9,'Meio-Elfo':9,'Anão':7.5,'Halfling':7.5,'Gnomo':7.5,'Meio-Orc':9,'Tiefling':9,'Draconato':9};
 const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨'};
 const classHP={Guerreiro:10,Mago:6,Ladino:8,Clérigo:8,Bardo:8,Paladino:10,Druida:8,Ranger:10,Bárbaro:12,Feiticeiro:6};
 const classMP={Guerreiro:0,Mago:4,Ladino:0,Clérigo:3,Bardo:3,Paladino:2,Druida:3,Ranger:2,Bárbaro:0,Feiticeiro:4};
@@ -1311,11 +1408,35 @@ function startAdventure(){
   // (arma definida pelo initInventory)
   // Ficha
   document.getElementById('sh-nm').textContent=name;
+  // Novos campos do status tab
+  const shPortrait=document.getElementById('sh-portrait-icon');
+  if(shPortrait) shPortrait.textContent=classAv[cls]||'⚔️';
+  const shAlign=document.getElementById('sh-align');
+  if(shAlign) shAlign.textContent=hero.align||'';
+  const shLevelNum=document.getElementById('sh-level-num');
+  if(shLevelNum) shLevelNum.textContent=hero.level||1;
+  // Speed by race
+  const speed=RACE_SPEED[race]||9;
+  const shSpeed=document.getElementById('sh-speed');
+  if(shSpeed) shSpeed.textContent=speed+'m';
+  // Prof bonus
+  const pb2=PROF_BONUS[Math.min(hero.level||1,20)]||2;
+  const shProf=document.getElementById('sh-prof');
+  if(shProf) shProf.textContent='+'+(pb2);
+  // Attack bonus (usar melhor modificador de ataque)
+  const strMod=mod(stats.str||10), dexMod=mod(stats.dex||10), intMod=mod(stats.int||10);
+  const atkMod=Math.max(strMod,dexMod,intMod)+pb2;
+  const shAtk=document.getElementById('sh-atk');
+  if(shAtk) shAtk.textContent=(atkMod>=0?'+':'')+atkMod;
   document.getElementById('sh-cl').textContent=`${race} · ${cls}`;
   document.getElementById('sh-ca').textContent=ca;
   document.getElementById('sh-hp').textContent=maxHP;
   // Mostra stats com bônus raciais + salvaguardas na ficha
-  document.getElementById('sh-stats').innerHTML = buildFullStatBlock(stats, cls, hero.level||1);
+  const shStats=document.getElementById('sh-stats');
+  if(shStats) shStats.innerHTML=buildFullStatBlock(stats,cls,hero.level||1);
+  // Atualiza CA na ficha
+  const shCaEl=document.getElementById('sh-ca');
+  if(shCaEl) shCaEl.textContent=ca;
   const rp=PROFILES.race[race]||{};const cp=PROFILES.class[cls]||{};const bp=PROFILES.bg[bg]||{};
   document.getElementById('sh-profile-tags').innerHTML=[...(rp.tags||[]),...(cp.tags||[])].map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
   // Bônus raciais de atributo
@@ -1352,6 +1473,28 @@ function updateVitals(){
   document.getElementById('g-mp-txt').textContent=`${hero.mp}/${hero.maxMP}`;
   document.getElementById('g-gd').textContent=hero.gold;
   document.getElementById('g-credits').textContent=hero.credits||0;
+  // ★ Atualiza cards de recurso na ficha
+  const shHpVal=document.getElementById('sh-hp-val');
+  const shHpSub=document.getElementById('sh-hp-sub');
+  const shHpBar=document.getElementById('sh-hp-bar');
+  if(shHpVal) shHpVal.textContent=hero.hp;
+  if(shHpSub) shHpSub.textContent=`/${hero.maxHP} PV`;
+  if(shHpBar) shHpBar.style.width=hpP+'%';
+  const shMpVal=document.getElementById('sh-mp-val');
+  const shMpSub=document.getElementById('sh-mp-sub');
+  const shMpBar=document.getElementById('sh-mp-bar');
+  if(shMpVal) shMpVal.textContent=hero.mp;
+  if(shMpSub) shMpSub.textContent=`/${hero.maxMP} SLOTS`;
+  if(shMpBar) shMpBar.style.width=mpP+'%';
+  // XP card
+  const shXpVal=document.getElementById('sh-xp-val');
+  const shXpSub=document.getElementById('sh-xp-sub');
+  const shXpBar=document.getElementById('sh-xp-bar');
+  const xpNext=XP_TABLE[hero.level||1]||300;
+  const xpPct=Math.min(100,Math.round(((hero.xp||0)/xpNext)*100));
+  if(shXpVal) shXpVal.textContent=hero.xp||0;
+  if(shXpSub) shXpSub.textContent=`/${xpNext} XP`;
+  if(shXpBar) shXpBar.style.width=xpPct+'%';
   updateXPRing();
 }
 
@@ -1417,16 +1560,32 @@ function setThinking(v){
 function addRollCard(label,diceVal,modVal,total,cd){
   const narr=document.getElementById('narr');
   const ok=cd!=null?total>=cd:null;
-  const isCrit=diceVal===20;const isFail=diceVal===1;
-  const faceClass=isCrit?'dice-face d-crit':isFail?'dice-face d-fail':'dice-face';
+  const isCrit=diceVal===20;
+  const isFail=diceVal===1;
   const ms=modVal>=0?`+${modVal}`:String(modVal);
-  let formula=`d20(${diceVal}) ${ms} = ${total}`;if(cd!=null)formula+=` vs CD ${cd}`;
-  let outcome='';
-  if(cd!=null){outcome=ok?`<div class="roll-outcome suc">✓ SUCESSO${isCrit?' · CRÍTICO!':''}</div>`:`<div class="roll-outcome fal">✗ FALHA${isFail?' CRÍTICA!':''}</div>`;}
-  else if(isCrit){outcome=`<div class="roll-outcome suc">★ CRÍTICO!</div>`;}
-  else if(isFail){outcome=`<div class="roll-outcome fal">✗ FALHA CRÍTICA</div>`;}
+  // Cor do número total: verde=sucesso/crítico, vermelho=falha/crítica
+  let totalColor='#E8B84B'; // dourado = sem CD
+  if(isCrit) totalColor='#2ECC71';
+  else if(isFail) totalColor='#E74C3C';
+  else if(ok===true) totalColor='#2ECC71';
+  else if(ok===false) totalColor='#E74C3C';
+  // Fórmula: "d20(14) +3 = 17 ✓ Sucesso" igual à foto
+  const eqSign=`<span style="color:${totalColor};font-weight:700"> = ${total}</span>`;
+  let outcomeStr='';
+  if(isCrit) outcomeStr=` <span style="color:#2ECC71">★ Crítico!</span>`;
+  else if(isFail) outcomeStr=` <span style="color:#E74C3C">✗ Falha Crítica</span>`;
+  else if(ok===true) outcomeStr=` <span style="color:#2ECC71">✓ Sucesso</span>`;
+  else if(ok===false) outcomeStr=` <span style="color:#E74C3C">✗ Falha</span>`;
+  const formula=`d20(${diceVal}) ${ms}${eqSign}${outcomeStr}`;
+  const cdLabel=cd!=null?` · CD ${cd}`:'';
   const m=document.createElement('div');m.className='msg roll-wrap';
-  m.innerHTML=`<div class="roll-card"><div class="${faceClass}">${total}</div><div class="roll-info"><div class="roll-type">${label}</div><div class="roll-formula">${formula}</div>${outcome}</div></div>`;
+  m.innerHTML=`<div class="roll-card">
+    <div class="dice-face${isCrit?' d-crit':isFail?' d-fail':ok===true?' d-crit':ok===false?' d-fail':''}" style="color:${totalColor};border-color:${totalColor}40">${total}</div>
+    <div class="roll-info">
+      <div class="roll-type">${label}${cdLabel}</div>
+      <div class="roll-formula">${formula}</div>
+    </div>
+  </div>`;
   narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
@@ -1936,17 +2095,45 @@ const ACTION_ATTR_MAP=[
 
 // Detecta se uma ação requer teste e qual atributo
 function detectActionRequiresRoll(action){
-  // Palavras que sempre pedem teste
-  const testWords=/(tentar|testar|rolar|verificar|checar|fazer um teste|procurar|investigar|atac|golpe|fugir|esconder|perceber)/i;
-  if(!testWords.test(action)) return null;
-  for(const m of ACTION_ATTR_MAP){
-    if(m.re.test(action)) return {attr:m.attr, label:m.label};
-  }
-  // Fallback: verifica se tem atributo sugerido pelo contexto pendente
-  if(pendingRollAttr) return {attr:pendingRollAttr, label: (attrLabels[pendingRollAttr]||'FORÇA')};
-  return null; // não precisa de teste
-}
+  const a = action.trim();
 
+  // CASO 1: "Rolar Percepção CD 13" — sugestão do mestre como botão
+  const rolarMatch = a.match(/^rolar\s+(.+?)(?:\s+cd\s*(\d+))?$/i);
+  if(rolarMatch){
+    const skillName = rolarMatch[1].trim().toLowerCase();
+    if(rolarMatch[2]) pendingRollCD = parseInt(rolarMatch[2]);
+    const skillToAttr={
+      'forca':'str','força':'str','destreza':'dex','constituicao':'con','constituição':'con',
+      'inteligencia':'int','inteligência':'int','sabedoria':'wis','carisma':'cha',
+      'percepcao':'wis','percepção':'wis','investigacao':'int','investigação':'int',
+      'arcanismo':'int','historia':'int','história':'int','religiao':'int','religião':'int',
+      'natureza':'int','medicina':'wis','sobrevivencia':'wis','sobrevivência':'wis',
+      'intuicao':'wis','intuição':'wis','adestramento':'wis',
+      'atletismo':'str','acrobacia':'dex','furtividade':'dex','prestidigitacao':'dex','prestidigitação':'dex',
+      'persuasao':'cha','persuasão':'cha','enganacao':'cha','enganação':'cha',
+      'intimidacao':'cha','intimidação':'cha','performance':'cha',
+    };
+    const attr = skillToAttr[skillName] || pendingRollAttr || 'wis';
+    const label = skillName.charAt(0).toUpperCase()+skillName.slice(1);
+    return {attr, label: label.toUpperCase()};
+  }
+
+  // CASO 2: Tem teste pendente + ação de combate
+  if(pendingRollAttr){
+    if(/atac|golpe|lutar|ferir|sacar|disparar|lancar|lançar|conjurar/i.test(a)){
+      return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
+    }
+  }
+
+  // CASO 3: Palavras que implicam teste
+  const testWords=/\b(tentar|testar|rolar|procurar|investigar|atac|golpe|fugir|esconder|perceber|inspecionar|examinar|escalar|arrombar|persuad|intimidar|enganar)\b/i;
+  if(!testWords.test(a)) return null;
+  for(const m of ACTION_ATTR_MAP){
+    if(m.re.test(a)) return {attr:m.attr, label:m.label};
+  }
+  if(pendingRollAttr) return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
+  return null;
+}
 // Detecta teste em ação livre digitada pelo jogador
 function detectFreeActionRoll(text){
   for(const m of ACTION_ATTR_MAP){
@@ -2002,16 +2189,24 @@ async function rollInlineD20(attrKey, label, cd){
   faceEl.className = 'dice-face' + (isCrit ? ' d-crit' : isFail ? ' d-fail' : '');
 
   const ms = modVal >= 0 ? '+'+modVal : String(modVal);
-  formulaEl.textContent = `d20(${diceVal}) ${ms} = ${total}${cd ? ' vs CD '+cd : ''}`;
-
-  let outcomeText = '';
-  let outcomeClass = '';
-  if(isCrit){ outcomeText = '★ CRÍTICO!'; outcomeClass = 'suc'; }
-  else if(isFail){ outcomeText = '✗ FALHA CRÍTICA'; outcomeClass = 'fal'; }
-  else if(ok === true){ outcomeText = '✓ SUCESSO'; outcomeClass = 'suc'; }
-  else if(ok === false){ outcomeText = '✗ FALHA'; outcomeClass = 'fal'; }
-  outcomeEl.textContent = outcomeText;
-  outcomeEl.className = 'roll-outcome ' + outcomeClass;
+  // Cor do total igual ao addRollCard
+  let totalColor='#E8B84B';
+  if(isCrit) totalColor='#2ECC71';
+  else if(isFail) totalColor='#E74C3C';
+  else if(ok===true) totalColor='#2ECC71';
+  else if(ok===false) totalColor='#E74C3C';
+  // Fórmula visual com cor
+  let outcomeStr='';
+  if(isCrit) outcomeStr=' ★ Crítico!';
+  else if(isFail) outcomeStr=' ✗ Falha Crítica';
+  else if(ok===true) outcomeStr=' ✓ Sucesso';
+  else if(ok===false) outcomeStr=' ✗ Falha';
+  formulaEl.innerHTML = `d20(${diceVal}) ${ms} = <span style="color:${totalColor};font-weight:700">${total}</span>${cd?' vs CD '+cd:''}`;
+  outcomeEl.textContent = outcomeStr;
+  outcomeEl.className = 'roll-outcome ' + (isCrit||ok===true?'suc':isFail||ok===false?'fal':'');
+  // Cor do dado também muda
+  faceEl.style.color = totalColor;
+  faceEl.style.borderColor = totalColor+'60';
 
   // Limpa estado pendente
   pendingRollAttr = null;
@@ -2275,15 +2470,35 @@ const ITEM_SLOT_MAP={
 const SLOT_ICONS={'head':'⛑️','body':'👕','lhand':'🖐️','rhand':'⚔️','legs':'👖','feet':'👢'};
 
 function initInventory(cls){
-  const weaponByClass={Guerreiro:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante · Versátil(1d10)',slot:'rhand'},Mago:{name:'Cajado',icon:'🪄',desc:'1d6 contundente · Foco arcano',slot:'rhand'},Ladino:{name:'Adaga',icon:'🗡️',desc:'1d4 perfurante · Arremessável',slot:'rhand'},Clérigo:{name:'Maça',icon:'🔨',desc:'1d6 contundente',slot:'rhand'},Bardo:{name:'Rapieira',icon:'⚔️',desc:'1d8 perfurante · Finesse',slot:'rhand'},Paladino:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante',slot:'rhand'},Druida:{name:'Cajado',icon:'🪄',desc:'1d6 contundente · Foco druídico',slot:'rhand'},Ranger:{name:'Arco Longo',icon:'🏹',desc:'1d8 perfurante · Alcance 45m',slot:'rhand'},Bárbaro:{name:'Machado Grande',icon:'🪓',desc:'2d6 cortante · Pesado',slot:'rhand'},Feiticeiro:{name:'Varinha',icon:'🪄',desc:'Foco de conjuração',slot:'rhand'}};
-  const w=weaponByClass[cls]||{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante',slot:'rhand'};
-  inventory=[
-    {name:'Mochila do Aventureiro',icon:'🎒',desc:'Capacidade 15kg · Equipamentos básicos',weight:5,equipped:true,slot:'back',qty:1},
-    {name:w.name,icon:w.icon,desc:w.desc,weight:ITEM_WEIGHT_MAP[w.name]||1,equipped:true,slot:w.slot,qty:1},
-    {name:'Poção de Cura',icon:'🧪',desc:'Recupera 2d4+2 PV · Ação',weight:0.25,equipped:false,slot:null,qty:2},
-    {name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m',weight:0.1,equipped:false,slot:null,qty:5},
-    {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação para 1 dia',weight:0.2,equipped:false,slot:null,qty:5},
-  ];
+  // Arma e armadura por classe
+  const classGear={
+    Guerreiro:{weapon:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante · Versátil 1d10',slot:'rhand',weight:2},armor:{name:'Cota de Malha',icon:'🥋',desc:'CA 16 · Sem bônus DES · Penalidade Furtividade',slot:'body',weight:20}},
+    Mago:{weapon:{name:'Cajado Arcano',icon:'🪄',desc:'1d6 contundente · Foco arcano',slot:'rhand',weight:2},armor:null},
+    Ladino:{weapon:{name:'Adaga',icon:'🗡️',desc:'1d4 perfurante · Finesse · Arremessável 6/18m',slot:'rhand',weight:0.5},armor:{name:'Armadura de Couro',icon:'🧥',desc:'CA 11 + DES · Leve · Silenciosa',slot:'body',weight:4.5}},
+    Clérigo:{weapon:{name:'Maça de Guerra',icon:'🔨',desc:'1d8 contundente · Versátil',slot:'rhand',weight:2},armor:{name:'Cota de Malha',icon:'🥋',desc:'CA 16 · Sem bônus DES',slot:'body',weight:20}},
+    Bardo:{weapon:{name:'Rapieira',icon:'⚔️',desc:'1d8 perfurante · Finesse · Elegante',slot:'rhand',weight:1},armor:{name:'Armadura de Couro',icon:'🧥',desc:'CA 11 + DES · Leve',slot:'body',weight:4.5}},
+    Paladino:{weapon:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante · Versátil 1d10',slot:'rhand',weight:2},armor:{name:'Cota de Malha',icon:'🥋',desc:'CA 16 · Requer proficiência',slot:'body',weight:20}},
+    Druida:{weapon:{name:'Cajado de Carvalho',icon:'🌿',desc:'1d6 contundente · Foco druídico',slot:'rhand',weight:2},armor:{name:'Armadura de Couro',icon:'🧥',desc:'CA 11 + DES · Leve · Natural',slot:'body',weight:4.5}},
+    Ranger:{weapon:{name:'Arco Longo',icon:'🏹',desc:'1d8 perfurante · Alcance 45/180m · 2 mãos',slot:'rhand',weight:1},armor:{name:'Armadura de Couro Reforçada',icon:'🧥',desc:'CA 12 + DES · Média · Resistente',slot:'body',weight:9}},
+    Bárbaro:{weapon:{name:'Machado Grande',icon:'🪓',desc:'2d6 cortante · Pesado · 2 mãos',slot:'rhand',weight:3.5},armor:null},
+    Feiticeiro:{weapon:{name:'Varinha de Cristal',icon:'🪄',desc:'Foco de conjuração · Frágil',slot:'rhand',weight:0.5},armor:null},
+  };
+  const gear=classGear[cls]||classGear['Guerreiro'];
+  // Escudo apenas para classes de combate corpo a corpo com 1 mão
+  const hasShield=['Guerreiro','Clérigo','Paladino'].includes(cls);
+  inventory=[];
+  // Mochila sempre equipada nas costas
+  inventory.push({name:'Mochila do Aventureiro',icon:'🎒',desc:'Capacidade 15kg · Organização básica de aventureiro',weight:5,equipped:true,slot:'back',qty:1,magic:false});
+  // Arma
+  inventory.push({...gear.weapon,equipped:true,qty:1,magic:false});
+  // Armadura
+  if(gear.armor) inventory.push({...gear.armor,equipped:true,qty:1,magic:false});
+  // Escudo
+  if(hasShield) inventory.push({name:'Escudo de Aço',icon:'🛡️',desc:'CA +2 · Impede uso de armas de 2 mãos',weight:2.7,equipped:true,slot:'lhand',qty:1,magic:false});
+  // Consumíveis básicos
+  inventory.push({name:'Poção de Cura',icon:'🧪',desc:'2d4+2 PV · Ação bônus para usar',weight:0.25,equipped:false,slot:null,qty:2,magic:false});
+  inventory.push({name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m · Improvisada como arma 1d4',weight:0.1,equipped:false,slot:null,qty:5,magic:false});
+  inventory.push({name:'Ração de Viagem',icon:'🍞',desc:'Alimentação para 1 dia · Não perece em 5 dias',weight:0.2,equipped:false,slot:null,qty:5,magic:false});
   renderInventory();
 }
 
@@ -2295,71 +2510,109 @@ function getTotalWeight(){
   return inventory.reduce((sum,item)=>sum+(item.weight||0)*(item.qty||1),0);
 }
 
+// Categorias de inventário D&D 5e
+const INV_CATEGORIES=[
+  {key:'equipped', label:'⚔️ Equipado',     filter:i=>i.equipped},
+  {key:'armor',    label:'🛡 Proteção',      filter:i=>!i.equipped&&['head','body','lhand','shield'].includes(i.slot)},
+  {key:'weapons',  label:'⚔️ Armas',         filter:i=>!i.equipped&&i.slot==='rhand'},
+  {key:'access',   label:'✨ Acessórios',    filter:i=>!i.equipped&&['ring1','ring2','neck','belt','hands','feet','back','shoulders'].includes(i.slot)},
+  {key:'consumable',label:'🧪 Consumíveis', filter:i=>!i.equipped&&i.slot===null&&/poção|ration|tocha|vela|kit/i.test(i.name)},
+  {key:'misc',     label:'🎒 Outros',        filter:i=>!i.equipped&&!['head','body','lhand','shield','rhand','ring1','ring2','neck','belt','hands','feet','back','shoulders'].includes(i.slot)&&!/poção|ration|tocha|vela|kit/i.test(i.name)},
+];
+
+// Slots de equipamento com pesos máximos
+const HEAVY_ARMOR=['Cota de Malha','Armadura de Placas','Armadura de Escamas'];
+const MAGIC_ITEMS_SLOTS=['ring1','ring2','neck','belt','shoulders'];
+
 function renderInventory(){
   const listEl=document.getElementById('inv-list');
   if(!listEl)return;
   const maxW=getMaxCarryWeight();
   const totalW=getTotalWeight();
   const pct=Math.min(100,(totalW/maxW)*100);
+  // Weight bar
   const wtEl=document.getElementById('inv-weight-txt');
   const maxEl=document.getElementById('inv-max-txt');
   const barEl=document.getElementById('inv-bar');
   const statusEl=document.getElementById('inv-carry-status');
   if(wtEl) wtEl.textContent=totalW.toFixed(1)+'kg';
-  if(maxEl) maxEl.textContent=maxW.toFixed(0)+'kg';
-  if(barEl) barEl.style.height=pct+'%';
+  if(maxEl) maxEl.textContent='/ '+maxW.toFixed(0)+'kg';
+  if(barEl) barEl.style.width=pct+'%';
   if(statusEl){
-    if(pct<34) statusEl.textContent='LEVE';
-    else if(pct<67) statusEl.textContent='NORMAL';
-    else if(pct<100) statusEl.textContent='ENCUMBRADO';
-    else {statusEl.textContent='SOBRECARREGADO';statusEl.style.color='var(--red)';}
+    statusEl.className='inv-wb-status';
+    if(pct<34){statusEl.textContent='LEVE';statusEl.classList.add('leve');}
+    else if(pct<67){statusEl.textContent='NORMAL';statusEl.classList.add('normal');}
+    else {statusEl.textContent='ENCUMBRADO';statusEl.classList.add('encumbrado');}
   }
-  // Render items
-  listEl.innerHTML=inventory.map((item,i)=>`
-    <div class="inv-item${item.equipped?' equipped':''}" onclick="toggleEquip(${i})">
-      <span class="inv-item-icon">${item.icon}</span>
-      <div style="flex:1;min-width:0">
-        <div class="inv-item-name">${item.name}${item.qty>1?' ×'+item.qty:''}${item.equipped?'<span class="equipped-badge">EQUIPADO</span>':''}</div>
-        <div class="inv-item-desc">${item.desc}</div>
-      </div>
-      <span class="inv-item-weight">${(item.weight*(item.qty||1)).toFixed(2)}kg</span>
-    </div>`).join('');
-  // Update avatar equipment
-  updateEquipAvatar();
+
+  // Build HTML by category
+  let html='';
+  INV_CATEGORIES.forEach(cat=>{
+    const items=inventory.filter((item,i)=>{item._idx=i;return cat.filter(item);});
+    if(items.length===0)return;
+    html+=`<div class="inv-cat-header">${cat.label}</div>`;
+    items.forEach(item=>{
+      const i=inventory.indexOf(item);
+      const isMagic=MAGIC_ITEMS_SLOTS.includes(item.slot)||item.magic;
+      const iconWrapClass=item.equipped?'eq-wrap':isMagic?'mg-wrap':'bg-wrap';
+      const itemClass=item.equipped?'inv-item equipped':isMagic?'inv-item magic':'inv-item';
+      const slotBadge=item.slot&&item.equipped?`<span class="inv-slot-badge">${SLOT_LABEL[item.slot]||item.slot.toUpperCase()}</span>`:'';
+      const magicBadge=isMagic?`<span class="inv-magic-badge">✨MÁGICO</span>`:'';
+      const qty=item.qty>1?` ×${item.qty}`:'';
+      const wt=(item.weight*(item.qty||1));
+      html+=`<div class="${itemClass}" onclick="toggleEquip(${i})">
+        <div class="inv-item-icon-wrap ${iconWrapClass}">${item.icon}</div>
+        <div class="inv-item-info">
+          <div class="inv-item-name-row">
+            <span class="inv-item-name">${item.name}${qty}</span>
+            ${slotBadge}${magicBadge}
+          </div>
+          <div class="inv-item-desc">${item.desc}</div>
+        </div>
+        <div class="inv-item-weight">${wt>0?wt.toFixed(wt<1?2:1):'—'}<span class="kg">${wt>0?'kg':''}</span></div>
+      </div>`;
+    });
+  });
+  listEl.innerHTML=html||'<p style="color:var(--gold-d);text-align:center;font-style:italic;font-size:13px;padding:20px 0">Inventário vazio</p>';
 }
 
-function updateEquipAvatar(){
-  const slots={head:'⛑️',body:'👕',lhand:'🖐️',rhand:'⚔️',legs:'👖',feet:'👢'};
-  inventory.filter(i=>i.equipped&&i.slot&&slots[i.slot]).forEach(item=>{
-    const el=document.getElementById('eq-'+item.slot);
-    if(el) el.textContent=item.icon;
-  });
-}
+// Labels dos slots para badge
+const SLOT_LABEL={head:'CABEÇA',body:'CORPO',lhand:'M.ESQ',rhand:'M.DIR',ring1:'DEDO 1',ring2:'DEDO 2',neck:'PESCOÇO',belt:'CINTO',hands:'MÃOS',feet:'PÉS',back:'COSTAS',shoulders:'OMBROS',shield:'ESCUDO'};
+
+function updateEquipAvatar(){} // Avatar removido, mantida para compatibilidade
 
 function toggleEquip(idx){
   const item=inventory[idx];
-  if(!item) return;
-  const slot=ITEM_SLOT_MAP[item.name];
-  if(!slot){showToast('⚠ '+item.name+' não pode ser equipado');return;}
-  // Verifica armadura pesada: não cabe na mochila
-  const heavyArmor=['Cota de Malha','Armadura de Placas'];
-  if(!item.equipped && heavyArmor.includes(item.name)){
-    askMaster(`O jogador tenta vestir ${item.name} (${item.weight}kg). Isso requer ajuda e tempo. Narre a situação e se é possível equipar agora.`);
+  if(!item)return;
+  const slot=item.slot||ITEM_SLOT_MAP[item.name];
+  if(!slot){showToast('⚠ '+item.name+' não pode ser equipado diretamente');return;}
+  // Armadura pesada requer narrativa
+  if(!item.equipped&&HEAVY_ARMOR.includes(item.name)){
+    askMaster(`O jogador quer vestir ${item.name} (${item.weight}kg — armadura pesada). Isso requer ajuda, tempo e um local adequado. Narre se é possível equipar agora considerando o contexto.`);
     return;
   }
-  // Desequipa item no mesmo slot se houver
+  // Sintonia: máx 3 itens mágicos
+  const magicSlots=MAGIC_ITEMS_SLOTS;
+  if(!item.equipped&&magicSlots.includes(slot)){
+    const sintonized=inventory.filter(i=>i.equipped&&magicSlots.includes(i.slot||'')).length;
+    if(sintonized>=3){showToast('⚠ Máximo 3 itens mágicos sintonizados!');return;}
+  }
+  // Desequipa outro item no mesmo slot
   inventory.forEach((it,i)=>{if(it.equipped&&it.slot===slot&&i!==idx)it.equipped=false;});
   item.equipped=!item.equipped;
-  if(item.equipped) item.slot=slot;
+  if(item.equipped)item.slot=slot;
   renderInventory();
   showToast(item.equipped?'✅ '+item.name+' equipado':'📦 '+item.name+' guardado');
 }
 
 // Adiciona item ao inventário (chamado pela IA)
-function addInventoryItem(name,icon,desc,weight,qty=1){
+function addInventoryItem(name,icon,desc,weight,qty=1,magic=false){
   const existing=inventory.find(i=>i.name===name);
   if(existing){existing.qty=(existing.qty||1)+(qty||1);}
-  else{inventory.push({name,icon:icon||'📦',desc:desc||'',weight:weight||0.1,equipped:false,slot:ITEM_SLOT_MAP[name]||null,qty});}
+  else{
+    const isMagicName=/\+\d|mágic|encantad|abenzoado|amaldiçoad/i.test(name+' '+desc);
+    inventory.push({name,icon:icon||'📦',desc:desc||'',weight:weight||0.1,equipped:false,slot:ITEM_SLOT_MAP[name]||null,qty,magic:magic||isMagicName});
+  }
   renderInventory();
   showToast('📦 +'+name+' adicionado ao inventário');
 }
