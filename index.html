@@ -1903,7 +1903,7 @@ Exemplos válidos: "Atacar o goblin | Fugir pela floresta | Inspecionar o baú |
 - As ações do personagem DEVEM refletir seus itens equipados: Guerreiro com Espada Longa ataca com 1d8, Mago sem armadura tem CA=10+DES, etc.
 - Ao usar uma Poção de Cura, remova-a do inventário com [ITEM:-Poção de Cura] e aplique [PV:+valor].
 - NUNCA armaduras pesadas dentro de mochilas — sugerir carroça/cavalo para transporte.
-- Considere os bônus raciais e de classe nas ações: Elfo tem vantagem em Percepção, Ladino tem Ataque Furtivo, etc.\`;
+- Considere os bônus raciais e de classe nas ações: Elfo tem vantagem em Percepção, Ladino tem Ataque Furtivo, etc.`;
 }
 
 async function askMaster(acao, oocMode=false){
@@ -2413,8 +2413,8 @@ function closeMo(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 document.getElementById('free-in').addEventListener('keydown',e=>{if(e.key==='Enter')sendFree();});
 updatePreview();
-</script>
-<script>
+
+// ══ MERGED ══
 // ══ D20 QUICK ACTIONS ══
 let d20ActionMode = null; // 'melee','ranged','spell','skill'
 
