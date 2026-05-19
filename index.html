@@ -2595,22 +2595,45 @@ function toggleEquip(idx){
   if(!item)return;
   const slot=item.slot||ITEM_SLOT_MAP[item.name];
   if(!slot){showToast('⚠ '+item.name+' não pode ser equipado diretamente');return;}
-  // Armadura pesada requer narrativa
-  if(!item.equipped&&HEAVY_ARMOR.includes(item.name)){
-    askMaster(`O jogador quer vestir ${item.name} (${item.weight}kg — armadura pesada). Isso requer ajuda, tempo e um local adequado. Narre se é possível equipar agora considerando o contexto.`);
+
+  // ★ Armadura pesada: notifica o Mestre mas EQUIPA mesmo assim
+  // (narrativa explica o processo, mas o estado é atualizado)
+  if(!item.equipped && HEAVY_ARMOR.includes(item.name)){
+    // Equipa imediatamente no inventário
+    inventory.forEach((it,i)=>{if(it.equipped&&it.slot===slot&&i!==idx)it.equipped=false;});
+    item.equipped=true;
+    item.slot=slot;
+    recalcCA();
+    renderInventory();
+    showToast('⚔️ '+item.name+' equipado!');
+    // Narra o processo de vestir a armadura
+    askMaster(`O jogador vestiu ${item.name} (armadura pesada, ${item.weight}kg). A CA foi atualizada para ${hero.ca}. Narre brevemente o processo de equipar a armadura e continue a cena.`);
     return;
   }
+
+  // ★ Desequipar armadura pesada também narra
+  if(item.equipped && HEAVY_ARMOR.includes(item.name)){
+    item.equipped=false;
+    recalcCA();
+    renderInventory();
+    showToast('📦 '+item.name+' guardado');
+    askMaster(`O jogador retirou ${item.name}. A CA foi atualizada para ${hero.ca}. Narre brevemente se isso faz sentido no contexto atual.`);
+    return;
+  }
+
   // Sintonia: máx 3 itens mágicos
   const magicSlots=MAGIC_ITEMS_SLOTS;
   if(!item.equipped&&magicSlots.includes(slot)){
     const sintonized=inventory.filter(i=>i.equipped&&magicSlots.includes(i.slot||'')).length;
     if(sintonized>=3){showToast('⚠ Máximo 3 itens mágicos sintonizados!');return;}
   }
+
   // Desequipa outro item no mesmo slot
   inventory.forEach((it,i)=>{if(it.equipped&&it.slot===slot&&i!==idx)it.equipped=false;});
   item.equipped=!item.equipped;
   if(item.equipped) item.slot=slot;
-  // ★ Recalcula CA ao equipar/desequipar armadura ou escudo
+
+  // Recalcula CA ao equipar/desequipar armadura ou escudo
   recalcCA();
   renderInventory();
   showToast(item.equipped?'✅ '+item.name+' equipado':'📦 '+item.name+' guardado');
