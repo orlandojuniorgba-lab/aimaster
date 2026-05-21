@@ -480,6 +480,11 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .d20-launch{background:linear-gradient(135deg,rgba(200,146,42,.15),rgba(200,146,42,.08));border:2px solid var(--gold-d);border-radius:16px;padding:14px 28px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;}
 .d20-launch:hover{border-color:var(--gold);box-shadow:0 0 20px rgba(200,146,42,.2);}
 .d20-launch:active{transform:scale(.94);}
+/* D20 button dimmed when no test pending */
+.fbar-btn.d20-dim { opacity: 0.35; }
+.fbar-btn.d20-dim .d20-icon-svg polygon { stroke: rgba(200,146,42,0.3); }
+.fbar-btn.d20-active { opacity: 1; }
+.fbar-btn.d20-active .d20-icon-svg { filter: drop-shadow(0 0 6px rgba(200,146,42,0.6)); }
 
 /* ══ INVENTORY AVATAR ══ */
 .equip-avatar-wrap{display:flex;align-items:flex-start;gap:12px;background:rgba(26,18,8,.6);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;}
@@ -771,7 +776,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
   </div>
   <!-- ★ FOOTER COM ÍCONES MELHORADOS -->
   <div class="footer-bar">
-    <button class="fbar-btn" onclick="openMo('mo-d20')" title="Rolar D20">
+    <button class="fbar-btn d20-dim" id="fbar-d20-btn" onclick="handleD20Click()" title="Rolar D20">
       <svg class="d20-icon-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
         <polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.12)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/>
         <line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/>
@@ -1144,6 +1149,66 @@ function applyRacialBonuses(baseStats, race){
 
 // Gera HTML detalhado da ficha de atributos com salvaguardas
 
+
+// ══ ABA MAGIAS + TRUQUES ══
+function buildSpellsTab(cls, level){
+  const el=document.getElementById('spells-content');
+  if(!el)return;
+  const cantrips=CANTRIPS_BY_CLASS[cls]||[];
+  const spellsByLv=SPELLS_BY_CLASS[cls]||{};
+  const slots=SPELL_SLOTS[Math.min(level,20)]||SPELL_SLOTS[1];
+  let html='';
+  // Truques (cantrips)
+  if(cantrips.length>0){
+    html+=`<div class="sec-hdr" style="margin-bottom:6px">TRUQUES (∞)</div>`;
+    html+=`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">`;
+    cantrips.forEach(c=>{
+      html+=`<div style="background:rgba(91,63,160,.18);border:1px solid rgba(139,111,208,.3);border-radius:8px;padding:6px 10px;font-family:var(--font-title);font-size:11px;color:#C0A0FF">${c}</div>`;
+    });
+    html+=`</div>`;
+  }
+  // Slots de magia
+  const hasSpells=Object.keys(spellsByLv).length>0;
+  if(hasSpells){
+    // Slots disponíveis
+    html+=`<div class="sec-hdr" style="margin-bottom:6px">SLOTS DE MAGIA</div>`;
+    html+=`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">`;
+    slots.forEach((total,i)=>{
+      if(total===0)return;
+      const used=usedSpellSlots[i]||0;
+      const avail=Math.max(0,total-used);
+      html+=`<div style="text-align:center;background:rgba(91,63,160,.12);border:1px solid rgba(139,111,208,.25);border-radius:8px;padding:6px 8px;min-width:44px">
+        <div style="font-size:14px;font-weight:700;color:${avail>0?'#8B6FD0':'rgba(91,63,160,.3)'}">Nv${i+1}</div>
+        <div style="font-size:11px;color:var(--parch-d)">${avail}/${total}</div>
+      </div>`;
+    });
+    html+=`</div>`;
+    // Feitiços por nível
+    Object.entries(spellsByLv).forEach(([lv,spells])=>{
+      if(parseInt(lv)>level) return; // só mostra feitiços acessíveis
+      html+=`<div class="sec-hdr" style="margin-bottom:6px">FEITIÇOS NÍVEL ${lv}</div>`;
+      spells.forEach(s=>{
+        html+=`<div class="spell-card" style="margin-bottom:5px;cursor:pointer" onclick="castSpell('${s}',${lv})">
+          <div class="spell-name">${s}</div>
+          <div class="spell-meta">Nível ${lv} · Toque para lançar</div>
+        </div>`;
+      });
+    });
+  } else if(cantrips.length===0){
+    html=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana.</p>`;
+  }
+  el.innerHTML=html;
+}
+
+function castSpell(spellName, slotLevel){
+  if(slotLevel>0 && !useSpellSlot(parseInt(slotLevel))){
+    showToast('❌ Sem slots de nível '+slotLevel+'!');
+    return;
+  }
+  buildSpellsTab(hero.cls, hero.level||1); // atualiza display
+  askMaster(`O jogador lança "${spellName}" (${slotLevel>0?'slot nível '+slotLevel:'truque, sem custo'}). Descreva o efeito narrativo e mecânico. ${slotLevel>0?'Inclua [MP:-'+slotLevel+'] no texto.':''} Aguarde o jogador rolar ataque ou dano se necessário.`);
+}
+
 // ══ ABA HABILIDADES ══
 // Proficiências por classe
 const CLASS_SKILL_PROFS={
@@ -1234,6 +1299,136 @@ function buildFullStatBlock(finalStats, cls, level){
       </div>
     </div>`;
   }).join('')}</div>`;
+}
+
+
+// ══ D&D 5e SPELLS & CANTRIPS DATA ══
+const CANTRIPS_BY_CLASS = {
+  Mago:      ['Mão Chocante','Rajada de Fogo','Luz','Ilusão Menor','Prestidigitação','Lâmina de Trovão','Raio de Gelo','Veneno Aspersão','Amigo','Globo Luminoso'],
+  Clérigo:   ['Chama Sagrada','Guia','Resistência','Luz','Amigo','Poupar os Moribundos','Palavra de Cura','Maravilha','Luz das Trevas'],
+  Druida:    ['Guia','Resistência','Forma Druídica','Luz','Criar Chamas','Forma Selvagem','Fruta Venenosa','Golpe de Trovão'],
+  Bardo:     ['Amigo','Ilusão Menor','Luz','Prestidigitação','Golpe Viciante','Mandoble Trovejante','Palavra Mágica'],
+  Feiticeiro:['Mão Chocante','Rajada de Fogo','Luz','Ilusão Menor','Prestidigitação','Lâmina de Trovão','Raio de Gelo','Forma da Névoa'],
+  Bruxo:     ['Explosão Eldritch','Ilusão Menor','Prestidigitação','Estocada Venenosa','Armadura de Agathys','Roubo de Vida','Lança das Trevas'],
+  Paladino:  [],
+  Ranger:    [],
+  Guerreiro: [],
+  Ladino:    [],
+  Bárbaro:   [],
+};
+
+// Feitiços por classe e nível (D&D 5e SRD)
+const SPELLS_BY_CLASS = {
+  Mago: {
+    1: ['Míssil Mágico','Mãos Ardentes','Sono','Charmar Pessoas','Escudo','Detectar Magia','Compreender Línguas','Mago Armeiro','Queda Suave','Salto','Longa Passada','Invisibilidade para Mortos-Vivos'],
+    2: ['Invisibilidade','Imagem Espelhada','Sugestão','Escuridão','Web','Levitação','Raio Ácido de Melf','Mistura Ardente','Flecha Ácida de Melf'],
+    3: ['Bola de Fogo','Relâmpago','Voar','Contra-Magia','Dissipar Magia','Globo Igno','Proteção contra Energia','Forma Diminuta'],
+    4: ['Banimento','Tempestade de Gelo','Polimorfar','Arcano Olho','Parede de Fogo','Confusão'],
+    5: ['Telecinesia','Cone de Frio','Evocar Elemental','Telepatia','Dominar Pessoas'],
+  },
+  Clérigo: {
+    1: ['Cura Ferimentos','Bênção','Escudo da Fé','Palavra Curativa','Guia Divino','Identificar','Proteção contra Mal'],
+    2: ['Cura Espiritual','Silêncio','Ajuda','Elevar os Mortos','Oração de Cura','Chama Espiritual'],
+    3: ['Revitalizar','Palavra de Magia','Remover Maldição','Caminhar pela Água','Sentinela Espiritual'],
+    4: ['Proteção contra Morte','Guardiões Divinos','Liberdade de Movimento'],
+    5: ['Cura em Massa','Constranger','Ressurreição Imperfeita','Contato com o Além'],
+  },
+  Bardo: {
+    1: ['Charmar Pessoas','Sono','Cura Ferimentos','Identificar','Falar com Animais','Undisguise Self'],
+    2: ['Invisibilidade','Sugestão','Silêncio','Detectar Pensamentos','Imagem Menor','Nuvem de Punhais'],
+    3: ['Hipnose','Dissipar Magia','Imagem Principal','Falar com Mortos','Liguagem','Dispersão'],
+    4: ['Confusão','Dominar Bestas','Compulsão','Imagem Maior'],
+    5: ['Dominar Pessoas','Sonho','Geas','Imagem Ilusória','Telepatia'],
+  },
+  Druida: {
+    1: ['Cura Ferimentos','Falar com Animais','Névoa','Encontrar Rastrear','Enredar','Bola de Fogo Natural'],
+    2: ['Pele de Carvalho','Restauração Menor','Passagem sem Rastro','Irmandade Animal','Espinhos'],
+    3: ['Invocar Raios','Caminhar pelo Vento','Falar com Plantas','Restauração Superior'],
+    4: ['Constrolar Água','Polimorfar','Invocar Elemental Menor','Divisão'],
+    5: ['Evocar Elemental','Despertar','Caminhar pela Árvore','Communhar com Natureza'],
+  },
+  Feiticeiro: {
+    1: ['Míssil Mágico','Mãos Ardentes','Sono','Escudo','Charmar Pessoas','Nevasca Cromatica'],
+    2: ['Invisibilidade','Imagem Espelhada','Sugestão','Rajada Caotica','Web'],
+    3: ['Bola de Fogo','Relâmpago','Voar','Força Haste','Forma de Névoa'],
+    4: ['Polimorfar','Tempestade de Gelo','Banimento','Dimensão Porta'],
+    5: ['Cone de Frio','Telecinesia','Dominar Pessoas','Criação'],
+  },
+  Paladino: {
+    1: ['Cura Ferimentos','Bênção','Comando','Escudo da Fé','Detectar Mal e Bem','Favor Divino'],
+    2: ['Auxílio','Encontrar Corcel','Restauração Menor','Proteção contra Veneno','Zona da Verdade'],
+    3: ['Criar Alimento e Água','Luz do Dia','Remover Maldição','Revitalizar'],
+  },
+  Ranger: {
+    1: ['Marcar Caça','Falar com Animais','Névoa','Cura Ferimentos','Armadilha de Caça'],
+    2: ['Passagem sem Rastro','Pele de Carvalho','Cura Ferimentos Menor','Localizar Objeto'],
+    3: ['Caminhar pela Água','Proteção contra Energia','Voar'],
+  },
+};
+
+// Número de truques por classe e nível
+const CANTRIPS_KNOWN = {
+  Mago:3, Clérigo:3, Druida:2, Bardo:2, Feiticeiro:4, Bruxo:2,
+  Guerreiro:0, Ladino:0, Bárbaro:0, Paladino:0, Ranger:0,
+};
+
+// Slots de magia por nível de personagem (D&D 5e oficial)
+const SPELL_SLOTS = {
+  //       Nv1 Nv2 Nv3 Nv4 Nv5 Nv6 Nv7 Nv8 Nv9
+  1:  [2,  0,  0,  0,  0,  0,  0,  0,  0],
+  2:  [3,  0,  0,  0,  0,  0,  0,  0,  0],
+  3:  [4,  2,  0,  0,  0,  0,  0,  0,  0],
+  4:  [4,  3,  0,  0,  0,  0,  0,  0,  0],
+  5:  [4,  3,  2,  0,  0,  0,  0,  0,  0],
+  6:  [4,  3,  3,  0,  0,  0,  0,  0,  0],
+  7:  [4,  3,  3,  1,  0,  0,  0,  0,  0],
+  8:  [4,  3,  3,  2,  0,  0,  0,  0,  0],
+  9:  [4,  3,  3,  3,  1,  0,  0,  0,  0],
+  10: [4,  3,  3,  3,  2,  0,  0,  0,  0],
+  11: [4,  3,  3,  3,  2,  1,  0,  0,  0],
+  12: [4,  3,  3,  3,  2,  1,  0,  0,  0],
+  13: [4,  3,  3,  3,  2,  1,  1,  0,  0],
+  14: [4,  3,  3,  3,  2,  1,  1,  0,  0],
+  15: [4,  3,  3,  3,  2,  1,  1,  1,  0],
+  16: [4,  3,  3,  3,  2,  1,  1,  1,  0],
+  17: [4,  3,  3,  3,  2,  1,  1,  1,  1],
+  18: [4,  3,  3,  3,  3,  1,  1,  1,  1],
+  19: [4,  3,  3,  3,  3,  2,  1,  1,  1],
+  20: [4,  3,  3,  3,  3,  2,  2,  1,  1],
+};
+
+// Rastreamento de slots usados
+let usedSpellSlots = [0,0,0,0,0,0,0,0,0]; // índice 0 = nível 1
+
+function getAvailableSlots(level) {
+  const lv = Math.min(Math.max(hero.level||1,1),20);
+  const total = SPELL_SLOTS[lv] || SPELL_SLOTS[1];
+  return total.map((t,i) => Math.max(0, t - (usedSpellSlots[i]||0)));
+}
+
+function useSpellSlot(slotLevel) {
+  // slotLevel é 1-9
+  const idx = slotLevel - 1;
+  const lv = Math.min(Math.max(hero.level||1,1),20);
+  const total = (SPELL_SLOTS[lv]||SPELL_SLOTS[1])[idx]||0;
+  if((usedSpellSlots[idx]||0) >= total) { showToast('❌ Sem slots de nível '+slotLevel+'!'); return false; }
+  usedSpellSlots[idx] = (usedSpellSlots[idx]||0)+1;
+  // Atualiza MP como total de slots disponíveis
+  const avail = getAvailableSlots(lv);
+  hero.mp = avail.reduce((a,b)=>a+b,0);
+  const totalSlots = (SPELL_SLOTS[lv]||SPELL_SLOTS[1]).reduce((a,b)=>a+b,0);
+  hero.maxMP = totalSlots;
+  updateVitals();
+  return true;
+}
+
+function resetSpellSlots() {
+  usedSpellSlots = [0,0,0,0,0,0,0,0,0];
+  const lv = Math.min(Math.max(hero.level||1,1),20);
+  const total = SPELL_SLOTS[lv]||SPELL_SLOTS[1];
+  hero.maxMP = total.reduce((a,b)=>a+b,0);
+  hero.mp = hero.maxMP;
+  updateVitals();
 }
 
 // ═══ POOL DE MISSÕES PRINCIPAIS (rotaciona a cada personagem) ═══
@@ -1457,19 +1652,13 @@ function startAdventure(){
     [...(rp.bonuses||[]),...(cp.bonuses||[]),bp.bonus].filter(Boolean)
       .map(b=>`<div class="bonus-row"><span class="b-icon">${b.i}</span><span style="flex:1;font-size:12px">${b.t}</span><span class="b-val ${b.c}">${b.v}</span></div>`).join('');
 
-  // Magias
-  const spells=cp.spells||[];
-  const spellsEl=document.getElementById('spells-content');
-  if(spellsEl){
-    if(spells.length>0){
-      spellsEl.innerHTML=`<div><div class="sec-hdr" style="margin-bottom:6px">FEITIÇOS CONHECIDOS</div>${spells.map(s=>`<div class="spell-card" style="margin-bottom:6px"><div class="spell-name">${s}</div><div class="spell-meta">Nível 1 · Ação</div></div>`).join('')}</div>`;
-    } else {
-      spellsEl.innerHTML=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana.</p>`;
-    }
-  }
+  // Magias + Truques
+  buildSpellsTab(cls, hero.level||1);
 
   // Abas extras
   buildSkillsTab(cls,race,1);
+  buildSpellsTab(cls,1);
+  usedSpellSlots=[0,0,0,0,0,0,0,0,0];
   initInventory(cls);
   updateVitals();
   updateXPModal();
@@ -1479,7 +1668,31 @@ function startAdventure(){
   hero.questId=Math.floor(Math.random()*QUESTS.length);
   const q=QUESTS[hero.questId];
   goTo('s-game');
-  askMaster(`Inicie a aventura com a missão: "${q.title}". ${q.hook}. Personagem: ${name}, ${race} ${cls} Nível 1 (${bg}, ${align}). Siga a estrutura da Jornada do Herói — comece com o Mundo Comum do personagem antes do chamado à aventura. Use as características da raça e classe. Termine com decisão imediata.`);
+  askMaster(`CENA DE ABERTURA — O MUNDO COMUM.
+
+Personagem: ${name} | ${race} ${cls} Nível 1 | ${bg} | ${align}
+Missão futura: "${q.title}"
+
+ESCREVA A CENA DE ABERTURA seguindo este modelo exato de narrativa de nível 1:
+
+MODELO DE REFERÊNCIA:
+---
+O sol da manhã filtra pelas frestas da janela de madeira, pintando listras de luz no chão batido da cabana. O cheiro de mingau de aveia com mel já toma conta do ar, cortado pela voz grave e serena de sua avó.
+
+Avó Elara: (serena) "Eragon, meu jovem, o dia não espera pelos dorminhocos. Teu pai já está no quintal, afiando as lâminas desde antes do galo cantar."
+
+Você se espreguiça, sentindo a madeira da cama ranger. Lá fora, ouve o ritmo metódico da pedra de amolar contra o aço. É o som da sua vida até hoje: disciplina, treino e a paz simples do vale.
+
+Ao sair para a pequena varanda, avista seu pai com uma postura militar impecável. Seus olhos fixos numa espada longa — uma relíquia que ele nunca explica a origem.
+---
+
+REGRAS PARA A ABERTURA DE ${name}:
+1. Adapte o modelo para ${name} — use ${bg} para definir moradia/contexto, ${race} para detalhes físicos do mundo, ${cls} para o que ${name} já sabe fazer
+2. Apresente 1 NPC próximo com nome, voz e personalidade únicos
+3. 3-4 parágrafos curtos, sensoriais — cheiros, sons, texturas, temperatura
+4. Último parágrafo: primeiro sinal de mudança (notícia, estranho, algo diferente)
+5. Termine com decisão simples e cotidiana
+6. NÃO mencione ainda "${q.title}" — isso vem depois`);
 }
 
 function updateVitals(){
@@ -1548,18 +1761,27 @@ function updateXPModal(){
 }
 
 function gainXP(amount){
+  if(!amount||amount<=0) return;
   hero.xp=(hero.xp||0)+amount;
+  showToast(`⭐ +${amount} XP!`);
   let lv=hero.level||1;
-  // Verifica múltiplos level ups
   while(lv<20&&hero.xp>=XP_TABLE[lv]){
     lv++;
     hero.level=lv;
     hero.maxHP+=(classHP[hero.cls]||8)+mod(stats.con||10);
     hero.hp=hero.maxHP;
-    showToast(`🌟 NÍVEL ${lv}! Parabéns, aventureiro!`);
+    // Reset spell slots on level up
+    if(SPELL_SLOTS[lv]) resetSpellSlots();
+    showToast(`🌟 NÍVEL ${lv}! Parabéns, ${hero.name}!`);
+    addMsg('msg-dm','').querySelector('.bbl').textContent=`✨ ${hero.name} subiu para o Nível ${lv}!`;
   }
+  // Update all XP displays
   updateVitals();
   updateXPModal();
+  const shLvEl=document.getElementById('sh-level-num');
+  if(shLvEl) shLvEl.textContent=hero.level;
+  const gMtEl=document.getElementById('g-mt');
+  if(gMtEl) gMtEl.textContent=`${hero.race} · ${hero.cls} · Nível ${hero.level}`;
 }
 
 function setThinking(v){
@@ -1707,17 +1929,20 @@ function cleanTextForDisplay(text){
 }
 
 function extractGoldChange(text){
-  // Tag explícita [OURO:+50], [OURO:-30] ou [OURO:50]
-  const tag=text.match(/\[OURO:([+-]?\d+)\]/i);
-  if(tag) return parseInt(tag[1]);
-  // Ganho de ouro — múltiplos padrões PT-BR
-  const gain=text.match(/(?:ganha|recebe|encontra|recompensa|loot|pilha|bolsa com|contém)\s+(\d+)\s*(?:peças de ouro|peças|moedas de ouro|moedas|gp|po)/i);
-  const lose=text.match(/(?:paga|gasta|perde|custa|custam|cobrado|desconto|troco)\s+(\d+)\s*(?:peças de ouro|peças|moedas de ouro|moedas|gp|po)/i);
-  // Padrão "X po" ou "X gp" genérico
-  // generic pattern removed - use explicit tags [OURO:N] instead
-  if(gain) return +parseInt(gain[1]);
-  if(lose) return -parseInt(lose[1]);
-  // Generic só aplica se há contexto de transação claro
+  // PRIORIDADE 1: Tag explícita [OURO:+50] [OURO:-30] [OURO:50]
+  const tagMatch=text.match(/\[OURO:([+-]?\d+)\]/i);
+  if(tagMatch) return parseInt(tagMatch[1]);
+  // PRIORIDADE 2: Padrões narrativos PT-BR (sem \b problemático)
+  const num='(\\d+(?:\\.\\d+)?)';
+  const moeda='(?:\\s*(?:peças de ouro|peças|moedas de ouro|moedas de prata|po|gp|PO|GP))';
+  const gainRe=new RegExp(
+    '(?:recebe|ganha|encontra|obtém|saqueia|recompensa de|loot[: ]+|bolsa com|guarda|embolsa|fica com|paga a você|te entrega)\\s*'+num+moeda,'i');
+  const loseRe=new RegExp(
+    '(?:paga|gasta|custa|custam|perde|cobrado|desconto de|troco de|entrega|-\\s*)'+num+moeda,'i');
+  let m=text.match(gainRe);
+  if(m) return +parseFloat(m[1]);
+  m=text.match(loseRe);
+  if(m) return -parseFloat(m[1]);
   return 0;
 }
 
@@ -1795,6 +2020,36 @@ function updateActionButtons(actions){
   document.getElementById('acts-lbl').textContent='— ESCOLHA SUA AÇÃO —';
 }
 
+
+// ══ D20 BUTTON — só libera quando mestre pede teste ══
+function updateD20ButtonState(){
+  const btn=document.getElementById('fbar-d20-btn');
+  if(!btn)return;
+  if(pendingRollAttr){
+    btn.classList.remove('d20-dim');
+    btn.classList.add('d20-active');
+    btn.title='🎲 ROLAR '+attrLabels[pendingRollAttr].toUpperCase()+(pendingRollCD?' CD '+pendingRollCD:'');
+  } else {
+    btn.classList.add('d20-dim');
+    btn.classList.remove('d20-active');
+    btn.title='Aguardando teste...';
+  }
+}
+
+async function handleD20Click(){
+  if(!pendingRollAttr){
+    showToast('⚠️ Aguarde o Mestre pedir um teste');
+    return;
+  }
+  // Rola imediatamente sem abrir janela
+  const attr=pendingRollAttr;
+  const cd=pendingRollCD;
+  const label=attrLabels[attr]||'FOR';
+  const result=await rollInlineD20(attr,label,cd);
+  const outcome=result.isCrit?'CRÍTICO':result.isFail?'FALHA CRÍTICA':result.ok===true?'SUCESSO':result.ok===false?'FALHA':'total '+result.total;
+  askMaster(`Jogador rolou ${label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${cd?' vs CD '+cd:''} — ${outcome}. Continue a narrativa com este resultado.`);
+}
+
 // ★ Detecta se mestre pediu um teste e qual atributo
 function detectPendingRoll(text){
   const tl=text.toLowerCase();
@@ -1855,71 +2110,80 @@ Regras especiais do personagem:${especiais}
 ${questData.title}: ${questData.hook}
 
 ━━━ COMO NARRAR ━━━
-Você é um narrador literário de RPG. Cada resposta deve parecer um capítulo de fantasia épica.
+Você é um narrador literário de fantasia épica. Escreva como um romancista — não como um chatbot.
 
-ESTRUTURA OBRIGATÓRIA de cada resposta:
+ESTRUTURA DE CADA RESPOSTA:
 
-1. TÍTULO DA CENA (opcional — use quando muda de local ou momento importante)
-   Exemplo: "A Taverna do Cervo Negro" ou "O Corredor das Sombras"
+1. TÍTULO DA CENA em negrito (use quando muda de local ou momento importante)
 
-2. NARRAÇÃO em parágrafos curtos e cinematográficos:
-   - Máximo 3-4 frases por parágrafo
-   - Uma ação ou sensação por vez
-   - Use linha em branco entre parágrafos
-   - Descreva o que o personagem VÊ, OUVE, SENTE, CHEIRA
+2. NARRAÇÃO em parágrafos curtos e sensoriais:
+   - 2-3 frases por parágrafo, linha em branco entre eles
+   - Uma ação ou sensação por vez — ritmo cinematográfico
+   - Use todos os sentidos: o que VÊ, OUVE, CHEIRA, SENTE no corpo
 
-3. DIÁLOGO DE NPC com formato obrigatório:
-   NomeNPC: (emoção/tom) "Fala do personagem."
-   Exemplo:
-   Kaelen: (voz rouca) "Eragon. Eu sabia que conseguiria."
-   
-4. GANCHO — termine com uma pergunta ou situação que exige decisão do jogador.
+3. DIÁLOGO DE NPC — formato obrigatório:
+   NomeNPC: (emoção entre parênteses) "Fala aqui."
+   Exemplo: Kaelen: (voz rouca) "Eu sabia que você conseguiria."
 
-5. OPÇÕES no formato [AÇÕES:] — 4 opções numeradas com contexto interpretativo:
-   - 2-3 são ações diretas com contexto (ex: "Contar tudo sobre a jornada")
-   - 1 sempre é uma opção interpretativa/emocional
-   - Quando pertinente, 1 opção é o teste pedido ("Rolar Percepção CD 13")
-   As opções NÃO devem aparecer na narração, apenas na tag.
+4. GANCHO — termine com situação ou pergunta que exige decisão imediata.
 
-EXEMPLO DO FORMATO CORRETO:
----
-A Cabana
+5. [AÇÕES:] — 4 opções curtas, fora do texto narrativo.
 
-Você caminha até a cabana. A porta está entreaberta — luz de velas filtra pelas frestas.
+═══ EXEMPLO MODELO DE NARRATIVA NÍVEL 1 ═══
+(Copie este estilo — mundo comum, vida simples, personagem descobrindo seu destino)
 
-Você empurra a porta.
+O Amanhecer no Vale
 
-Kaelen: (olhos vermelhos, voz rouca) "Eu sabia que você conseguiria."
+O sol da manhã filtra pelas frestas da janela de madeira, pintando listras de luz no chão batido da cabana. O cheiro de mingau com mel toma conta do ar.
 
-Ele atravessa a sala e te abraça com uma força que quase tira seu fôlego. Depois se afasta, examinando sua armadura nova.
+Avó Maren: (voz serena) "Acorda, dorminhoco. Teu pai já está no quintal desde antes do galo cantar."
 
-Kaelen: "O que aconteceu, filho? O que descobriu?"
+Você se espreguiça. Lá fora, o ritmo metódico da pedra de amolar contra o aço. É o som da sua vida até hoje: disciplina, treino, e a paz simples do vale.
 
-O que você conta?
----
-[AÇÕES: Contar tudo sobre a jornada | Revelar apenas o ritual | Perguntar se ele está bem | Mostrar o medalhão]
+Seu pai está sentado num toco, afiando uma espada longa com movimentos lentos e deliberados. Ele mal levanta os olhos.
 
-━━━ JORNADA DO HERÓI — ESTRUTURA NARRATIVA ━━━
-Siga o Monomito adaptado ao nível atual do personagem:
+Pai: (sem parar de afiar) "Sentei de noite esperando notícia do vilarejo. Os mercadores não chegaram. Terceira semana seguida."
 
-NÍVEL ${hero.level||1} — ${(hero.level||1)<=4?'A PARTIDA (Mundo Comum → Chamado → Mentor)':(hero.level||1)<=10?'A INICIAÇÃO (Travessia do Limiar → Testes → Aliados)':(hero.level||1)<=16?'A TRANSFORMAÇÃO (Provação → Recompensa → Renascimento)':'O RETORNO (Caminho de Volta → Elixir → Mestre dos Mundos)'}
+Há uma tensão nova na postura dele. Algo está errado.
 
-${(hero.level||1)<=4?`PARTIDA (Níveis 1-4): O personagem é vulnerável, inexperiente, descobrindo o mundo.
-- Mundo Comum: vida rotineira antes da grande aventura
-- Chamado: problema, ameaça ou mistério quebra a rotina
-- Mentor: NPC mais experiente oferece conselho ou item pequeno
-- Desafios: bandidos, goblins CR1/4, lobos, armadilhas simples
-- Recompensas: 5-25 PO por missão, itens comuns, informações
-- Tom: descoberta, vulnerabilidade, primeiras vitórias`
-:(hero.level||1)<=10?`INICIAÇÃO (Níveis 5-10): O personagem deixa a zona segura, cresce, encontra aliados e inimigos.
-- Ambiente desconhecido e perigoso
-- Facções e alianças surgem
-- Itens mágicos Incomuns começam a aparecer como recompensa
-- Desafios: monstros CR2-8, labirintos, vilões com planos`
-:`TRANSFORMAÇÃO (Níveis 11+): Clímax épico, batalhas lendárias, recompensas extraordinárias.`}
+O que você faz?
+═══════════════════════════════════════════
 
-- Use os eventos do perfil (${events||'aventura geral'}) para criar ganchos únicos
-- A essência do personagem (${rp.flavor||''}, ${cp.flavor||''}) deve aparecer naturalmente
+REGRAS DE IMERSÃO:
+- Nunca quebre a 4ª parede (não diga "como Mestre", "no jogo", "mecanicamente")
+- Nunca resolva conflitos abertos sem o jogador agir
+- Descreva consequências reais das escolhas — o mundo reage
+- NPCs têm personalidade, segredos, motivações próprias
+- Em Nível 1: o herói é FRÁGIL. Uma faca no beco é ameaça real. Faça o jogador sentir isso.
+
+━━━ JORNADA DO HERÓI — TOM NARRATIVO POR NÍVEL ━━━
+
+NÍVEL ATUAL: ${hero.level||1} | FASE: ${(hero.level||1)<=4?'PARTIDA':(hero.level||1)<=10?'INICIACAO':'TRANSFORMACAO'}
+
+${(hero.level||1)<=4?`◆ FASE 1 — A PARTIDA (Níveis 1-4): O Mundo Comum
+Tom: intimista, cotidiano, descoberta. O herói ainda não sabe que é especial.
+• Comece histórias com cenas da vida comum: acordar, refeições, trabalho, conversas
+• NPCs são pessoas reais: família, vizinhos, comerciantes com nomes e personalidades
+• O "chamado" chega gradualmente — não um golpe dramático mas um incômodo crescente
+• Perigos condizentes: bandido bêbado, lobo faminto, travessia de rio, ladino furtivo
+• Recompensas honestas: 5-25 PO por trabalho arriscado, item simples, informação valiosa
+• O personagem sente MEDO, DÚVIDA, CANSAÇO — não é um herói ainda, está se tornando um`
+:`◆ FASE 2-3 — INICIAÇÃO E TRANSFORMAÇÃO (Níveis 5+): O herói cresce, o mundo fica maior`}
+
+MODELO DE NARRATIVA NÍVEL 1 (siga este estilo):
+"O sol da manhã filtra pelas frestas da janela de madeira, pintando listras de luz no chão batido. O cheiro de mingau de aveia com mel já toma conta do ar.
+
+Avó Elara: (voz grave e serena) 'Eragon, meu jovem, o dia não espera pelos dorminhocos.'
+
+Você se espreguiça, sentindo a madeira da cama ranger. Lá fora, ouve o ritmo metódico da pedra de amolar contra o aço — o som da sua vida até hoje."
+
+REGRAS DE TOM:
+• Parágrafos curtos (2-3 frases) com linha em branco entre eles
+• Detalhes sensoriais: o que VÊ, OUVE, CHEIRA, SENTE, PROVA
+• Diálogo NPC sempre com nome e emoção: Nome: (tom) "fala"
+• Verbos de ação no presente para imersão
+• Termine cenas com pergunta ou tensão leve que exige decisão
+
 - Mortes são possíveis: 0 PV → inconsciente → testes de morte (d20, 10+ sucesso, 3 = estável, 3 falhas = morto)
 
 ━━━ REGRAS D&D 5e — ANTI-ALUCINAÇÃO ━━━
@@ -1951,6 +2215,13 @@ PROIBIÇÕES ABSOLUTAS:
 - NUNCA permita teletransporte ou mudança de cena sem transição narrativa
 - NUNCA resolva conflitos abertos abruptamente
 - NUNCA invente preços — use a tabela acima
+- NUNCA role dados pelo jogador — apenas peça e aguarde: "Role Ataque (d20+FOR vs CA)" e espere o resultado
+- NUNCA descreva o resultado de um ataque antes do jogador rolar — apenas descreva a intenção
+- O jogador rola TODOS os dados de ataque, magia e habilidade — você só aplica o resultado
+- Ao usar uma magia, indique qual slot é usado: [MP:-1] para slot de 1º nível, etc.
+- Truques (cantrips) NÃO gastam slots de magia — podem ser usados infinitamente
+- Ao usar um feitiço com slot, inclua [MP:-X] onde X é o nível do slot (ex: [MP:-1])
+- Truques: não incluir [MP:] pois não gastam slot
 
 TESTES:
 - Quando pedir teste: inclua [TESTE:Atributo:CD] e "Role [Atributo] (CD X)" na narração
@@ -1962,18 +2233,23 @@ TESTES:
 [FIM_COMBATE] — quando o combate terminar (inimigo derrotado, foge, rendição, fuga do herói)
 [XP:quantidade] — XP ganho (Fácil=25, Médio=50, Difícil=100, Mortal=200 por nível)
 [PV:+X] ou [PV:-X] — quando PV muda
-[OURO:+X] ou [OURO:-X] — quando ouro muda
-[ITEM:+Nome:ícone:peso] — item adquirido
-[ITEM:-Nome] — item perdido/usado/vendido
+[OURO:+X] ou [OURO:-X] — SEMPRE que ouro mudar (ex: [OURO:+10], [OURO:-5])
+IMPORTANTE: Use a tag [OURO:] TODA vez que o personagem ganhar ou gastar ouro.
+Exemplos corretos: "Recebe 15 PO [OURO:+15]", "Paga 3 PO [OURO:-3]", "Encontra bolsa com 8 PO [OURO:+8]"
+Nível 1: recompensas típicas são 5-25 PO por missão simples. NUNCA dê centenas de PO no início.
+[ITEM:+Nome:ícone:peso] — SEMPRE que ganhar item (ex: [ITEM:+Adaga:🗡️:0.45])
+[ITEM:-Nome] — SEMPRE que perder/usar/vender item (ex: [ITEM:-Poção de Cura])
+Use nomes exatos do inventário. Ao usar Poção de Cura sempre inclua [ITEM:-Poção de Cura] e [PV:+valor].
 [LOCALIZAÇÃO:cidade] ou [LOCALIZAÇÃO:campo]
-[AÇÕES:Opção1|Opção2|Opção3|O que mais posso fazer?] — SEMPRE ao final, obrigatório
+[AÇÕES:Opção1|Opção2|Opção3|Opção4] — SEMPRE ao final, obrigatório
 REGRAS DAS AÇÕES:
 - Máximo 5 palavras por opção, verbo no infinitivo
-- SEMPRE inclua "O que mais posso fazer?" como uma das opções para permitir ações criativas
-- Em combate: 2 ações de combate + 1 alternativa + "O que mais posso fazer?"
-- Em diálogo: 2 respostas diferentes + 1 ação de ambiente + "O que mais posso fazer?"
-- Quando test pedido: 1 opção deve ser "Rolar [Perícia] CD X"
-- Opções NÃO aparecem no texto narrativo — apenas aqui
+- 4 opções sempre — variadas, contextuais, interessantes
+- Em combate: 2 ações de combate + 1 fuga/alternativa + 1 criativa
+- Em diálogo/social: 2 respostas diferentes + 1 ação de ambiente + 1 observação
+- Quando teste pedido: 1 opção deve ser "Rolar [Perícia] CD X"
+- Opções NÃO aparecem no texto narrativo — apenas na tag
+- O jogador pode sempre digitar ação livre no campo "Outra decisão..." para coisas não listadas
 
 Mercador: Sobrevivência CD ${merchantCD} para encontrar.`;
 }
@@ -2014,14 +2290,19 @@ async function askMaster(acao, oocMode=false){
       // XP
       const xpMatch=reply.match(/\[XP:\s*(\d+)\]/);
       if(xpMatch)gainXP(parseInt(xpMatch[1]));
-      // Ouro
-      const goldDelta=extractGoldChange(reply);
+      // Ouro — ignora se contexto é uso de poção (evita falso negativo)
+      const isHealContext=/usa|usa a poção|bebeu|aplicou|tomou.{0,30}poção/i.test(reply)&&/\[PV:[+-]\d+\]/i.test(reply);
+      const goldDelta=isHealContext?0:extractGoldChange(reply);
       if(goldDelta!==0){hero.gold=Math.max(0,hero.gold+goldDelta);updateVitals();}
       // HP
       const hpDelta=extractHPChange(reply);
       if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
+      // MP — slot de magia usado via [MP:-X] ou na processInventoryChanges
+      const mpTag=reply.match(/\[MP:(-\d+)\]/i);
+      if(mpTag){ const slotLv=Math.abs(parseInt(mpTag[1]))||1; useSpellSlot(slotLv); }
       // Pendente roll
       detectPendingRoll(reply);
+      updateD20ButtonState(); // Acende o botão se teste pendente
       // Processa mudanças de inventário
       processInventoryChanges(reply);
       // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
@@ -2046,6 +2327,7 @@ async function askMaster(acao, oocMode=false){
       else if(/\[FIM_COMBATE\]/i.test(reply)||/(?:inimigo derrotado|combate encerrado|foge da batalha|escapa da luta|silêncio volta|ameaça eliminada)/i.test(reply)) inCombat=false;
       // (inCombat persists until explicitly ended)
       updateContextUI();
+      updateD20ButtonState();
       // Limpa tags do texto
       const cleanText=cleanTextForDisplay(reply);
       const formatted=formatNarrative(cleanText);
@@ -2174,7 +2456,7 @@ function doRest(tipo){
     hero.hp=newHP;updateVitals();
     askMaster(`O personagem descansou 1h (curto). Recuperou até ${newHP} PV. Narre o descanso.`);
   } else {
-    hero.hp=hero.maxHP;hero.mp=hero.maxMP;merchantCD=12;
+    hero.hp=hero.maxHP;resetSpellSlots();merchantCD=12;
     const mh=document.getElementById('merch-hint');if(mh)mh.textContent=merchantCD;
     updateVitals();
     askMaster('O personagem descansou longamente 8h (longo). PV e feitiços recuperados. Narre a noite.');
@@ -2859,22 +3141,27 @@ const MAGIC_ITEM_RARITY={
 const CANNOT_BUY_MAGIC=['Anel de Proteção','Cinto de Força','Manto de Proteção','Botas de Velocidade'];
 
 function processInventoryChanges(text){
-  // ★ Processa tags explícitas [ITEM:+Nome:ícone:peso] e [ITEM:-Nome]
-  const gainTags=text.match(/\[ITEM:\+([^\]]+)\]/gi)||[];
-  gainTags.forEach(t=>{
-    const parts=t.replace(/\[ITEM:\+([^\]]+)\]/,'$1').trim().split(':');
+  // Tags explícitas [ITEM:+Nome:ícone:peso]
+  const gainRegex=/\[ITEM:\+([^\]]+)\]/gi;
+  let m;
+  while((m=gainRegex.exec(text))!==null){
+    const parts=m[1].split(':');
     const name=parts[0].trim();
+    if(!name) continue;
     const icon=parts[1]?.trim()||getItemIcon(name);
     const weight=parseFloat(parts[2])||getItemWeight(name);
-    const price=ITEM_PRICE_TABLE[name]||0;
     addInventoryItem(name,icon,getItemDesc(name),weight,1,isItemMagic(name));
-  });
-  const loseTags=text.match(/\[ITEM:-([^\]]+)\]/gi)||[];
-  loseTags.forEach(t=>{
-    const name=t.replace(/\[ITEM:-([^\]]+)\]/,'$1').trim();
-    removeInventoryItem(name);
-  });
+  }
+  // Tags de remoção [ITEM:-Nome]
+  const loseRegex=/\[ITEM:-([^\]]+)\]/gi;
+  while((m=loseRegex.exec(text))!==null){
+    removeInventoryItem(m[1].trim());
+  }
+  // MP: slot de magia usado [MP:-X]
+  const mpTag=text.match(/\[MP:(-\d+)\]/i);
+  if(mpTag){ const slotLv=Math.abs(parseInt(mpTag[1]))||1; useSpellSlot(slotLv); }
 }
+
 
 function getItemIcon(name){
   const n=name.toLowerCase();
