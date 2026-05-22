@@ -1108,27 +1108,37 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
 
 // ══ BÔNUS RACIAIS DE ATRIBUTO (D&D 5e SRD oficial) ══
+// Bônus raciais oficiais PHB (p.18-43)
 const RACIAL_STAT_BONUS={
-  Humano:    {str:1,dex:1,con:1,int:1,wis:1,cha:1},     // +1 em tudo
-  Elfo:      {dex:2,wis:1},                               // +2 DES, +1 SAB
-  'Meio-Elfo':{cha:2, escolha1:1, escolha2:1},            // +2 CAR, +1 em 2 à escolha (aplicamos STR+CON)
-  Anão:      {con:2,wis:1},                               // +2 CON, +1 SAB
-  Halfling:  {dex:2},                                     // +2 DES
-  Gnomo:     {int:2,con:1},                               // +2 INT, +1 CON
-  'Meio-Orc':{str:2,con:1},                               // +2 FOR, +1 CON
-  Tiefling:  {int:1,cha:2},                               // +1 INT, +2 CAR
-  Draconato: {str:2,cha:1},                               // +2 FOR, +1 CAR
+  'Anão':      {con:2},                    // Sub-raça Colina: +1 SAB | Montanha: +2 FOR
+  'Elfo':      {dex:2},                    // Sub-raça Alto Elfo: +1 INT | Elfo da Floresta: +1 SAB | Drow: +1 CAR
+  'Halfling':  {dex:2},                    // Sub-raça Pé-Leve: +1 CAR | Robusto: +1 CON
+  'Humano':    {str:1,dex:1,con:1,int:1,wis:1,cha:1}, // +1 em TODOS (PHB p.29)
+  'Draconato': {str:2,cha:1},              // PHB p.32
+  'Gnomo':     {int:2},                    // Sub-raça Floresta: +1 DES | da Rocha: +1 CON
+  'Meio-Elfo': {cha:2,escolha1:1,escolha2:1}, // +2 CAR +1 em 2 à escolha (PHB p.38)
+  'Meio-Orc':  {str:2,con:1},              // PHB p.40
+  'Tiefling':  {int:1,cha:2},              // PHB p.42
 };
 
 // Proficiency Bonus por nível
 const PROF_BONUS=[0,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6];
 
 // Habilidades e salvaguardas por classe (proficiências)
+// Salvaguardas por classe (PHB Cap.3)
 const CLASS_SAVES={
-  Guerreiro:['str','con'], Mago:['int','wis'], Ladino:['dex','int'],
-  Clérigo:['wis','cha'], Bardo:['dex','cha'], Paladino:['wis','cha'],
-  Druida:['int','wis'], Ranger:['str','dex'], Bárbaro:['str','con'],
-  Feiticeiro:['con','cha']
+  'Bárbaro':    ['str','con'],   // Força, Constituição (PHB p.47)
+  'Bardo':      ['dex','cha'],   // Destreza, Carisma (PHB p.52)
+  'Bruxo':      ['wis','cha'],   // Sabedoria, Carisma (PHB p.57)
+  'Clérigo':    ['wis','cha'],   // Sabedoria, Carisma (PHB p.64)
+  'Druida':     ['int','wis'],   // Inteligência, Sabedoria (PHB p.72)
+  'Feiticeiro': ['con','cha'],   // Constituição, Carisma (PHB p.78)
+  'Guerreiro':  ['str','con'],   // Força, Constituição (PHB p.84)
+  'Ladino':     ['dex','int'],   // Destreza, Inteligência (PHB p.90)
+  'Mago':       ['int','wis'],   // Inteligência, Sabedoria (PHB p.95)
+  'Monge':      ['str','dex'],   // Força, Destreza (PHB p.103)
+  'Paladino':   ['wis','cha'],   // Sabedoria, Carisma (PHB p.109)
+  'Ranger':     ['str','dex'],   // Força, Destreza (PHB p.116) — Patrulheiro
 };
 
 // Aplica bônus raciais nos stats e retorna stats finais
@@ -1303,13 +1313,18 @@ function buildFullStatBlock(finalStats, cls, level){
 
 
 // ══ D&D 5e SPELLS & CANTRIPS DATA ══
+// Truques (Cantrips) — PHB oficial por classe
 const CANTRIPS_BY_CLASS = {
-  Mago:      ['Mão Chocante','Rajada de Fogo','Luz','Ilusão Menor','Prestidigitação','Lâmina de Trovão','Raio de Gelo','Veneno Aspersão','Amigo','Globo Luminoso'],
-  Clérigo:   ['Chama Sagrada','Guia','Resistência','Luz','Amigo','Poupar os Moribundos','Palavra de Cura','Maravilha','Luz das Trevas'],
-  Druida:    ['Guia','Resistência','Forma Druídica','Luz','Criar Chamas','Forma Selvagem','Fruta Venenosa','Golpe de Trovão'],
-  Bardo:     ['Amigo','Ilusão Menor','Luz','Prestidigitação','Golpe Viciante','Mandoble Trovejante','Palavra Mágica'],
-  Feiticeiro:['Mão Chocante','Rajada de Fogo','Luz','Ilusão Menor','Prestidigitação','Lâmina de Trovão','Raio de Gelo','Forma da Névoa'],
-  Bruxo:     ['Explosão Eldritch','Ilusão Menor','Prestidigitação','Estocada Venenosa','Armadura de Agathys','Roubo de Vida','Lança das Trevas'],
+  Mago:      ['Mão Chocante','Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante',
+              'Ilusão Menor','Luz','Prestidigitação','Globos de Luz','Mensagem','Conservar'],
+  Clérigo:   ['Chama Sagrada','Orientação','Luz','Conservar','Poupar os Moribundos','Resistência','Palavra Mágica'],
+  Druida:    ['Bordão Místico','Chicote de Espinhos','Conservar','Criar Chamas','Druidismo','Orientação','Rajada de Veneno','Resistência'],
+  Bardo:     ['Amizade','Ilusão Menor','Luz','Prestidigitação','Palavra Mágica','Globos de Luz','Mensagem'],
+  Feiticeiro:['Amizade','Ataque Certeiro','Conservar','Espirro Ácido','Globos de Luz','Ilusão Menor',
+              'Luz','Mãos Mágicas','Mensagem','Prestidigitação','Proteção contra Lâminas',
+              'Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante','Mão Chocante'],
+  Bruxo:     ['Amizade','Ataque Certeiro','Ilusão Menor','Mãos Mágicas','Prestidigitação',
+              'Proteção contra Lâminas','Rajada de Veneno','Rajada Mística','Toque Arrepiante'],
   Paladino:  [],
   Ranger:    [],
   Guerreiro: [],
@@ -1317,52 +1332,102 @@ const CANTRIPS_BY_CLASS = {
   Bárbaro:   [],
 };
 
-// Feitiços por classe e nível (D&D 5e SRD)
+// Feitiços por classe e nível — PHB oficial (Livro do Jogador D&D 5e)
 const SPELLS_BY_CLASS = {
   Mago: {
-    1: ['Míssil Mágico','Mãos Ardentes','Sono','Charmar Pessoas','Escudo','Detectar Magia','Compreender Línguas','Mago Armeiro','Queda Suave','Salto','Longa Passada','Invisibilidade para Mortos-Vivos'],
-    2: ['Invisibilidade','Imagem Espelhada','Sugestão','Escuridão','Web','Levitação','Raio Ácido de Melf','Mistura Ardente','Flecha Ácida de Melf'],
-    3: ['Bola de Fogo','Relâmpago','Voar','Contra-Magia','Dissipar Magia','Globo Igno','Proteção contra Energia','Forma Diminuta'],
-    4: ['Banimento','Tempestade de Gelo','Polimorfar','Arcano Olho','Parede de Fogo','Confusão'],
-    5: ['Telecinesia','Cone de Frio','Evocar Elemental','Telepatia','Dominar Pessoas'],
+    0: ['Mão Chocante','Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante',
+        'Ilusão Menor','Luz','Prestidigitação','Globos de Luz','Mensagem','Conservar'],
+    1: ['Alarme','Área Escorregadia','Armadura Arcana','Compreender Idiomas','Convocar Familiar',
+        'Detectar Magia','Disco Flutuante de Tenser','Disfarçar-se','Enfeitiçar Pessoa',
+        'Escrita Ilusória','Escudo Arcano','Identificação','Imagem Silenciosa','Leque Cromático',
+        'Mãos Flamejantes','Mísseis Mágicos','Névoa Obscurecente','Onda Trovejante',
+        'Orbe Cromática','Passos Longos','Queda Suave','Sono','Vitalidade Falsa'],
+    2: ['Alterar-se','Arma Mágica','Arrombar','Aumentar/Reduzir','Cegueira/Surdez',
+        'Despedaçar','Detectar Pensamentos','Escuridão','Esfera Flamejante','Flecha Ácida de Melf',
+        'Força Fantasmagórica','Imobilizar Pessoa','Invisibilidade','Levitação',
+        'Nuvem de Adagas','Passo Nebuloso','Raio Ardente','Reflexos','Sugestão','Teia','Visão no Escuro'],
+    3: ['Animar Mortos','Bola de Fogo','Círculo Mágico','Contramágica','Dissipar Magia',
+        'Forma Gasosa','Medo','Nevasca','Padrão Hipnótico','Piscar','Proteção contra Energia',
+        'Relâmpago','Remover Maldição','Toque Vampírico','Velocidade','Voo'],
+    4: ['Assassino Fantasmagórico','Banimento','Confusão','Esfera Resiliente','Fabricar',
+        'Invisibilidade Maior','Metamorfose','Muralha de Fogo','Olho Arcano','Pele de Pedra',
+        'Porta Dimensional','Tempestade de Gelo'],
+    5: ['Âncora Planar','Animar Objetos','Cone de Frio','Conjurar Elemental','Criação',
+        'Dominar Pessoa','Imobilizar Monstro','Mão de Bigby','Missão','Modificar Memória',
+        'Muralha de Pedra','Telecinésia','Vidência'],
   },
   Clérigo: {
-    1: ['Cura Ferimentos','Bênção','Escudo da Fé','Palavra Curativa','Guia Divino','Identificar','Proteção contra Mal'],
-    2: ['Cura Espiritual','Silêncio','Ajuda','Elevar os Mortos','Oração de Cura','Chama Espiritual'],
-    3: ['Revitalizar','Palavra de Magia','Remover Maldição','Caminhar pela Água','Sentinela Espiritual'],
-    4: ['Proteção contra Morte','Guardiões Divinos','Liberdade de Movimento'],
-    5: ['Cura em Massa','Constranger','Ressurreição Imperfeita','Contato com o Além'],
+    0: ['Chama Sagrada','Orientação','Luz','Conservar','Poupar os Moribundos','Resistência','Palavra Mágica'],
+    1: ['Bênção','Comando','Compreender Idiomas','Curar Ferimentos','Detectar Magia',
+        'Detectar Veneno e Doença','Escudo da Fé','Favor Divino','Identificação',
+        'Infligir Ferimentos','Palavra Curativa','Proteção contra o Bem e Mal','Santuário'],
+    2: ['Acalmar Emoções','Ajuda','Augúrio','Blindagem Espiritual','Cura em Massa Menor',
+        'Encontrar Armadilhas','Imobilizar Pessoa','Localizar Objeto','Oração de Cura',
+        'Proteção contra Veneno','Restauração Menor','Silêncio','Zona da Verdade'],
+    3: ['Animar Mortos','Clarividência','Criar Alimento e Água','Curar Ferimentos em Massa',
+        'Dissipar Magia','Enviar Mensagem','Luz do Dia','Remover Maldição','Revitalizar','Palavra de Magia'],
+    4: ['Banimento','Liberdade de Movimento','Localizar Criatura','Guardiões Divinos','Proteção contra a Morte'],
+    5: ['Cura Completa','Comunhão','Consagrar','Curar Ferimentos em Massa','Praga','Reviver os Mortos','Vidência'],
   },
   Bardo: {
-    1: ['Charmar Pessoas','Sono','Cura Ferimentos','Identificar','Falar com Animais','Undisguise Self'],
-    2: ['Invisibilidade','Sugestão','Silêncio','Detectar Pensamentos','Imagem Menor','Nuvem de Punhais'],
-    3: ['Hipnose','Dissipar Magia','Imagem Principal','Falar com Mortos','Liguagem','Dispersão'],
-    4: ['Confusão','Dominar Bestas','Compulsão','Imagem Maior'],
-    5: ['Dominar Pessoas','Sonho','Geas','Imagem Ilusória','Telepatia'],
+    0: ['Amizade','Ilusão Menor','Luz','Prestidigitação','Palavra Mágica','Globos de Luz','Mensagem'],
+    1: ['Charmar Pessoa','Compreender Idiomas','Cura Ferimentos','Detectar Magia',
+        'Disfarçar-se','Enfeitiçar Pessoa','Identificação','Imagem Silenciosa',
+        'Palavra Curativa','Sono','Vitalidade Falsa'],
+    2: ['Acalmar Emoções','Detectar Pensamentos','Invisibilidade','Imobilizar Pessoa',
+        'Nuvem de Adagas','Restauração Menor','Silêncio','Sugestão'],
+    3: ['Dissipar Magia','Falar com Mortos','Hipnose','Idiomas','Imagem Maior','Medo','Padrão Hipnótico'],
+    4: ['Compulsão','Confusão','Dominar Bestas','Imagem Maior','Invisibilidade Maior'],
+    5: ['Dominar Pessoa','Geas','Modificar Memória','Sonho'],
   },
   Druida: {
-    1: ['Cura Ferimentos','Falar com Animais','Névoa','Encontrar Rastrear','Enredar','Bola de Fogo Natural'],
-    2: ['Pele de Carvalho','Restauração Menor','Passagem sem Rastro','Irmandade Animal','Espinhos'],
-    3: ['Invocar Raios','Caminhar pelo Vento','Falar com Plantas','Restauração Superior'],
-    4: ['Constrolar Água','Polimorfar','Invocar Elemental Menor','Divisão'],
-    5: ['Evocar Elemental','Despertar','Caminhar pela Árvore','Communhar com Natureza'],
+    0: ['Bordão Místico','Chicote de Espinhos','Conservar','Criar Chamas','Druidismo','Orientação','Rajada de Veneno','Resistência'],
+    1: ['Amizade Animal','Criar ou Destruir Água','Curar Ferimentos','Detectar Magia',
+        'Detectar Veneno e Doença','Enfeitiçar Pessoa','Falar com Animais','Fogo das Fadas',
+        'Névoa Obscurecente','Onda Trovejante','Palavra Curativa','Passos Longos','Salto'],
+    2: ['Aprimorar Habilidade','Crescer Espinhos','Esfera Flamejante','Esquentar Metal',
+        'Imobilizar Pessoa','Localizar Animais','Passagem sem Rastro','Pele de Árvore',
+        'Proteção contra Veneno','Raio Lunar','Restauração Menor','Visão no Escuro'],
+    3: ['Ampliar Plantas','Andar na Água','Conjurar Animais','Convocar Relâmpagos',
+        'Dissipar Magia','Falar com Plantas','Luz do Dia','Muralha de Vento','Proteção contra Energia'],
+    4: ['Controlar a Água','Metamorfose','Localizar Criatura','Pedra Moldada'],
+    5: ['Comunhão com Natureza','Conjurar Elemental','Despertar','Praga de Insetos'],
   },
   Feiticeiro: {
-    1: ['Míssil Mágico','Mãos Ardentes','Sono','Escudo','Charmar Pessoas','Nevasca Cromatica'],
-    2: ['Invisibilidade','Imagem Espelhada','Sugestão','Rajada Caotica','Web'],
-    3: ['Bola de Fogo','Relâmpago','Voar','Força Haste','Forma de Névoa'],
-    4: ['Polimorfar','Tempestade de Gelo','Banimento','Dimensão Porta'],
-    5: ['Cone de Frio','Telecinesia','Dominar Pessoas','Criação'],
+    0: ['Amizade','Ataque Certeiro','Conservar','Espirro Ácido','Globos de Luz','Ilusão Menor',
+        'Luz','Mãos Mágicas','Mensagem','Prestidigitação','Proteção contra Lâminas',
+        'Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante','Mão Chocante'],
+    1: ['Armadura Arcana','Compreender Idiomas','Detectar Magia','Disfarçar-se',
+        'Enfeitiçar Pessoa','Escudo Arcano','Imagem Silenciosa','Leque Cromático',
+        'Mãos Flamejantes','Mísseis Mágicos','Névoa Obscurecente','Onda Trovejante',
+        'Orbe Cromática','Queda Suave','Sono'],
+    2: ['Alterar-se','Aumentar/Reduzir','Cegueira/Surdez','Coroa da Loucura','Despedaçar',
+        'Detectar Pensamentos','Escuridão','Imobilizar Pessoa','Invisibilidade','Levitação',
+        'Passo Nebuloso','Raio Ardente','Reflexos','Sugestão','Teia','Visão no Escuro'],
+    3: ['Bola de Fogo','Contramágica','Dissipar Magia','Forma Gasosa','Medo',
+        'Piscar','Proteção contra Energia','Relâmpago','Velocidade','Voo'],
+    4: ['Banimento','Confusão','Invisibilidade Maior','Metamorfose','Porta Dimensional','Tempestade de Gelo'],
+    5: ['Cone de Frio','Criação','Dominar Pessoa','Modificar Memória','Telecinésia'],
   },
   Paladino: {
-    1: ['Cura Ferimentos','Bênção','Comando','Escudo da Fé','Detectar Mal e Bem','Favor Divino'],
-    2: ['Auxílio','Encontrar Corcel','Restauração Menor','Proteção contra Veneno','Zona da Verdade'],
-    3: ['Criar Alimento e Água','Luz do Dia','Remover Maldição','Revitalizar'],
+    0: [],
+    1: ['Bênção','Comando','Curar Ferimentos','Detectar Magia','Detectar o Bem e Mal',
+        'Escudo da Fé','Favor Divino','Proteção contra o Bem e Mal','Palavra Curativa'],
+    2: ['Ajuda','Encontrar Corcel','Imobilizar Pessoa','Localizar Objeto',
+        'Proteção contra Veneno','Restauração Menor','Zona da Verdade'],
+    3: ['Criar Alimento e Água','Curar Ferimentos em Massa','Luz do Dia','Remover Maldição','Revitalizar'],
+    4: ['Banimento','Guardiões Divinos','Localizar Criatura'],
+    5: ['Cura Completa','Missão','Reviver os Mortos'],
   },
   Ranger: {
-    1: ['Marcar Caça','Falar com Animais','Névoa','Cura Ferimentos','Armadilha de Caça'],
-    2: ['Passagem sem Rastro','Pele de Carvalho','Cura Ferimentos Menor','Localizar Objeto'],
-    3: ['Caminhar pela Água','Proteção contra Energia','Voar'],
+    0: [],
+    1: ['Armadilha de Caça','Curar Ferimentos','Detectar Magia','Detectar Veneno e Doença',
+        'Falar com Animais','Marcar Presa','Névoa Obscurecente','Passos Longos','Salto'],
+    2: ['Localizar Animais','Localizar Objeto','Passagem sem Rastro','Pele de Árvore',
+        'Proteção contra Veneno','Restauração Menor','Visão no Escuro'],
+    3: ['Andar na Água','Conjurar Animais','Dissipar Magia','Proteção contra Energia'],
+    4: ['Liberdade de Movimento','Localizar Criatura'],
+    5: ['Comunhão com Natureza','Conjurar Elemental Menor'],
   },
 };
 
@@ -1431,6 +1496,49 @@ function resetSpellSlots() {
   updateVitals();
 }
 
+
+// ══ TALENTOS D&D 5e (PHB Cap.6 p.167-172) ══
+const FEATS_PHB = {
+  'Alerta':           {prereq:null,       bonus:'+5 Iniciativa, não pode ser surpreendido, invisível não dá vantagem vs você'},
+  'Ambidestro':       {prereq:null,       bonus:'+1 CA com 2 armas, usa armas não-leves no estilo 2 armas'},
+  'Atletismo':        {prereq:null,       bonus:'+1 FOR ou DES, levantar do chão 1,5m, escalar sem custo extra'},
+  'Atacante Bestial': {prereq:null,       bonus:'Relança 1 dado de dano por turno (corpo-a-corpo), usa o maior'},
+  'Atirador Aguçado': {prereq:null,       bonus:'Distância normal sem desvant., ignora 3/4 cobertura, -5 ataque/+10 dano'},
+  'Conjurador de Guerra':{prereq:'magia', bonus:'Vant. CON para concentração, componentes somáticos com armas'},
+  'Curandeiro':       {prereq:null,       bonus:'Estabilizar = 1 PV, kit de cura: 1d6+4+DV PV extras por desc'},
+  'Duelista Defensivo':{prereq:'DES 13',  bonus:'Reação: +prof CA contra 1 ataque corpo-a-corpo'},
+  'Imobilizador':     {prereq:'FOR 13',   bonus:'Vant. ataques vs agarrado, pode imobilizar criatura agarrada'},
+  'Iniciado em Magia':{prereq:null,       bonus:'2 truques + 1 magia Nv1 de qualquer classe (1×/desc longo)'},
+  'Líder Inspirador': {prereq:'CAR 13',   bonus:'10min: até 6 aliados ganham PV temp = nível+CAR'},
+  'Mestre de Armas Grandes':{prereq:null, bonus:'Crítico/matar = ataque bônus, -5 ataque/+10 dano com armas pesadas'},
+  'Mobilidade':       {prereq:null,       bonus:'+3m vel, terreno difícil na disparada sem custo, sem atq oportunidade após atacar'},
+  'Proteção Leve':    {prereq:null,       bonus:'+1 FOR, profic. arm. leve'},
+  'Proteção Moderada':{prereq:'arm.leve', bonus:'+1 FOR, profic. arm. média + escudos'},
+  'Proteção Pesada':  {prereq:'arm.média',bonus:'+1 FOR, profic. arm. pesada'},
+  'Resiliente':       {prereq:null,       bonus:'+1 atributo à escolha, profic. em saves desse atributo'},
+  'Resistente':       {prereq:null,       bonus:'+1 CON, DV recuperam mín.=2×CON'},
+  'Robusto':          {prereq:null,       bonus:'+2 PV máx por nível atual e futuros'},
+  'Sentinela':        {prereq:null,       bonus:'Atq oportunidade = vel 0, reação quando aliado é atacado perto de você'},
+  'Sortudo':          {prereq:null,       bonus:'3 pontos/desc longo: relança qualquer d20 e escolhe resultado'},
+  'Especialista em Briga':{prereq:null,   bonus:'+1 FOR ou CON, soco 1d4, agarrar como ação bônus após acerto'},
+};
+
+// Pré-requisitos de multiclasse por classe (PHB p.164)
+const MULTICLASS_PREREQ = {
+  'Bárbaro':    {str:13},
+  'Bardo':      {cha:13},
+  'Bruxo':      {cha:13},
+  'Clérigo':    {wis:13},
+  'Druida':     {wis:13},
+  'Feiticeiro': {cha:13},
+  'Guerreiro':  {str:13, dex:13}, // um dos dois
+  'Ladino':     {dex:13},
+  'Mago':       {int:13},
+  'Monge':      {dex:13, wis:13},
+  'Paladino':   {str:13, cha:13},
+  'Ranger':     {dex:13, wis:13},
+};
+
 // ═══ POOL DE MISSÕES PRINCIPAIS (rotaciona a cada personagem) ═══
 const QUESTS=[
   {title:"O Amuleto do Amanhecer",hook:"Recupere o Amuleto do Amanhecer nas ruínas do Templo Esquecido, 3 dias de Millhaven. O artefato mantém o equilíbrio entre luz e trevas.",location:"Millhaven / Templo Esquecido"},
@@ -1477,17 +1585,115 @@ const PROFILES={
   }
 };
 
+// Habilidades de classe por nível (PHB Cap.3)
 const CLASS_ABILITIES={
-  Guerreiro:[{lv:1,name:'Estilo de Combate',desc:'Escolha um estilo: Arqueria (+2 ataques), Defesa (+1 CA), Duelo (+2 dano), etc.'},{lv:1,name:'Segundo Fôlego',desc:'Use ação bônus para recuperar 1d10 + nível de PV (1×/descanso curto).'},{lv:2,name:'Surto de Ação',desc:'Na sua vez, faça uma ação adicional completa (1×/descanso curto).'}],
-  Mago:[{lv:1,name:'Recuperação Arcana',desc:'Recupere slots de magia totalizando metade do seu nível (1×/descanso curto).'},{lv:2,name:'Tradição Arcana',desc:'Escolha uma escola de magia. Ganhe benefícios especiais nessa escola.'}],
-  Ladino:[{lv:1,name:'Ataque Furtivo',desc:'1d6 dano extra quando tem vantagem ou aliado adjacente ao alvo.'},{lv:1,name:'Linguagem dos Ladrões',desc:'Sistema secreto de comunicação entre criminosos.'},{lv:2,name:'Ação Ardilosa',desc:'Use Desviar, Desengajar ou Correr como ação bônus.'}],
-  Clérigo:[{lv:1,name:'Magia Divina',desc:'Prepare feitiços divinos baseados em Sabedoria + nível de clérigo.'},{lv:1,name:'Expulsar Mortos-Vivos',desc:'Mortos-vivos devem fazer Salvaguarda de Sabedoria ou fugir por 1 minuto.'}],
-  Bardo:[{lv:1,name:'Inspiração Barda',desc:'Conceda 1d6 para um aliado usar em teste, ataque ou salvaguarda.'},{lv:2,name:'Canções Conhecidas',desc:'Aprenda feitiços adicionais de qualquer lista.'}],
-  Paladino:[{lv:1,name:'Sentido Divino',desc:'Detecte presença de celestiais, demônios e mortos-vivos em 18m.'},{lv:1,name:'Imposição de Mãos',desc:'Cura total de 5× nível de PV por descanso longo.'},{lv:2,name:'Ataque Divino',desc:'Adicione 1d8 dano radiante ou necrótico em um ataque.'}],
-  Druida:[{lv:2,name:'Forma Selvagem',desc:'Transforme-se em besta de CR 1/4 sem velocidade natatória (2×/descanso curto).'}],
-  Ranger:[{lv:1,name:'Inimigo Favorito',desc:'Vantagem em rastreamento e memória sobre tipo escolhido.'},{lv:1,name:'Explorador Natural',desc:'Bônus em terreno favorito: não pode se perder, movimento dobrado, etc.'}],
-  Bárbaro:[{lv:1,name:'Fúria',desc:'Bônus +2 dano, resistência a dano físico. 2 usos/descanso longo.'},{lv:1,name:'Defesa sem Armadura',desc:'CA = 10 + mod. DES + mod. CON sem armadura.'}],
-  Feiticeiro:[{lv:1,name:'Pontos de Feitiçaria',desc:'Gerencie sua magia com pontos (igual ao nível). Converta slots por pontos.'},{lv:1,name:'Origem de Feiticeiro',desc:'Linhagem dracônica ou magia selvagem. Define poderes especiais.'}]
+  'Bárbaro':[
+    {lv:1,name:'Fúria (2×/desc longo)',desc:'Bônus dano +2, resist. dano físico, vantagem FOR'},
+    {lv:1,name:'Defesa Sem Armadura',desc:'CA = 10+DES+CON sem armadura'},
+    {lv:2,name:'Ataque Descuidado',desc:'Vantagem em ataques, mas inimigos ganham vantagem contra você'},
+    {lv:2,name:'Sentido de Perigo',desc:'Vantagem em DEX resist. contra efeitos visíveis'},
+    {lv:3,name:'Caminho Primitivo',desc:'Escolha uma subclasse'},
+    {lv:5,name:'Ataque Extra',desc:'2 ataques por ação de Ataque'},
+    {lv:5,name:'Movimento Rápido',desc:'+3m de deslocamento sem armadura'},
+    {lv:7,name:'Instinto Selvagem',desc:'Vantagem em iniciativa, nunca surpreendido em fúria'},
+  ],
+  'Bardo':[
+    {lv:1,name:'Conjuração (CAR)',desc:'CD=8+prof+CAR | Ataque=prof+CAR'},
+    {lv:1,name:'Inspiração Bárdica',desc:'1d6 bônus para aliado. 1×/desc curto. Escala com nível'},
+    {lv:2,name:'Versátil',desc:'+1 perícia e +1 ferramenta/instrumento a cada nível par'},
+    {lv:2,name:'Canção de Repouso',desc:'Aliados recuperam +1d6 PV extra no desc curto'},
+    {lv:3,name:'Colégio Bárdico',desc:'Escolha subclasse'},
+    {lv:3,name:'Especialização',desc:'Dobro do bônus de prof em 2 perícias'},
+    {lv:5,name:'Inspiração Bárdica 1d8',desc:'Dado de Inspiração aumenta para 1d8'},
+    {lv:5,name:'Fonte de Inspiração',desc:'Recupera Inspiração Bárdica no desc curto'},
+  ],
+  'Bruxo':[
+    {lv:1,name:'Patrono Ultraterreno',desc:'Pacto com ser poderoso. Escolha um patrono'},
+    {lv:1,name:'Conjuração (CAR)',desc:'Slots recuperam no DESC CURTO'},
+    {lv:2,name:'Invocações Místicas',desc:'Habilidades do pacto à escolha'},
+    {lv:3,name:'Dádiva do Pacto',desc:'Pacto da Corrente, Lâmina ou Tomo'},
+    {lv:5,name:'Slots de 3° Nível',desc:'2 slots de nível 3 por desc curto'},
+  ],
+  'Clérigo':[
+    {lv:1,name:'Conjuração (SAB)',desc:'CD=8+prof+SAB | Ataque=prof+SAB'},
+    {lv:1,name:'Domínio Divino',desc:'Escolha um domínio — concede magias de domínio e poderes'},
+    {lv:2,name:'Canalizar Divindade (1×)',desc:'Poder de domínio ou Afastar Mortos-Vivos'},
+    {lv:2,name:'Afastar Mortos-Vivos',desc:'Mortos-vivos assustados; CR≤certoNível destruídos'},
+    {lv:5,name:'Destruir Mortos-Vivos CR1/2',desc:'Afastar destrói CR 1/2'},
+  ],
+  'Druida':[
+    {lv:1,name:'Conjuração (SAB)',desc:'CD=8+prof+SAB'},
+    {lv:1,name:'Druídico',desc:'Conhece o idioma secreto dos druidas'},
+    {lv:2,name:'Forma Selvagem (2×/desc curto)',desc:'Transforma-se em besta (CR ≤ 1/4 Nv1)'},
+    {lv:2,name:'Círculo Druídico',desc:'Escolha subclasse'},
+    {lv:4,name:'Forma Selvagem melhora',desc:'CR ≤ 1/2, pode nadar'},
+    {lv:8,name:'Forma Selvagem CR 1',desc:'CR ≤ 1, pode voar'},
+  ],
+  'Feiticeiro':[
+    {lv:1,name:'Conjuração (CAR)',desc:'CD=8+prof+CAR'},
+    {lv:1,name:'Origem Mágica',desc:'Escolha subclasse — origem do seu poder'},
+    {lv:2,name:'Fonte de Magia',desc:'Pontos de Feitiçaria = nível. Conversão com slots'},
+    {lv:2,name:'Metamagia',desc:'Modifica feitiços usando Pontos de Feitiçaria'},
+    {lv:3,name:'Metamagia (2 opções)',desc:'Escolha 2 opções: Cuidadosa, Distante, Fortalecida, Estendida, Aprimorada, Sutil, Gêmea'},
+  ],
+  'Guerreiro':[
+    {lv:1,name:'Estilo de Combate',desc:'Escolha: Arqueiria+2, Defesa+1CA, Duelismo+2, etc.'},
+    {lv:1,name:'Segundo Fôlego',desc:'1d10+nível PV como ação bônus. 1×/desc curto'},
+    {lv:2,name:'Surto de Ação (1×/desc curto)',desc:'Ação extra no turno'},
+    {lv:3,name:'Arquétipo Marcial',desc:'Escolha subclasse'},
+    {lv:4,name:'Incremento de Habilidade',desc:'+2 em 1 ou +1 em 2 atributos'},
+    {lv:5,name:'Ataque Extra (2)',desc:'2 ataques por ação de Ataque'},
+    {lv:6,name:'Incremento de Habilidade',desc:'+2 em 1 ou +1 em 2'},
+    {lv:7,name:'Característica de Arquétipo',desc:'Depende da subclasse'},
+    {lv:11,name:'Ataque Extra (3)',desc:'3 ataques por ação de Ataque'},
+    {lv:20,name:'Ataque Extra (4)',desc:'4 ataques por ação de Ataque'},
+  ],
+  'Ladino':[
+    {lv:1,name:'Especialização',desc:'Dobro do bônus de prof em 2 perícias escolhidas'},
+    {lv:1,name:'Ataque Furtivo 1d6',desc:'Dano extra com vantagem ou aliado adjacente'},
+    {lv:1,name:'Gíria de Ladrão',desc:'Idioma secreto dos ladrões'},
+    {lv:2,name:'Ação Ardilosa',desc:'Desengajar, Disparar ou Esconder como ação bônus'},
+    {lv:3,name:'Arquétipo de Ladino',desc:'Escolha subclasse'},
+    {lv:3,name:'Ataque Furtivo 2d6',desc:'Aumenta a cada 2 níveis'},
+    {lv:5,name:'Esquiva Incrível',desc:'Metade do dano de ataques que atingem (reação)'},
+    {lv:7,name:'Esquiva Total',desc:'Sem dano em DEX resist (meio dano se falhar)'},
+  ],
+  'Mago':[
+    {lv:1,name:'Conjuração (INT)',desc:'CD=8+prof+INT | Grimório: 6 feitiços Nv1'},
+    {lv:1,name:'Recuperação Arcana (1×/dia)',desc:'Recupera slots gastos total ≤ metade do nível (mín 1)'},
+    {lv:2,name:'Tradição Arcana',desc:'Escolha escola de magia (subclasse)'},
+    {lv:18,name:'Dominar Magia',desc:'Reconjura feitiço sem gastar slot (2 feitiços escolhidos)'},
+    {lv:20,name:'Assinatura Mágica',desc:'2 feitiços Nv3 sem custo de slot'},
+  ],
+  'Monge':[
+    {lv:1,name:'Defesa Sem Armadura',desc:'CA = 10+DES+SAB sem armadura'},
+    {lv:1,name:'Artes Marciais',desc:'Dado de Artes Marciais = d4 Nv1. Usa DES para ataques desarmados'},
+    {lv:2,name:'Ki (= nível/dia)',desc:'Pontos Ki: Investida, Golpe Atordoante, Passo do Vento, Palma'},
+    {lv:2,name:'Movimento Sem Armadura',desc:'+3m de deslocamento sem armadura'},
+    {lv:3,name:'Tradição Monástica',desc:'Escolha subclasse'},
+    {lv:3,name:'Desviar Projéteis',desc:'Reação: reduz dano de projétil'},
+    {lv:5,name:'Ataque Extra',desc:'2 ataques por ação de Ataque'},
+    {lv:5,name:'Golpe Atordoante',desc:'Gasta 1 Ki após acerto: CON CD ou atordoado'},
+  ],
+  'Paladino':[
+    {lv:1,name:'Sentido Divino',desc:'Detecta bem/mal/consagrado em 18m. CAR+1 usos/desc longo'},
+    {lv:1,name:'Imposição de Mãos',desc:'Cura PV = nível×5 por dia. 5 PV = cura doença/veneno'},
+    {lv:2,name:'Estilo de Combate',desc:'Escolha: Defesa, Duelismo, Proteção, Combate com Armas'},
+    {lv:2,name:'Conjuração (CAR)',desc:'CD=8+prof+CAR'},
+    {lv:2,name:'Golpe Divino',desc:'Ação bônus: próximo ataque +1d8 radiante (ou tipo do juramento)'},
+    {lv:3,name:'Juramento Sagrado',desc:'Escolha subclasse — Devoção, Vingança, etc.'},
+    {lv:5,name:'Ataque Extra',desc:'2 ataques por ação de Ataque'},
+    {lv:6,name:'Aura de Proteção',desc:'Você e aliados em 3m ganham bônus CAR em saves'},
+  ],
+  'Ranger':[
+    {lv:1,name:'Inimigo Favorito',desc:'Vantagem em Rastrear/Recordar info sobre 1 tipo de criatura'},
+    {lv:1,name:'Explorador Natural',desc:'Terreno favorito: dupla prof, não perde ao rastrear, etc.'},
+    {lv:2,name:'Estilo de Combate',desc:'Arqueiria, Defesa ou Luta com Duas Armas'},
+    {lv:2,name:'Conjuração (SAB)',desc:'CD=8+prof+SAB. Feitiços Nv2'},
+    {lv:3,name:'Primitivismo',desc:'Escolha subclasse'},
+    {lv:3,name:'Consciência Primitiva',desc:'Detecta presença de criaturas do inimigo favorito'},
+    {lv:5,name:'Ataque Extra',desc:'2 ataques por ação de Ataque'},
+  ],
 };
 
 // XP TOTAL acumulado para cada nível (tabela oficial D&D 5e SRD 5.1)
@@ -1518,9 +1724,34 @@ const XP_TABLE=[
 
 
 // Deslocamento por raça (D&D 5e em metros)
-const RACE_SPEED={'Humano':9,'Elfo':9,'Meio-Elfo':9,'Anão':7.5,'Halfling':7.5,'Gnomo':7.5,'Meio-Orc':9,'Tiefling':9,'Draconato':9};
+// Deslocamento por raça (PHB) — em metros
+const RACE_SPEED={
+  'Anão':7.5,       // PHB p.20: 7,5m (não reduzido por armadura pesada)
+  'Elfo':9,         // PHB p.23: 9m
+  'Halfling':7.5,   // PHB p.27: 7,5m
+  'Humano':9,       // PHB p.30: 9m
+  'Draconato':9,    // PHB p.34: 9m
+  'Gnomo':7.5,      // PHB p.36: 7,5m
+  'Meio-Elfo':9,    // PHB p.39: 9m
+  'Meio-Orc':9,     // PHB p.41: 9m
+  'Tiefling':9,     // PHB p.43: 9m
+};
 const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨'};
-const classHP={Guerreiro:10,Mago:6,Ladino:8,Clérigo:8,Bardo:8,Paladino:10,Druida:8,Ranger:10,Bárbaro:12,Feiticeiro:6};
+// Dado de vida por classe (PHB) — PV no 1° = dado máximo + mod CON
+const classHP={
+  'Bárbaro':12,   // d12 (PHB p.47)
+  'Guerreiro':10, // d10 (PHB p.84)
+  'Paladino':10,  // d10 (PHB p.109)
+  'Ranger':10,    // d10 (PHB p.116) — Patrulheiro
+  'Bardo':8,      // d8 (PHB p.52)
+  'Clérigo':8,    // d8 (PHB p.64)
+  'Druida':8,     // d8 (PHB p.72)
+  'Monge':8,      // d8 (PHB p.103)
+  'Ladino':8,     // d8 (PHB p.90)
+  'Bruxo':8,      // d8 (PHB p.57)
+  'Feiticeiro':6, // d6 (PHB p.78)
+  'Mago':6,       // d6 (PHB p.95)
+};
 const classMP={Guerreiro:0,Mago:4,Ladino:0,Clérigo:3,Bardo:3,Paladino:2,Druida:3,Ranger:2,Bárbaro:0,Feiticeiro:4};
 const attrNames={str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
 const attrLabels={str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
@@ -1593,7 +1824,23 @@ function startAdventure(){
   if(race==='Tiefling') repBonus-=10;
   if(bg==='Nobre') repBonus+=15;
 
-  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:50,
+  // Ouro inicial por classe — PHB p.143 (rola dado e multiplica por 10 PO)
+  const startingGold={
+    'Bárbaro':   Math.floor(Math.random()*40)+20, // 2d4×10 = 20-80po
+    'Bardo':     Math.floor(Math.random()*50)+75, // 5d4×10 = 50-200... não, PHB: 5d4×10 po
+    'Bruxo':     Math.floor(Math.random()*40)+40, // 4d4×10
+    'Clérigo':   Math.floor(Math.random()*50)+125, // 5d4×10 + equipamento
+    'Druida':    Math.floor(Math.random()*20)+20, // 2d4×10
+    'Feiticeiro':Math.floor(Math.random()*30)+30, // 3d4×10
+    'Guerreiro': Math.floor(Math.random()*100)+150, // 5d4×10
+    'Ladino':    Math.floor(Math.random()*60)+40, // (4d4+2)×10
+    'Mago':      Math.floor(Math.random()*40)+40, // 4d4×10
+    'Monge':     Math.floor(Math.random()*5)+5,   // 5d4 (sem ×10!)
+    'Paladino':  Math.floor(Math.random()*100)+150, // 5d4×10
+    'Ranger':    Math.floor(Math.random()*50)+75, // 5d4×10
+  };
+  const initialGold = startingGold[cls] || 50;
+  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:initialGold,
         rep:Math.max(0,repBonus),xp:0,level:1,credits:0,questId:0};
   merchantCD=(cls==='Paladino'||cls==='Clérigo')?10:(race==='Tiefling'?14:12);
   gameHistory=[];
@@ -1702,7 +1949,9 @@ function updateVitals(){
   document.getElementById('bar-mp').style.width=mpP+'%';
   document.getElementById('g-hp-txt').textContent=`${hero.hp}/${hero.maxHP}`;
   document.getElementById('g-mp-txt').textContent=`${hero.mp}/${hero.maxMP}`;
-  document.getElementById('g-gd').textContent=hero.gold;
+  // Gold display — round to avoid decimals
+  const goldDisplay = Math.round(hero.gold);
+  document.getElementById('g-gd').textContent=goldDisplay;
   document.getElementById('g-credits').textContent=hero.credits||0;
   // ★ Atualiza cards de recurso na ficha
   const shHpVal=document.getElementById('sh-hp-val');
@@ -2186,55 +2435,138 @@ REGRAS DE TOM:
 
 - Mortes são possíveis: 0 PV → inconsciente → testes de morte (d20, 10+ sucesso, 3 = estável, 3 falhas = morto)
 
-━━━ REGRAS D&D 5e — ANTI-ALUCINAÇÃO ━━━
-VOCÊ É UM MESTRE DE D&D 5e RIGOROSO. Respeite as regras do PHB/DMG/XGtE:
+━━━ REGRAS D&D 5e OFICIAL — PHB COMPLETO ━━━
+Você tem o PHB completo (314p) como referência. Aplique TODAS as regras abaixo.
 
-ECONOMIA (SAGRADA — NUNCA INVENTE PREÇOS):
-Armas: Adaga=2po, Espada Curta=10po, Espada Longa=15po, Rapieira=25po, Arco Longo=50po
-Armaduras: Couro=10po, Cota de Malha=75po, Meia Armadura=750po, Placas=1.500po, Escudo=10po
-Consumíveis: Poção de Cura=50po, Poção Cura Superior=500po, Antídoto=50po, Tocha=0,01po
-Serviços: Hospedagem humilde=5pc/noite, confortável=5pp/noite, Rica=2po/noite, Refeição=3pc
-Montarias: Cavalo de Guerra=400po, Cavalo Comum=75po, Mula=8po, Carroça=35po
-ITENS MÁGICOS NÃO SÃO VENDIDOS EM LOJAS COMUNS:
-- Comum: 50-100po (apenas lojas especializadas raras)
-- Incomum: 101-500po (apenas colecionadores, leilões, recompensas)
-- Raro: 501-5.000po (quase impossível de comprar — recompensas épicas)
-- Muito Raro: 5.001-50.000po (artefatos, não à venda)
-- Lendário: não tem preço — não pode ser comprado
+RAÇAS (PHB Cap.2):
+Anão: CON+2, vel 7,5m (NÃO reduz com armadura pesada), Visão Escuro 18m, Resist.Veneno, profic. machados/martelos
+↳ Colina: +SAB1, +1PV por nível | Montanha: +FOR2, profic arm. leve/média
+Elfo: DES+2, vel 9m, Visão Escuro 18m, profic. Percepção, Ancestral Feérico (vant. resist. encantamento), Transe 4h
+↳ Alto Elfo: +INT1, 1 truque extra | Floresta: +SAB1, mov 7,5m em terreno | Drow: +CAR1, magias de Escuridão
+Halfling: DES+2, vel 7,5m, Sortudo (relança nat.1), Corajoso (vant. contra medo), Ágil (move por criaturas maiores)
+↳ Pé-Leve: +CAR1, se esconde atrás criaturas | Robusto: +CON1, vant. resist. veneno
+Humano: +1 em TODOS os 6 atributos, vel 9m
+Draconato: FOR+2, CAR+1, vel 9m, Sopro (2d6, 1×/desc curto), Resist. ao tipo dracônico, idioma Dracônico
+Gnomo: INT+2, vel 7,5m, Visão Escuro 18m, Esperteza Gnômica (vant. INT/SAB/CAR vs magia)
+↳ Das Rochas: +CON1, truque da engenhoca | Da Floresta: +DES1, fala com pequenos animais
+Meio-Elfo: CAR+2, +1 em 2 atributos à escolha, vel 9m, Visão Escuro 18m, 2 perícias extras
+Meio-Orc: FOR+2, CON+1, vel 9m, Visão Escuro 18m, Inabalável (1×fica com 1PV), Crítico Brutal (+1 dado dano)
+Tiefling: INT+1, CAR+2, vel 9m, Visão Escuro 18m, Resist.Fogo, Legado Infernal (Luz das Trevas Nv1, Infligir Ferimentos Nv3, Escuridão Nv5)
 
-COMBATE:
-- Ataque com espada longa = d20 + FOR + prof vs CA inimigo → dano 1d8+FOR
-- Magia: ataque mágico = d20 + INT/SAB/CAR + prof vs CA → dano varia
-- PV a 0 = inconsciente + testes de morte (d20, 10+ = sucesso, 3 sucessos = estável)
-- Crítico (20 natural) = dobra os dados de dano
+CLASSES — DADOS DE VIDA, SAVES E CARACTERÍSTICAS (PHB Cap.3):
+Bárbaro: d12 PV | Saves: FOR+CON | Fúria 2×(vel e dano bônus, resist físico) | Defesa sem Armadura(10+DES+CON)
+Bardo: d8 PV | Saves: DES+CAR | Magia CAR | Inspiração Bárdica 1d6 | Truques:2 | Feitiços:4 Nv1
+Bruxo: d8 PV | Saves: SAB+CAR | Magia CAR | Slots RECUPERAM no DESC CURTO | Truques:2
+Clérigo: d8 PV | Saves: SAB+CAR | Magia SAB | Truques:3 | Preparados:SAB+nível | Canalizar Divindade Nv2
+Druida: d8 PV | Saves: INT+SAB | Magia SAB | Truques:2 | Forma Selvagem 2× Nv2 (CR≤1/4)
+Feiticeiro: d6 PV | Saves: CON+CAR | Magia CAR | Truques:4 | Feitiços conhecidos:2 Nv1 | Pontos Feitiçaria Nv2
+Guerreiro: d10 PV | Saves: FOR+CON | Segundo Fôlego:1d10+nv 1×/dc | Surto de Ação Nv2 | Ataque Extra Nv5
+Ladino: d8 PV | Saves: DES+INT | Ataque Furtivo:1d6 | Ação Ardilosa | Especialização em 2 perícias
+Mago: d6 PV | Saves: INT+SAB | Magia INT | Truques:3 | Grimório: 6 feitiços Nv1 | Recuperação Arcana
+Monge: d8 PV | Saves: FOR+DES | Defesa sem Armadura(10+DES+SAB) | Ki Nv2 | Artes Marciais d4
+Paladino: d10 PV | Saves: SAB+CAR | Imposição de Mãos:nível×5 PV | Magia CAR Nv2 | Aura Proteção Nv6
+Ranger: d10 PV | Saves: FOR+DES | Magia SAB Nv2 | Inimigo Favorito | Explorador Natural | Ataque Extra Nv5
+
+CONJURAÇÃO (PHB Cap.10):
+- Atributo de conjuração por classe: INT(Mago) | SAB(Clérigo,Druida,Ranger,Monge) | CAR(Bardo,Bruxo,Feiticeiro,Paladino)
+- CD Magia = 8 + prof + mod conjuração
+- Bônus Ataque Mágico = prof + mod conjuração
+- Truques (Nv0): ILIMITADOS, sem custo de slot
+- Feitiços Nv1+: consomem 1 slot do nível correspondente (ou maior)
+- Usar slot maior = mesma magia com efeito potencializado
+- Concentração: só 1 magia de concentração ativa. Dano: CON CD=10 ou metade dano (maior)
+- Rituais: conjurados em 10min extras sem gastar slot (se tiver tag "ritual")
+
+COMBATE (PHB Cap.9):
+- Iniciativa: d20 + mod DES (ordem decrescente)
+- Turno: 1 Ação + 1 Ação Bônus (se tiver) + Deslocamento + 1 Reação (quando gatilho)
+- AÇÕES: Atacar | Conjurar | Correr (deslocamento×2) | Esquivar (vant. resist ataques) | Desengajar (sem atq. oportunidade) | Ajudar (vant. para aliado) | Esconder (DES Furtividade) | Preparar | Usar Objeto | Agarrar | Empurrar
+- Ataque C-a-C: d20 + atributo(FOR/DES) + prof vs CA → dano: dado arma + atributo
+- Ataque Distância: d20 + DES + prof vs CA; desvantagem a longa distância ou corpo a corpo
+- Crítico (nat.20): dobra DADOS de dano (não modificador)
+- Falha Crítica (nat.1): falha automática
+- 0 PV → Inconsciente → Testes de Morte: d20 ≥10 = sucesso | 3 sucessos = estável | 3 falhas = MORTO
+- Estabilizar: kit curandeiro CD 10 Medicina, ou qualquer cura
+- Ataque de Oportunidade: reação quando inimigo sai do alcance (1,5m)
+- Cobertura: Meia (+2 CA/DEX) | Três-Quartos (+5 CA/DEX) | Total (imune a ataques)
+
+CONDIÇÕES (PHB Apêndice A):
+- Agarrado: vel=0 | Amedrontado: desvant. ataques/testes vs fonte, não avança para ela
+- Atordoado: incapacitado+falha FOR/DES | Caído: desvant. ataques, inimigos 1,5m com vant.
+- Cego: falha testes visão, desvant. ataques | Enfeitiçado: não ataca quem encantou
+- Envenenado: desvant. ataques/testes | Impedido: vel=0, desvant. ataques/DES
+- Incapacitado: sem ações/reações | Inconsciente: incapacitado+caído+falha FOR/DES+crítico automático 1,5m
+- Invisível: vant. ataques, inimigos desvant. contra ele | Paralisado: incapacitado+crítico automático
+- Petrificado: incapacitado+resist. todos danos | Surdo: falha testes auditivos
+- Exaustão Nv1: desvant. testes | Nv2: vel/2 | Nv3: desvant. ataques+saves | Nv4: PVmax/2 | Nv5: vel=0 | Nv6: morte
+
+DESCANSO (PHB p.186):
+- Curto (1h+): gasta Dados de Vida (1dX+CON) para recuperar PV. BRUXO recupera slots.
+- Longo (8h+): recupera TODOS PV + metade DV gastos + TODOS slots de magia (Bruxo: no desc CURTO)
+
+CARGA (PHB p.176 — Variante Sobrecarga):
+- Capacidade Máxima: FOR × 7,5 kg
+- Encumbrado: >FOR×2,5kg → vel -3m
+- Sobrecarga Pesada: >FOR×5kg → vel -6m, desvant. FOR/DES/CON
+- Anão: deslocamento NÃO reduz por armadura pesada
+
+PERÍCIAS E SUAS HABILIDADES (PHB Cap.7):
+FOR: Atletismo | DES: Acrobacia, Furtividade, Prestidigitação | CON: (nenhuma perícia direta)
+INT: Arcanismo, História, Investigação, Natureza, Religião
+SAB: Adestrar Animais, Intuição, Medicina, Percepção, Sobrevivência
+CAR: Atuação, Enganação, Intimidação, Persuasão
+
+ECONOMIA (PHB p.145-159) — TABELA OFICIAL:
+ARMAS SIMPLES: Adaga=2po(1d4), Bordão=2pp(1d6), Lança=1po(1d6), Maça=5po(1d6), Arco Curto=25po(1d6), Besta Leve=25po(1d8)
+ARMAS MARCIAIS: Espada Curta=10po(1d6), Espada Longa=15po(1d8), Espada Grande=50po(2d6), Rapieira=25po(1d8), Alabarda=20po(1d10), Machado Grande=30po(1d12), Arco Longo=50po(1d8), Besta Pesada=50po(1d10)
+ARMADURAS LEVES: Couro=10po(CA11+DES,5kg), Couro Batido=45po(CA12+DES,6,5kg)
+ARMADURAS MÉDIAS: Brunea=50po(CA14,22,5kg), Peitoral=400po(CA14+DES≤2,10kg), Meia Armadura=750po(CA15+DES≤2,20kg)
+ARMADURAS PESADAS: Cota de Anéis=30po(CA14,20kg), Cota de Malha=75po(CA16,FOR13,27,5kg), Cota de Talas=200po(CA17,FOR15,30kg), Placas=1500po(CA18,FOR15,32,5kg)
+ESCUDO: 10po(+2CA,3kg)
+CONSUMÍVEIS: Poção Cura=50po(2d4+2), Poção Cura Superior=500po(4d4+4), Antídoto=50po, Tocha=1pc, Ração=5pc
+MONTARIAS: Cavalo=75po, Cavalo de Guerra=400po, Mula=8po, Carroça=35po
+
+ITENS MÁGICOS (PHB p.146 + DMG):
+- Comum: 50-100po — lojas especializadas (raro encontrar)
+- Incomum: 101-500po — colecionadores, recompensas de missões
+- Raro: 501-5.000po — quase impossível comprar
+- Muito Raro: 5.001-50.000po — artefatos, não vendidos
+- Lendário: sem preço — não se compra
+NUNCA ofereça itens mágicos Incomum+ em lojas normais ou mercados comuns
+
+MULTICLASSE (PHB Cap.6 p.164):
+- Pré-requisito: atributo principal ≥13 na classe atual E na nova
+- Ao subir nível, pode escolher nova classe (ganha proficiências limitadas)
+- Slots de conjuração = soma de todos níveis conjuradores (tabela)
+- Bruxo: usa slots próprios (recupera desc curto), não mistura com outros
+
+TALENTOS (PHB Cap.6 p.167 — regra opcional):
+- Substituem Incremento de Habilidade ao subir de nível
+- Principais: Alerta(+5 iniciativa), Sortudo(3 rerolls/dia), Robusto(+2PV/nível), Mobilidade(+3m vel)
+- Atirador Aguçado: -5 ataque/+10 dano | Mestre de Armas Grandes: idem
+- Resiliente: profic. em save de 1 atributo | Iniciado em Magia: truques de outra classe
 
 PROIBIÇÕES ABSOLUTAS:
-- NUNCA venda itens mágicos em mercados normais
-- NUNCA dê mais de 10-20po por missão de nível 1
-- NUNCA ignore o peso das armaduras (Cota=18kg, Placas=29kg)
-- NUNCA permita teletransporte ou mudança de cena sem transição narrativa
-- NUNCA resolva conflitos abertos abruptamente
-- NUNCA invente preços — use a tabela acima
-- NUNCA role dados pelo jogador — apenas peça e aguarde: "Role Ataque (d20+FOR vs CA)" e espere o resultado
-- NUNCA descreva o resultado de um ataque antes do jogador rolar — apenas descreva a intenção
-- O jogador rola TODOS os dados de ataque, magia e habilidade — você só aplica o resultado
-- Ao usar uma magia, indique qual slot é usado: [MP:-1] para slot de 1º nível, etc.
-- Truques (cantrips) NÃO gastam slots de magia — podem ser usados infinitamente
-- Ao usar um feitiço com slot, inclua [MP:-X] onde X é o nível do slot (ex: [MP:-1])
-- Truques: não incluir [MP:] pois não gastam slot
-
-TESTES:
-- Quando pedir teste: inclua [TESTE:Atributo:CD] e "Role [Atributo] (CD X)" na narração
-- UMA das opções [AÇÕES:] deve ser "Rolar [Perícia] CD X"
-- Não descreva o resultado antes do jogador rolar
+- NUNCA role dados pelo jogador — descreva e aguarde o resultado
+- NUNCA invente preços — use apenas os valores acima
+- NUNCA dê >20po por missão de nível 1
+- NUNCA teletransporte sem narrativa de transição
+- Use [MP:-X] ao consumir slot. Truques = ∞ sem custo
+- NUNCA resolva conflitos sem o jogador agir
 
 ━━━ TAGS DE CONTROLE (obrigatórias) ━━━
 [COMBATE:NomeInimigo] — quando inimigo aparece com intenção hostil
 [FIM_COMBATE] — quando o combate terminar (inimigo derrotado, foge, rendição, fuga do herói)
 [XP:quantidade] — XP ganho (Fácil=25, Médio=50, Difícil=100, Mortal=200 por nível)
 [PV:+X] ou [PV:-X] — quando PV muda
-[OURO:+X] ou [OURO:-X] — SEMPRE que ouro mudar (ex: [OURO:+10], [OURO:-5])
-IMPORTANTE: Use a tag [OURO:] TODA vez que o personagem ganhar ou gastar ouro.
+[OURO:+X] ou [OURO:-X] — OBRIGATÓRIO sempre que ouro mudar
+⚠️ REGRA DE OURO (sem exceção): TODA mudança de ouro DEVE ter a tag [OURO:±X]
+Exemplos OBRIGATÓRIOS:
+  - "Você recebe 10 po como recompensa [OURO:+10]"
+  - "Custa 5 po [OURO:-5] — seu ouro cai para X po"
+  - "A bolsa contém 25 po [OURO:+25]"
+SEM a tag [OURO:], o contador NÃO atualiza. É responsabilidade do Mestre incluir SEMPRE.
+NUNCA escreva valores de ouro sem a tag correspondente.ro.
 Exemplos corretos: "Recebe 15 PO [OURO:+15]", "Paga 3 PO [OURO:-3]", "Encontra bolsa com 8 PO [OURO:+8]"
 Nível 1: recompensas típicas são 5-25 PO por missão simples. NUNCA dê centenas de PO no início.
 [ITEM:+Nome:ícone:peso] — SEMPRE que ganhar item (ex: [ITEM:+Adaga:🗡️:0.45])
@@ -2846,15 +3178,28 @@ function mapTouchMove(e){
 // ══ INVENTORY SYSTEM ══
 let inventory = []; // {name,icon,desc,weight,equipped,slot,qty}
 
+// Pesos oficiais PHB (p.146-161) em kg
 const ITEM_WEIGHT_MAP={
-  // Armas
-  'Espada Longa':2,'Adaga':0.5,'Arco Longo':1,'Machado Grande':3.5,'Cajado':2,'Maça':2,'Rapieira':1,'Varinha':0.5,
-  // Armaduras
-  'Armadura de Couro':4.5,'Cota de Malha':20,'Armadura de Placas':32,'Escudo':2.7,
-  // Consumíveis
-  'Poção de Cura':0.25,'Poção de Força':0.25,'Antídoto':0.05,
-  // Equipamentos
-  'Mochila do Aventureiro':5,'Tocha':0.1,'Corda':2,'Tenda':10,'Ração':0.2,'Lanterna':0.5,
+  // Armas Simples (PHB p.149)
+  'Adaga':0.5,'Azagaia':1,'Bordão':2,'Clava Grande':5,'Foice Curta':1,'Lança':1.5,
+  'Maça':2,'Machadinha':1,'Martelo Leve':1,'Arco Curto':1,'Besta Leve':2.5,
+  // Armas Marciais (PHB p.149)
+  'Alabarda':3,'Cimitarra':1.5,'Espada Curta':1,'Espada Grande':3,'Espada Longa':1.5,
+  'Glaive':3,'Maça de Guerra':2,'Machado Grande':3.5,'Machado de Batalha':2,
+  'Malho':5,'Martelo de Guerra':1,'Rapieira':1,'Tridente':2,'Arco Longo':0.9,
+  'Besta Pesada':8,'Besta de Mão':1.5,
+  // Armaduras (PHB p.146) — valores exatos
+  'Armadura Acolchoada':4,'Armadura de Couro':5,'Couro Batido':6.5,
+  'Gibão de Peles':6,'Camisão de Malha':10,'Brunea':22.5,
+  'Peitoral':10,'Meia Armadura':20,
+  'Cota de Anéis':20,'Cota de Malha':27.5,'Cota de Talas':30,'Armadura de Placas':32.5,
+  'Escudo':3,'Escudo de Aço':3,
+  // Adventuring gear
+  'Cajado':2,'Cajado Arcano':2,'Cajado de Carvalho':2,'Varinha':0.5,'Varinha de Cristal':0.5,
+  'Poção de Cura':0.25,'Poção de Cura Superior':0.25,'Antídoto':0.05,
+  'Mochila do Aventureiro':5,'Tocha':0.5,'Corda de Cânhamo':4.5,'Corda de Seda':2.5,
+  'Tenda':10,'Ração de Viagem':0.25,'Lanterna de Capuz':0.5,'Óleo':0.5,
+  'Kit de Curandeiro':1.5,'Kit de Escalada':6,'Saco de Dormir':2,'Correntes':5,
 };
 
 const ITEM_SLOT_MAP={
@@ -2909,20 +3254,78 @@ function initInventory(cls){
   if(gear.armor) inventory.push({...gear.armor,equipped:true,qty:1,magic:false});
   // Escudo
   if(hasShield) inventory.push({name:'Escudo de Aço',icon:'🛡️',desc:'CA +2 · Impede uso de armas de 2 mãos',weight:2.7,equipped:true,slot:'lhand',qty:1,magic:false});
-  // Consumíveis básicos
-  inventory.push({name:'Poção de Cura',icon:'🧪',desc:'2d4+2 PV · Ação bônus para usar',weight:0.25,equipped:false,slot:null,qty:2,magic:false});
-  inventory.push({name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m · Improvisada como arma 1d4',weight:0.1,equipped:false,slot:null,qty:5,magic:false});
-  inventory.push({name:'Ração de Viagem',icon:'🍞',desc:'Alimentação para 1 dia · Não perece em 5 dias',weight:0.2,equipped:false,slot:null,qty:5,magic:false});
+  // Pacotes iniciais por classe (PHB p.143-144) — SEM poção de cura inicial
+  const startPacks = {
+    'Guerreiro': [
+      {name:'Pacote de Explorador',icon:'🎒',desc:'Inclui: corda, tochas, kit curandeiro, ração',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m',weight:0.5,equipped:false,slot:null,qty:5,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Mago': [
+      {name:'Grimório',icon:'📚',desc:'Contém 6 feitiços de 1° nível + truques',weight:1.5,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Pacote de Estudioso',icon:'🎒',desc:'Inclui: tinta, penas, pergaminho, livro de horas',weight:2,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m',weight:0.5,equipped:false,slot:null,qty:5,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Clérigo': [
+      {name:'Símbolo Sagrado',icon:'✝️',desc:'Foco de conjuração para magias divinas',weight:0.5,equipped:false,slot:'neck',qty:1,magic:false},
+      {name:'Pacote de Sacerdote',icon:'🎒',desc:'Inclui: manta, velas, ração, kit curandeiro',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m',weight:0.5,equipped:false,slot:null,qty:5,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Ladino': [
+      {name:'Ferramentas de Ladrão',icon:'🔑',desc:'Profic. necessária · Abre fechaduras e desarma armadilhas',weight:0.5,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Pacote do Burlão',icon:'🎒',desc:'Inclui: equipamento de escalada, kit disfarce, cordas',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Bardo': [
+      {name:'Instrumento Musical',icon:'🎵',desc:'Profic. com instrumento escolhido',weight:1,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Pacote do Artista',icon:'🎒',desc:'Inclui: fantasia, maquiagem, ração',weight:2,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Druida': [
+      {name:'Foco Druídico',icon:'🌿',desc:'Cajado de carvalho, guirlanda ou cristal',weight:0.5,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Pacote de Explorador',icon:'🎒',desc:'Inclui: kit curandeiro, ração, corda',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Bárbaro': [
+      {name:'Pacote de Explorador',icon:'🎒',desc:'Inclui: kit curandeiro, ração, corda',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Feiticeiro': [
+      {name:'Pacote de Explorador',icon:'🎒',desc:'Inclui: kit curandeiro, ração, corda',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Tocha',icon:'🕯️',desc:'1h de luz · Raio 6m',weight:0.5,equipped:false,slot:null,qty:5,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Paladino': [
+      {name:'Símbolo Sagrado',icon:'✝️',desc:'Foco de conjuração do paladino',weight:0.5,equipped:false,slot:'neck',qty:1,magic:false},
+      {name:'Pacote do Explorador',icon:'🎒',desc:'Inclui: kit curandeiro, ração, corda',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+    'Ranger': [
+      {name:'Carcaj + Flechas',icon:'🏹',desc:'20 flechas para arco',weight:0.5,equipped:true,slot:'back',qty:1,magic:false},
+      {name:'Pacote de Explorador',icon:'🎒',desc:'Inclui: kit curandeiro, ração, corda',weight:3,equipped:false,slot:null,qty:1,magic:false},
+      {name:'Ração de Viagem',icon:'🍞',desc:'Alimentação 1 dia',weight:0.25,equipped:false,slot:null,qty:3,magic:false},
+    ],
+  };
+  const pack = startPacks[cls] || startPacks['Guerreiro'];
+  pack.forEach(item => inventory.push(item));
   renderInventory();
   recalcCA(); // ★ Calcula CA inicial com os itens equipados
 }
 
 function getMaxCarryWeight(){
-  // D&D 5e oficial: FOR × 15 libras = FOR × 6.8 kg (capacidade máxima)
-  return Math.round((stats.str||10)*6.8*10)/10;
+  // PHB p.176: Capacidade = FOR × 7,5 kg (variante: sobrecarga)
+  return (stats.str||10)*7.5;
 }
-function getEncumberedThreshold(){return Math.round((stats.str||10)*2.27*10)/10;} // Encumbrado
-function getHeavyEncumberedThreshold(){return Math.round((stats.str||10)*4.54*10)/10;} // Muito Encumbrado
+function getEncumberedThreshold(){
+  // PHB variante Sobrecarga: >FOR×2,5kg → vel -3m
+  return (stats.str||10)*2.5;
+}
+function getHeavyEncumberedThreshold(){
+  // PHB variante Sobrecarga pesada: >FOR×5kg → vel -6m + desvantagem
+  return (stats.str||10)*5;
+}
 
 function getTotalWeight(){
   return inventory.reduce((sum,item)=>sum+(item.weight||0)*(item.qty||1),0);
@@ -3106,32 +3509,36 @@ function removeInventoryItem(name,qty=1){
 // ════ SISTEMA DE INVENTÁRIO VIA NARRATIVA ════
 // Tabela de preços D&D 5e (PHB, XGtE, DMG) em GP
 const ITEM_PRICE_TABLE={
-  // Armas (PHB p.149)
-  'Adaga':2,'Clava':0.1,'Foice Grande':0.2,'Lança':1,'Cajado':0.2,'Machado de Mão':5,
-  'Maça':5,'Maça de Guerra':15,'Espada Curta':10,'Espada Longa':15,'Espada Grande':50,
-  'Rapieira':25,'Florete':25,'Machado Grande':30,'Alabarda':20,'Arco Curto':25,
-  'Arco Longo':50,'Besta de Mão':75,'Besta Leve':25,'Besta Pesada':50,
-  // Armaduras (PHB p.145)
-  'Armadura de Couro':10,'Armadura de Couro Batido':45,'Cota de Malha':75,
-  'Peitoral':400,'Meia Armadura':750,'Armadura de Placas':1500,'Escudo':10,
-  'Armadura Acolchoada':5,'Armadura de Escamas':50,'Cota de Talas':200,
-  // Equipamentos (PHB p.150)
-  'Mochila':2,'Corda de Cânhamo':1,'Corda de Seda':10,'Tocha':0.01,'Lanterna de Capuz':5,
-  'Óleo (frasco)':0.1,'Ração':0.5,'Saco de Dormir':1,'Tenda':2,'Kit de Curandeiro':5,
-  'Kit de Escalada':25,'Kit de Viajante':10,'Correntes':5,'Algemas':2,
-  'Lupa':100,'Pé de Cabra':2,'Martelo':1,'Picareta':2,'Picareta de Mineração':2,
-  // Poções (DMG p.187-188)
+  // Armas Simples (PHB p.149)
+  'Adaga':2,'Azagaia':0.5,'Bordão':0.2,'Clava Grande':0.2,'Foice Curta':1,'Lança':1,
+  'Maça':5,'Machadinha':5,'Martelo Leve':2,'Arco Curto':25,'Besta Leve':25,
+  // Armas Marciais (PHB p.149)
+  'Alabarda':20,'Cimitarra':25,'Espada Curta':10,'Espada Grande':50,'Espada Longa':15,
+  'Glaive':20,'Maça de Guerra':15,'Machado Grande':30,'Machado de Batalha':10,
+  'Malho':10,'Martelo de Guerra':15,'Rapieira':25,'Tridente':5,
+  'Arco Longo':50,'Besta Pesada':50,'Besta de Mão':75,
+  // Armaduras (PHB p.146)
+  'Armadura Acolchoada':5,'Armadura de Couro':10,'Couro Batido':45,
+  'Gibão de Peles':10,'Camisão de Malha':30,'Brunea':50,
+  'Peitoral':400,'Meia Armadura':750,
+  'Cota de Anéis':30,'Cota de Malha':75,'Cota de Talas':200,'Armadura de Placas':1500,
+  'Escudo':10,'Escudo de Aço':10,
+  // Equipamentos aventura (PHB p.150)
+  'Mochila':2,'Kit Aventureiro':12,'Ração de Viagem':0.5,'Ração':0.5,
+  'Tocha':0.01,'Lanterna de Capuz':5,'Óleo':0.1,'Corda de Cânhamo':1,'Corda de Seda':10,
+  'Saco de Dormir':1,'Tenda':2,'Kit de Curandeiro':5,'Kit de Escalada':25,
+  'Correntes':5,'Algemas':2,'Lupa':100,'Pé de Cabra':2,'Escada':0.1,
+  'Cajado':0.2,'Cajado Arcano':0.2,'Cajado de Carvalho':0.2,'Varinha':0.5,
+  // Poções (DMG p.187)
   'Poção de Cura':50,'Poção de Cura Superior':500,'Poção de Cura Suprema':5000,
-  'Poção de Força Gigante de Colina':200,'Poção de Voo':500,'Poção de Invisibilidade':180,
-  'Poção de Resistência':300,'Poção de Velocidade':400,'Poção de Veneno':100,
-  'Antídoto':50,'Pó de Desaparecimento':500,
-  // Itens mágicos comuns (DMG) — NÃO vendidos normalmente
-  'Anel de Proteção':3500,'Cinto de Força do Gigante':200000,
-  'Botas de Velocidade':24000,'Manto de Proteção':3500,
-  // Serviços/Hospedagem
-  'Hospedagem (humilde)':0.05,'Hospedagem (confortável)':0.5,'Hospedagem (rica)':2,
-  'Refeição':0.05,'Bebida (cerveja)':0.04,'Cavalo de Guerra':400,'Cavalo de Corrida':75,
-  'Cavalo de Tiro':50,'Mula':8,'Carroça':35,'Carriola':15,
+  'Antídoto':50,'Poção de Veneno':100,
+  // Montarias (PHB p.157)
+  'Cavalo Montaria':75,'Cavalo de Guerra':400,'Pônei':30,'Mula':8,'Asno':8,
+  // Veículos (PHB p.157)
+  'Carroça':35,'Carriola':15,'Barco a Remo':50,
+  // Serviços/Hospedagem (PHB p.159)
+  'Hospedagem Humilde':2,'Hospedagem Confortável':8,'Hospedagem Rica':40,
+  'Refeição Humilde':3,'Refeição Confortável':5,'Bebida Cerveja':4,
 };
 
 // Itens mágicos — raridade (não encontrados em lojas comuns)
@@ -3156,6 +3563,18 @@ function processInventoryChanges(text){
   const loseRegex=/\[ITEM:-([^\]]+)\]/gi;
   while((m=loseRegex.exec(text))!==null){
     removeInventoryItem(m[1].trim());
+  }
+  // Detecta uso de poção na narrativa e remove do inventário
+  if(/bebeu|tomou|usou|consumiu|aplicou/i.test(text) && /poção/i.test(text)){
+    removeInventoryItem('Poção de Cura',1);
+  }
+  // Detecta uso de tocha
+  if(/acendeu|usa uma tocha|tocha acesa/i.test(text)){
+    removeInventoryItem('Tocha',1);
+  }
+  // Detecta consumo de ração
+  if(/come|comeu|consumiu.*ração|ração.*consumida/i.test(text)){
+    removeInventoryItem('Ração de Viagem',1);
   }
   // MP: slot de magia usado [MP:-X]
   const mpTag=text.match(/\[MP:(-\d+)\]/i);
