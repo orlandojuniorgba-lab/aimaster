@@ -534,6 +534,22 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .rest-icon-circle{width:46px;height:46px;border-radius:50%;background:rgba(200,146,42,.12);border:1.5px solid rgba(200,146,42,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .rest-duration{font-size:11px;color:rgba(200,146,42,.6);font-family:var(--font-title);margin:2px 0;}
 
+/* ══ TUTORIAL MODAL ══ */
+/* ══ PREMIUM FEATURES CSS ══ */
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.scene-img-full{cursor:pointer;transition:transform .3s}
+.scene-img-full:active{transform:scale(1.6)!important}
+
+.dice-btn{background:rgba(26,18,8,.9);border:1px solid rgba(200,146,42,.25);border-radius:6px;padding:4px 7px;font-family:var(--font-title);font-size:10px;color:rgba(200,146,42,.7);cursor:pointer;transition:all .15s;letter-spacing:.3px}
+.dice-btn:hover,.dice-btn:active{background:rgba(200,146,42,.2);border-color:rgba(200,146,42,.6);color:var(--gold-l);transform:scale(1.05)}
+.dice-btn.rolling{animation:diceSpin .3s ease-out}
+@keyframes diceSpin{0%{transform:rotate(0) scale(1.2)}100%{transform:rotate(360deg) scale(1)}}
+.tutorial-section{background:rgba(15,10,4,.6);border:1px solid rgba(200,146,42,.18);border-radius:10px;overflow:hidden;margin-bottom:2px}
+.tutorial-hdr{background:rgba(200,146,42,.1);border-bottom:1px solid rgba(200,146,42,.15);padding:8px 12px;font-family:var(--font-title);font-size:12px;color:var(--gold-l);letter-spacing:.5px}
+.tutorial-body{padding:10px 12px;font-size:13px;color:var(--parch-d);line-height:1.6}
+.tutorial-body b{color:var(--gold-l)}
+
 /* ══ STATUS TAB NOVO VISUAL ══ */
 .sh-hero-banner{background:rgba(15,10,4,.6);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .sh-portrait{width:48px;height:48px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4A3B8C,#1A1040);border:2px solid rgba(139,111,208,.6);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
@@ -765,6 +781,17 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <button class="act-btn suggested" id="ab3" onclick="doAct('Falar com alguém')"><div class="a-circle">💬</div><div class="a-text"><span class="a-title">Falar com alguém</span><span class="a-hint">Diplomacia</span></div><span class="a-arrow">›</span></button>
       <button class="act-btn suggested" id="ab4" onclick="doAct('Investigar o local')"><div class="a-circle">🔍</div><div class="a-text"><span class="a-title">Investigar o local</span><span class="a-hint">Investigação</span></div><span class="a-arrow">›</span></button>
     </div>
+  <!-- Barra de Dados de Dano -->
+  <div id="dice-bar" style="display:flex;align-items:center;gap:4px;padding:4px 10px 2px;background:rgba(10,8,4,.9);border-top:1px solid rgba(200,146,42,.08)">
+    <span style="font-family:var(--font-title);font-size:9px;color:rgba(200,146,42,.4);letter-spacing:1px;flex-shrink:0">DADOS:</span>
+    <button class="dice-btn" onclick="rollDiceBar(4)"  title="Rolar d4">d4</button>
+    <button class="dice-btn" onclick="rollDiceBar(6)"  title="Rolar d6">d6</button>
+    <button class="dice-btn" onclick="rollDiceBar(8)"  title="Rolar d8">d8</button>
+    <button class="dice-btn" onclick="rollDiceBar(10)" title="Rolar d10">d10</button>
+    <button class="dice-btn" onclick="rollDiceBar(12)" title="Rolar d12">d12</button>
+    <button class="dice-btn" id="fbar-d20-btn" onclick="rollDiceBar(20)" title="Rolar d20" style="background:rgba(200,146,42,.2);border-color:rgba(200,146,42,.5);color:var(--gold-l)">d20</button>
+    <div id="dice-bar-result" style="margin-left:auto;font-family:var(--font-title);font-size:14px;font-weight:700;color:var(--gold-l);min-width:50px;text-align:right"></div>
+  </div>
     <div class="ooc-toggle-row">
         <button class="ooc-toggle" id="ooc-toggle" onclick="toggleOOC()" title="Alternar modo">
           <span class="ooc-icon" id="ooc-icon">⚔️</span>
@@ -776,19 +803,16 @@ body{font-family:var(--font-narr);color:var(--parch);}
   </div>
   <!-- ★ FOOTER COM ÍCONES MELHORADOS -->
   <div class="footer-bar">
-    <button class="fbar-btn d20-dim" id="fbar-d20-btn" onclick="handleD20Click()" title="Rolar D20">
-      <svg class="d20-icon-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.12)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/>
-        <line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/>
-        <line x1="2" y1="13" x2="38" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/>
-        <line x1="38" y1="13" x2="2" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/>
-        <text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text>
+        <button class="fbar-btn" id="fbar-tutorial-btn" onclick="openMo('mo-tutorial')" title="Tutorial">
+      <svg viewBox="0 0 40 40" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="17" stroke="#C8922A" stroke-width="1.5" fill="rgba(200,146,42,.1)"/>
+        <text x="20" y="27" text-anchor="middle" fill="#E8B84B" font-size="20" font-family="Cinzel,serif" font-weight="700">?</text>
       </svg>
-      <span class="fbl">D20</span>
+      <span class="fbl">Guia</span>
     </button>
     <button class="fbar-btn" onclick="openMo('mo-char')" title="Ficha"><span class="fbi">📜</span><span class="fbl">Ficha</span></button>
     <button class="fbar-btn" onclick="openMo('mo-rep')" title="Reputação"><span class="fbi">🏅</span><span class="fbl">Reputação</span></button>
-    <button class="fbar-btn" onclick="openMo('mo-shop')" title="Créditos"><span class="fbi">💎</span><span class="fbl">Créditos</span></button>
+    <button class="fbar-btn" onclick="openMo('mo-shop')" title="Diamantes"><span class="fbi">💎</span><span class="fbl">Diamantes</span></button>
     <button class="fbar-btn" onclick="openMo('mo-map')" title="Mapa"><span class="fbi">🗺️</span><span class="fbl">Mapa</span></button>
     <button class="fbar-btn" onclick="openRestModal()" title="Descanso" id="rest-footer-btn">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.6" style="display:block;margin:0 auto">
@@ -798,6 +822,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
       </svg>
       <span class="fbl">Descanso</span>
     </button>
+    <button class="fbar-btn" onclick="openMemoryModal()" title="Memória da Aventura"><span class="fbi">🧠</span><span class="fbl">Memória</span></button>
     <button class="fbar-btn" onclick="openMo('mo-api')" title="API"><span class="fbi">🔑</span><span class="fbl">API</span></button>
   </div>
 </div>
@@ -911,18 +936,19 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
 <!-- MODAL LOJA -->
 <div class="mo" id="mo-shop"><div class="ms">
-  <div class="mt">💎 Créditos &amp; Mercador <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+  <div class="mt">💎 Diamantes &amp; Mercador <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
   <!-- Contexto de localização -->
   <div id="shop-context-banner" style="background:rgba(200,146,42,0.08);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--gold-d);text-align:center;font-family:var(--font-title);letter-spacing:.5px"></div>
-  <p class="mo-note">1 Crédito = 10 Peças de Ouro (GP)</p>
-  <div class="sp-pack" id="shop-pack1" style="transition:opacity .3s"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy" onclick="buyCredits(1)">COMPRAR</button></div>
-  <div class="sp-pack" id="shop-pack2" style="transition:opacity .3s"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy" onclick="buyCredits(2)">COMPRAR</button></div>
-  <div class="sp-pack featured" id="shop-pack3" style="transition:opacity .3s"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy" onclick="buyCredits(3)">COMPRAR</button></div>
+  <p class="mo-note">💎 1 Diamante = 10 Peças de Ouro in-game</p>
+  <div class="sp-pack" id="shop-pack1" style="transition:opacity .3s"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 💎 → 100 PO</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy" onclick="buyCredits(1)">COMPRAR</button></div>
+  <div class="sp-pack" id="shop-pack2" style="transition:opacity .3s"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 💎 → 500 PO</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy" onclick="buyCredits(2)">COMPRAR</button></div>
+  <div class="sp-pack featured" id="shop-pack3" style="transition:opacity .3s"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 💎 → 1000 PO</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy" onclick="buyCredits(3)">COMPRAR</button></div>
   <!-- Procurar Mercador dentro da loja -->
   <!-- Botão de teste (modo dev) -->
-  <div style="margin:8px 0;display:flex;gap:6px">
-    <button onclick="addTestCredits(50)" style="flex:1;background:rgba(0,180,80,.15);border:1px solid rgba(0,180,80,.3);color:#60D090;border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">🧪 +50 Créditos (TESTE)</button>
-    <button onclick="showEconomyLog()" style="flex:1;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.2);color:var(--gold-l);border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">📊 Ver Log</button>
+  <div style="margin:8px 0;display:flex;gap:6px;flex-wrap:wrap">
+    <button onclick="addTestCredits(50)" style="flex:1;min-width:120px;background:rgba(0,180,80,.15);border:1px solid rgba(0,180,80,.3);color:#60D090;border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">🧪 +50 💎 (TESTE)</button>
+    <button onclick="showEconomyLog()" style="flex:1;min-width:80px;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.2);color:var(--gold-l);border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">📊 Log</button>
+    <button onclick="resetTurnCounter()" style="flex:1;min-width:100px;background:rgba(91,63,160,.15);border:1px solid rgba(139,111,208,.3);color:#C0A0FF;border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">🔄 Reset Turnos</button>
   </div>
   <div id="shop-mercador-btn" style="transition:opacity .3s;cursor:pointer" onclick="closeMo('mo-shop');doAct('Procurar um Mercador na região')">
     <div class="sp-pack" style="background:rgba(0,180,80,0.08);border-color:rgba(0,180,80,0.3)">
@@ -1103,6 +1129,105 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <button class="btn-primary" onclick="saveApiKey()">SALVAR CHAVE</button>
   <p class="mo-note">console.anthropic.com</p>
   <p class="mo-note" id="api-status" style="color:var(--green)"></p>
+</div></div>
+
+
+<!-- MODAL TUTORIAL / GUIA DO JOGO -->
+<div class="mo" id="mo-tutorial"><div class="ms" style="max-height:85vh;overflow-y:auto">
+  <div class="mt">📖 Guia do AiMaster <button class="mc" onclick="closeMo('mo-tutorial')">×</button></div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;padding-bottom:8px">
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">🎮 Como Jogar</div>
+      <div class="tutorial-body">
+        O AiMaster é um RPG solo de D&D 5e com Mestre IA. Você cria um personagem e a IA narra sua aventura em tempo real, respeitando todas as regras do livro do jogador.
+      </div>
+    </div>
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">🎲 Dados e Testes</div>
+      <div class="tutorial-body">
+        <b>Botão D20:</b> Acende quando o Mestre pede um teste. Toque para rolar automaticamente.<br><br>
+        <b>Dados de dano:</b> Use os botões na barra de dados (d4 ao d12) para rolar dano de armas e magias quando o Mestre pedir.<br><br>
+        <b>Fórmula:</b> Role o dado + modificador do atributo. Ex: Espada Longa = d8 + modificador de Força.
+      </div>
+    </div>
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">⚔️ Combate</div>
+      <div class="tutorial-body">
+        1. Mestre declara inimigo → painel vermelho aparece<br>
+        2. Role iniciativa (d20+DES) se pedido<br>
+        3. No seu turno: escolha uma ação nas opções<br>
+        4. Para atacar: role d20 + atributo + proficiência<br>
+        5. Se acertar (≥ CA inimigo): role dado de dano<br>
+        6. Testes de morte: a 0 PV, role d20 — 10+ = sucesso (3 = estável, 3 falhas = morte)
+      </div>
+    </div>
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">🪄 Magias e Truques</div>
+      <div class="tutorial-body">
+        <b>Truques (Nível 0):</b> Infinitos, sem gastar slot. Use livremente.<br><br>
+        <b>Feitiços:</b> Consomem slots de magia. Recupere no descanso longo.<br><br>
+        <b>Bônus:</b> Ataque mágico = d20 + proficiência + mod conjuração (INT/SAB/CAR por classe).
+      </div>
+    </div>
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">💰 Economia e Diamantes</div>
+      <div class="tutorial-body">
+        <b>Ouro (PO):</b> Moeda do jogo. Atualiza automaticamente via tags da narrativa.<br><br>
+        <b>Diamantes (💎):</b> Moeda premium. Use em 💎 Diamantes para adquirir ouro in-game e apoiar o desenvolvimento.<br><br>
+        <b>Mercador:</b> Role Sobrevivência para encontrar. Itens mágicos são raros e caros!
+      </div>
+    </div>
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">📜 Interface</div>
+      <div class="tutorial-body">
+        <b>Ficha (📜):</b> Status, inventário, habilidades e magias do personagem<br>
+        <b>Reputação (🏅):</b> Seu status social — afeta preços e diálogos<br>
+        <b>Mapa (🗺️):</b> Mapa do mundo de Faerûn com zoom e drag<br>
+        <b>Descanso (🌙):</b> Curto (1h, recupera PV) ou Longo (8h, recupera tudo)<br>
+        <b>Outra decisão...:</b> Digite qualquer ação livre que não esteja nas opções<br>
+        <b>💬 OFF:</b> Modo fora do personagem — pergunte ao Mestre sobre regras ou narrativa
+      </div>
+    </div>
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">🎲 Dados Disponíveis</div>
+      <div class="tutorial-body">
+        <b>d4:</b> Adaga, dardo, magias fracas<br>
+        <b>d6:</b> Espada curta, maça, cajado, maioria das magias<br>
+        <b>d8:</b> Espada longa, rapieira, maça de guerra<br>
+        <b>d10:</b> Alabarda, besta pesada<br>
+        <b>d12:</b> Machado grande (Bárbaro)<br>
+        <b>d20:</b> Ataques, testes de atributo, salvaguardas<br>
+        <b>d100:</b> Tabelas especiais (eventos aleatórios)
+      </div>
+    </div>
+
+    <div class="tutorial-section">
+      <div class="tutorial-hdr">💡 Dicas Essenciais</div>
+      <div class="tutorial-body">
+        ✦ Descreva suas ações com detalhes — o Mestre responde melhor<br>
+        ✦ Use "Outra decisão" para ações criativas não listadas<br>
+        ✦ O Mestre ESPERA você rolar antes de continuar após um [TESTE:]<br>
+        ✦ Verifique o inventário após cada cena — itens são rastreados<br>
+        ✦ Descanse com frequência — o Nível 1 é perigoso!
+      </div>
+    </div>
+
+  </div>
+</div></div>
+
+
+<!-- MODAL MEMÓRIA DA AVENTURA -->
+<div class="mo" id="mo-memory"><div class="ms" style="max-height:85vh;overflow-y:auto">
+  <div class="mt">🧠 Memória da Aventura <button class="mc" onclick="closeMo('mo-memory')">×</button></div>
+  <div id="memory-modal-content"></div>
 </div></div>
 
 </div><!-- #app -->
@@ -1849,6 +1974,9 @@ function startAdventure(){
         rep:Math.max(0,repBonus),xp:0,level:1,credits:0,questId:0};
   merchantCD=(cls==='Paladino'||cls==='Clérigo')?10:(race==='Tiefling'?14:12);
   gameHistory=[];
+  // Carrega memória ou inicia nova sessão
+  loadMemory();
+  if(!gameMemory.session) gameMemory.session = 1;
 
   // ── Game screen top bar ──
   document.getElementById('g-av').textContent=classAv[cls]||'⚔️';
@@ -2194,12 +2322,17 @@ function extractGoldChange(text){
 }
 
 function extractHPChange(text){
-  // Detecta tag explícita [PV:-15] ou [PV:+8]
-  const tag=text.match(/\[PV:([+-]?\d+)\]/i);
-  if(tag) return parseInt(tag[1]);
-  // Detecta dano na narrativa
-  const dmg=text.match(/(?:sofre|recebe|toma|causando)\s+(\d+)\s*(?:pontos de dano|de dano|dano)/i);
-  const heal=text.match(/(?:recupera|cura|restaura)\s+(\d+)\s*(?:pontos de vida|pv|de vida|hp)/i);
+  // Aceita múltiplas tags [PV:-10][PV:+5] etc
+  let total = 0;
+  const tagRe = /\[PV:([+-]?\d+)\]/gi;
+  let m;
+  while((m=tagRe.exec(text))!==null){
+    total += parseInt(m[1]);
+  }
+  if(total !== 0) return total;
+  // Fallback narrativo — apenas se mestre explicitou dano/cura com número
+  const dmg=text.match(/(?:sofre|recebe|toma)\s+(\d+)\s*(?:pontos de dano|de dano|dano)/i);
+  const heal=text.match(/(?:recupera|cura|restaura)\s+(\d+)\s*(?:pontos de vida|de vida)\b/i);
   if(dmg) return -parseInt(dmg[1]);
   if(heal) return +parseInt(heal[1]);
   return 0;
@@ -2340,12 +2473,15 @@ function buildSystemPrompt(){
   const classAbilsNow=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv<=(hero.level||1)).map(a=>a.name).join(', ')||'nenhuma';
   const questData=QUESTS[hero.questId!==undefined?hero.questId:0];
 
+  // ★ Injeta bloco de memória persistente
+  const memoryBlock = buildMemoryBlock();
+
   return `Você é o Mestre de Dungeons do AiMaster — sistema D&D 5e SRD, solo, em português brasileiro.
 
 ━━━ PERSONAGEM ━━━
 Nome: ${hero.name} | Raça: ${hero.race} | Classe: ${hero.cls} Nível ${hero.level||1}
 Antecedente: ${hero.bg} | Alinhamento: ${hero.align}
-PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | Ouro: ${hero.gold} PO | XP: ${hero.xp||0}
+PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | SALDO ATUAL DE OURO: ${Math.round(hero.gold||0)} PO (este é o total presente agora, não reconstrua o histórico) | XP: ${hero.xp||0}
 Atributos: ${atrs}
 Itens equipados: ${equippedItems}
 Magias: ${spellList}
@@ -2353,6 +2489,7 @@ Habilidades de classe: ${classAbilsNow}
 Traços/Bônus: ${allTags} | ${allBonuses}
 Regras especiais do personagem:${especiais}
 
+${memoryBlock}
 ━━━ MISSÃO ATIVA ━━━
 ${questData.title}: ${questData.hook}
 
@@ -2397,11 +2534,34 @@ O que você faz?
 ═══════════════════════════════════════════
 
 REGRAS DE IMERSÃO:
-- Nunca quebre a 4ª parede (não diga "como Mestre", "no jogo", "mecanicamente")
+- NUNCA quebre a 4ª parede (não diga "como Mestre", "no jogo", "mecanicamente")
+- NUNCA faça resumos de ouro, inventário ou stats em formato de lista na narrativa
 - Nunca resolva conflitos abertos sem o jogador agir
 - Descreva consequências reais das escolhas — o mundo reage
-- NPCs têm personalidade, segredos, motivações próprias
 - Em Nível 1: o herói é FRÁGIL. Uma faca no beco é ameaça real. Faça o jogador sentir isso.
+
+TESTES — REGRA CRÍTICA DE ESPERA:
+▸ Quando pedir um teste, PARE completamente e aguarde o resultado
+▸ NÃO continue a narrativa, NÃO descreva o que acontece ANTES do jogador rolar
+▸ NÃO pergunte "qual foi seu resultado?" — o sistema registra automaticamente
+▸ NÃO diga "você rolou X" — isso é decisão do jogador
+▸ CORRETO: Narre até o momento do teste → inclua [TESTE:attr:CD] → inclua opção "Rolar X CD Y" → PARE
+▸ ERRADO: pedir teste E continuar narrando o resultado na mesma resposta
+
+NPCs — MEMÓRIA OBRIGATÓRIA:
+▸ O bloco MEMÓRIA DA AVENTURA acima lista todos os NPCs e eventos registrados — consulte SEMPRE
+▸ NUNCA contrarie informações de NPCs já estabelecidos na memória
+▸ NUNCA invente NPCs sem introdução narrativa (diga o nome + aparência + papel)
+▸ Ao apresentar NPC importante: use tag [NPC:Nome:descrição:relação] para registrar
+▸ Se jogador menciona alguém não registrado, peça esclarecimento ao invés de inventar
+
+DANO E CURA — TAGS OBRIGATÓRIAS:
+▸ Dano ao personagem: [PV:-X] onde X é o dano calculado
+▸ Cura: [PV:+X] onde X é a cura calculada
+▸ SEMPRE inclua a tag [PV:] quando o personagem sofre dano ou cura
+▸ Calcule o dano COMPLETO antes de narrar (dado de arma + modificador)
+▸ Exemplo: "A espada corta seu ombro causando 7 de dano [PV:-7]"
+▸ Se o dano for 0 (miss), não inclua [PV:]
 
 ━━━ JORNADA DO HERÓI — TOM NARRATIVO POR NÍVEL ━━━
 
@@ -2418,11 +2578,11 @@ Tom: intimista, cotidiano, descoberta. O herói ainda não sabe que é especial.
 :`◆ FASE 2-3 — INICIAÇÃO E TRANSFORMAÇÃO (Níveis 5+): O herói cresce, o mundo fica maior`}
 
 MODELO DE NARRATIVA NÍVEL 1 (siga este estilo):
-"O sol da manhã filtra pelas frestas da janela de madeira, pintando listras de luz no chão batido. O cheiro de mingau de aveia com mel já toma conta do ar.
+'O sol da manhã filtra pelas frestas da janela de madeira, pintando listras de luz no chão batido. O cheiro de mingau de aveia com mel já toma conta do ar.
 
-Avó Elara: (voz grave e serena) 'Eragon, meu jovem, o dia não espera pelos dorminhocos.'
+Avó Elara: (voz grave e serena) "Eragon, meu jovem, o dia não espera pelos dorminhocos."
 
-Você se espreguiça, sentindo a madeira da cama ranger. Lá fora, ouve o ritmo metódico da pedra de amolar contra o aço — o som da sua vida até hoje."
+Você se espreguiça, sentindo a madeira da cama ranger. Lá fora, ouve o ritmo metódico da pedra de amolar contra o aço — o som da sua vida até hoje.'
 
 REGRAS DE TOM:
 • Parágrafos curtos (2-3 frases) com linha em branco entre eles
@@ -2545,7 +2705,10 @@ TALENTOS (PHB Cap.6 p.167 — regra opcional):
 - Resiliente: profic. em save de 1 atributo | Iniciado em Magia: truques de outra classe
 
 PROIBIÇÕES ABSOLUTAS:
-- NUNCA role dados pelo jogador — descreva e aguarde o resultado
+- NUNCA role dados pelo jogador — use [TESTE:] e AGUARDE sem continuar
+- NUNCA pergunte "qual foi seu resultado?" — o sistema mostra automaticamente
+- NUNCA continue a narrativa após pedir teste — espere o retorno do jogador
+- SEMPRE inclua [PV:-X] ao causar dano e [PV:+X] ao curar
 - NUNCA invente preços — use apenas os valores acima
 - NUNCA dê >20po por missão de nível 1
 - NUNCA teletransporte sem narrativa de transição
@@ -2556,25 +2719,39 @@ PROIBIÇÕES ABSOLUTAS:
 [COMBATE:NomeInimigo] — quando inimigo aparece com intenção hostil
 [FIM_COMBATE] — quando o combate terminar (inimigo derrotado, foge, rendição, fuga do herói)
 [XP:quantidade] — XP ganho (Fácil=25, Médio=50, Difícil=100, Mortal=200 por nível)
-[PV:+X] ou [PV:-X] — quando PV muda
+[PV:+X] ou [PV:-X] — SEMPRE que PV mudar (ex: [PV:-7] dano, [PV:+5] cura). Calcule o valor exato!
 [OURO:+X] ou [OURO:-X] — OBRIGATÓRIO sempre que ouro mudar
-⚠️ REGRA ABSOLUTA DE OURO — SEM EXCEÇÃO:
-TODA mudança de ouro DEVE conter a tag [OURO:+X] ou [OURO:-X] no mesmo trecho.
-A tag é o ÚNICO mecanismo que atualiza o contador. Menção sem tag = bug no jogo.
+⚠️ REGRA ABSOLUTA DE OURO — LEIA COM ATENÇÃO:
 
-CORRETO: "Você recebe [OURO:+15] 15 PO pela entrega."
-CORRETO: "O ferreiro cobra [OURO:-8] 8 PO pelo reparo."
-ERRADO: "Você recebe 15 PO." ← SEM TAG, NÃO ATUALIZA
-ERRADO: "Você tem 141 PO agora." ← SEM TAG, NÃO ATUALIZA
+O personagem tem EXATAMENTE ${Math.round(hero.gold||0)} PO agora. Este é o valor real do sistema.
 
-NUNCA mencione valores de PO sem a tag correspondente.
-NUNCA diga "você tem X PO" sem que esse X reflita uma transação com tag [OURO:±X].
-O ouro do personagem é: ${Math.round(hero.gold||0)} PO. Use esse valor como referência.ro.
-Exemplos corretos: "Recebe 15 PO [OURO:+15]", "Paga 3 PO [OURO:-3]", "Encontra bolsa com 8 PO [OURO:+8]"
-Nível 1: recompensas típicas são 5-25 PO por missão simples. NUNCA dê centenas de PO no início.
-[ITEM:+Nome:ícone:peso] — SEMPRE que ganhar item (ex: [ITEM:+Adaga:🗡️:0.45])
-[ITEM:-Nome] — SEMPRE que perder/usar/vender item (ex: [ITEM:-Poção de Cura])
-Use nomes exatos do inventário. Ao usar Poção de Cura sempre inclua [ITEM:-Poção de Cura] e [PV:+valor].
+REGRAS:
+1. Toda transação de ouro DEVE ter a tag [OURO:+X] ou [OURO:-X]
+2. NUNCA faça resumos de ouro ("Ouro total: X", "Você tinha X e ganhou Y = Z")
+3. NUNCA recalcule ou re-explique o ouro — o sistema já faz isso
+4. Apenas mencione o valor se for essencial à narrativa, e use o valor exato: ${Math.round(hero.gold||0)} PO
+5. Quando der recompensa: escreva apenas "você recebe 15 PO [OURO:+15]" — sem mais
+
+CORRETO: "Calix entrega as moedas. [OURO:+20]"
+CORRETO: "O item custa 5 PO. [OURO:-5]"
+ERRADO: "Ouro Total: Começou com X, recebeu Y, total Z"  ← NUNCA FAÇA ISSO
+ERRADO: "Você tinha 200 PO, ganhou 20, agora tem 220 PO" ← NUNCA FAÇA ISSO
+
+Nível 1: recompensas típicas 5-25 PO por missão simples.
+[NPC:Nome:descrição:relação] — OPCIONAL: quando apresentar NPC importante pela primeira vez
+  Exemplo: [NPC:Kaelen:guerreiro aposentado pai do herói:aliado]
+  Isso garante que o NPC seja lembrado em todas as sessões futuras
+[ITEM:+Nome:ícone:peso] — OBRIGATÓRIO ao ganhar qualquer item (ex: [ITEM:+Adaga:🗡️:0.45])
+[ITEM:-Nome] — OBRIGATÓRIO ao perder/usar/vender item (ex: [ITEM:-Poção de Cura])
+
+⚠️ REGRA DE ITENS — SEM EXCEÇÃO:
+Após TODA vitória em combate ou descoberta de saque: inclua [ITEM:+] para CADA item obtido
+Loot típico de inimigos (use quando o herói saqueia):
+  • Goblin: [ITEM:+Adaga Enferrujada:🗡️:0.5] + [OURO:+2] a [OURO:+5]
+  • Bandido: [ITEM:+Espada Curta:⚔️:1] ou [ITEM:+Arco Curto:🏹:1] + [OURO:+5] a [OURO:+15]
+  • Guarda/Soldado: [ITEM:+Cota de Malha Danificada:🥋:18] + [OURO:+8] a [OURO:+20]
+  • Criatura Mágica: item mágico se CR ≥ 2 (raro, CR baixo = nenhum item mágico)
+NUNCA mencione "você encontra X" sem a tag [ITEM:+X]. O inventário só atualiza via tag.
 [LOCALIZAÇÃO:cidade] ou [LOCALIZAÇÃO:campo]
 TESTES — QUANDO E COMO PEDIR (CRÍTICO):
 ▸ NUNCA peça teste desnecessário. Só peça quando há risco REAL de falha com consequência
@@ -2614,6 +2791,10 @@ Mercador: Sobrevivência CD ${merchantCD} para encontrar.`;
 
 async function askMaster(acao, oocMode=false){
   if(thinking)return;
+  // ★ Verifica limite de turnos (Sessão Premium) — ignora em modo OOC
+  if(!oocMode && typeof checkTurnLimit==='function'){
+    if(!checkTurnLimit()) return; // mostra paywall
+  }
   setThinking(true);
   gameHistory.push({role:'user',content:acao});
   const apiKey=localStorage.getItem('aimaster_api_key')||'';
@@ -2627,7 +2808,7 @@ async function askMaster(acao, oocMode=false){
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,system:buildSystemPrompt(),messages:gameHistory.slice(-14)})
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
     });
     if(!res.ok){
       const err=await res.json().catch(()=>({}));
@@ -2651,10 +2832,12 @@ async function askMaster(acao, oocMode=false){
       // Ouro — SOMENTE via tag [OURO:±X]
       const goldDelta=extractGoldChange(reply);
       if(goldDelta!==0){
+        const prevGold=Math.round(hero.gold||0);
         hero.gold=Math.max(0,Math.round((hero.gold+goldDelta)*100)/100);
         updateVitals();
-        if(goldDelta>0) showToast('🪙 +'+goldDelta+' PO → Total: '+Math.round(hero.gold)+' PO');
-        else showToast('🪙 '+goldDelta+' PO → Total: '+Math.round(hero.gold)+' PO');
+        logEconomyEvent('narrative', goldDelta, 0, prevGold, hero.gold, 'tag [OURO:]');
+        const sign=goldDelta>0?'+':'';
+        showToast('🪙 '+sign+goldDelta+' PO → '+Math.round(hero.gold)+' PO');
       }
       // HP
       const hpDelta=extractHPChange(reply);
@@ -2667,6 +2850,8 @@ async function askMaster(acao, oocMode=false){
       updateD20ButtonState(); // Acende o botão se teste pendente
       // Processa mudanças de inventário
       processInventoryChanges(reply);
+      // ★ Processa memória — extrai NPCs e eventos
+      processMemory(reply);
       // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
       const testeMatch=reply.match(/\[TESTE:([^:]+):?(\d+)?\]/i);
       if(testeMatch){
@@ -2709,6 +2894,10 @@ async function askMaster(acao, oocMode=false){
         typewriterMsg(m,formatted);
       }
       if(actions)updateActionButtons(actions);
+      // ★ Mostra botão Cena Ilustrada após narrativa significativa
+      if(!oocMode && formatted.length > 100){
+        setTimeout(()=>showSceneButton(cleanText), 800);
+      }
     } else {
       const m=addMsg('msg-dm','');typewriterMsg(m,'O Mestre hesita... Tente novamente.');
       gameHistory.pop();
@@ -2846,6 +3035,677 @@ const ACTION_ATTR_MAP=[
 ];
 
 // Detecta se uma ação requer teste e qual atributo
+
+// ══ BARRA DE DADOS (d4-d100) ══
+async function rollDiceBar(sides){
+  const resultEl = document.getElementById('dice-bar-result');
+  const d20Btn = document.getElementById('fbar-d20-btn');
+  
+  // Se d20 e tem teste pendente, usa o teste do mestre
+  if(sides === 20 && pendingRollAttr){
+    await handleD20Click();
+    return;
+  }
+  
+  // Animação rápida
+  let animCount = 0;
+  const anim = setInterval(()=>{
+    const r = Math.ceil(Math.random()*sides);
+    if(resultEl) resultEl.textContent = `d${sides}: ${r}`;
+    animCount++;
+    if(animCount > 6) clearInterval(anim);
+  }, 60);
+  
+  await new Promise(r=>setTimeout(r,400));
+  clearInterval(anim);
+  
+  const result = rollD(sides);
+  const isCrit = sides===20 && result===20;
+  const isFail = sides===20 && result===1;
+  
+  if(resultEl){
+    resultEl.textContent = `d${sides}: ${result}`;
+    resultEl.style.color = isCrit ? '#2ECC71' : isFail ? '#E74C3C' : 'var(--gold-l)';
+  }
+  
+  // Adiciona resultado na narrativa
+  addRollCard(`d${sides}`, result, 0, result, null);
+  
+  // Informa o Mestre
+  const context = sides === 4 ? '(dano d4)' :
+                  sides === 6 ? '(dano d6)' :
+                  sides === 8 ? '(dano d8)' :
+                  sides === 10 ? '(dano d10)' :
+                  sides === 12 ? '(dano d12)' :
+                  sides === 20 ? '(d20 livre)' : `(d${sides})`;
+  askMaster(`Jogador rolou d${sides} ${context} e obteve ${result}. Use este resultado para calcular dano ou efeito e continue a narrativa. Inclua [PV:-X] se o dano atingiu o personagem.`);
+}
+
+// ══ D20 — abre via dado quando teste pendente ══
+function updateD20ButtonState(){
+  const btn = document.getElementById('fbar-d20-btn');
+  if(!btn) return;
+  if(pendingRollAttr){
+    btn.style.background='rgba(200,146,42,0.4)';
+    btn.style.borderColor='rgba(200,146,42,0.9)';
+    btn.style.color='#FFD700';
+    btn.style.boxShadow='0 0 8px rgba(200,146,42,0.5)';
+    btn.title='🎲 ROLAR '+(attrLabels[pendingRollAttr]||'').toUpperCase()+(pendingRollCD?' CD '+pendingRollCD:'');
+  } else {
+    btn.style.background='rgba(200,146,42,0.2)';
+    btn.style.borderColor='rgba(200,146,42,0.5)';
+    btn.style.color='var(--gold-l)';
+    btn.style.boxShadow='none';
+    btn.title='Rolar d20';
+  }
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// SISTEMA DE MEMÓRIA PERSISTENTE — NPCs, Eventos, Locais
+// ══════════════════════════════════════════════════════════════
+
+// Estrutura de memória
+let gameMemory = {
+  npcs: [],       // {name, desc, relation, alive, firstTurn}
+  events: [],     // {summary, turn, type} — últimos 15
+  locations: [],  // {name, desc, visited}
+  session: 0,     // número de sessão atual
+  turnCount: 0,   // contador de turnos nesta sessão
+};
+
+const MEMORY_KEY = 'aimaster_memory';
+const MAX_EVENTS = 15;
+const MAX_NPCS = 20;
+
+// ★ Carrega memória do localStorage
+function loadMemory(){
+  try {
+    const saved = localStorage.getItem(MEMORY_KEY);
+    if(saved){
+      const parsed = JSON.parse(saved);
+      gameMemory = {...gameMemory, ...parsed};
+      console.log('[Memory] Loaded:', gameMemory.npcs.length, 'NPCs,', gameMemory.events.length, 'events');
+    }
+  } catch(e){ console.warn('[Memory] Load error:', e); }
+}
+
+// ★ Salva memória no localStorage
+function saveMemory(){
+  try {
+    localStorage.setItem(MEMORY_KEY, JSON.stringify(gameMemory));
+  } catch(e){ console.warn('[Memory] Save error:', e); }
+}
+
+// ★ Reseta memória (nova aventura)
+function resetMemory(){
+  gameMemory = {npcs:[], events:[], locations:[], session:(gameMemory.session||0)+1, turnCount:0};
+  saveMemory();
+}
+
+// ★ Extrai NPCs do texto do Mestre
+function extractNPCsFromText(text){
+  if(!text) return;
+  
+  // Padrão 1: "Nome: (emoção) fala" — NPC com diálogo
+  const dialogPattern = /^([A-ZÁÉÍÓÚÂÊÔÃÕÇ][a-zA-ZÁÉÍÓÚÂÊÔÃÕÇáéíóúâêôãõç\s"'-]{2,30}):\s*[\("]/gm;
+  
+  // Padrão 2: "o/a [cargo] [Nome]" — NPCs com títulos
+  const titlePattern = /(?:o|a)\s+(?:guerreiro|mago|ladino|clérigo|estalajadeiro|mercador|guarda|capitão|nobre|anão|elfo|halfling|druida|bardo|paladino|ranger|feiticeiro|bruxo|assassino|arqueiro|ferreiro|boticário)\s+([A-ZÁÉÍÓÚ][a-zA-ZÁÉÍÓÚÂÊÔÃÕÇáéíóúâêôãõç]{2,20})/gi;
+  
+  // Padrão 3: Tag explícita [NPC:Nome:desc:relação]
+  const tagPattern = /\[NPC:([^:]+):([^:]+):([^\]]+)\]/gi;
+  
+  let newNPCs = [];
+  
+  // Extrai de tags explícitas
+  let m;
+  while((m=tagPattern.exec(text))!==null){
+    const name = m[1].trim();
+    const desc = m[2].trim();
+    const relation = m[3].trim();
+    addOrUpdateNPC(name, desc, relation);
+  }
+  
+  // Extrai de diálogos
+  const dialogMatches = [...text.matchAll(dialogPattern)];
+  dialogMatches.forEach(match => {
+    const name = match[1].trim();
+    // Ignora palavras comuns que não são nomes
+    const notNames = ['você','mestre','narrador','herói','aventureiro','personagem','jogador','ação','turno'];
+    if(name.length > 2 && !notNames.some(n => name.toLowerCase().includes(n))){
+      // Verifica se já existe
+      const existing = gameMemory.npcs.find(n => n.name.toLowerCase() === name.toLowerCase());
+      if(!existing){
+        // Tenta extrair descrição do contexto ao redor
+        const idx = text.indexOf(match[0]);
+        const context = text.substring(Math.max(0,idx-100), Math.min(text.length, idx+150));
+        addOrUpdateNPC(name, extractContextDesc(context, name), 'neutro');
+      }
+    }
+  });
+}
+
+// Extrai uma descrição contextual de um NPC
+function extractContextDesc(context, name){
+  // Remove o próprio nome e procura adjetivos/descrições próximas
+  const patterns = [
+    /(?:um|uma)\s+([^.,!?]{5,50})\s+(?:chamado|chamada|de nome)/i,
+    new RegExp(name + '[^.!?]{0,5}(?:é|era|parece|tinha|tem)\\s+([^.!?]{5,40})', 'i'),
+  ];
+  for(const p of patterns){
+    const m = context.match(p);
+    if(m) return m[1].trim().substring(0,60);
+  }
+  return 'personagem da aventura';
+}
+
+// ★ Adiciona ou atualiza NPC na memória
+function addOrUpdateNPC(name, desc, relation){
+  if(!name || name.length < 2) return;
+  
+  const idx = gameMemory.npcs.findIndex(n => 
+    n.name.toLowerCase() === name.toLowerCase() ||
+    name.toLowerCase().includes(n.name.toLowerCase())
+  );
+  
+  if(idx >= 0){
+    // Atualiza se a nova descrição é melhor (mais longa)
+    if(desc && desc.length > (gameMemory.npcs[idx].desc||'').length){
+      gameMemory.npcs[idx].desc = desc;
+    }
+    if(relation && relation !== 'neutro'){
+      gameMemory.npcs[idx].relation = relation;
+    }
+    gameMemory.npcs[idx].lastSeen = gameMemory.turnCount;
+  } else {
+    if(gameMemory.npcs.length >= MAX_NPCS){
+      // Remove o NPC mais antigo que não foi visto recentemente
+      const oldIdx = gameMemory.npcs.reduce((min, n, i) => 
+        (n.lastSeen||0) < (gameMemory.npcs[min]?.lastSeen||0) ? i : min, 0);
+      gameMemory.npcs.splice(oldIdx, 1);
+    }
+    gameMemory.npcs.push({
+      name: name.trim(),
+      desc: (desc||'').trim().substring(0,80),
+      relation: relation||'neutro',
+      alive: true,
+      firstTurn: gameMemory.turnCount,
+      lastSeen: gameMemory.turnCount,
+    });
+  }
+  saveMemory();
+}
+
+// ★ Adiciona evento importante à memória
+function addMemoryEvent(summary, type='evento'){
+  if(!summary) return;
+  
+  gameMemory.events.push({
+    summary: summary.trim().substring(0,120),
+    turn: gameMemory.turnCount,
+    session: gameMemory.session,
+    type,
+  });
+  
+  // Mantém apenas os MAX_EVENTS mais recentes
+  if(gameMemory.events.length > MAX_EVENTS){
+    gameMemory.events = gameMemory.events.slice(-MAX_EVENTS);
+  }
+  saveMemory();
+}
+
+// ★ Extrai eventos automáticos do texto
+function extractEventsFromText(text){
+  if(!text || text.length < 50) return;
+  
+  // Detecta eventos significativos por padrões
+  const eventPatterns = [
+    { re: /\[COMBATE:([^\]]+)\]/i,       type:'combate',    fmt: m => `Combate contra ${m[1]}` },
+    { re: /\[FIM_COMBATE\]/i,             type:'vitória',    fmt: () => `Combate encerrado (turno ${gameMemory.turnCount})` },
+    { re: /\[XP:(\d+)\]/i,               type:'xp',         fmt: m => `Ganhou ${m[1]} XP` },
+    { re: /\[OURO:\+(\d+)\]/i,            type:'ouro',       fmt: m => `Ganhou ${m[1]} PO` },
+    { re: /\[ITEM:\+([^\]:]+)/i,          type:'item',       fmt: m => `Obteve: ${m[1].split(':')[0]}` },
+    { re: /\[LOCALIZAÇÃO:([^\]]+)\]/i,   type:'local',      fmt: m => `Chegou em: ${m[1]}` },
+  ];
+  
+  for(const p of eventPatterns){
+    const m = text.match(p.re);
+    if(m) addMemoryEvent(p.fmt(m), p.type);
+  }
+  
+  // Detecta itens obtidos via tag
+  const itemGain = text.match(/\[ITEM:\+([^\]:]+)/gi)||[];
+  itemGain.forEach(t=>{
+    const name = t.replace(/\[ITEM:\+/,'').split(':')[0].trim();
+    if(name) addMemoryEvent(`Obteve: ${name}`, 'item');
+  });
+
+  // Detecta morte de NPC
+  const deathMatch = text.match(/([A-ZÁÉÍÓÚ][a-zA-ZÁÉÍÓÚáéíóúâêôãõç]{2,20})\s+(?:morre|foi morto|morreu|caiu|foi derrotado)/i);
+  if(deathMatch){
+    const name = deathMatch[1];
+    const npc = gameMemory.npcs.find(n => n.name.toLowerCase() === name.toLowerCase());
+    if(npc){ npc.alive = false; saveMemory(); }
+    addMemoryEvent(`${name} morreu`, 'morte');
+  }
+}
+
+// ★ Processa resposta do mestre — extrai memória
+function processMemory(text){
+  gameMemory.turnCount++;
+  extractNPCsFromText(text);
+  extractEventsFromText(text);
+}
+
+// ★ Gera bloco de memória para o system prompt
+function buildMemoryBlock(){
+  const npcs = gameMemory.npcs.filter(n => n.name.length > 1);
+  const events = gameMemory.events.slice(-10); // últimos 10 eventos
+  
+  if(npcs.length === 0 && events.length === 0) return '';
+  
+  let block = '\n━━━ MEMÓRIA DA AVENTURA (SEMPRE RESPEITE) ━━━\n';
+  
+  if(npcs.length > 0){
+    block += '\nNPCs CONHECIDOS (nunca invente informações inconsistentes com isso):\n';
+    npcs.forEach(n => {
+      const status = n.alive === false ? ' [MORTO]' : '';
+      const rel = n.relation && n.relation !== 'neutro' ? ` — ${n.relation}` : '';
+      block += `• ${n.name}${status}: ${n.desc||'personagem da aventura'}${rel}\n`;
+    });
+  }
+  
+  if(events.length > 0){
+    block += '\nEVENTOS RECENTES (contexto da história):\n';
+    events.forEach(e => {
+      const prefix = e.type === 'combate' ? '⚔️' : 
+                     e.type === 'vitória' ? '🏆' :
+                     e.type === 'morte' ? '💀' :
+                     e.type === 'item' ? '📦' :
+                     e.type === 'local' ? '📍' : '📌';
+      block += `${prefix} ${e.summary}\n`;
+    });
+  }
+  
+  block += '\nIMPORTANTE: Mantenha TOTAL consistência com todos os NPCs e eventos acima.';
+  block += '\nNUNCA contrarie informações já estabelecidas. NUNCA invente novos NPCs sem introduzi-los.\n';
+  
+  return block;
+}
+
+// ★ Modal de memória — visualizar/editar
+function openMemoryModal(){
+  const npcs = gameMemory.npcs;
+  const events = gameMemory.events;
+  
+  let html = `<div style="font-family:var(--font-title);font-size:11px;color:rgba(200,146,42,.5);letter-spacing:2px;margin-bottom:10px">
+    SESSÃO ${gameMemory.session||1} · TURNO ${gameMemory.turnCount}
+  </div>`;
+  
+  html += `<div style="font-family:var(--font-title);font-size:12px;color:var(--gold-l);margin-bottom:6px">NPCs (${npcs.length})</div>`;
+  
+  if(npcs.length === 0){
+    html += `<p style="font-size:12px;color:var(--parch-d);font-style:italic;margin-bottom:12px">Nenhum NPC registrado ainda.</p>`;
+  } else {
+    html += `<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">`;
+    npcs.forEach((n,i) => {
+      const deadStyle = n.alive===false ? 'opacity:.5;text-decoration:line-through' : '';
+      html += `<div style="background:rgba(15,10,4,.6);border:1px solid rgba(200,146,42,.18);border-radius:8px;padding:8px 10px;${deadStyle}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <span style="font-family:var(--font-title);font-size:12px;color:var(--gold-l)">${n.name}</span>
+            ${n.alive===false?'<span style="font-size:9px;color:#E74C3C;margin-left:6px">MORTO</span>':''}
+            <div style="font-size:11px;color:var(--parch-d);margin-top:2px">${n.desc||''}</div>
+            ${n.relation&&n.relation!=='neutro'?`<div style="font-size:10px;color:rgba(200,146,42,.5);margin-top:2px">${n.relation}</div>`:''}
+          </div>
+          <button onclick="removeNPCFromMemory(${i})" style="background:rgba(200,0,0,.15);border:1px solid rgba(200,0,0,.2);border-radius:5px;padding:2px 6px;font-size:10px;color:rgba(200,60,60,.8);cursor:pointer;flex-shrink:0">✕</button>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  
+  // Adicionar NPC manual
+  html += `<div style="display:flex;gap:6px;margin-bottom:16px">
+    <input id="mem-npc-name" placeholder="Nome do NPC" style="flex:1;background:rgba(15,10,4,.8);border:1px solid rgba(200,146,42,.2);border-radius:6px;padding:7px 10px;color:var(--parch);font-size:13px;outline:none"/>
+    <input id="mem-npc-desc" placeholder="Descrição" style="flex:2;background:rgba(15,10,4,.8);border:1px solid rgba(200,146,42,.2);border-radius:6px;padding:7px 10px;color:var(--parch);font-size:13px;outline:none"/>
+    <button onclick="addNPCManual()" style="background:rgba(200,146,42,.2);border:1px solid rgba(200,146,42,.35);border-radius:6px;padding:7px 12px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">+ NPC</button>
+  </div>`;
+  
+  html += `<div style="font-family:var(--font-title);font-size:12px;color:var(--gold-l);margin-bottom:6px">Eventos (${events.length})</div>`;
+  if(events.length === 0){
+    html += `<p style="font-size:12px;color:var(--parch-d);font-style:italic">Nenhum evento registrado.</p>`;
+  } else {
+    html += `<div style="display:flex;flex-direction:column;gap:3px">`;
+    [...events].reverse().forEach(e => {
+      html += `<div style="font-size:12px;color:var(--parch-d);padding:4px 8px;border-left:2px solid rgba(200,146,42,.25)">${e.summary}</div>`;
+    });
+    html += `</div>`;
+  }
+  
+  html += `<div style="display:flex;gap:8px;margin-top:16px">
+    <button onclick="resetMemory();openMemoryModal()" style="flex:1;background:rgba(200,0,0,.1);border:1px solid rgba(200,0,0,.2);border-radius:8px;padding:8px;font-family:var(--font-title);font-size:11px;color:rgba(200,60,60,.8);cursor:pointer">🗑 Limpar Memória</button>
+    <button onclick="closeMo('mo-memory')" style="flex:1;background:rgba(200,146,42,.15);border:1px solid rgba(200,146,42,.3);border-radius:8px;padding:8px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">✓ Fechar</button>
+  </div>`;
+  
+  const container = document.getElementById('memory-modal-content');
+  if(container) container.innerHTML = html;
+  openMo('mo-memory');
+}
+
+function removeNPCFromMemory(idx){
+  gameMemory.npcs.splice(idx, 1);
+  saveMemory();
+  openMemoryModal(); // refresh
+}
+
+function addNPCManual(){
+  const nameEl = document.getElementById('mem-npc-name');
+  const descEl = document.getElementById('mem-npc-desc');
+  const name = nameEl?.value.trim();
+  const desc = descEl?.value.trim();
+  if(!name){ showToast('⚠️ Digite o nome do NPC'); return; }
+  addOrUpdateNPC(name, desc||'NPC adicionado manualmente', 'conhecido');
+  if(nameEl) nameEl.value = '';
+  if(descEl) descEl.value = '';
+  openMemoryModal();
+  showToast('✅ '+name+' adicionado à memória');
+}
+
+
+// ══ FEATURE: RELANÇAR DADO 💎 ══
+const REROLL_COST = 2; // diamantes por reroll
+let lastRollData = null; // {attr, label, cd, context}
+
+// Mostra botão de reroll após uma rolagem ruim
+function showRerollButton(rollResult, context){
+  // Só mostra se falhou ou crítica de falha
+  if(rollResult.ok === true || rollResult.isCrit) return;
+  if((hero.credits||0) < REROLL_COST) return;
+  
+  const narr = document.getElementById('narr');
+  if(!narr) return;
+  
+  // Remove reroll button anterior se existir
+  const old = document.getElementById('reroll-btn-wrap');
+  if(old) old.remove();
+  
+  lastRollData = {...rollResult, context};
+  
+  const wrap = document.createElement('div');
+  wrap.id = 'reroll-btn-wrap';
+  wrap.style.cssText = 'display:flex;justify-content:center;margin:4px 0 8px;animation:fadeIn .3s';
+  wrap.innerHTML = `
+    <button onclick="useReroll()" style="
+      background:linear-gradient(135deg,rgba(91,63,160,.3),rgba(139,111,208,.2));
+      border:1px solid rgba(139,111,208,.5);border-radius:10px;
+      padding:8px 18px;display:flex;align-items:center;gap:8px;cursor:pointer;
+      font-family:var(--font-title);font-size:12px;color:#C0A0FF;letter-spacing:.5px;
+      box-shadow:0 0 12px rgba(139,111,208,.2)">
+      <span style="font-size:16px">💎</span>
+      <span>Relançar por ${REROLL_COST} Diamantes</span>
+      <span style="font-size:11px;color:rgba(200,160,255,.6)">(você tem ${hero.credits||0})</span>
+    </button>`;
+  narr.appendChild(wrap);
+  wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+async function useReroll(){
+  if((hero.credits||0) < REROLL_COST){
+    showToast('❌ Diamantes insuficientes!');
+    return;
+  }
+  if(!lastRollData) return;
+  
+  // Remove botão
+  const btn = document.getElementById('reroll-btn-wrap');
+  if(btn) btn.remove();
+  
+  // Gasta diamantes
+  hero.credits = (hero.credits||0) - REROLL_COST;
+  updateVitals();
+  logEconomyEvent('reroll', 0, -REROLL_COST, hero.gold, hero.gold, 'Relançar dado');
+  showToast(`💎 -${REROLL_COST} Diamantes · Relançando...`);
+  
+  // Rola novamente
+  const r = lastRollData;
+  const result = await rollInlineD20(r.attrKey || r.attr, r.label, r.cd);
+  
+  const outcome = result.isCrit ? 'CRÍTICO' : result.isFail ? 'FALHA CRÍTICA' :
+                  result.ok === true ? 'SUCESSO' : result.ok === false ? 'FALHA' : `total ${result.total}`;
+  
+  askMaster(`Jogador usou 💎 Relançar Dado. Novo resultado: ${r.label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${r.cd?' vs CD '+r.cd:''} — ${outcome}. ${lastRollData.context||'Continue a narrativa com este novo resultado.'}`);
+  
+  lastRollData = null;
+}
+
+
+// ══ FEATURE: SESSÃO PREMIUM 💎 ══
+const FREE_TURNS_PER_DAY = 15;
+const SESSION_COST = 5; // diamantes por sessão extra
+const SESSION_TURNS = 10; // turnos extras por sessão
+
+function getTodayKey(){ return 'aimaster_turns_'+new Date().toDateString(); }
+
+function getTurnsUsedToday(){
+  try { return parseInt(localStorage.getItem(getTodayKey())||'0'); } catch(e){ return 0; }
+}
+
+function addTurnUsed(){
+  try {
+    const key = getTodayKey();
+    const current = parseInt(localStorage.getItem(key)||'0');
+    localStorage.setItem(key, current+1);
+  } catch(e){}
+}
+
+function getBonusTurns(){
+  try { return parseInt(localStorage.getItem('aimaster_bonus_turns')||'0'); } catch(e){ return 0; }
+}
+
+function addBonusTurns(amount){
+  try {
+    const current = getBonusTurns();
+    localStorage.setItem('aimaster_bonus_turns', current+amount);
+  } catch(e){}
+}
+
+// Verifica se pode jogar, mostra paywall se necessário
+function checkTurnLimit(){
+  const used = getTurnsUsedToday();
+  const bonus = getBonusTurns();
+  const total_free = FREE_TURNS_PER_DAY + bonus;
+  
+  if(used < total_free) {
+    addTurnUsed();
+    return true; // pode jogar
+  }
+  
+  // Mostrar paywall
+  showTurnLimitModal(used, total_free);
+  return false;
+}
+
+function showTurnLimitModal(used, limit){
+  const narr = document.getElementById('narr');
+  
+  // Remove paywall anterior
+  const old = document.getElementById('paywall-wrap');
+  if(old) old.remove();
+  
+  const wrap = document.createElement('div');
+  wrap.id = 'paywall-wrap';
+  wrap.style.cssText = 'margin:16px 0;padding:16px;background:linear-gradient(135deg,rgba(91,63,160,.15),rgba(26,18,8,.9));border:1px solid rgba(139,111,208,.4);border-radius:14px;text-align:center';
+  wrap.innerHTML = `
+    <div style="font-size:28px;margin-bottom:8px">💎</div>
+    <div style="font-family:var(--font-title);font-size:14px;color:#C0A0FF;margin-bottom:4px">Limite Diário Atingido</div>
+    <div style="font-size:12px;color:var(--parch-d);margin-bottom:12px">
+      Você usou ${used} de ${limit} turnos de hoje.<br>
+      <span style="color:rgba(200,160,255,.6);font-size:11px">Renova à meia-noite</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button onclick="buySesssion()" style="background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:10px;font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
+        💎 ${SESSION_COST} Diamantes — +${SESSION_TURNS} Turnos agora
+      </button>
+      <button onclick="openMo('mo-shop')" style="background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.25);border-radius:10px;padding:8px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">
+        🛒 Comprar mais Diamantes
+      </button>
+      <div style="font-size:10px;color:rgba(200,160,255,.4);margin-top:4px">
+        Você tem 💎 ${hero.credits||0} Diamantes
+      </div>
+    </div>`;
+  narr.appendChild(wrap);
+  wrap.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function buySesssion(){
+  if((hero.credits||0) < SESSION_COST){
+    showToast('❌ Diamantes insuficientes!');
+    openMo('mo-shop');
+    return;
+  }
+  hero.credits = (hero.credits||0) - SESSION_COST;
+  addBonusTurns(SESSION_TURNS);
+  updateVitals();
+  logEconomyEvent('session', 0, -SESSION_COST, hero.gold, hero.gold, 'Sessão Premium');
+  
+  const old = document.getElementById('paywall-wrap');
+  if(old) old.remove();
+  
+  showToast(`💎 -${SESSION_COST} Diamantes · +${SESSION_TURNS} turnos desbloqueados!`);
+  addMemoryEvent(`Sessão Premium: +${SESSION_TURNS} turnos`, 'premium');
+}
+
+
+// ══ FEATURE: CENA ILUSTRADA 💎 ══
+const SCENE_COST = 3; // diamantes por imagem
+let lastNarrativeText = ''; // guarda última narrativa para prompt de imagem
+
+// Botão de cena ilustrada — aparece após narrativa longa
+function showSceneButton(narrativeText){
+  lastNarrativeText = narrativeText;
+  
+  // Só mostra se a cena tem texto suficiente (cena significativa)
+  if(!narrativeText || narrativeText.length < 80) return;
+  
+  const old = document.getElementById('scene-btn-wrap');
+  if(old) old.remove();
+  
+  const narr = document.getElementById('narr');
+  if(!narr) return;
+  
+  const wrap = document.createElement('div');
+  wrap.id = 'scene-btn-wrap';
+  wrap.style.cssText = 'display:flex;justify-content:flex-end;margin:2px 0 4px;padding-right:4px';
+  wrap.innerHTML = `
+    <button onclick="generateSceneImage()" style="
+      background:rgba(91,63,160,.15);border:1px solid rgba(139,111,208,.3);
+      border-radius:8px;padding:5px 10px;display:flex;align-items:center;gap:5px;
+      cursor:pointer;font-family:var(--font-title);font-size:10px;color:rgba(180,140,255,.7);
+      letter-spacing:.3px;transition:all .2s"
+      onmouseenter="this.style.borderColor='rgba(139,111,208,.6)';this.style.color='#C0A0FF'"
+      onmouseleave="this.style.borderColor='rgba(139,111,208,.3)';this.style.color='rgba(180,140,255,.7)'">
+      <span>🎨</span>
+      <span>Ilustrar Cena</span>
+      <span style="color:rgba(200,160,255,.5)">💎 ${SCENE_COST}</span>
+    </button>`;
+  narr.appendChild(wrap);
+}
+
+async function generateSceneImage(){
+  if((hero.credits||0) < SCENE_COST){
+    showToast('❌ Diamantes insuficientes!');
+    openMo('mo-shop');
+    return;
+  }
+  
+  // Remove botão
+  const btn = document.getElementById('scene-btn-wrap');
+  if(btn) btn.remove();
+  
+  // Gasta diamantes
+  hero.credits = (hero.credits||0) - SCENE_COST;
+  updateVitals();
+  logEconomyEvent('scene', 0, -SCENE_COST, hero.gold, hero.gold, 'Cena Ilustrada');
+  showToast(`💎 -${SCENE_COST} Diamantes · Gerando imagem...`);
+  
+  // Cria placeholder de carregamento na narrativa
+  const narr = document.getElementById('narr');
+  const imgWrap = document.createElement('div');
+  imgWrap.id = 'scene-img-wrap';
+  imgWrap.style.cssText = 'margin:8px 0;border-radius:12px;overflow:hidden;border:1px solid rgba(139,111,208,.3);background:rgba(15,10,4,.8);min-height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px';
+  imgWrap.innerHTML = `
+    <div style="font-size:24px;animation:pulse 1.5s infinite">🎨</div>
+    <div style="font-family:var(--font-title);font-size:11px;color:rgba(139,111,208,.7);letter-spacing:1px">Criando ilustração...</div>`;
+  narr.appendChild(imgWrap);
+  imgWrap.scrollIntoView({behavior:'smooth',block:'center'});
+  
+  try {
+    // Gera prompt de imagem a partir da narrativa atual
+    const imagePrompt = await buildImagePrompt(lastNarrativeText);
+    
+    // URL da Pollinations.ai — gratuito, sem API key necessária
+    const encodedPrompt = encodeURIComponent(imagePrompt);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&enhance=true&model=flux`;
+    
+    // Carrega a imagem
+    const img = new Image();
+    img.onload = function(){
+      imgWrap.innerHTML = `
+        <img src="${imageUrl}" alt="Cena Ilustrada" 
+          style="width:100%;border-radius:12px;display:block"
+          onclick="this.style.transform=this.style.transform?'':'scale(1.5)';this.style.zIndex=this.style.zIndex?'':'10';this.style.position=this.style.position?'':'relative'"/>
+        <div style="padding:6px 10px;font-family:var(--font-title);font-size:9px;color:rgba(139,111,208,.5);letter-spacing:.5px;text-align:center">
+          ✨ Cena Ilustrada · Toque para ampliar
+        </div>`;
+      imgWrap.scrollIntoView({behavior:'smooth',block:'center'});
+      addMemoryEvent('Cena ilustrada gerada', 'premium');
+    };
+    img.onerror = function(){
+      imgWrap.innerHTML = `
+        <div style="padding:16px;text-align:center">
+          <div style="font-size:20px;margin-bottom:6px">😞</div>
+          <div style="font-family:var(--font-title);font-size:11px;color:rgba(200,60,60,.7)">Erro ao gerar imagem</div>
+          <div style="font-size:10px;color:var(--parch-d);margin-top:4px">Diamantes reembolsados</div>
+        </div>`;
+      // Reembolsa
+      hero.credits = (hero.credits||0) + SCENE_COST;
+      updateVitals();
+    };
+    img.src = imageUrl;
+    
+  } catch(e) {
+    imgWrap.innerHTML = `<div style="padding:16px;font-size:11px;color:rgba(200,60,60,.7)">Erro: ${e.message}</div>`;
+    hero.credits = (hero.credits||0) + SCENE_COST;
+    updateVitals();
+  }
+}
+
+// Gera prompt de imagem otimizado para fantasy D&D
+async function buildImagePrompt(narrativeText){
+  // Extrai elementos visuais da narrativa
+  const text = narrativeText.replace(/\[.*?\]/g,'').trim();
+  const charInfo = `${hero.race} ${hero.cls}`;
+  
+  // Prompt base de fantasia medieval
+  let prompt = `fantasy RPG illustration, DnD 5e art style, dramatic lighting, detailed medieval fantasy, `;
+  
+  // Adiciona contexto do personagem e cena
+  // Pega as primeiras 200 chars da narrativa para extrair cenário
+  const sceneContext = text.substring(0,200).replace(/\n/g,' ');
+  prompt += `${sceneContext}, `;
+  prompt += `${charInfo} adventurer, `;
+  
+  // Qualidade e estilo
+  prompt += `oil painting style, fantasy book cover art, high quality, dramatic, epic`;
+  
+  return prompt.substring(0,500); // Limita tamanho do prompt
+}
+
+
+// ══ FIM FEATURES PREMIUM ══
+
 function detectActionRequiresRoll(action){
   const a = action.trim();
 
@@ -2977,7 +3837,14 @@ async function rollInlineD20(attrKey, label, cd){
   pendingRollAttr = null;
   pendingRollCD = null;
 
-  return {diceVal, modVal, total, isCrit, isFail, ok, label, attrKey, cd};
+  const rollResult = {diceVal, modVal, total, isCrit, isFail, ok, label, attrKey, cd};
+  
+  // ★ Mostra botão Relançar se falhou
+  if(!isCrit && (ok===false || isFail)){
+    showRerollButton(rollResult, `Reteste de ${label}`);
+  }
+  
+  return rollResult;
 }
 
 function buildD20AbilitiesPanel(){
@@ -3121,10 +3988,10 @@ function openMo(id){
 
 
 // ══════════════════════════════════════════════════════════════
-// SISTEMA DE ECONOMIA — CRÉDITOS E OURO IN-GAME
+// SISTEMA DE ECONOMIA — DIAMANTES E OURO IN-GAME
 // ══════════════════════════════════════════════════════════════
 
-// Pacotes de créditos disponíveis
+// Pacotes de diamantes disponíveis
 const CREDIT_PACKS = [
   null, // índice 0 vazio
   {id:1, name:'Bolsa do Viajante',  credits:10,  gp:100,  price:'R$ 4,90',   bonus:0},
@@ -3132,8 +3999,8 @@ const CREDIT_PACKS = [
   {id:3, name:'Cofre do Patrono',   credits:100, gp:1000, price:'R$ 34,90',  bonus:50}, // bônus rep
 ];
 
-// ★ Adiciona ouro via crédito (chamado pelo sistema de pagamento)
-// goldAmount = GP a adicionar | creditsUsed = créditos gastos | source = 'purchase'|'test'
+// ★ Adiciona ouro via diamante (chamado pelo sistema de pagamento)
+// goldAmount = GP a adicionar | creditsUsed = diamantes gastos | source = 'purchase'|'test'
 function addGold(goldAmount, creditsUsed=0, source='game'){
   const prev = Math.round(hero.gold||0);
   hero.gold = Math.round((hero.gold||0) + goldAmount);
@@ -3179,7 +4046,7 @@ function logEconomyEvent(type, goldDelta, creditsDelta, prevGold, newGold, reaso
   } catch(e){}
 }
 
-// ★ COMPRAR PACOTE DE CRÉDITOS
+// ★ COMPRAR DIAMANTES DE DIAMANTES
 // Em produção: abre gateway de pagamento
 // Em modo teste: simula compra direto
 function buyCredits(packId){
@@ -3194,14 +4061,14 @@ function buyCredits(packId){
 
   // Modo de teste — confirma e credita direto
   const confirm = window.confirm(
-    `🛒 COMPRAR PACOTE\n\n${pack.name}\n${pack.credits} Créditos → ${pack.gp} GP in-game\n${pack.price}\n\n[MODO TESTE: sem cobrança real]\n\nConfirmar?`
+    `🛒 COMPRAR PACOTE\n\n${pack.name}\n${pack.credits} Diamantes → ${pack.gp} GP in-game\n${pack.price}\n\n[MODO TESTE: sem cobrança real]\n\nConfirmar?`
   );
   if(!confirm) return;
 
-  // Credita créditos ao jogador
+  // Credita diamantes ao jogador
   hero.credits = (hero.credits||0) + pack.credits;
 
-  // Converte créditos em ouro imediatamente
+  // Converte diamantes em ouro imediatamente
   const goldGained = pack.gp;
   addGold(goldGained, 0, 'purchase');
 
@@ -3219,32 +4086,42 @@ function buyCredits(packId){
   gameHistory.push({role:'user', content: msg});
   gameHistory.push({role:'assistant', content: `Entendido. ${hero.name} agora tem ${Math.round(hero.gold)} PO. [OURO:+${pack.gp}]`});
 
-  showToast(`✅ ${pack.gp} GP adicionados! Total: ${Math.round(hero.gold)} PO`);
+  showToast(`💎 ${pack.gp} PO adicionados! Total: ${Math.round(hero.gold)} PO`);
   logEconomyEvent('purchase', goldGained, -pack.credits, hero.gold-goldGained, hero.gold, pack.name);
 }
 
-// ★ USAR CRÉDITOS para comprar ouro in-game (taxa conversão)
-// 1 crédito = 10 GP (taxa base)
+// ★ USAR DIAMANTES para comprar ouro in-game (taxa conversão)
+// 1 diamante = 10 GP (taxa base)
 function convertCreditsToGold(creditAmount){
   if((hero.credits||0) < creditAmount){
-    showToast('❌ Créditos insuficientes! Você tem '+hero.credits+' créditos');
+    showToast('❌ Diamantes insuficientes! Você tem '+hero.credits+' diamantes');
     return false;
   }
   const gp = creditAmount * 10;
   hero.credits -= creditAmount;
   addGold(gp, 0, 'credit_conversion');
-  showToast('💎 '+creditAmount+' créditos → '+gp+' GP');
+  showToast('💎 '+creditAmount+' diamantes → '+gp+' GP');
   return true;
 }
 
-// ★ MODO TESTE — adiciona créditos sem pagamento
+// ★ MODO TESTE — adiciona diamantes sem pagamento
 function addTestCredits(amount=50){
   hero.credits = (hero.credits||0) + amount;
   updateVitals();
-  showToast('🧪 [TESTE] +'+amount+' créditos adicionados');
+  showToast('🧪 [TESTE] +'+amount+' diamantes adicionados');
 }
 
 // ★ Ver log de transações
+function resetTurnCounter(){
+  try {
+    localStorage.removeItem(getTodayKey());
+    localStorage.removeItem('aimaster_bonus_turns');
+    showToast('🔄 Contador de turnos zerado!');
+    const old = document.getElementById('paywall-wrap');
+    if(old) old.remove();
+  } catch(e){ showToast('Erro ao resetar'); }
+}
+
 function showEconomyLog(){
   try {
     const log = JSON.parse(localStorage.getItem('aimaster_economy_log')||'[]');
@@ -3728,7 +4605,7 @@ const MAGIC_ITEM_RARITY={
 const CANNOT_BUY_MAGIC=['Anel de Proteção','Cinto de Força','Manto de Proteção','Botas de Velocidade'];
 
 function processInventoryChanges(text){
-  // Tags explícitas [ITEM:+Nome:ícone:peso]
+  // ★ 1. Tags explícitas [ITEM:+Nome:ícone:peso] — PRINCIPAL mecanismo
   const gainRegex=/\[ITEM:\+([^\]]+)\]/gi;
   let m;
   while((m=gainRegex.exec(text))!==null){
@@ -3739,24 +4616,61 @@ function processInventoryChanges(text){
     const weight=parseFloat(parts[2])||getItemWeight(name);
     addInventoryItem(name,icon,getItemDesc(name),weight,1,isItemMagic(name));
   }
-  // Tags de remoção [ITEM:-Nome]
+
+  // ★ 2. Tags de remoção [ITEM:-Nome]
   const loseRegex=/\[ITEM:-([^\]]+)\]/gi;
   while((m=loseRegex.exec(text))!==null){
     removeInventoryItem(m[1].trim());
   }
-  // Detecta uso de poção na narrativa e remove do inventário
-  if(/bebeu|tomou|usou|consumiu|aplicou/i.test(text) && /poção/i.test(text)){
+
+  // ★ 3. Detecção narrativa de LOOT — fallback quando mestre esquece a tag
+  //    Detecta padrões comuns de saque/recompensa em PT-BR
+  const lootPatterns = [
+    // "você encontra/pega/recebe [item]"
+    /(?:encontra|pega|recolhe|saqueia|obtém|recebe)\s+(?:uma?|o|a|os|as)\s+([\w\s''-]{3,40}?)(?:\s+(?:no chão|do corpo|da bolsa|do baú|da caixa|da criatura|do inimigo|do goblin|do bandido|do monstro))/gi,
+    // "[item] cai no chão" / "[item] estava na bolsa"
+    /([\w\s''-]{3,35}?)\s+(?:cai|caiu|estava|estão|está)\s+(?:no chão|na bolsa|no baú|aos pés)/gi,
+    // "loot: [item], [item]" 
+    /loot[:\s]+([^.\n!?]{3,60})/gi,
+  ];
+
+  // Lista de itens conhecidos para fuzzy match
+  const knownItems = Object.keys(ITEM_PRICE_TABLE||{}).concat([
+    'adaga','espada','machado','arco','maça','escudo','armadura','poção','tocha','ração',
+    'corda','chave','pergaminho','grimório','moedas','ouro','prata','cobre',
+  ]);
+
+  lootPatterns.forEach(pattern => {
+    let match;
+    while((match=pattern.exec(text))!==null){
+      const found = match[1]?.trim().toLowerCase();
+      if(!found || found.length < 3) continue;
+      // Verifica se é um item conhecido
+      const isKnown = knownItems.some(k => found.includes(k.toLowerCase()) || k.toLowerCase().includes(found));
+      if(isKnown){
+        const itemName = match[1].trim();
+        // Verifica se já tem a tag explícita para este item (evita duplicata)
+        const hasTag = new RegExp('\\[ITEM:\\+'+itemName,'i').test(text);
+        if(!hasTag && !inventory.find(i=>i.name.toLowerCase()===itemName.toLowerCase())){
+          // Adiciona com toast de aviso
+          const icon = getItemIcon(itemName);
+          const weight = getItemWeight(itemName);
+          addInventoryItem(itemName, icon, getItemDesc(itemName), weight, 1, isItemMagic(itemName));
+          showToast('📦 Auto-detectado: '+itemName);
+        }
+      }
+    }
+  });
+
+  // ★ 4. Consumo narrativo de itens
+  if(/bebeu|tomou|usou|consumiu|aplicou/i.test(text) && /poção/i.test(text))
     removeInventoryItem('Poção de Cura',1);
-  }
-  // Detecta uso de tocha
-  if(/acendeu|usa uma tocha|tocha acesa/i.test(text)){
+  if(/acendeu|usa uma tocha|tocha acesa/i.test(text))
     removeInventoryItem('Tocha',1);
-  }
-  // Detecta consumo de ração
-  if(/come|comeu|consumiu.*ração|ração.*consumida/i.test(text)){
+  if(/come|comeu|consumiu.{0,10}ração|ração.{0,10}consumida/i.test(text))
     removeInventoryItem('Ração de Viagem',1);
-  }
-  // MP: slot de magia usado [MP:-X]
+
+  // ★ 5. MP: slot de magia usado [MP:-X]
   const mpTag=text.match(/\[MP:(-\d+)\]/i);
   if(mpTag){ const slotLv=Math.abs(parseInt(mpTag[1]))||1; useSpellSlot(slotLv); }
 }
