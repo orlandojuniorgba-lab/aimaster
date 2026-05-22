@@ -915,10 +915,15 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <!-- Contexto de localização -->
   <div id="shop-context-banner" style="background:rgba(200,146,42,0.08);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--gold-d);text-align:center;font-family:var(--font-title);letter-spacing:.5px"></div>
   <p class="mo-note">1 Crédito = 10 Peças de Ouro (GP)</p>
-  <div class="sp-pack" id="shop-pack1" style="transition:opacity .3s"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy">COMPRAR</button></div>
-  <div class="sp-pack" id="shop-pack2" style="transition:opacity .3s"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy">COMPRAR</button></div>
-  <div class="sp-pack featured" id="shop-pack3" style="transition:opacity .3s"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy">COMPRAR</button></div>
+  <div class="sp-pack" id="shop-pack1" style="transition:opacity .3s"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 Créditos → 100 GP</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy" onclick="buyCredits(1)">COMPRAR</button></div>
+  <div class="sp-pack" id="shop-pack2" style="transition:opacity .3s"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 Créditos → 500 GP</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy" onclick="buyCredits(2)">COMPRAR</button></div>
+  <div class="sp-pack featured" id="shop-pack3" style="transition:opacity .3s"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 Créditos → 1000 GP</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy" onclick="buyCredits(3)">COMPRAR</button></div>
   <!-- Procurar Mercador dentro da loja -->
+  <!-- Botão de teste (modo dev) -->
+  <div style="margin:8px 0;display:flex;gap:6px">
+    <button onclick="addTestCredits(50)" style="flex:1;background:rgba(0,180,80,.15);border:1px solid rgba(0,180,80,.3);color:#60D090;border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">🧪 +50 Créditos (TESTE)</button>
+    <button onclick="showEconomyLog()" style="flex:1;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.2);color:var(--gold-l);border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">📊 Ver Log</button>
+  </div>
   <div id="shop-mercador-btn" style="transition:opacity .3s;cursor:pointer" onclick="closeMo('mo-shop');doAct('Procurar um Mercador na região')">
     <div class="sp-pack" style="background:rgba(0,180,80,0.08);border-color:rgba(0,180,80,0.3)">
       <div><div class="sp-nm" style="color:#60D090">🛒 Procurar Mercador</div><div class="sp-cr">Role Sobrevivência CD <span id="merch-hint">12</span></div><div class="sp-pr">Troca ouro do personagem por itens</div></div>
@@ -1949,10 +1954,10 @@ function updateVitals(){
   document.getElementById('bar-mp').style.width=mpP+'%';
   document.getElementById('g-hp-txt').textContent=`${hero.hp}/${hero.maxHP}`;
   document.getElementById('g-mp-txt').textContent=`${hero.mp}/${hero.maxMP}`;
-  // Gold display — round to avoid decimals
-  const goldDisplay = Math.round(hero.gold);
+  // Gold display — sempre inteiro
+  const goldDisplay = Math.round(hero.gold||0);
   document.getElementById('g-gd').textContent=goldDisplay;
-  document.getElementById('g-credits').textContent=hero.credits||0;
+  document.getElementById('g-credits').textContent=Math.round(hero.credits||0);
   // ★ Atualiza cards de recurso na ficha
   const shHpVal=document.getElementById('sh-hp-val');
   const shHpSub=document.getElementById('sh-hp-sub');
@@ -2178,21 +2183,14 @@ function cleanTextForDisplay(text){
 }
 
 function extractGoldChange(text){
-  // PRIORIDADE 1: Tag explícita [OURO:+50] [OURO:-30] [OURO:50]
-  const tagMatch=text.match(/\[OURO:([+-]?\d+)\]/i);
-  if(tagMatch) return parseInt(tagMatch[1]);
-  // PRIORIDADE 2: Padrões narrativos PT-BR (sem \b problemático)
-  const num='(\\d+(?:\\.\\d+)?)';
-  const moeda='(?:\\s*(?:peças de ouro|peças|moedas de ouro|moedas de prata|po|gp|PO|GP))';
-  const gainRe=new RegExp(
-    '(?:recebe|ganha|encontra|obtém|saqueia|recompensa de|loot[: ]+|bolsa com|guarda|embolsa|fica com|paga a você|te entrega)\\s*'+num+moeda,'i');
-  const loseRe=new RegExp(
-    '(?:paga|gasta|custa|custam|perde|cobrado|desconto de|troco de|entrega|-\\s*)'+num+moeda,'i');
-  let m=text.match(gainRe);
-  if(m) return +parseFloat(m[1]);
-  m=text.match(loseRe);
-  if(m) return -parseFloat(m[1]);
-  return 0;
+  // ★ ÚNICA fonte confiável de mudança de ouro: tag explícita [OURO:+X] ou [OURO:-X]
+  // Regex narrativo REMOVIDO — causava falsos positivos ao mencionar valores sem contexto
+  const tagMatch=text.match(/\[OURO:([+-]?\d+(?:\.\d+)?)\]/i);
+  if(tagMatch){
+    const val=parseFloat(tagMatch[1]);
+    if(!isNaN(val)) return val;
+  }
+  return 0; // sem tag = sem mudança
 }
 
 function extractHPChange(text){
@@ -2560,28 +2558,55 @@ PROIBIÇÕES ABSOLUTAS:
 [XP:quantidade] — XP ganho (Fácil=25, Médio=50, Difícil=100, Mortal=200 por nível)
 [PV:+X] ou [PV:-X] — quando PV muda
 [OURO:+X] ou [OURO:-X] — OBRIGATÓRIO sempre que ouro mudar
-⚠️ REGRA DE OURO (sem exceção): TODA mudança de ouro DEVE ter a tag [OURO:±X]
-Exemplos OBRIGATÓRIOS:
-  - "Você recebe 10 po como recompensa [OURO:+10]"
-  - "Custa 5 po [OURO:-5] — seu ouro cai para X po"
-  - "A bolsa contém 25 po [OURO:+25]"
-SEM a tag [OURO:], o contador NÃO atualiza. É responsabilidade do Mestre incluir SEMPRE.
-NUNCA escreva valores de ouro sem a tag correspondente.ro.
+⚠️ REGRA ABSOLUTA DE OURO — SEM EXCEÇÃO:
+TODA mudança de ouro DEVE conter a tag [OURO:+X] ou [OURO:-X] no mesmo trecho.
+A tag é o ÚNICO mecanismo que atualiza o contador. Menção sem tag = bug no jogo.
+
+CORRETO: "Você recebe [OURO:+15] 15 PO pela entrega."
+CORRETO: "O ferreiro cobra [OURO:-8] 8 PO pelo reparo."
+ERRADO: "Você recebe 15 PO." ← SEM TAG, NÃO ATUALIZA
+ERRADO: "Você tem 141 PO agora." ← SEM TAG, NÃO ATUALIZA
+
+NUNCA mencione valores de PO sem a tag correspondente.
+NUNCA diga "você tem X PO" sem que esse X reflita uma transação com tag [OURO:±X].
+O ouro do personagem é: ${Math.round(hero.gold||0)} PO. Use esse valor como referência.ro.
 Exemplos corretos: "Recebe 15 PO [OURO:+15]", "Paga 3 PO [OURO:-3]", "Encontra bolsa com 8 PO [OURO:+8]"
 Nível 1: recompensas típicas são 5-25 PO por missão simples. NUNCA dê centenas de PO no início.
 [ITEM:+Nome:ícone:peso] — SEMPRE que ganhar item (ex: [ITEM:+Adaga:🗡️:0.45])
 [ITEM:-Nome] — SEMPRE que perder/usar/vender item (ex: [ITEM:-Poção de Cura])
 Use nomes exatos do inventário. Ao usar Poção de Cura sempre inclua [ITEM:-Poção de Cura] e [PV:+valor].
 [LOCALIZAÇÃO:cidade] ou [LOCALIZAÇÃO:campo]
+TESTES — QUANDO E COMO PEDIR (CRÍTICO):
+▸ NUNCA peça teste desnecessário. Só peça quando há risco REAL de falha com consequência
+▸ NÃO peça teste para: falar com aliado, caminhar, descansar, comer, ação óbvia de sucesso
+▸ O teste DEVE combinar com o contexto — escalar = Atletismo (FOR), não Percepção
+
+EXEMPLOS CORRETOS:
+ • Escalar uma parede lisa → [TESTE:str:12] "Role Atletismo CD 12" → opção "Rolar Atletismo CD 12"
+ • Notar uma emboscada → [TESTE:wis:13] "Role Percepção CD 13" → opção "Rolar Percepção CD 13"
+ • Convencer o guarda → [TESTE:cha:14] "Role Persuasão CD 14" → opção "Rolar Persuasão CD 14"
+ • Decifrar um pergaminho → [TESTE:int:12] "Role Arcanismo CD 12" → opção "Rolar Arcanismo CD 12"
+
+EXEMPLOS ERRADOS (nunca faça):
+ ✗ "Role Carisma para escalar" — errado: escalar é Força
+ ✗ "Role Percepção para abrir fechadura" — errado: abrir é Prestidigitação (DES)  
+ ✗ Pedir teste quando o personagem obviamente vai ter sucesso ou falhar
+
+MAPA ATRIBUTO → PERÍCIA (PHB Cap.7):
+FOR: Atletismo | DES: Acrobacia, Furtividade, Prestidigitação | CON: resistência física
+INT: Arcanismo, História, Investigação, Natureza, Religião
+SAB: Adestrar Animais, Intuição, Medicina, Percepção, Sobrevivência
+CAR: Atuação, Enganação, Intimidação, Persuasão
+
 [AÇÕES:Opção1|Opção2|Opção3|Opção4] — SEMPRE ao final, obrigatório
 REGRAS DAS AÇÕES:
 - Máximo 5 palavras por opção, verbo no infinitivo
-- 4 opções sempre — variadas, contextuais, interessantes
-- Em combate: 2 ações de combate + 1 fuga/alternativa + 1 criativa
-- Em diálogo/social: 2 respostas diferentes + 1 ação de ambiente + 1 observação
-- Quando teste pedido: 1 opção deve ser "Rolar [Perícia] CD X"
+- 4 opções sempre — variadas, contextuais, coerentes com o momento
+- Em combate: 2 ataques/magias + 1 alternativa criativa + 1 movimento/fuga
+- Em diálogo: 2 respostas com tons diferentes + 1 ação de ambiente + 1 observação
+- Quando houver teste: 1 opção deve ser exatamente "Rolar [Perícia] CD X"
 - Opções NÃO aparecem no texto narrativo — apenas na tag
-- O jogador pode sempre digitar ação livre no campo "Outra decisão..." para coisas não listadas
+- O jogador digita no campo "Outra decisão..." para ações fora das opções
 
 Mercador: Sobrevivência CD ${merchantCD} para encontrar.`;
 }
@@ -2602,7 +2627,7 @@ async function askMaster(acao, oocMode=false){
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1024,system:buildSystemPrompt(),messages:gameHistory.slice(-14)})
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,system:buildSystemPrompt(),messages:gameHistory.slice(-14)})
     });
     if(!res.ok){
       const err=await res.json().catch(()=>({}));
@@ -2623,9 +2648,14 @@ async function askMaster(acao, oocMode=false){
       const xpMatch=reply.match(/\[XP:\s*(\d+)\]/);
       if(xpMatch)gainXP(parseInt(xpMatch[1]));
       // Ouro — ignora se contexto é uso de poção (evita falso negativo)
-      const isHealContext=/usa|usa a poção|bebeu|aplicou|tomou.{0,30}poção/i.test(reply)&&/\[PV:[+-]\d+\]/i.test(reply);
-      const goldDelta=isHealContext?0:extractGoldChange(reply);
-      if(goldDelta!==0){hero.gold=Math.max(0,hero.gold+goldDelta);updateVitals();}
+      // Ouro — SOMENTE via tag [OURO:±X]
+      const goldDelta=extractGoldChange(reply);
+      if(goldDelta!==0){
+        hero.gold=Math.max(0,Math.round((hero.gold+goldDelta)*100)/100);
+        updateVitals();
+        if(goldDelta>0) showToast('🪙 +'+goldDelta+' PO → Total: '+Math.round(hero.gold)+' PO');
+        else showToast('🪙 '+goldDelta+' PO → Total: '+Math.round(hero.gold)+' PO');
+      }
       // HP
       const hpDelta=extractHPChange(reply);
       if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
@@ -2819,7 +2849,8 @@ const ACTION_ATTR_MAP=[
 function detectActionRequiresRoll(action){
   const a = action.trim();
 
-  // CASO 1: "Rolar Percepção CD 13" — sugestão do mestre como botão
+  // CASO 1: Botão gerado pelo Mestre no formato "Rolar Percepção CD 13"
+  // Este é o ÚNICO caso que dispara rolagem automática
   const rolarMatch = a.match(/^rolar\s+(.+?)(?:\s+cd\s*(\d+))?$/i);
   if(rolarMatch){
     const skillName = rolarMatch[1].trim().toLowerCase();
@@ -2828,41 +2859,53 @@ function detectActionRequiresRoll(action){
       'forca':'str','força':'str','destreza':'dex','constituicao':'con','constituição':'con',
       'inteligencia':'int','inteligência':'int','sabedoria':'wis','carisma':'cha',
       'percepcao':'wis','percepção':'wis','investigacao':'int','investigação':'int',
-      'arcanismo':'int','historia':'int','história':'int','religiao':'int','religião':'int',
+      'arcanismo':'int','história':'int','historia':'int','religiao':'int','religião':'int',
       'natureza':'int','medicina':'wis','sobrevivencia':'wis','sobrevivência':'wis',
       'intuicao':'wis','intuição':'wis','adestramento':'wis',
-      'atletismo':'str','acrobacia':'dex','furtividade':'dex','prestidigitacao':'dex','prestidigitação':'dex',
+      'atletismo':'str','acrobacia':'dex','furtividade':'dex',
+      'prestidigitacao':'dex','prestidigitação':'dex',
       'persuasao':'cha','persuasão':'cha','enganacao':'cha','enganação':'cha',
-      'intimidacao':'cha','intimidação':'cha','performance':'cha',
+      'intimidacao':'cha','intimidação':'cha','atuacao':'cha','atuação':'cha',
     };
     const attr = skillToAttr[skillName] || pendingRollAttr || 'wis';
     const label = skillName.charAt(0).toUpperCase()+skillName.slice(1);
     return {attr, label: label.toUpperCase()};
   }
 
-  // CASO 2: Tem teste pendente + ação de combate
-  if(pendingRollAttr){
-    if(/atac|golpe|lutar|ferir|sacar|disparar|lancar|lançar|conjurar/i.test(a)){
-      return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
-    }
+  // CASO 2: Mestre pediu teste via [TESTE:Atributo:CD] e jogador confirma ação de teste
+  // Só rola se a ação contém "rolar", "testar" ou "fazer teste"
+  if(pendingRollAttr && /^(rolar|testar|fazer teste|jogar|tentar a sorte)/i.test(a)){
+    return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
   }
 
-  // CASO 3: Palavras que implicam teste
-  const testWords=/\b(tentar|testar|rolar|procurar|investigar|atac|golpe|fugir|esconder|perceber|inspecionar|examinar|escalar|arrombar|persuad|intimidar|enganar)\b/i;
-  if(!testWords.test(a)) return null;
-  for(const m of ACTION_ATTR_MAP){
-    if(m.re.test(a)) return {attr:m.attr, label:m.label};
-  }
-  if(pendingRollAttr) return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
+  // Demais ações → sem rolagem automática
+  // O Mestre decide quando pedir teste via [TESTE:] ou botão "Rolar X CD Y"
   return null;
 }
 // Detecta teste em ação livre digitada pelo jogador
 function detectFreeActionRoll(text){
-  for(const m of ACTION_ATTR_MAP){
-    if(m.re.test(text)) return {attr:m.attr, label:m.label};
+  const t = text.trim().toLowerCase();
+
+  // Só rola se o jogador explicitamente pede: "rolar percepção", "fazer teste de", etc.
+  const explicit = /^(rolar|fazer teste|jogar dado|role|tentar)\s+/i.test(t);
+  if(explicit){
+    // Identifica qual habilidade
+    for(const m of ACTION_ATTR_MAP){
+      if(m.re.test(t)) return {attr:m.attr, label:m.label};
+    }
+    // Se tem teste pendente do Mestre, usa ele
+    if(pendingRollAttr) return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
   }
-  if(pendingRollAttr) return {attr:pendingRollAttr, label: attrLabels[pendingRollAttr]||'FOR'};
-  return null;
+
+  // Teste pendente do Mestre ([TESTE:]) + ação do campo livre → usa o pendente
+  if(pendingRollAttr && t.length > 3){
+    // Mas só se a ação for claramente um teste
+    if(/^(rolar|testar|tentar a sorte|verificar|checar)/i.test(t)){
+      return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
+    }
+  }
+
+  return null; // ação narrativa normal — sem rolagem automática
 }
 
 // ★ Rola o dado inline na narrativa com animação
@@ -3074,6 +3117,143 @@ function openMo(id){
   if(id==='mo-xp')updateXPModal();
   if(id==='mo-shop')updateShopContext();
   document.getElementById(id).classList.add('open');
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// SISTEMA DE ECONOMIA — CRÉDITOS E OURO IN-GAME
+// ══════════════════════════════════════════════════════════════
+
+// Pacotes de créditos disponíveis
+const CREDIT_PACKS = [
+  null, // índice 0 vazio
+  {id:1, name:'Bolsa do Viajante',  credits:10,  gp:100,  price:'R$ 4,90',   bonus:0},
+  {id:2, name:'Tesouro do Negociante', credits:50, gp:500,  price:'R$ 19,90',  bonus:0},
+  {id:3, name:'Cofre do Patrono',   credits:100, gp:1000, price:'R$ 34,90',  bonus:50}, // bônus rep
+];
+
+// ★ Adiciona ouro via crédito (chamado pelo sistema de pagamento)
+// goldAmount = GP a adicionar | creditsUsed = créditos gastos | source = 'purchase'|'test'
+function addGold(goldAmount, creditsUsed=0, source='game'){
+  const prev = Math.round(hero.gold||0);
+  hero.gold = Math.round((hero.gold||0) + goldAmount);
+  if(creditsUsed > 0){
+    hero.credits = Math.max(0, (hero.credits||0) - creditsUsed);
+  }
+  updateVitals();
+  logEconomyEvent(source, goldAmount, creditsUsed, prev, hero.gold);
+  return hero.gold;
+}
+
+// ★ Remove ouro (compra in-game, custo de serviço)
+function spendGold(goldAmount, reason='compra'){
+  if(hero.gold < goldAmount){
+    showToast('❌ Ouro insuficiente! Você tem '+Math.round(hero.gold)+' PO');
+    return false;
+  }
+  const prev = Math.round(hero.gold);
+  hero.gold = Math.round((hero.gold - goldAmount)*100)/100;
+  updateVitals();
+  logEconomyEvent('spend', -goldAmount, 0, prev, hero.gold, reason);
+  showToast('🪙 -'+goldAmount+' PO ('+reason+') → '+Math.round(hero.gold)+' PO');
+  return true;
+}
+
+// ★ Log de transações para auditoria (salvo no localStorage)
+function logEconomyEvent(type, goldDelta, creditsDelta, prevGold, newGold, reason=''){
+  try {
+    const log = JSON.parse(localStorage.getItem('aimaster_economy_log')||'[]');
+    log.push({
+      ts: Date.now(),
+      type,
+      goldDelta: Math.round(goldDelta),
+      creditsDelta,
+      prevGold: Math.round(prevGold),
+      newGold: Math.round(newGold),
+      reason,
+      char: hero.name||'?',
+    });
+    // Mantém últimas 100 transações
+    if(log.length > 100) log.splice(0, log.length-100);
+    localStorage.setItem('aimaster_economy_log', JSON.stringify(log));
+  } catch(e){}
+}
+
+// ★ COMPRAR PACOTE DE CRÉDITOS
+// Em produção: abre gateway de pagamento
+// Em modo teste: simula compra direto
+function buyCredits(packId){
+  const pack = CREDIT_PACKS[packId];
+  if(!pack){ showToast('❌ Pacote inválido'); return; }
+
+  // Verifica se personagem foi criado
+  if(!hero.name || hero.name === ''){
+    showToast('⚠️ Crie um personagem primeiro!');
+    return;
+  }
+
+  // Modo de teste — confirma e credita direto
+  const confirm = window.confirm(
+    `🛒 COMPRAR PACOTE\n\n${pack.name}\n${pack.credits} Créditos → ${pack.gp} GP in-game\n${pack.price}\n\n[MODO TESTE: sem cobrança real]\n\nConfirmar?`
+  );
+  if(!confirm) return;
+
+  // Credita créditos ao jogador
+  hero.credits = (hero.credits||0) + pack.credits;
+
+  // Converte créditos em ouro imediatamente
+  const goldGained = pack.gp;
+  addGold(goldGained, 0, 'purchase');
+
+  // Bônus de reputação para Cofre do Patrono
+  if(pack.bonus > 0){
+    hero.rep = (hero.rep||0) + pack.bonus;
+    showToast('⭐ +'+pack.bonus+' Reputação (bônus Patrono)!');
+  }
+
+  updateVitals();
+  closeMo('mo-shop');
+
+  // Notifica o Mestre sobre a compra in-game
+  const msg = `O jogador adquiriu ${pack.gp} peças de ouro via ${pack.name}. Ouro atual: ${Math.round(hero.gold)} PO. Narrativamente, imagine que ${hero.name} encontrou uma forma de financiar sua aventura (herdou, encontrou tesouro, recebeu adiantamento de guilda, etc). [OURO:+${pack.gp}]`;
+  gameHistory.push({role:'user', content: msg});
+  gameHistory.push({role:'assistant', content: `Entendido. ${hero.name} agora tem ${Math.round(hero.gold)} PO. [OURO:+${pack.gp}]`});
+
+  showToast(`✅ ${pack.gp} GP adicionados! Total: ${Math.round(hero.gold)} PO`);
+  logEconomyEvent('purchase', goldGained, -pack.credits, hero.gold-goldGained, hero.gold, pack.name);
+}
+
+// ★ USAR CRÉDITOS para comprar ouro in-game (taxa conversão)
+// 1 crédito = 10 GP (taxa base)
+function convertCreditsToGold(creditAmount){
+  if((hero.credits||0) < creditAmount){
+    showToast('❌ Créditos insuficientes! Você tem '+hero.credits+' créditos');
+    return false;
+  }
+  const gp = creditAmount * 10;
+  hero.credits -= creditAmount;
+  addGold(gp, 0, 'credit_conversion');
+  showToast('💎 '+creditAmount+' créditos → '+gp+' GP');
+  return true;
+}
+
+// ★ MODO TESTE — adiciona créditos sem pagamento
+function addTestCredits(amount=50){
+  hero.credits = (hero.credits||0) + amount;
+  updateVitals();
+  showToast('🧪 [TESTE] +'+amount+' créditos adicionados');
+}
+
+// ★ Ver log de transações
+function showEconomyLog(){
+  try {
+    const log = JSON.parse(localStorage.getItem('aimaster_economy_log')||'[]');
+    if(log.length === 0){ showToast('Sem transações registradas'); return; }
+    const lines = log.slice(-10).map(e =>
+      `${new Date(e.ts).toLocaleTimeString()} | ${e.type} | ${e.goldDelta>0?'+':''}${e.goldDelta} GP | ${Math.round(e.prevGold)}→${Math.round(e.newGold)} PO`
+    );
+    alert('📊 Últimas transações:\n\n' + lines.join('\n'));
+  } catch(e){ showToast('Erro ao ler log'); }
 }
 
 function updateShopContext(){
