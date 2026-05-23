@@ -782,7 +782,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <button class="act-btn suggested" id="ab4" onclick="doAct('Investigar o local')"><div class="a-circle">🔍</div><div class="a-text"><span class="a-title">Investigar o local</span><span class="a-hint">Investigação</span></div><span class="a-arrow">›</span></button>
     </div>
   <!-- Barra de Dados de Dano -->
-  <div id="dice-bar" style="display:flex;align-items:center;gap:4px;padding:4px 10px 2px;background:rgba(10,8,4,.9);border-top:1px solid rgba(200,146,42,.08)">
+  <div id="dice-bar" style="display:none;align-items:center;gap:4px;padding:4px 10px 2px;background:rgba(10,8,4,.9);border-top:1px solid rgba(200,146,42,.08)">
     <span style="font-family:var(--font-title);font-size:9px;color:rgba(200,146,42,.4);letter-spacing:1px;flex-shrink:0">DADOS:</span>
     <button class="dice-btn" onclick="rollDiceBar(4)"  title="Rolar d4">d4</button>
     <button class="dice-btn" onclick="rollDiceBar(6)"  title="Rolar d6">d6</button>
@@ -1290,55 +1290,145 @@ function applyRacialBonuses(baseStats, race){
 // Gera HTML detalhado da ficha de atributos com salvaguardas
 
 
-// ══ ABA MAGIAS + TRUQUES ══
+// ══ ABA MAGIAS + TRUQUES — SELEÇÃO OFICIAL D&D 5e ══
 function buildSpellsTab(cls, level){
-  const el=document.getElementById('spells-content');
-  if(!el)return;
-  const cantrips=CANTRIPS_BY_CLASS[cls]||[];
-  const spellsByLv=SPELLS_BY_CLASS[cls]||{};
-  const slots=SPELL_SLOTS[Math.min(level,20)]||SPELL_SLOTS[1];
-  let html='';
-  // Truques (cantrips)
-  if(cantrips.length>0){
-    html+=`<div class="sec-hdr" style="margin-bottom:6px">TRUQUES (∞)</div>`;
-    html+=`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">`;
-    cantrips.forEach(c=>{
-      html+=`<div style="background:rgba(91,63,160,.18);border:1px solid rgba(139,111,208,.3);border-radius:8px;padding:6px 10px;font-family:var(--font-title);font-size:11px;color:#C0A0FF">${c}</div>`;
-    });
-    html+=`</div>`;
+  const el = document.getElementById('spells-content');
+  if(!el) return;
+
+  const cantrips = (CANTRIPS_BY_CLASS[cls]||[]);
+  const allSpells = SPELLS_BY_CLASS[cls]||{};
+  const slotsTable = getSpellSlotsTable(cls);
+  const lv = Math.min(Math.max(level||1,1),20);
+  const slots = slotsTable[lv]||[0,0,0,0,0,0,0,0,0];
+  const castAttr = CASTING_ATTR[cls]||'int';
+  const castMod = mod(stats[castAttr]||10);
+  const prof = hero.prof||(lv<=4?2:lv<=8?3:lv<=12?4:lv<=16?5:6);
+  const spellDC = 8 + prof + castMod;
+  const spellAtk = prof + castMod;
+
+  let html = '';
+
+  // ★ Cabeçalho com stats de conjuração
+  if(CASTING_ATTR[cls]){
+    html += `<div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+      <div style="background:rgba(91,63,160,.15);border:1px solid rgba(139,111,208,.25);border-radius:8px;padding:6px 10px;text-align:center;flex:1">
+        <div style="font-size:10px;color:rgba(139,111,208,.6);font-family:var(--font-title);letter-spacing:.5px">ATRIBUTO</div>
+        <div style="font-size:13px;font-weight:700;color:#C0A0FF">${({int:'INT',wis:'SAB',cha:'CAR'}[castAttr]||castAttr.toUpperCase())}</div>
+        <div style="font-size:11px;color:rgba(180,140,255,.7)">${castMod>=0?'+'+castMod:castMod}</div>
+      </div>
+      <div style="background:rgba(91,63,160,.15);border:1px solid rgba(139,111,208,.25);border-radius:8px;padding:6px 10px;text-align:center;flex:1">
+        <div style="font-size:10px;color:rgba(139,111,208,.6);font-family:var(--font-title);letter-spacing:.5px">CD MAGIA</div>
+        <div style="font-size:13px;font-weight:700;color:#C0A0FF">${spellDC}</div>
+      </div>
+      <div style="background:rgba(91,63,160,.15);border:1px solid rgba(139,111,208,.25);border-radius:8px;padding:6px 10px;text-align:center;flex:1">
+        <div style="font-size:10px;color:rgba(139,111,208,.6);font-family:var(--font-title);letter-spacing:.5px">ATK MAGIA</div>
+        <div style="font-size:13px;font-weight:700;color:#C0A0FF">${spellAtk>=0?'+'+spellAtk:spellAtk}</div>
+      </div>
+    </div>`;
   }
-  // Slots de magia
-  const hasSpells=Object.keys(spellsByLv).length>0;
-  if(hasSpells){
-    // Slots disponíveis
-    html+=`<div class="sec-hdr" style="margin-bottom:6px">SLOTS DE MAGIA</div>`;
-    html+=`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">`;
-    slots.forEach((total,i)=>{
-      if(total===0)return;
-      const used=usedSpellSlots[i]||0;
-      const avail=Math.max(0,total-used);
-      html+=`<div style="text-align:center;background:rgba(91,63,160,.12);border:1px solid rgba(139,111,208,.25);border-radius:8px;padding:6px 8px;min-width:44px">
-        <div style="font-size:14px;font-weight:700;color:${avail>0?'#8B6FD0':'rgba(91,63,160,.3)'}">Nv${i+1}</div>
-        <div style="font-size:11px;color:var(--parch-d)">${avail}/${total}</div>
+
+  // ★ Truques — ilimitados
+  if(cantrips.length > 0){
+    html += `<div class="sec-hdr" style="margin-bottom:6px">TRUQUES — ∞ (sem custo de slot)</div>`;
+    html += `<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">`;
+    cantrips.forEach(c=>{
+      html += `<div style="background:rgba(91,63,160,.18);border:1px solid rgba(139,111,208,.3);border-radius:8px;padding:5px 9px;font-size:11px;color:#C0A0FF;cursor:pointer;transition:all .15s"
+        onclick="tellMasterSpell('${c}',0)"
+        title="Usar ${c} (truque — sem slot)">
+        ${c}
       </div>`;
     });
-    html+=`</div>`;
-    // Feitiços por nível
-    Object.entries(spellsByLv).forEach(([lv,spells])=>{
-      if(parseInt(lv)>level) return; // só mostra feitiços acessíveis
-      html+=`<div class="sec-hdr" style="margin-bottom:6px">FEITIÇOS NÍVEL ${lv}</div>`;
+    html += `</div>`;
+  }
+
+  // ★ Slots de magia disponíveis
+  const hasSlots = slots.some(s=>s>0);
+  if(hasSlots){
+    html += `<div class="sec-hdr" style="margin-bottom:6px">SLOTS DE MAGIA</div>`;
+    html += `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">`;
+    slots.forEach((total,i)=>{
+      if(total===0) return;
+      const used = usedSpellSlots[i]||0;
+      const avail = Math.max(0,total-used);
+      const color = avail>0?'#8B6FD0':'rgba(91,63,160,.25)';
+      html += `<div style="text-align:center;background:rgba(91,63,160,.12);border:1px solid ${color};border-radius:8px;padding:5px 8px;min-width:40px;transition:.2s">
+        <div style="font-size:12px;font-weight:700;color:${color}">Nv${i+1}</div>
+        <div style="font-size:10px;color:${avail>0?'rgba(180,140,255,.8)':'rgba(91,63,160,.3)'}">${avail}/${total}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ★ Feitiços por nível — só mostra os acessíveis
+  const spellLevels = Object.keys(allSpells).map(Number).filter(lv2=>lv2<=maxSpellLevel(cls,lv));
+  if(spellLevels.length > 0){
+    spellLevels.forEach(spLv=>{
+      const spells = allSpells[spLv]||[];
+      if(spells.length===0) return;
+      const slotAvail = (slots[spLv-1]||0) - (usedSpellSlots[spLv-1]||0);
+      const lvColor = slotAvail>0?'#C0A0FF':'rgba(139,111,208,.3)';
+      html += `<div class="sec-hdr" style="margin-bottom:6px;color:${lvColor}">
+        ${spLv}° NÍVEL
+        <span style="font-size:9px;font-weight:normal;margin-left:6px;opacity:.7">${slotAvail}/${slots[spLv-1]||0} slots</span>
+      </div>`;
+      html += `<div style="display:flex;flex-direction:column;gap:3px;margin-bottom:10px">`;
       spells.forEach(s=>{
-        html+=`<div class="spell-card" style="margin-bottom:5px;cursor:pointer" onclick="castSpell('${s}',${lv})">
-          <div class="spell-name">${s}</div>
-          <div class="spell-meta">Nível ${lv} · Toque para lançar</div>
+        const canCast = slotAvail>0;
+        html += `<div style="
+          background:rgba(91,63,160,${canCast?.1:.04});
+          border:1px solid rgba(139,111,208,${canCast?.3:.1});
+          border-radius:8px;padding:7px 10px;
+          display:flex;justify-content:space-between;align-items:center;
+          cursor:${canCast?'pointer':'default'};
+          opacity:${canCast?1:.45};
+          transition:all .15s"
+          ${canCast?`onclick="tellMasterSpell('${s}',${spLv})"`:''}>
+          <span style="font-size:12px;color:${canCast?'#C0A0FF':'rgba(139,111,208,.4)'}">${s}</span>
+          ${canCast?`<span style="font-size:10px;color:rgba(180,140,255,.5)">▶ usar</span>`:`<span style="font-size:9px;color:rgba(139,111,208,.3)">sem slot</span>`}
         </div>`;
       });
+      html += `</div>`;
     });
-  } else if(cantrips.length===0){
-    html=`<p style="font-size:13px;color:var(--parch-d);text-align:center;padding:20px 0;font-style:italic">${cls} não usa magia arcana.</p>`;
+  } else if(!CASTING_ATTR[cls]){
+    html = `<div style="padding:20px;text-align:center;font-style:italic;color:var(--parch-d);font-size:13px">
+      ${cls} não possui magias.<br>
+      <span style="font-size:11px;opacity:.6">Classes sem magia: Bárbaro, Guerreiro, Ladino, Monge</span>
+    </div>`;
   }
-  el.innerHTML=html;
+
+  el.innerHTML = html;
 }
+
+// Nível máximo de feitiço acessível por classe/nível
+function maxSpellLevel(cls, charLevel){
+  if(cls==='Paladino'||cls==='Ranger'){
+    // Half-caster: começa no nível 2, slots máx nv5
+    if(charLevel<2) return 0;
+    return Math.min(5,Math.ceil((charLevel-1)/2));
+  }
+  if(cls==='Bruxo'){
+    // Warlock: slots iguais ao spell level máximo
+    if(charLevel<=2) return 1;
+    if(charLevel<=4) return 2;
+    if(charLevel<=6) return 3;
+    if(charLevel<=8) return 4;
+    return 5;
+  }
+  // Full caster: 1 nível de feitiço a cada 2 níveis de personagem (até nv9)
+  return Math.min(9,Math.ceil(charLevel/2));
+}
+
+// Informa o mestre que o jogador quer usar uma magia (sem lançar automaticamente)
+function tellMasterSpell(spellName, slotLevel){
+  if(slotLevel>0){
+    const avail=(SPELL_SLOTS[Math.min(hero.level||1,20)]||SPELL_SLOTS[1])[slotLevel-1]-(usedSpellSlots[slotLevel-1]||0);
+    if(avail<=0){ showToast('❌ Sem slots de nível '+slotLevel+'!'); return; }
+  }
+  const spellDesc = slotLevel===0?'(truque — sem custo de slot)':`(slot de nível ${slotLevel})`;
+  askMaster(`${hero.name} declara que vai usar a magia "${spellName}" ${spellDesc}. Descreva o efeito narrativo. ${slotLevel>0?'Inclua [MP:-'+slotLevel+'] no texto e aguarde o jogador rolar ataque ou dano se necessário.':'Truque não gasta slot — descreva o efeito e continue a narrativa.'}`);
+  if(slotLevel>0) useSpellSlot(slotLevel);
+}
+
 
 function castSpell(spellName, slotLevel){
   if(slotLevel>0 && !useSpellSlot(parseInt(slotLevel))){
@@ -1443,155 +1533,197 @@ function buildFullStatBlock(finalStats, cls, level){
 
 
 // ══ D&D 5e SPELLS & CANTRIPS DATA ══
-// Truques (Cantrips) — PHB oficial por classe
+
+// ══════════════════════════════════════════════════════════════
+// MAGIAS OFICIAIS D&D 5e PHB — Livro do Jogador (p.207-212)
+// ══════════════════════════════════════════════════════════════
+
+// Truques por classe (PHB p.207-212)
 const CANTRIPS_BY_CLASS = {
-  Mago:      ['Mão Chocante','Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante',
-              'Ilusão Menor','Luz','Prestidigitação','Globos de Luz','Mensagem','Conservar'],
-  Clérigo:   ['Chama Sagrada','Orientação','Luz','Conservar','Poupar os Moribundos','Resistência','Palavra Mágica'],
-  Druida:    ['Bordão Místico','Chicote de Espinhos','Conservar','Criar Chamas','Druidismo','Orientação','Rajada de Veneno','Resistência'],
-  Bardo:     ['Amizade','Ilusão Menor','Luz','Prestidigitação','Palavra Mágica','Globos de Luz','Mensagem'],
-  Feiticeiro:['Amizade','Ataque Certeiro','Conservar','Espirro Ácido','Globos de Luz','Ilusão Menor',
-              'Luz','Mãos Mágicas','Mensagem','Prestidigitação','Proteção contra Lâminas',
-              'Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante','Mão Chocante'],
-  Bruxo:     ['Amizade','Ataque Certeiro','Ilusão Menor','Mãos Mágicas','Prestidigitação',
-              'Proteção contra Lâminas','Rajada de Veneno','Rajada Mística','Toque Arrepiante'],
-  Paladino:  [],
-  Ranger:    [],
-  Guerreiro: [],
-  Ladino:    [],
-  Bárbaro:   [],
+  'Bardo':     ['Amizade','Ataque Certeiro','Conservar','Globos de Luz','Ilusão Menor','Luz','Mãos Mágicas','Mensagem','Prestidigitação','Proteção contra Lâminas','Zombaria Viciosa'],
+  'Bruxo':     ['Amizade','Ataque Certeiro','Ilusão Menor','Mãos Mágicas','Prestidigitação','Proteção contra Lâminas','Rajada de Veneno','Rajada Mística','Toque Arrepiante'],
+  'Clérigo':   ['Chama Sagrada','Conservar','Estabilizar','Luz','Orientação','Resistência','Taumaturgia'],
+  'Druida':    ['Bordão Místico','Chicote de Espinhos','Conservar','Criar Chamas','Druidismo','Orientação','Rajada de Veneno','Resistência'],
+  'Feiticeiro':['Amizade','Ataque Certeiro','Conservar','Espirro Ácido','Globos de Luz','Ilusão Menor','Luz','Mãos Mágicas','Mensagem','Prestidigitação','Proteção contra Lâminas','Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante','Toque Chocante'],
+  'Mago':      ['Ilusão Menor','Luz','Mãos Mágicas','Mensagem','Prestidigitação','Raio de Fogo','Raio de Gelo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante','Toque Chocante'],
+  'Paladino':  [],
+  'Ranger':    [],
+  'Guerreiro': [],
+  'Ladino':    [],
+  'Bárbaro':   [],
+  'Monge':     [],
 };
 
-// Feitiços por classe e nível — PHB oficial (Livro do Jogador D&D 5e)
+// Feitiços completos por classe — PHB p.207-212
 const SPELLS_BY_CLASS = {
-  Mago: {
-    0: ['Mão Chocante','Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante',
-        'Ilusão Menor','Luz','Prestidigitação','Globos de Luz','Mensagem','Conservar'],
-    1: ['Alarme','Área Escorregadia','Armadura Arcana','Compreender Idiomas','Convocar Familiar',
-        'Detectar Magia','Disco Flutuante de Tenser','Disfarçar-se','Enfeitiçar Pessoa',
-        'Escrita Ilusória','Escudo Arcano','Identificação','Imagem Silenciosa','Leque Cromático',
-        'Mãos Flamejantes','Mísseis Mágicos','Névoa Obscurecente','Onda Trovejante',
-        'Orbe Cromática','Passos Longos','Queda Suave','Sono','Vitalidade Falsa'],
-    2: ['Alterar-se','Arma Mágica','Arrombar','Aumentar/Reduzir','Cegueira/Surdez',
-        'Despedaçar','Detectar Pensamentos','Escuridão','Esfera Flamejante','Flecha Ácida de Melf',
-        'Força Fantasmagórica','Imobilizar Pessoa','Invisibilidade','Levitação',
-        'Nuvem de Adagas','Passo Nebuloso','Raio Ardente','Reflexos','Sugestão','Teia','Visão no Escuro'],
-    3: ['Animar Mortos','Bola de Fogo','Círculo Mágico','Contramágica','Dissipar Magia',
-        'Forma Gasosa','Medo','Nevasca','Padrão Hipnótico','Piscar','Proteção contra Energia',
-        'Relâmpago','Remover Maldição','Toque Vampírico','Velocidade','Voo'],
-    4: ['Assassino Fantasmagórico','Banimento','Confusão','Esfera Resiliente','Fabricar',
-        'Invisibilidade Maior','Metamorfose','Muralha de Fogo','Olho Arcano','Pele de Pedra',
-        'Porta Dimensional','Tempestade de Gelo'],
-    5: ['Âncora Planar','Animar Objetos','Cone de Frio','Conjurar Elemental','Criação',
-        'Dominar Pessoa','Imobilizar Monstro','Mão de Bigby','Missão','Modificar Memória',
-        'Muralha de Pedra','Telecinésia','Vidência'],
+  'Bardo': {
+    1: ['Amizade Animal','Compreender Idiomas','Curar Ferimentos','Detectar Magia','Disfarçar-se','Enfeitiçar Pessoa','Escrita Ilusória','Falar com Animais','Fogo das Fadas','Heroísmo','Identificação','Imagem Silenciosa','Onda Trovejante','Palavra Curativa','Passos Longos','Perdição','Queda Suave','Riso Histérico de Tasha','Servo Invisível','Sono','Sussurros Dissonantes'],
+    2: ['Acalmar Emoções','Aprimorar Habilidade','Arrombar','Boca Encantada','Cativar','Cegueira/Surdez','Coroa da Loucura','Despedaçar','Detectar Pensamentos','Esquecer Metal','Força Fantasmagórica','Imobilizar Pessoa','Invisibilidade','Localizar Animais','Localizar Objeto','Mensageiro Animal','Nuvem de Adagas','Restauração Menor','Silêncio','Sugestão','Ver o Invisível','Zona da Verdade'],
+    3: ['Ampliar Plantas','Clarividência','Dificultar Detecção','Dissipar Magia','Enviar Mensagem','Falar com os Mortos','Falar com Plantas','Forjar Morte','Glifo de Vigilância','Idiomas','Imagem Maior','Medo','Névoa Fétida','Padrão Hipnótico','Pequena Cabana de Leomund','Rogar Maldição'],
+    4: ['Compulsão','Confusão','Invisibilidade Maior','Localizar Criatura','Metamorfose','Movimentação Livre','Porta Dimensional','Terreno Alucinógeno'],
+    5: ['Âncora Planar','Animar Objetos','Aparência do Falso','Canto dos Pássaros','Clarividência Maior','Dom das Línguas','Dominação de Persona','Geas','Imagem Ilusória','Missão','Padrão Onírico','Regeneração','Ressurreição','Sonho','Transmitir Feitiço','Vidência'],
   },
-  Clérigo: {
-    0: ['Chama Sagrada','Orientação','Luz','Conservar','Poupar os Moribundos','Resistência','Palavra Mágica'],
-    1: ['Bênção','Comando','Compreender Idiomas','Curar Ferimentos','Detectar Magia',
-        'Detectar Veneno e Doença','Escudo da Fé','Favor Divino','Identificação',
-        'Infligir Ferimentos','Palavra Curativa','Proteção contra o Bem e Mal','Santuário'],
-    2: ['Acalmar Emoções','Ajuda','Augúrio','Blindagem Espiritual','Cura em Massa Menor',
-        'Encontrar Armadilhas','Imobilizar Pessoa','Localizar Objeto','Oração de Cura',
-        'Proteção contra Veneno','Restauração Menor','Silêncio','Zona da Verdade'],
-    3: ['Animar Mortos','Clarividência','Criar Alimento e Água','Curar Ferimentos em Massa',
-        'Dissipar Magia','Enviar Mensagem','Luz do Dia','Remover Maldição','Revitalizar','Palavra de Magia'],
-    4: ['Banimento','Liberdade de Movimento','Localizar Criatura','Guardiões Divinos','Proteção contra a Morte'],
-    5: ['Cura Completa','Comunhão','Consagrar','Curar Ferimentos em Massa','Praga','Reviver os Mortos','Vidência'],
+  'Bruxo': {
+    1: ['Armadura de Agathys','Braços de Hadar','Bruxaria','Compreender Idiomas','Enfeitiçar Pessoa','Escrita Ilusória','Proteção contra o Bem e Mal','Raio de Bruxa','Recuo Acelerado','Repreensão Infernal','Servo Invisível'],
+    2: ['Cativar','Coroa da Loucura','Despedaçar','Escuridão','Imobilizar Pessoa','Invisibilidade','Nuvem de Adagas','Passo Nebuloso','Patas de Aranha','Raio do Enfraquecimento','Reflexos','Sugestão'],
+    3: ['Círculo Mágico','Contramágica','Dissipar Magia','Fome de Hadar','Forma Gasosa','Idiomas','Imagem Maior','Medo','Padrão Hipnótico','Remover Maldição','Toque Vampírico','Voo'],
+    4: ['Banimento','Malogro','Porta Dimensional','Terreno Alucinógeno'],
+    5: ['Contato Extraplanar','Imobilizar Monstro','Sonho','Vidência'],
   },
-  Bardo: {
-    0: ['Amizade','Ilusão Menor','Luz','Prestidigitação','Palavra Mágica','Globos de Luz','Mensagem'],
-    1: ['Charmar Pessoa','Compreender Idiomas','Cura Ferimentos','Detectar Magia',
-        'Disfarçar-se','Enfeitiçar Pessoa','Identificação','Imagem Silenciosa',
-        'Palavra Curativa','Sono','Vitalidade Falsa'],
-    2: ['Acalmar Emoções','Detectar Pensamentos','Invisibilidade','Imobilizar Pessoa',
-        'Nuvem de Adagas','Restauração Menor','Silêncio','Sugestão'],
-    3: ['Dissipar Magia','Falar com Mortos','Hipnose','Idiomas','Imagem Maior','Medo','Padrão Hipnótico'],
-    4: ['Compulsão','Confusão','Dominar Bestas','Imagem Maior','Invisibilidade Maior'],
-    5: ['Dominar Pessoa','Geas','Modificar Memória','Sonho'],
+  'Clérigo': {
+    1: ['Bênção','Comando','Criar ou Destruir Água','Curar Ferimentos','Detectar Magia','Detectar o Bem e Mal','Detectar Veneno e Doença','Escudo da Fé','Infringir Ferimentos','Palavra Curativa','Perdição','Proteção contra o Bem e Mal','Purificar Alimentos','Raio Guiado'],
+    2: ['Acalmar Emoções','Ajuda','Aprimorar Habilidade','Augúrio','Encontrar Armadilhas','Imobilizar Pessoa','Localizar Objeto','Oração de Cura','Proteção contra Veneno','Restauração Menor','Silêncio','Zona da Verdade'],
+    3: ['Animar Mortos','Círculo Mágico','Clarividência','Criar Alimentos','Curar Ferimentos em Massa','Dissipar Magia','Enviar Mensagem','Luz do Dia','Remover Maldição','Revivificar','Palavra de Magia'],
+    4: ['Banimento','Guardiões Divinos','Localizar Criatura','Movimentação Livre','Proteção contra a Morte'],
+    5: ['Âncora Planar','Coluna de Chamas','Comunhão','Consagrar','Curar Ferimentos em Massa','Dissipar o Bem e Mal','Missão','Praga','Praga de Insetos','Restauração Maior','Reviver os Mortos','Vidência'],
   },
-  Druida: {
-    0: ['Bordão Místico','Chicote de Espinhos','Conservar','Criar Chamas','Druidismo','Orientação','Rajada de Veneno','Resistência'],
-    1: ['Amizade Animal','Criar ou Destruir Água','Curar Ferimentos','Detectar Magia',
-        'Detectar Veneno e Doença','Enfeitiçar Pessoa','Falar com Animais','Fogo das Fadas',
-        'Névoa Obscurecente','Onda Trovejante','Palavra Curativa','Passos Longos','Salto'],
-    2: ['Aprimorar Habilidade','Crescer Espinhos','Esfera Flamejante','Esquentar Metal',
-        'Imobilizar Pessoa','Localizar Animais','Passagem sem Rastro','Pele de Árvore',
-        'Proteção contra Veneno','Raio Lunar','Restauração Menor','Visão no Escuro'],
-    3: ['Ampliar Plantas','Andar na Água','Conjurar Animais','Convocar Relâmpagos',
-        'Dissipar Magia','Falar com Plantas','Luz do Dia','Muralha de Vento','Proteção contra Energia'],
-    4: ['Controlar a Água','Metamorfose','Localizar Criatura','Pedra Moldada'],
-    5: ['Comunhão com Natureza','Conjurar Elemental','Despertar','Praga de Insetos'],
+  'Druida': {
+    1: ['Amizade Animal','Bom Fruto','Constrição','Criar ou Destruir Água','Curar Ferimentos','Detectar Magia','Detectar Veneno e Doença','Enfeitiçar Pessoa','Falar com Animais','Fogo das Fadas','Névoa Obscurecente','Onda Trovejante','Palavra Curativa','Passos Longos','Purificar Alimentos','Salto'],
+    2: ['Aprimorar Habilidade','Crescer Espinhos','Encontrar Armadilhas','Esfera Flamejante','Esquentar Metal','Imobilizar Pessoa','Lâmina Flamejante','Localizar Animais','Localizar Objeto','Lufada de Vento','Mensageiro Animal','Passagem sem Rastro','Pele de Árvore','Proteção contra Veneno','Raio Lunar','Restauração Menor','Sentido Bestial','Visão no Escuro'],
+    3: ['Ampliar Plantas','Andar na Água','Conjurar Animais','Convocar Relâmpagos','Dissipar Magia','Falar com Plantas','Forjar Morte','Luz do Dia','Mesclar-se às Rochas','Muralha de Vento','Nevasca','Proteção contra Energia','Remover Maldição','Respirar na Água','Ventania'],
+    4: ['Controlar a Água','Dominar Bestas','Localizar Criatura','Pedra Moldada','Pele de Pedra','Polimorfar'],
+    5: ['Comunhão com a Natureza','Conjurar Elemental','Despertar','Plagas de Insetos','Renovação'],
   },
-  Feiticeiro: {
-    0: ['Amizade','Ataque Certeiro','Conservar','Espirro Ácido','Globos de Luz','Ilusão Menor',
-        'Luz','Mãos Mágicas','Mensagem','Prestidigitação','Proteção contra Lâminas',
-        'Raio de Fogo','Raio de Gelo','Rajada de Veneno','Toque Arrepiante','Mão Chocante'],
-    1: ['Armadura Arcana','Compreender Idiomas','Detectar Magia','Disfarçar-se',
-        'Enfeitiçar Pessoa','Escudo Arcano','Imagem Silenciosa','Leque Cromático',
-        'Mãos Flamejantes','Mísseis Mágicos','Névoa Obscurecente','Onda Trovejante',
-        'Orbe Cromática','Queda Suave','Sono'],
-    2: ['Alterar-se','Aumentar/Reduzir','Cegueira/Surdez','Coroa da Loucura','Despedaçar',
-        'Detectar Pensamentos','Escuridão','Imobilizar Pessoa','Invisibilidade','Levitação',
-        'Passo Nebuloso','Raio Ardente','Reflexos','Sugestão','Teia','Visão no Escuro'],
-    3: ['Bola de Fogo','Contramágica','Dissipar Magia','Forma Gasosa','Medo',
-        'Piscar','Proteção contra Energia','Relâmpago','Velocidade','Voo'],
-    4: ['Banimento','Confusão','Invisibilidade Maior','Metamorfose','Porta Dimensional','Tempestade de Gelo'],
-    5: ['Cone de Frio','Criação','Dominar Pessoa','Modificar Memória','Telecinésia'],
+  'Feiticeiro': {
+    1: ['Armadura Arcana','Compreender Idiomas','Detectar Magia','Disfarçar-se','Enfeitiçar Pessoa','Escudo Arcano','Imagem Silenciosa','Leque Cromático','Mãos Flamejantes','Mísseis Mágicos','Névoa Obscurecente','Onda Trovejante','Orbe Cromática','Queda Suave','Raio Adoecente','Raio de Bruxa','Recuo Acelerado','Salto','Sono','Vitalidade Falsa'],
+    2: ['Alterar-se','Aprimorar Habilidade','Arrombar','Aumentar/Reduzir','Cegueira/Surdez','Coroa da Loucura','Despedaçar','Detectar Pensamentos','Escuridão','Força Fantasmagórica','Imobilizar Pessoa','Invisibilidade','Levitação','Lufada de Vento','Nublar','Nuvem de Adagas','Passo Nebuloso','Patas de Aranha','Raio Ardente','Reflexos','Sugestão','Teia','Ver o Invisível','Visão no Escuro'],
+    3: ['Andar na Água','Bola de Fogo','Clarividência','Contramágica','Dissipar Magia','Forma Gasosa','Idiomas','Imagem Maior','Lentidão','Luz do Dia','Medo','Nevasca','Névoa Fétida','Padrão Hipnótico','Piscar','Proteção contra Energia','Relâmpago','Respirar na Água','Velocidade','Voo'],
+    4: ['Banimento','Confusão','Dominar Bestas','Invisibilidade Maior','Malogro','Metamorfose','Muralha de Fogo','Pele de Pedra','Porta Dimensional','Tempestade de Gelo'],
+    5: ['Animar Objetos','Círculo de Teletransporte','Cone de Frio','Criação','Dominar Pessoa','Imobilizar Monstro','Muralha de Pedra','Telecinésia','Vidência'],
   },
-  Paladino: {
-    0: [],
-    1: ['Bênção','Comando','Curar Ferimentos','Detectar Magia','Detectar o Bem e Mal',
-        'Escudo da Fé','Favor Divino','Proteção contra o Bem e Mal','Palavra Curativa'],
-    2: ['Ajuda','Encontrar Corcel','Imobilizar Pessoa','Localizar Objeto',
-        'Proteção contra Veneno','Restauração Menor','Zona da Verdade'],
-    3: ['Criar Alimento e Água','Curar Ferimentos em Massa','Luz do Dia','Remover Maldição','Revitalizar'],
-    4: ['Banimento','Guardiões Divinos','Localizar Criatura'],
-    5: ['Cura Completa','Missão','Reviver os Mortos'],
+  'Mago': {
+    1: ['Alarme','Área Escorregadia','Armadura Arcana','Compreender Idiomas','Convocar Familiar','Detectar Magia','Disco Flutuante de Tenser','Disfarçar-se','Enfeitiçar Pessoa','Escrita Ilusória','Escudo Arcano','Identificação','Imagem Silenciosa','Leque Cromático','Mãos Flamejantes','Mísseis Mágicos','Névoa Obscurecente','Onda Trovejante','Orbe Cromática','Passos Longos','Proteção contra o Bem e Mal','Queda Suave','Raio Adoecente','Raio de Bruxa','Recuo Acelerado','Riso Histérico de Tasha','Salto','Servo Invisível','Sono','Vitalidade Falsa'],
+    2: ['Alterar-se','Arma Mágica','Arrombar','Aumentar/Reduzir','Aura Mágica de Nystul','Boca Encantada','Cegueira/Surdez','Chama Contínua','Coroa da Loucura','Despedaçar','Detectar Pensamentos','Escuridão','Esfera Flamejante','Flecha Ácida de Melf','Força Fantasmagórica','Imobilizar Pessoa','Invisibilidade','Levitação','Localizar Objeto','Lufada de Vento','Nublar','Nuvem de Adagas','Passo Nebuloso','Patas de Aranha','Raio Ardente','Raio do Enfraquecimento','Reflexos','Repouso Tranquilo','Sugestão','Teia','Tranca Arcana','Ver o Invisível','Visão no Escuro'],
+    3: ['Animar Mortos','Bola de Fogo','Círculo Mágico','Clarividência','Contramágica','Dificultar Detecção','Dissipar Magia','Enviar Mensagem','Forma Gasosa','Glifo de Vigilância','Idiomas','Imagem Maior','Lentidão','Medo','Montaria Fantasmagórica','Nevasca','Névoa Fétida','Padrão Hipnótico','Pequena Cabana de Leomund','Piscar','Proteção contra Energia','Relâmpago','Remover Maldição','Respirar na Água','Rogar Maldição','Toque Vampírico','Velocidade','Voo'],
+    4: ['Arca Secreta de Leomund','Assassino Fantasmagórico','Banimento','Confusão','Esfera Resiliente','Fabricar','Invisibilidade Maior','Malogro','Metamorfose','Muralha de Fogo','Olho Arcano','Pele de Pedra','Porta Dimensional','Tempestade de Gelo'],
+    5: ['Animar Objetos','Âncora Planar','Círculo de Teletransporte','Cone de Frio','Conjurar Elemental','Criação','Dominar Pessoa','Espada de Mordenkainen','Geas','Imobilizar Monstro','Mão de Bigby','Missão','Modificar Memória','Muralha de Pedra','Telecinésia','Vidência'],
   },
-  Ranger: {
-    0: [],
-    1: ['Armadilha de Caça','Curar Ferimentos','Detectar Magia','Detectar Veneno e Doença',
-        'Falar com Animais','Marcar Presa','Névoa Obscurecente','Passos Longos','Salto'],
-    2: ['Localizar Animais','Localizar Objeto','Passagem sem Rastro','Pele de Árvore',
-        'Proteção contra Veneno','Restauração Menor','Visão no Escuro'],
-    3: ['Andar na Água','Conjurar Animais','Dissipar Magia','Proteção contra Energia'],
-    4: ['Liberdade de Movimento','Localizar Criatura'],
-    5: ['Comunhão com Natureza','Conjurar Elemental Menor'],
+  'Paladino': {
+    1: ['Auxílio Divino','Bênção','Comando','Curar Ferimentos','Destruição Colérica','Destruição Lancinante','Destruição Trovejante','Detectar o Bem e Mal','Detectar Magia','Detectar Veneno e Doença','Duelo Compelido','Escudo da Fé','Heroísmo','Proteção contra o Bem e Mal','Purificar Alimentos'],
+    2: ['Ajuda','Arma Mágica','Convocar Montaria','Localizar Objeto','Marca da Punição','Proteção contra Veneno','Restauração Menor','Zona da Verdade'],
+    3: ['Arma Elemental','Aura de Vitalidade','Círculo Mágico','Criar Alimentos','Destruição Cegante','Dissipar Magia','Luz do Dia','Manto do Cruzado','Remover Maldição','Revivificar'],
+    4: ['Aura de Pureza','Aura de Vida','Banimento','Destruição Estonteante','Localizar Criatura','Proteção contra a Morte'],
+    5: ['Círculo de Poder','Destruição Banidora','Dissipar o Bem e Mal','Missão','Onda Destrutiva','Reviver os Mortos'],
+  },
+  'Ranger': {
+    1: ['Alarme','Amizade Animal','Bom Fruto','Curar Ferimentos','Detectar Magia','Detectar Veneno e Doença','Falar com Animais','Golpe Constritor','Marca do Caçador','Névoa Obscurecente','Passos Longos','Salto','Saraivada de Espinhos'],
+    2: ['Cordão de Flechas','Crescer Espinhos','Encontrar Armadilhas','Localizar Animais','Localizar Objeto','Mensageiro Animal','Passagem sem Rastro','Pele de Árvore','Proteção contra Veneno','Restauração Menor','Sentido Bestial','Silêncio','Visão no Escuro'],
+    3: ['Ampliar Plantas','Andar na Água','Conjurar Animais','Conjurar Rajada','Dificultar Detecção','Falar com Plantas','Flecha Relampejante','Luz do Dia','Muralha de Vento','Proteção contra Energia','Respirar na Água'],
+    4: ['Conjurar Seres da Floresta','Localizar Criatura','Movimentação Livre','Pele de Pedra','Vinha Esmagadora'],
+    5: ['Aljava Veloz','Caminhar em Árvores','Comunhão com a Natureza','Conjurar Saraivada'],
   },
 };
 
-// Número de truques por classe e nível
+// Tabela de slots de magia por nível (PHB p.114 — Mago como referência)
+// Formato: [slots_nv1, slots_nv2, ..., slots_nv9]
+const SPELL_SLOTS = {
+  1:  [2,0,0,0,0,0,0,0,0],
+  2:  [3,0,0,0,0,0,0,0,0],
+  3:  [4,2,0,0,0,0,0,0,0],
+  4:  [4,3,0,0,0,0,0,0,0],
+  5:  [4,3,2,0,0,0,0,0,0],
+  6:  [4,3,3,0,0,0,0,0,0],
+  7:  [4,3,3,1,0,0,0,0,0],
+  8:  [4,3,3,2,0,0,0,0,0],
+  9:  [4,3,3,3,1,0,0,0,0],
+  10: [4,3,3,3,2,0,0,0,0],
+  11: [4,3,3,3,2,1,0,0,0],
+  12: [4,3,3,3,2,1,0,0,0],
+  13: [4,3,3,3,2,1,1,0,0],
+  14: [4,3,3,3,2,1,1,0,0],
+  15: [4,3,3,3,2,1,1,1,0],
+  16: [4,3,3,3,2,1,1,1,0],
+  17: [4,3,3,3,2,1,1,1,1],
+  18: [4,3,3,3,3,1,1,1,1],
+  19: [4,3,3,3,3,2,1,1,1],
+  20: [4,3,3,3,3,2,2,1,1],
+};
+
+// Slots de Paladino/Ranger (half-caster — começa Nv2, PHB p.110/116)
+const SPELL_SLOTS_HALF = {
+  1:  [0,0,0,0,0,0,0,0,0],
+  2:  [2,0,0,0,0,0,0,0,0],
+  3:  [3,0,0,0,0,0,0,0,0],
+  4:  [3,0,0,0,0,0,0,0,0],
+  5:  [4,2,0,0,0,0,0,0,0],
+  6:  [4,2,0,0,0,0,0,0,0],
+  7:  [4,3,0,0,0,0,0,0,0],
+  8:  [4,3,0,0,0,0,0,0,0],
+  9:  [4,3,2,0,0,0,0,0,0],
+  10: [4,3,2,0,0,0,0,0,0],
+  11: [4,3,3,0,0,0,0,0,0],
+  12: [4,3,3,0,0,0,0,0,0],
+  13: [4,3,3,1,0,0,0,0,0],
+  14: [4,3,3,1,0,0,0,0,0],
+  15: [4,3,3,2,0,0,0,0,0],
+  16: [4,3,3,2,0,0,0,0,0],
+  17: [4,3,3,3,1,0,0,0,0],
+  18: [4,3,3,3,1,0,0,0,0],
+  19: [4,3,3,3,2,0,0,0,0],
+  20: [4,3,3,3,2,0,0,0,0],
+};
+
+// Slots de Bruxo (Pact Magic — PHB p.107)
+const SPELL_SLOTS_WARLOCK = {
+  1:  [1,0,0,0,0,0,0,0,0], // 1 slot nv1
+  2:  [2,0,0,0,0,0,0,0,0], // 2 slots nv1
+  3:  [0,2,0,0,0,0,0,0,0], // 2 slots nv2
+  4:  [0,2,0,0,0,0,0,0,0],
+  5:  [0,0,2,0,0,0,0,0,0], // 2 slots nv3
+  6:  [0,0,2,0,0,0,0,0,0],
+  7:  [0,0,0,2,0,0,0,0,0], // 2 slots nv4
+  8:  [0,0,0,2,0,0,0,0,0],
+  9:  [0,0,0,0,2,0,0,0,0], // 2 slots nv5
+  10: [0,0,0,0,2,0,0,0,0],
+  11: [0,0,0,0,3,0,0,0,0], // 3 slots nv5
+  12: [0,0,0,0,3,0,0,0,0],
+  13: [0,0,0,0,3,0,0,0,0],
+  14: [0,0,0,0,3,0,0,0,0],
+  15: [0,0,0,0,3,0,0,0,0],
+  16: [0,0,0,0,3,0,0,0,0],
+  17: [0,0,0,0,4,0,0,0,0], // 4 slots nv5
+  18: [0,0,0,0,4,0,0,0,0],
+  19: [0,0,0,0,4,0,0,0,0],
+  20: [0,0,0,0,4,0,0,0,0],
+};
+
+// Número de truques conhecidos por classe/nível (PHB)
+const CANTRIPS_KNOWN_BY_LEVEL = {
+  'Bardo':     [2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4],
+  'Bruxo':     [2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4],
+  'Clérigo':   [3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5],
+  'Druida':    [2,2,2,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4],
+  'Feiticeiro':[4,4,4,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6],
+  'Mago':      [3,3,3,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5],
+};
+
+// Número de feitiços por classe/nível (para classes que "aprendem" feitiços)
+const SPELLS_KNOWN_TABLE = {
+  'Bardo':     [4,5,6,7,8,9,10,11,12,14,15,15,16,18,19,19,20,22,22,22],
+  'Bruxo':     [2,3,4,5,6,7,8,9,10,10,11,11,12,12,13,13,14,14,15,15],
+  'Feiticeiro':[2,3,4,5,6,7,8,9,10,11,12,12,13,13,14,14,15,15,15,15],
+  'Ranger':    [0,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11],
+};
+
+// Atributo de conjuração por classe
+const CASTING_ATTR = {
+  'Bardo':'cha','Bruxo':'cha','Clérigo':'wis','Druida':'wis',
+  'Feiticeiro':'cha','Mago':'int','Paladino':'cha','Ranger':'wis',
+};
+
+// Obtém tabela de slots correta por classe
+function getSpellSlotsTable(cls){
+  if(cls==='Bruxo') return SPELL_SLOTS_WARLOCK;
+  if(cls==='Paladino'||cls==='Ranger') return SPELL_SLOTS_HALF;
+  return SPELL_SLOTS;
+}
+
 const CANTRIPS_KNOWN = {
   Mago:3, Clérigo:3, Druida:2, Bardo:2, Feiticeiro:4, Bruxo:2,
   Guerreiro:0, Ladino:0, Bárbaro:0, Paladino:0, Ranger:0,
 };
 
 // Slots de magia por nível de personagem (D&D 5e oficial)
-const SPELL_SLOTS = {
-  //       Nv1 Nv2 Nv3 Nv4 Nv5 Nv6 Nv7 Nv8 Nv9
-  1:  [2,  0,  0,  0,  0,  0,  0,  0,  0],
-  2:  [3,  0,  0,  0,  0,  0,  0,  0,  0],
-  3:  [4,  2,  0,  0,  0,  0,  0,  0,  0],
-  4:  [4,  3,  0,  0,  0,  0,  0,  0,  0],
-  5:  [4,  3,  2,  0,  0,  0,  0,  0,  0],
-  6:  [4,  3,  3,  0,  0,  0,  0,  0,  0],
-  7:  [4,  3,  3,  1,  0,  0,  0,  0,  0],
-  8:  [4,  3,  3,  2,  0,  0,  0,  0,  0],
-  9:  [4,  3,  3,  3,  1,  0,  0,  0,  0],
-  10: [4,  3,  3,  3,  2,  0,  0,  0,  0],
-  11: [4,  3,  3,  3,  2,  1,  0,  0,  0],
-  12: [4,  3,  3,  3,  2,  1,  0,  0,  0],
-  13: [4,  3,  3,  3,  2,  1,  1,  0,  0],
-  14: [4,  3,  3,  3,  2,  1,  1,  0,  0],
-  15: [4,  3,  3,  3,  2,  1,  1,  1,  0],
-  16: [4,  3,  3,  3,  2,  1,  1,  1,  0],
-  17: [4,  3,  3,  3,  2,  1,  1,  1,  1],
-  18: [4,  3,  3,  3,  3,  1,  1,  1,  1],
-  19: [4,  3,  3,  3,  3,  2,  1,  1,  1],
-  20: [4,  3,  3,  3,  3,  2,  2,  1,  1],
-};
-
 // Rastreamento de slots usados
 let usedSpellSlots = [0,0,0,0,0,0,0,0,0]; // índice 0 = nível 1
 
@@ -2103,10 +2235,15 @@ function updateVitals(){
   const shXpVal=document.getElementById('sh-xp-val');
   const shXpSub=document.getElementById('sh-xp-sub');
   const shXpBar=document.getElementById('sh-xp-bar');
-  const xpNext=XP_TABLE[hero.level||1]||300;
-  const xpPct=Math.min(100,Math.round(((hero.xp||0)/xpNext)*100));
-  if(shXpVal) shXpVal.textContent=hero.xp||0;
-  if(shXpSub) shXpSub.textContent=`/${xpNext} XP`;
+  const lv=hero.level||1;
+  const xpCur=hero.xp||0;
+  const xpNext=XP_TABLE[lv]||300;
+  const xpPrev=lv>1?(XP_TABLE[lv-1]||0):0;
+  const xpInLevel=xpCur-xpPrev;
+  const xpForLevel=xpNext-xpPrev;
+  const xpPct=xpForLevel>0?Math.min(100,Math.round((xpInLevel/xpForLevel)*100)):100;
+  if(shXpVal) shXpVal.textContent=xpCur;
+  if(shXpSub) shXpSub.textContent=`/${xpNext} XP (Nv${lv+1<20?lv+1:20})`;
   if(shXpBar) shXpBar.style.width=xpPct+'%';
   updateXPRing();
 }
@@ -2115,8 +2252,8 @@ function updateXPRing(){
   const cur=hero.xp||0;
   const lv=hero.level||1;
   const next=XP_TABLE[lv]||300;
-  const prev=lv>1?XP_TABLE[lv-1]:0;
-  const pct=next>prev?Math.min(1,(cur-prev)/(next-prev)):1;
+  const prev=lv>1?(XP_TABLE[lv-1]||0):0;
+  const pct=next>prev?Math.min(1,Math.max(0,(cur-prev)/(next-prev))):1;
   const circumference=138;
   const offset=circumference-(pct*circumference);
   const ring=document.getElementById('xp-ring-circle');
@@ -2147,15 +2284,27 @@ function gainXP(amount){
   hero.xp=(hero.xp||0)+amount;
   showToast(`⭐ +${amount} XP!`);
   let lv=hero.level||1;
-  while(lv<20&&hero.xp>=XP_TABLE[lv]){
+  while(lv<20&&hero.xp>=(XP_TABLE[lv]||999999)){
     lv++;
     hero.level=lv;
-    hero.maxHP+=(classHP[hero.cls]||8)+mod(stats.con||10);
+    // HP correto: dado de vida + mod CON por nível (PHB)
+    const hdBonus=Math.max(1,Math.ceil((classHP[hero.cls]||8)/2)+1); // média do dado
+    hero.maxHP+=(hdBonus+mod(stats.con||10));
     hero.hp=hero.maxHP;
-    // Reset spell slots on level up
+    // Atualiza bônus de proficiência
+    hero.prof=lv<=4?2:lv<=8?3:lv<=12?4:lv<=16?5:6;
+    // Reset spell slots no novo nível
     if(SPELL_SLOTS[lv]) resetSpellSlots();
-    showToast(`🌟 NÍVEL ${lv}! Parabéns, ${hero.name}!`);
-    addMsg('msg-dm','').querySelector('.bbl').textContent=`✨ ${hero.name} subiu para o Nível ${lv}!`;
+    // Notifica com habilidades ganhas
+    const newAbilities=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv===lv).map(a=>a.name).join(', ');
+    showToast(`🌟 NÍVEL ${lv}!${newAbilities?' +'+newAbilities:''}`);
+    const lvMsg=addMsg('msg-dm','');
+    if(lvMsg){
+      const bbl=lvMsg.querySelector('.bbl');
+      if(bbl) bbl.innerHTML=`<b>✨ ${hero.name} subiu para o Nível ${lv}!</b>${newAbilities?`<br><span style="font-size:12px;color:var(--gold-l)">Nova habilidade: ${newAbilities}</span>`:''}`;
+    }
+    // Informa o mestre
+    if(newAbilities) askMaster(`${hero.name} subiu para o Nível ${lv}! Habilidade nova: ${newAbilities}. Narre brevemente esse progresso do herói na história.`);
   }
   // Update all XP displays
   updateVitals();
@@ -2769,11 +2918,19 @@ EXEMPLOS ERRADOS (nunca faça):
  ✗ "Role Percepção para abrir fechadura" — errado: abrir é Prestidigitação (DES)  
  ✗ Pedir teste quando o personagem obviamente vai ter sucesso ou falhar
 
-MAPA ATRIBUTO → PERÍCIA (PHB Cap.7):
-FOR: Atletismo | DES: Acrobacia, Furtividade, Prestidigitação | CON: resistência física
-INT: Arcanismo, História, Investigação, Natureza, Religião
-SAB: Adestrar Animais, Intuição, Medicina, Percepção, Sobrevivência
-CAR: Atuação, Enganação, Intimidação, Persuasão
+MAPA ATRIBUTO → PERÍCIA (PHB Cap.7) — USE SEMPRE O ATRIBUTO CORRETO:
+FOR: Atletismo (escalar, nadar, saltar, forçar)
+DES: Acrobacia (equilibrar, rolar), Furtividade (se esconder, mover silencioso), Prestidigitação (furtar, abrir fechadura)
+CON: Resistência física, Concentração, Aguento
+INT: Arcanismo (magia, itens mágicos), História (eventos, lendas), Investigação (pistas, dedução), Natureza (flora/fauna), Religião (deuses, rituais)
+SAB: Adestrar Animais, Intuição (detectar mentira), Medicina (estabilizar, curar), Percepção (notar coisas), Sobrevivência (rastrear, navegar)
+CAR: Atuação (entretenimento), Enganação (mentir), Intimidação (ameaçar), Persuasão (convencer)
+
+FÓRMULA DE TESTE (PHB p.174):
+CD = d20 + modificador do atributo + bônus de proficiência (se proficiente)
+Bônus prof. Nível 1-4: +2 | Nível 5-8: +3 | Nível 9-12: +4
+NUNCA peça Carisma para testes físicos. NUNCA peça Inteligência para ações sociais.
+NUNCA confunda Percepção (SAB, passiva) com Investigação (INT, ativa).
 
 [AÇÕES:Opção1|Opção2|Opção3|Opção4] — SEMPRE ao final, obrigatório
 REGRAS DAS AÇÕES:
@@ -3072,31 +3229,60 @@ async function rollDiceBar(sides){
   addRollCard(`d${sides}`, result, 0, result, null);
   
   // Informa o Mestre
-  const context = sides === 4 ? '(dano d4)' :
-                  sides === 6 ? '(dano d6)' :
-                  sides === 8 ? '(dano d8)' :
-                  sides === 10 ? '(dano d10)' :
-                  sides === 12 ? '(dano d12)' :
-                  sides === 20 ? '(d20 livre)' : `(d${sides})`;
-  askMaster(`Jogador rolou d${sides} ${context} e obteve ${result}. Use este resultado para calcular dano ou efeito e continue a narrativa. Inclua [PV:-X] se o dano atingiu o personagem.`);
+  // Calcula bônus relevante para o contexto
+  let bonus = 0;
+  let bonusLabel = '';
+  if(sides === 20){
+    // d20 livre — usa atributo pendente ou FOR
+    const attr = pendingRollAttr || 'str';
+    bonus = mod(stats[attr]||10);
+    bonusLabel = `+${bonus} (${attrLabels&&attrLabels[attr]||attr})`;
+  } else {
+    // Dados de dano — usa modificador de atributo da arma equipada
+    // Armas corpo-a-corpo = FOR, ranged = DES
+    const hasRanged = inventory.some(i=>i.equipped&&/arco|besta|funda/i.test(i.name||''));
+    const dmgAttr = hasRanged ? 'dex' : 'str';
+    bonus = mod(stats[dmgAttr]||10);
+    bonusLabel = `+${bonus} (${hasRanged?'DES':'FOR'})`;
+  }
+  const finalResult = result + bonus;
+  
+  // Atualiza display com total
+  if(resultEl){
+    resultEl.textContent = bonus !== 0 ? `${result}${bonus>=0?'+':''}${bonus}=${finalResult}` : String(result);
+  }
+  addRollCard(`d${sides}`, result, bonus, finalResult, null);
+  
+  const context = sides === 20 ? 'd20 livre' : `dano d${sides}`;
+  askMaster(`Jogador rolou d${sides} (${context}): dado=${result} ${bonusLabel} = total ${finalResult}. ${sides!==20?`Use ${finalResult} como dano e inclua [PV:-${finalResult}] se acertou. Continue a narrativa.`:'Continue a narrativa com este resultado.'}`);
 }
 
 // ══ D20 — abre via dado quando teste pendente ══
 function updateD20ButtonState(){
   const btn = document.getElementById('fbar-d20-btn');
-  if(!btn) return;
+  const bar = document.getElementById('dice-bar');
+  const hintEl = document.getElementById('d20-hint-txt');
+  
   if(pendingRollAttr){
-    btn.style.background='rgba(200,146,42,0.4)';
-    btn.style.borderColor='rgba(200,146,42,0.9)';
-    btn.style.color='#FFD700';
-    btn.style.boxShadow='0 0 8px rgba(200,146,42,0.5)';
-    btn.title='🎲 ROLAR '+(attrLabels[pendingRollAttr]||'').toUpperCase()+(pendingRollCD?' CD '+pendingRollCD:'');
+    // Mostra a barra de dados
+    if(bar) bar.style.display='flex';
+    if(btn){
+      btn.style.background='rgba(200,146,42,0.5)';
+      btn.style.borderColor='rgba(200,146,42,1)';
+      btn.style.color='#FFD700';
+      btn.style.boxShadow='0 0 10px rgba(200,146,42,0.6)';
+      btn.textContent='d20';
+    }
+    if(hintEl) hintEl.textContent=`⚠️ Mestre pede: Role ${(attrLabels&&attrLabels[pendingRollAttr])||pendingRollAttr}${pendingRollCD?' CD '+pendingRollCD:''} — use o dado acima!`;
   } else {
-    btn.style.background='rgba(200,146,42,0.2)';
-    btn.style.borderColor='rgba(200,146,42,0.5)';
-    btn.style.color='var(--gold-l)';
-    btn.style.boxShadow='none';
-    btn.title='Rolar d20';
+    // Esconde a barra de dados
+    if(bar) bar.style.display='none';
+    if(btn){
+      btn.style.background='rgba(200,146,42,0.2)';
+      btn.style.borderColor='rgba(200,146,42,0.5)';
+      btn.style.color='var(--gold-l)';
+      btn.style.boxShadow='none';
+    }
   }
 }
 
@@ -3534,6 +3720,25 @@ function showTurnLimitModal(used, limit){
   const old = document.getElementById('paywall-wrap');
   if(old) old.remove();
   
+  // ★ Bloqueia todos os controles de jogo
+  const toDisable=['act-grid','free-in','free-send','ooc-toggle','dice-bar'];
+  toDisable.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.style.opacity='0.3';
+      el.style.pointerEvents='none';
+      el.setAttribute('data-turn-blocked','1');
+    }
+  });
+  // Desabilita botões do rodapé exceto Diamantes
+  document.querySelectorAll('.fbar-btn').forEach(btn=>{
+    if(!btn.onclick?.toString().includes('mo-shop')){
+      btn.style.opacity='0.3';
+      btn.style.pointerEvents='none';
+      btn.setAttribute('data-turn-blocked','1');
+    }
+  });
+  
   const wrap = document.createElement('div');
   wrap.id = 'paywall-wrap';
   wrap.style.cssText = 'margin:16px 0;padding:16px;background:linear-gradient(135deg,rgba(91,63,160,.15),rgba(26,18,8,.9));border:1px solid rgba(139,111,208,.4);border-radius:14px;text-align:center';
@@ -3575,6 +3780,13 @@ function buySesssion(){
   
   showToast(`💎 -${SESSION_COST} Diamantes · +${SESSION_TURNS} turnos desbloqueados!`);
   addMemoryEvent(`Sessão Premium: +${SESSION_TURNS} turnos`, 'premium');
+  
+  // ★ Desbloqueia controles
+  document.querySelectorAll('[data-turn-blocked]').forEach(el=>{
+    el.style.opacity='';
+    el.style.pointerEvents='';
+    el.removeAttribute('data-turn-blocked');
+  });
 }
 
 
@@ -3826,7 +4038,7 @@ async function rollInlineD20(attrKey, label, cd){
   else if(isFail) outcomeStr=' ✗ Falha Crítica';
   else if(ok===true) outcomeStr=' ✓ Sucesso';
   else if(ok===false) outcomeStr=' ✗ Falha';
-  formulaEl.innerHTML = `d20(${diceVal}) ${ms} = <span style="color:${totalColor};font-weight:700">${total}</span>${cd?' vs CD '+cd:''}`;
+  formulaEl.innerHTML = `d20(${diceVal}) ${ms}${profStr||""} = <span style="color:${totalColor};font-weight:700">${total}</span>${cd?' vs CD '+cd:''}`;
   outcomeEl.textContent = outcomeStr;
   outcomeEl.className = 'roll-outcome ' + (isCrit||ok===true?'suc':isFail||ok===false?'fal':'');
   // Cor do dado também muda
@@ -4137,7 +4349,8 @@ function updateShopContext(){
   const banner=document.getElementById('shop-context-banner');
   const packs=['shop-pack1','shop-pack2','shop-pack3'];
   const mercBtn=document.getElementById('shop-mercador-btn');
-  // inCity = true se está em cidade OU encontrou mercador
+  const atTurnLimit=getTurnsUsedToday()>=(FREE_TURNS_PER_DAY+getBonusTurns());
+  
   if(inCity){
     banner.innerHTML='🏙️ <strong>Cidade ou Mercador disponível</strong> — compras liberadas!';
     banner.style.borderColor='rgba(46,204,113,0.4)';banner.style.color='#60D090';
@@ -4146,6 +4359,15 @@ function updateShopContext(){
       if(el){el.style.opacity='1';el.style.filter='none';el.style.pointerEvents='auto';}
     });
     if(mercBtn){mercBtn.style.opacity='0.4';mercBtn.style.filter='grayscale(0.8)';}
+  } else if(atTurnLimit){
+    // Limite de turnos: libera compra de diamantes (emergência)
+    banner.innerHTML='⏳ <strong>Limite de turnos</strong> — compre Diamantes para continuar!';
+    banner.style.borderColor='rgba(139,111,208,0.5)';banner.style.color='#C0A0FF';
+    packs.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.style.opacity='1';el.style.filter='none';el.style.pointerEvents='auto';}
+    });
+    if(mercBtn){mercBtn.style.opacity='0.3';mercBtn.style.filter='grayscale(1)';}
   } else {
     banner.innerHTML='🌲 <strong>Fora da civilização</strong> — encontre um mercador primeiro';
     banner.style.borderColor='rgba(200,146,42,0.2)';banner.style.color='var(--gold-d)';
