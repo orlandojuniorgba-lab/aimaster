@@ -1258,7 +1258,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
 
 <!-- MODAL: GERENCIADOR DE MAGIAS -->
-<div class="mo" id="mo-spell-manager"><div class="ms" style="max-height:88vh;overflow-y:auto">
+<div class="mo" id="mo-spell-manager" style="z-index:300"><div class="ms" style="max-height:88vh;overflow-y:auto">
   <div class="mt" id="spell-mgr-title">📖 Gerenciar Magias
     <button class="mc" onclick="closeMo('mo-spell-manager');buildSpellsTab(hero.cls,hero.level||1)">×</button>
   </div>
@@ -1496,7 +1496,7 @@ function buildSpellsTab(cls, level){
     const prepLabel = prepSystem ? `PREPARADOS HOJE (${preparedSpells.length}/${maxPrep})` : `FEITIÇOS CONHECIDOS (${grimoire.length})`;
     html += `<div class="sec-hdr" style="margin-bottom:4px;display:flex;justify-content:space-between;align-items:center">
       <span>${prepLabel}</span>
-      <button onclick="openSpellManager()" style="background:rgba(91,63,160,.2);border:1px solid rgba(139,111,208,.35);border-radius:6px;padding:3px 8px;font-family:var(--font-title);font-size:9px;color:#C0A0FF;cursor:pointer;letter-spacing:.3px">✏ Gerenciar</button>
+      <button id="spell-mgr-open-btn" style="background:rgba(91,63,160,.2);border:1px solid rgba(139,111,208,.35);border-radius:6px;padding:3px 8px;font-family:var(--font-title);font-size:9px;color:#C0A0FF;cursor:pointer;letter-spacing:.3px">✏ Gerenciar</button>
     </div>`;
 
     if(prepSystem){
@@ -1548,6 +1548,9 @@ function buildSpellsTab(cls, level){
   </div>`;
 
   el.innerHTML = html;
+  // ★ Attach Gerenciar button handler after innerHTML (avita problemas de escaping)
+  const mgrBtn = document.getElementById('spell-mgr-open-btn');
+  if(mgrBtn) mgrBtn.onclick = function(){ openSpellManager(); };
 }
 
 
@@ -4617,6 +4620,11 @@ function finishSpellSelection(skip){
 
 // ══ GERENCIADOR DE MAGIAS ══
 function openSpellManager(){
+  // Safety check — precisa de personagem ativo
+  if(!hero || !hero.cls){
+    showToast('⚠️ Crie um personagem primeiro');
+    return;
+  }
   loadSpellbook(); // ★ Sempre carrega estado mais recente
   const cls = hero.cls||'';
   const lv  = hero.level||1;
@@ -4906,15 +4914,31 @@ async function rollInlineD20(attrKey, label, cd){
   clearInterval(anim);
   faceEl.classList.remove('spinning');
 
-  // Resultado real
+  // Resultado real com proficiência (PHB p.173)
   const diceVal = rollD(20);
-  const modVal = mod(stats[attrKey]||10);
+  const attrMod = mod(stats[attrKey]||10);
+  const profLv = hero.prof || (hero.level<=4?2:hero.level<=8?3:hero.level<=12?4:hero.level<=16?5:6);
+  const classSvs = CLASS_SAVES[hero.cls]||[];
+  const primSkills = {
+    str:['atletismo'],dex:['acrobacia','furtividade','prestidigitacao'],
+    con:[],int:['arcanismo','historia','investigacao','natureza','religiao'],
+    wis:['adestramento','intuicao','medicina','percepcao','sobrevivencia'],
+    cha:['atuacao','enganacao','intimidacao','persuasao'],
+  };
+  const lblNorm = (label||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const hasProfSave = classSvs.includes(attrKey);
+  const hasProfSkill = (primSkills[attrKey]||[]).some(s=>lblNorm.includes(s)||s.includes(lblNorm));
+  const isProficient = hasProfSave || hasProfSkill;
+  const profBonus = isProficient ? profLv : 0;
+  const modVal = attrMod + profBonus;
+  const profStr = profBonus>0 ? '+'+profBonus+'(prof)' : '';
   const total = diceVal + modVal;
   const isCrit = diceVal === 20;
   const isFail = diceVal === 1;
   const ok = cd ? total >= cd : null;
 
-  faceEl.textContent = total;
+  // Dado mostra o valor do d20 (não total) — total aparece na fórmula
+  faceEl.textContent = diceVal;
   faceEl.className = 'dice-face' + (isCrit ? ' d-crit' : isFail ? ' d-fail' : '');
 
   const ms = modVal >= 0 ? '+'+modVal : String(modVal);
@@ -5095,6 +5119,10 @@ function openMo(id){
   if(id==='mo-d20'){d20ActionMode=null;buildD20Attrs();buildD20AbilitiesPanel();document.querySelectorAll('.d20-action-btn').forEach(b=>b.classList.remove('active'));}
   if(id==='mo-xp')updateXPModal();
   if(id==='mo-shop')updateShopContext();
+  // ★ Ao abrir a ficha, rebuilda a aba de magias se tiver personagem
+  if(id==='mo-char' && hero && hero.cls){
+    buildSpellsTab(hero.cls, hero.level||1);
+  }
   document.getElementById(id).classList.add('open');
 }
 
@@ -5636,31 +5664,55 @@ function toggleEquip(idx){
 // ★ Recalcula CA baseado nos itens equipados (D&D 5e)
 function recalcCA(){
   const dexMod = mod(stats.dex||10);
-  const armor = inventory.find(i=>i.equipped && i.slot==='body');
-  const shield = inventory.find(i=>i.equipped && (i.slot==='lhand'||i.slot==='shield') && i.name.toLowerCase().includes('escudo'));
-  let baseCA = 10 + dexMod; // sem armadura
+  const wisMod = mod(stats.wis||10);
+  const conMod = mod(stats.con||10);
+  const armor  = inventory.find(i=>i.equipped && i.slot==='body');
+  const shield  = inventory.find(i=>i.equipped && (i.slot==='lhand'||i.slot==='shield') && /escudo/i.test(i.name));
+  const cls = hero.cls||'';
+  let baseCA = 10 + dexMod; // sem armadura (padrão)
+
   if(armor){
-    // Armadura leve: CA base + DES completo
-    if(/couro/i.test(armor.name)) baseCA = 11 + dexMod;
-    // Armadura média: CA base + DES (máx +2)
-    else if(/reforçad|escamas|cota de talas/i.test(armor.name)) baseCA = 13 + Math.min(2, dexMod);
-    // Armadura pesada: CA fixo
-    else if(/cota de malha/i.test(armor.name)) baseCA = 16;
-    else if(/armadura de placas/i.test(armor.name)) baseCA = 18;
-    else baseCA = 12 + dexMod; // genérica
+    const n = armor.name;
+    // ── ARMADURAS LEVES (PHB p.144) — CA base + DES (sem limite) ──
+    if(/acolchoada/i.test(n))          baseCA = 11 + dexMod;
+    else if(/couro/i.test(n))        baseCA = 11 + dexMod;
+    else if(/couro.*(batido|reforç)/i.test(n)) baseCA = 12 + dexMod;
+    // ── ARMADURAS MÉDIAS (PHB p.144) — CA base + DES (máx +2) ──
+    else if(/gibão.*(peles|fur)/i.test(n))  baseCA = 11 + Math.min(2,dexMod);
+    else if(/camisão.*(malha|anéis)/i.test(n)) baseCA = 13 + Math.min(2,dexMod);
+    else if(/brunea/i.test(n))         baseCA = 14 + Math.min(2,dexMod);
+    else if(/peitoral/i.test(n))       baseCA = 14 + Math.min(2,dexMod);
+    else if(/meia.?armadura/i.test(n)) baseCA = 15 + Math.min(2,dexMod);
+    else if(/escamas|couro reforç/i.test(n)) baseCA = 13 + Math.min(2,dexMod);
+    // ── ARMADURAS PESADAS (PHB p.145) — CA fixo, DES não conta ──
+    else if(/cota.*(anéis|anel)/i.test(n)) baseCA = 14;
+    else if(/cota.*(talas|lamelar)/i.test(n)) baseCA = 17;
+    else if(/cota.*(malha)/i.test(n))  baseCA = 16;
+    else if(/armadura.*(placas|completa)/i.test(n)) baseCA = 18;
+    else if(/meia.?placa/i.test(n))    baseCA = 15 + Math.min(2,dexMod);
+    // ── GENÉRICA ──
+    else baseCA = 12 + dexMod;
   }
+
+  // Classes sem armadura — fontes especiais de CA (PHB)
+  if(!armor){
+    if(cls==='Bárbaro')  baseCA = 10 + dexMod + conMod;  // Defesa Sem Armadura
+    if(cls==='Monge')    baseCA = 10 + dexMod + wisMod;  // Defesa Sem Armadura Monge
+  }
+
+  // Escudo sempre +2 (PHB p.144)
   if(shield) baseCA += 2;
-  // Bárbaro sem armadura: 10 + DES + CON
-  if(!armor && hero.cls === 'Bárbaro') baseCA = 10 + dexMod + mod(stats.con||10);
+
+  // Mago/Feiticeiro com Armadura Arcana (feitiço)
+  // já implementado via item mágico se tiver
+
   hero.ca = baseCA;
-  // Atualiza displays
-  const fcaEl = document.getElementById('f-ca');
-  if(fcaEl) fcaEl.textContent = baseCA;
-  const shcaEl = document.getElementById('sh-ca');
-  if(shcaEl) shcaEl.textContent = baseCA;
-  // Atualiza card de combate na ficha
-  const cbca = document.getElementById('sh-ca');
-  if(cbca) cbca.textContent = baseCA;
+
+  // Atualiza todos os displays
+  ['f-ca','sh-ca','g-ca'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = baseCA;
+  });
 }
 
 // Adiciona item ao inventário (chamado pela IA)
