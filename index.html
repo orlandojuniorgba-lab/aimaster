@@ -802,6 +802,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <button class="dice-btn" onclick="rollDiceBar(12)" title="Rolar d12">d12</button>
     <button class="dice-btn" id="fbar-d20-btn" onclick="rollDiceBar(20)" title="Rolar d20" style="background:rgba(200,146,42,.2);border-color:rgba(200,146,42,.5);color:var(--gold-l)">d20</button>
     <div id="dice-bar-result" style="margin-left:auto;font-family:var(--font-title);font-size:14px;font-weight:700;color:var(--gold-l);min-width:50px;text-align:right"></div>
+    <span id="d20-hint-txt" style="display:none;font-size:10px;color:var(--gold-l);margin-left:4px"></span>
   </div>
     <div class="ooc-toggle-row">
         <button class="ooc-toggle" id="ooc-toggle" onclick="toggleOOC()" title="Alternar modo">
@@ -1491,13 +1492,15 @@ function buildSpellsTab(cls, level){
     }
   }
 
+  // ── BOTÃO GERENCIAR — sempre visível para conjuradores ──
+  html += `<div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+    <button id="spell-mgr-open-btn" style="background:rgba(91,63,160,.25);border:1px solid rgba(139,111,208,.5);border-radius:8px;padding:6px 14px;font-family:var(--font-title);font-size:11px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">✏ Gerenciar Magias</button>
+  </div>`;
+
   // ── FEITIÇOS (prepara ou conhece) ──
   if(maxSlotLv>0){
     const prepLabel = prepSystem ? `PREPARADOS HOJE (${preparedSpells.length}/${maxPrep})` : `FEITIÇOS CONHECIDOS (${grimoire.length})`;
-    html += `<div class="sec-hdr" style="margin-bottom:4px;display:flex;justify-content:space-between;align-items:center">
-      <span>${prepLabel}</span>
-      <button id="spell-mgr-open-btn" style="background:rgba(91,63,160,.2);border:1px solid rgba(139,111,208,.35);border-radius:6px;padding:3px 8px;font-family:var(--font-title);font-size:9px;color:#C0A0FF;cursor:pointer;letter-spacing:.3px">✏ Gerenciar</button>
-    </div>`;
+    html += `<div class="sec-hdr" style="margin-bottom:4px">${prepLabel}</div>`;
 
     if(prepSystem){
       // Mostra feitiços preparados hoje
@@ -2951,16 +2954,52 @@ function updateActionButtons(actions){
 
 // ══ D20 BUTTON — só libera quando mestre pede teste ══
 function updateD20ButtonState(){
-  const btn=document.getElementById('fbar-d20-btn');
-  if(!btn)return;
+  const btn      = document.getElementById('fbar-d20-btn');
+  const bar      = document.getElementById('dice-bar');
+  const hintEl   = document.getElementById('d20-hint-txt');
+  const actGrid  = document.getElementById('act-grid');
+  const freeIn   = document.getElementById('free-in');
+  const freeSend = document.getElementById('free-send');
+
   if(pendingRollAttr){
-    btn.classList.remove('d20-dim');
-    btn.classList.add('d20-active');
-    btn.title='🎲 ROLAR '+attrLabels[pendingRollAttr].toUpperCase()+(pendingRollCD?' CD '+pendingRollCD:'');
+    // ── Mostra barra de dados ──
+    if(bar) bar.style.display='flex';
+
+    // ── Destaca botão d20 ──
+    if(btn){
+      btn.style.background='rgba(200,146,42,.5)';
+      btn.style.borderColor='rgba(200,146,42,1)';
+      btn.style.color='#FFD700';
+      btn.style.boxShadow='0 0 10px rgba(200,146,42,.6)';
+      btn.title='🎲 ROLAR '+(attrLabels[pendingRollAttr]||pendingRollAttr)+(pendingRollCD?' CD '+pendingRollCD:'');
+    }
+
+    // ── Bloqueia ações (jogador precisa rolar) ──
+    if(actGrid){ actGrid.style.opacity='0.3'; actGrid.style.pointerEvents='none'; }
+    if(freeIn) { freeIn.disabled=true; freeIn.placeholder='🎲 Role o dado primeiro!'; }
+    if(freeSend){ freeSend.style.opacity='0.3'; freeSend.style.pointerEvents='none'; }
+
+    // ── Hint na barra ──
+    if(hintEl){
+      hintEl.textContent='🎲 Role '+(attrLabels[pendingRollAttr]||'atributo')+(pendingRollCD?' CD '+pendingRollCD:'');
+      hintEl.style.color='var(--gold-l)';
+    }
+
   } else {
-    btn.classList.add('d20-dim');
-    btn.classList.remove('d20-active');
-    btn.title='Aguardando teste...';
+    // ── Esconde barra / desbloqueia ──
+    if(bar) bar.style.display='none';
+
+    if(btn){
+      btn.style.background='rgba(200,146,42,.2)';
+      btn.style.borderColor='rgba(200,146,42,.5)';
+      btn.style.color='var(--gold-l)';
+      btn.style.boxShadow='none';
+      btn.title='Rolar d20';
+    }
+
+    if(actGrid){ actGrid.style.opacity=''; actGrid.style.pointerEvents=''; }
+    if(freeIn) { freeIn.disabled=false; freeIn.placeholder='Outra decisão...'; }
+    if(freeSend){ freeSend.style.opacity=''; freeSend.style.pointerEvents=''; }
   }
 }
 
