@@ -2013,11 +2013,31 @@ function buildContextualSpellChunk(actionText){
 
 // Injeta chunk de magias preparadas no system prompt
 function buildPreparedSpellsChunk(){
-  const allPrepared = [...new Set([...preparedSpells, ...heroKnownSpells])];
-  if(allPrepared.length === 0) return '';
-  const chunks = allPrepared.slice(0,8).map(buildSpellChunk).filter(Boolean);
-  if(chunks.length === 0) return '';
-  return '\n━━━ MAGIAS PREPARADAS — REFERÊNCIA PHB ━━━\n' + chunks.join('\n') + '\n';
+  const cls = hero.cls||'';
+  const castAttr = CASTING_ATTR[cls];
+  if(!castAttr) return ''; // não-conjurador
+
+  // Truques do personagem
+  const cantrips = heroKnownCantrips.length > 0 ? heroKnownCantrips : [];
+
+  // Feitiços preparados/conhecidos
+  const allSpells = [...new Set([...preparedSpells, ...heroKnownSpells, ...learnedSpells])];
+
+  let lines = [];
+
+  // Truques — sempre disponíveis (sem custo)
+  if(cantrips.length > 0){
+    lines.push('TRUQUES (uso ilimitado): ' + cantrips.join(', '));
+  }
+
+  // Feitiços com descrições PHB
+  if(allSpells.length > 0){
+    const chunks = allSpells.slice(0,8).map(buildSpellChunk).filter(Boolean);
+    if(chunks.length > 0) lines = lines.concat(chunks);
+  }
+
+  if(lines.length === 0) return '';
+  return '\n━━━ MAGIAS DO PERSONAGEM — REFERÊNCIA PHB ━━━\n' + lines.join('\n') + '\n';
 }
 
 const QUESTS=[
@@ -2366,7 +2386,7 @@ let hero={xp:0,level:1,credits:0}, stats={}, thinking=false;
 let inCombat=false, inCity=false; // estados de contexto
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
-let pendingRollAttr=null; // atributo pedido pelo mestre
+let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null; // teste pendente do mestre
 
 // Partículas
 (function(){
@@ -2413,7 +2433,8 @@ function updatePreview(){
 let heroKnownSpells = [];   // feitiços conhecidos/preparados
 let heroKnownCantrips = []; // truques escolhidos
 let heroCombatStyle = null; // estilo de combate
-let cantripSwapPending = false; // ★ true só quando acabou de subir de nível (Mago/Feiticeiro/Bruxo)
+let cantripSwapPending = false;
+let spellMgrEditing = false; // true enquanto Gerenciar estiver aberto → edição livre // ★ true só quando acabou de subir de nível (Mago/Feiticeiro/Bruxo)
 const CANTRIP_SWAP_CLASSES = new Set(['Mago','Feiticeiro','Bruxo']); // podem trocar 1 truque/nível
 
 // Save/load with hero state
@@ -2884,7 +2905,18 @@ function extractHPChange(text){
   const tagRe = /\[PV:([+-]?\d+)\]/gi;
   let m;
   while((m=tagRe.exec(text))!==null){
-    total += parseInt(m[1]);
+    const delta = parseInt(m[1]);
+    // ★ Filtro de dano invertido: ignora [PV:-X] se contexto indica JOGADOR atacando
+    // e NÃO indica jogador sendo atingido
+    if(delta < 0){
+      const playerAttacking = /acerta|acertou|sua flecha|seu golpe|você acerta|você causa|você atinge|seu tiro|sua lâmina/i.test(text);
+      const playerHurt = /você (sofre|recebe|toma|leva)|acerta você|atinge você|sua pele|dano ao personagem/i.test(text);
+      if(playerAttacking && !playerHurt){
+        // Mestre errou a direção do dano — ignora
+        continue;
+      }
+    }
+    total += delta;
   }
   if(total !== 0) return total;
   // Fallback narrativo — apenas se mestre explicitou dano/cura com número
@@ -2977,7 +3009,7 @@ function updateD20ButtonState(){
       btn.style.borderColor='rgba(200,146,42,1)';
       btn.style.color='#FFD700';
       btn.style.boxShadow='0 0 10px rgba(200,146,42,.6)';
-      btn.title='🎲 ROLAR '+(attrLabels[pendingRollAttr]||pendingRollAttr)+(pendingRollCD?' CD '+pendingRollCD:'');
+      btn.title='🎲 ROLAR '+(pendingRollLabel||attrLabels[pendingRollAttr]||pendingRollAttr)+(pendingRollCD?' CD '+pendingRollCD:'');
     }
 
     // ── Bloqueia ações (jogador precisa rolar) ──
@@ -2987,7 +3019,8 @@ function updateD20ButtonState(){
 
     // ── Hint na barra ──
     if(hintEl){
-      hintEl.textContent='🎲 Role '+(attrLabels[pendingRollAttr]||'atributo')+(pendingRollCD?' CD '+pendingRollCD:'');
+      hintEl.style.display='inline';
+      hintEl.textContent='🎲 Role '+(pendingRollLabel||attrLabels[pendingRollAttr]||'atributo')+(pendingRollCD?' CD '+pendingRollCD:'');
       hintEl.style.color='var(--gold-l)';
     }
 
@@ -3014,13 +3047,15 @@ async function handleD20Click(){
     showToast('⚠️ Aguarde o Mestre pedir um teste');
     return;
   }
-  // Rola imediatamente sem abrir janela
-  const attr=pendingRollAttr;
-  const cd=pendingRollCD;
-  const label=attrLabels[attr]||'FOR';
-  const result=await rollInlineD20(attr,label,cd);
-  const outcome=result.isCrit?'CRÍTICO':result.isFail?'FALHA CRÍTICA':result.ok===true?'SUCESSO':result.ok===false?'FALHA':'total '+result.total;
-  askMaster(`Jogador rolou ${label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${cd?' vs CD '+cd:''} — ${outcome}. Continue a narrativa com este resultado.`);
+  // Usa label da perícia específica se disponível
+  const attr  = pendingRollAttr;
+  const label = pendingRollLabel || attrLabels[attr] || 'Teste';
+  const cd    = pendingRollCD;
+  const result = await rollInlineD20(attr, label, cd);
+  if(result){
+    const outcome = result.isCrit?'CRÍTICO':result.isFail?'FALHA CRÍTICA':result.ok===true?'SUCESSO':result.ok===false?'FALHA':`total ${result.total}`;
+    askMaster(`Jogador rolou ${label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${cd?' vs CD '+cd:''} — ${outcome}. Continue a narrativa com este resultado.`);
+  }
 }
 
 // ★ Detecta se mestre pediu um teste e qual atributo
@@ -3096,11 +3131,17 @@ function detectPendingRoll(text){
 
   // Aplica só se encontrou algo novo
   if(foundAttr){
-    pendingRollAttr = foundAttr;
+    pendingRollAttr  = foundAttr;
     if(foundCD !== null) pendingRollCD = foundCD;
+    // Guarda o nome legível da perícia/atributo
+    if(tagMatch) pendingRollLabel = tagMatch[1].trim();
+    else if(foundAttr) {
+      // Tenta extrair o nome da perícia do texto original
+      const ATTR_NAMES = {str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
+      pendingRollLabel = ATTR_NAMES[foundAttr] || foundAttr;
+    }
   }
 }
-let pendingRollCD=null;
 
 function buildSystemPrompt(){
   const rp=PROFILES.race[hero.race]||{};const cp=PROFILES.class[hero.cls]||{};const bp=PROFILES.bg[hero.bg]||{};
@@ -3127,7 +3168,18 @@ function buildSystemPrompt(){
   if(hero.bg==='Nobre')especiais+='\n- Guardas e comerciantes respeitosos.';
 
   const equippedItems=inventory.filter(i=>i.equipped).map(i=>`${i.name}(slot:${i.slot||'?'})`).join(', ')||'nenhum';
-  const spellList=(PROFILES.class[hero.cls]?.spells||[]).join(', ')||'nenhuma';
+  // ★ Magias reais do personagem (truques + preparados/conhecidos)
+  const _cantrips = heroKnownCantrips.length > 0 ? heroKnownCantrips : [];
+  const _spells   = [...new Set([...preparedSpells,...heroKnownSpells,...learnedSpells])];
+  const _castAttr = CASTING_ATTR[hero.cls];
+  let spellList = 'nenhuma';
+  if(_castAttr){
+    const parts = [];
+    if(_cantrips.length > 0) parts.push('Truques: ' + _cantrips.join(', '));
+    if(_spells.length > 0)   parts.push('Feitiços: ' + _spells.join(', '));
+    if(parts.length > 0) spellList = parts.join(' | ');
+    else spellList = '(nenhum selecionado — use Gerenciar Magias)';
+  }
   const classAbilsNow=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv<=(hero.level||1)).map(a=>a.name).join(', ')||'nenhuma';
   const questData=QUESTS[hero.questId!==undefined?hero.questId:0];
 
@@ -4128,16 +4180,24 @@ function showRerollButton(rollResult, context){
   wrap.id = 'reroll-btn-wrap';
   wrap.style.cssText = 'display:flex;justify-content:center;margin:4px 0 8px;animation:fadeIn .3s';
   wrap.innerHTML = `
-    <button onclick="useReroll()" style="
-      background:linear-gradient(135deg,rgba(91,63,160,.3),rgba(139,111,208,.2));
-      border:1px solid rgba(139,111,208,.5);border-radius:10px;
-      padding:8px 18px;display:flex;align-items:center;gap:8px;cursor:pointer;
-      font-family:var(--font-title);font-size:12px;color:#C0A0FF;letter-spacing:.5px;
-      box-shadow:0 0 12px rgba(139,111,208,.2)">
-      <span style="font-size:16px">💎</span>
-      <span>Relançar por ${REROLL_COST} Diamantes</span>
-      <span style="font-size:11px;color:rgba(200,160,255,.6)">(você tem ${hero.credits||0})</span>
-    </button>`;
+    <div style="font-family:var(--font-title);font-size:10px;color:rgba(200,160,255,.5);text-align:center;margin-bottom:6px;letter-spacing:1px">⚠️ FALHA — O DESTINO AGUARDA SUA DECISÃO</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button onclick="useReroll()" style="
+        background:linear-gradient(135deg,rgba(91,63,160,.35),rgba(139,111,208,.25));
+        border:1px solid rgba(139,111,208,.6);border-radius:10px;
+        padding:10px 16px;display:flex;align-items:center;gap:6px;cursor:pointer;
+        font-family:var(--font-title);font-size:12px;color:#C0A0FF;letter-spacing:.5px">
+        <span style="font-size:16px">💎</span>
+        <div><div>Relançar Dado</div><div style="font-size:10px;color:rgba(200,160,255,.5)">${REROLL_COST} Diamantes (você tem ${hero.credits||0})</div></div>
+      </button>
+      <button onclick="acceptFailure()" style="
+        background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.25);border-radius:10px;
+        padding:10px 16px;display:flex;align-items:center;gap:6px;cursor:pointer;
+        font-family:var(--font-title);font-size:12px;color:var(--gold-d);letter-spacing:.5px">
+        <span style="font-size:16px">🎲</span>
+        <div><div>Aceitar o Destino</div><div style="font-size:10px;color:rgba(200,180,120,.4)">Continuar com a falha</div></div>
+      </button>
+    </div>`;
   narr.appendChild(wrap);
   wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -4169,6 +4229,16 @@ async function useReroll(){
   askMaster(`Jogador usou 💎 Relançar Dado. Novo resultado: ${r.label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${r.cd?' vs CD '+r.cd:''} — ${outcome}. ${lastRollData.context||'Continue a narrativa com este novo resultado.'}`);
   
   lastRollData = null;
+}
+
+// Jogador aceita a falha — continua narrativa normalmente
+function acceptFailure(){
+  const wrap = document.getElementById('reroll-btn-wrap');
+  if(wrap) wrap.remove();
+  const r = lastRollData;
+  if(!r) return;
+  lastRollData = null;
+  askMaster(`Jogador aceitou a falha no teste de ${r.label||'atributo'} (resultado ${r.total}${r.cd?' vs CD '+r.cd:''}). Continue a narrativa com as consequências desta falha.`);
 }
 
 
@@ -4370,11 +4440,11 @@ async function generateSceneImage(){
     const img = new Image();
     img.onload = function(){
       imgWrap.innerHTML = `
-        <img src="${imageUrl}" alt="Cena Ilustrada" 
-          style="width:100%;border-radius:12px;display:block"
-          onclick="this.style.transform=this.style.transform?'':'scale(1.5)';this.style.zIndex=this.style.zIndex?'':'10';this.style.position=this.style.position?'':'relative'"/>
+        <img src="${imageUrl}" alt="Cena Ilustrada"
+          style="width:100%;border-radius:12px;display:block;cursor:zoom-in"
+          onclick="openSceneLightbox('${imageUrl}')"/>
         <div style="padding:6px 10px;font-family:var(--font-title);font-size:9px;color:rgba(139,111,208,.5);letter-spacing:.5px;text-align:center">
-          ✨ Cena Ilustrada · Toque para ampliar
+          ✨ Cena Ilustrada · Toque para ver em tela cheia
         </div>`;
       imgWrap.scrollIntoView({behavior:'smooth',block:'center'});
       addMemoryEvent('Cena ilustrada gerada', 'premium');
@@ -4420,6 +4490,22 @@ async function buildImagePrompt(narrativeText){
   return prompt.substring(0,500); // Limita tamanho do prompt
 }
 
+
+
+// ══ LIGHTBOX DE CENA ILUSTRADA ══
+function openSceneLightbox(url){
+  let lb = document.getElementById('scene-lightbox');
+  if(!lb){
+    lb = document.createElement('div');
+    lb.id = 'scene-lightbox';
+    lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;flex-direction:column;gap:12px;padding:16px';
+    lb.onclick = ()=>{ lb.style.display='none'; };
+    lb.innerHTML = '<img id="scene-lb-img" style="max-width:100%;max-height:85vh;border-radius:12px;border:1px solid rgba(139,111,208,.3);object-fit:contain"/><div style="font-family:var(--font-title);font-size:10px;color:rgba(139,111,208,.5);letter-spacing:1px">TOQUE PARA FECHAR</div>';
+    document.body.appendChild(lb);
+  }
+  document.getElementById('scene-lb-img').src = url;
+  lb.style.display = 'flex';
+}
 
 // ══ FIM FEATURES PREMIUM ══
 
@@ -4665,187 +4751,192 @@ function finishSpellSelection(skip){
 
 // ══ GERENCIADOR DE MAGIAS ══
 function openSpellManager(){
-  // Safety check — precisa de personagem ativo
-  if(!hero || !hero.cls){
-    showToast('⚠️ Crie um personagem primeiro');
-    return;
-  }
-  loadSpellbook(); // ★ Sempre carrega estado mais recente
-  const cls = hero.cls||'';
-  const lv  = hero.level||1;
+  if(!hero || !hero.cls){ showToast('⚠️ Crie um personagem primeiro'); return; }
+  loadSpellbook();
+
+  const cls      = hero.cls||'';
+  const lv       = hero.level||1;
   const allSpells   = SPELLS_BY_CLASS[cls]||{};
   const allCantrips = CANTRIPS_BY_CLASS[cls]||[];
   const maxSlotLv   = maxSpellLevel(cls, lv);
   const maxPrep     = maxPreparedSpells(cls, lv);
   const prepSystem  = ['Mago','Clérigo','Druida','Paladino','Ranger'].includes(cls);
+  const isMage      = cls==='Mago';
   const grimoire    = [...new Set([...heroKnownSpells, ...learnedSpells])];
+  const maxCants    = CANTRIPS_KNOWN_BY_LEVEL[cls]?.[lv-1]||STARTING_CANTRIPS[cls]||0;
 
   const title = document.getElementById('spell-mgr-title');
   const body  = document.getElementById('spell-mgr-body');
+  if(!body){ console.error('spell-mgr-body not found'); return; }
 
   let html = '';
 
-  // ── Truques ──
-  if(allCantrips.length>0){
-    html += `<div class="sec-hdr" style="margin-bottom:6px">TRUQUES CONHECIDOS</div>
-    
-    ${`<div style="font-size:11px;color:rgba(180,140,255,.5);margin-bottom:8px">Você conhece <b style="color:#C0A0FF">${CANTRIPS_KNOWN_BY_LEVEL[cls]?.[lv-1]||STARTING_CANTRIPS[cls]||0} truques</b> no nível ${lv} — permanentes e ilimitados.</div>`}
-    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px">`;
-    allCantrips.forEach(c=>{
-      const active = heroKnownCantrips.includes(c); // só ativo se explicitamente escolhido
-      html += `<div onclick="toggleLearnedCantrip('${c.replace(/'/g,"\\'")}',this)"
-        style="background:${active?'rgba(91,63,160,.3)':'rgba(15,10,4,.6)'};
-        border:1px solid ${active?'rgba(139,111,208,.7)':'rgba(139,111,208,.2)'};
-        border-radius:8px;padding:5px 10px;cursor:pointer;font-size:11px;
-        color:${active?'#E0C0FF':'rgba(180,140,255,.4)'};transition:all .15s">
-        ${active?'✓ ':''}${c}
-      </div>`;
-    });
-    html += `</div>`;
+  // ── Aviso swap de nível ──
+  if(cantripSwapPending && CANTRIP_SWAP_CLASSES.has(cls)){
+    html += '<div style="background:rgba(91,63,160,.2);border:1px solid rgba(139,111,208,.5);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:#C0A0FF">✨ <b>Subiu de nível!</b> Você pode trocar 1 truque agora.</div>';
   }
 
-  // ── Feitiços por nível ──
+  // ── Truques ──
+  if(allCantrips.length>0){
+    html += '<div class="sec-hdr" style="margin-bottom:4px">TRUQUES CONHECIDOS</div>';
+    html += '<div style="font-size:11px;color:rgba(180,140,255,.5);margin-bottom:8px">Você conhece <b style="color:#C0A0FF">'+maxCants+' truques</b> no nível '+lv+' — permanentes e ilimitados.</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px" id="cant-grid">';
+    allCantrips.forEach(function(c){
+      const active = heroKnownCantrips.includes(c);
+      html += '<button data-cantrip="'+escAttr(c)+'" style="background:'+(active?'rgba(91,63,160,.3)':'rgba(15,10,4,.6)')+';border:1px solid '+(active?'rgba(139,111,208,.7)':'rgba(139,111,208,.2)')+';border-radius:8px;padding:5px 10px;cursor:pointer;font-size:11px;color:'+(active?'#E0C0FF':'rgba(180,140,255,.4)')+'">'+(active?'✓ ':'')+c+'</button>';
+    });
+    html += '</div>';
+  }
+
+  // ── Feitiços ──
   if(maxSlotLv>0){
-    const grimoireIsEmpty = isMage && grimoire.length===0;
-    let label, sublabel;
+    const grimoireEmpty = isMage && grimoire.length===0;
+    let lbl, sub;
     if(prepSystem){
-      if(grimoireIsEmpty){
-        label   = `GRIMÓRIO DO MAGO — (${grimoire.length} feitiços)`;
-        sublabel= `Monte seu grimório primeiro — escolha até ${STARTING_SPELL_COUNT['Mago']||6} feitiços. Depois prepare ${maxPrep} por dia.`;
-      } else {
-        label   = `PREPARADOS HOJE (${preparedSpells.length}/${maxPrep})`;
-        sublabel= `Prepare até ${maxPrep} feitiços do grimório para hoje. ${isMage?`Grimório: ${grimoire.length} feitiços.`:''}`;
-      }
+      if(grimoireEmpty){ lbl='GRIMÓRIO DO MAGO'; sub='Monte seu grimório — escolha até '+(STARTING_SPELL_COUNT['Mago']||6)+' feitiços. Depois prepare '+maxPrep+' por dia.'; }
+      else { lbl='PREPARADOS HOJE ('+preparedSpells.length+'/'+maxPrep+')'; sub='Prepare até '+maxPrep+' feitiços'+(isMage?' do grimório ('+grimoire.length+' disponíveis)':'')+'.'; }
     } else {
-      label   = `FEITIÇOS CONHECIDOS (${[...heroKnownSpells,...learnedSpells].length})`;
-      sublabel= 'Toque para aprender/esquecer feitiços. Permanentes até próximo nível.';
+      lbl='FEITIÇOS CONHECIDOS ('+([...heroKnownSpells,...learnedSpells].length)+')';
+      sub='Toque para aprender/esquecer. Permanentes até próximo nível.';
     }
-    html += `<div class="sec-hdr" style="margin-bottom:4px">${label}</div>`;
-    html += `<div style="font-size:11px;color:rgba(180,140,255,.5);margin-bottom:8px">${sublabel}</div>`;
-    for(let spLv=1; spLv<=maxSlotLv; spLv++){
-      const spells = (allSpells[spLv]||[]);
-      if(spells.length===0) continue;
-      html += `<div style="font-size:10px;font-family:var(--font-title);color:rgba(139,111,208,.6);letter-spacing:1px;margin:8px 0 5px">${spLv}° NÍVEL</div>
-      <div style="display:flex;flex-direction:column;gap:3px;margin-bottom:4px">`;
-      spells.forEach(s=>{
-        const isMage = cls==='Mago';
-        // Mago: prepara do grimório — se grimório vazio, aceita qualquer (ainda está montando)
-        const grimoireEmpty = isMage && grimoire.length===0;
+    html += '<div class="sec-hdr" style="margin-bottom:4px">'+lbl+'</div>';
+    html += '<div style="font-size:11px;color:rgba(180,140,255,.5);margin-bottom:8px">'+sub+'</div>';
+    for(let spLv=1;spLv<=maxSlotLv;spLv++){
+      const spells=(allSpells[spLv]||[]);
+      if(!spells.length) continue;
+      html += '<div style="font-size:10px;font-family:var(--font-title);color:rgba(139,111,208,.6);letter-spacing:1px;margin:8px 0 4px">'+spLv+'° NÍVEL</div><div style="display:flex;flex-direction:column;gap:3px;margin-bottom:4px">';
+      spells.forEach(function(s){
         const isInGrimoire = !isMage || grimoireEmpty || grimoire.includes(s);
         const isPrepared   = preparedSpells.includes(s);
         const isKnown      = heroKnownSpells.includes(s)||learnedSpells.includes(s);
-        let bg, border, color, prefix, action;
+        let bg,border,color,prefix,action;
         if(prepSystem){
           if(isPrepared){
-            bg='rgba(91,63,160,.25)'; border='rgba(139,111,208,.6)'; color='#C0A0FF';
-            prefix='✓'; action=`unprepareMgr('${s.replace(/'/g,"\\'")}')`;
-          } else if(isInGrimoire){
-            bg='rgba(15,10,4,.7)'; border='rgba(139,111,208,.2)'; color='rgba(180,140,255,.5)';
-            prefix='+'; action=`prepareMgr('${s.replace(/'/g,"\\'")}',${maxPrep})`;
+            bg='rgba(91,63,160,.25)';border='rgba(139,111,208,.6)';color='#C0A0FF';prefix='✓';action='unprepare';
+          } else if(isInGrimoire || spellMgrEditing){
+            // Clicável: está no grimório OU modal de edição aberto (seleção livre)
+            bg='rgba(15,10,4,.7)';border='rgba(139,111,208,.2)';color='rgba(180,140,255,.5)';prefix='+';action='prepare';
           } else {
-            bg='rgba(10,8,4,.5)'; border='rgba(139,111,208,.1)'; color='rgba(180,140,255,.25)';
-            prefix=''; action='';  // não está no grimório
+            // Fora do grimório e modal fechado — apenas visual, não clicável
+            bg='rgba(10,8,4,.5)';border='rgba(139,111,208,.1)';color='rgba(180,140,255,.2)';prefix='';action='';
           }
         } else {
           if(isKnown){
-            bg='rgba(91,63,160,.25)'; border='rgba(139,111,208,.6)'; color='#C0A0FF';
-            prefix='✓'; action=`forgetSpell('${s.replace(/'/g,"\\'")}')`;
+            bg='rgba(91,63,160,.25)';border='rgba(139,111,208,.6)';color='#C0A0FF';prefix='✓';action='forget';
           } else {
-            bg='rgba(15,10,4,.7)'; border='rgba(139,111,208,.15)'; color='rgba(180,140,255,.4)';
-            prefix='+'; action=`learnSpell('${s.replace(/'/g,"\\'")}')`;
+            bg='rgba(15,10,4,.7)';border='rgba(139,111,208,.15)';color='rgba(180,140,255,.4)';prefix='+';action='learn';
           }
         }
-        html += `<div onclick="${action}" style="
-          background:${bg};border:1px solid ${border};border-radius:8px;
-          padding:7px 12px;display:flex;justify-content:space-between;
-          cursor:${action?'pointer':'default'};transition:all .15s">
-          <span style="font-size:12px;color:${color}">${prefix?prefix+' ':'' }${s}</span>
-          ${!isInGrimoire&&prepSystem?`<span style="font-size:9px;color:rgba(139,111,208,.25)">fora do grimório</span>`:''}
-        </div>`;
+        html += '<button data-spell="'+escAttr(s)+'" data-action="'+action+'" data-maxprep="'+maxPrep+'" style="background:'+bg+';border:1px solid '+border+';border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;cursor:'+(action?'pointer':'default')+';width:100%;text-align:left"><span style="font-size:12px;color:'+color+'">'+(prefix?prefix+' ':'')+s+'</span>'+((!isInGrimoire&&prepSystem)?'<span style="font-size:9px;color:rgba(139,111,208,.25)">fora do grimório</span>':'')+'</button>';
       });
-      html += `</div>`;
+      html += '</div>';
     }
   }
 
-  // Botão confirmar
-  html += `<button onclick="closeMo('mo-spell-manager');buildSpellsTab(hero.cls,hero.level||1);saveSpellbook();"
-    style="width:100%;margin-top:14px;background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));
-    border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:11px;
-    font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
-    ✓ Confirmar e Fechar
-  </button>`;
+  html += '<button id="spell-mgr-confirm" style="width:100%;margin-top:14px;background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:11px;font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">✓ Confirmar e Fechar</button>';
 
   body.innerHTML = html;
+
+  // ── Event delegation — ÚNICO handler para todo o modal ──
+  body.onclick = function(e){
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    const cant = btn.dataset.cantrip;
+    const spell = btn.dataset.spell;
+    const act = btn.dataset.action;
+    const mp = parseInt(btn.dataset.maxprep)||maxPrep;
+
+    if(btn.id === 'spell-mgr-confirm'){
+      spellMgrEditing = false; // trava edição ao confirmar
+      closeMo('mo-spell-manager');
+      buildSpellsTab(hero.cls, hero.level||1);
+      saveSpellbook();
+      return;
+    }
+    if(cant !== undefined){
+      toggleLearnedCantrip(cant, btn);
+      // Rebulid to refresh state
+      setTimeout(()=>openSpellManager(),50);
+      return;
+    }
+    if(spell && act){
+      if(act==='prepare')  prepareMgr(spell, mp);
+      else if(act==='unprepare') unprepareMgr(spell);
+      else if(act==='learn')  learnSpell(spell);
+      else if(act==='forget') forgetSpell(spell);
+    }
+  };
+
+  spellMgrEditing = true;
   openMo('mo-spell-manager');
 }
 
-// Toggle truque ativo
+// Escape string for HTML attribute
+function escAttr(s){ return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+// ── Toggle truque (Gerenciar) ──
 function toggleLearnedCantrip(name, el){
   const cls = hero.cls||'';
   const lv  = hero.level||1;
   const max = CANTRIPS_KNOWN_BY_LEVEL[cls]?.[lv-1] || STARTING_CANTRIPS[cls] || 0;
   const idx2 = heroKnownCantrips.indexOf(name);
-  const inSelection = heroKnownCantrips.length < max; // ainda adicionando (não atingiu máximo)
 
-  if(idx2>=0){
-    // REMOVER truque — só se em seleção inicial ou swap de nível
-    const canRemove = inSelection ||
-                      (cantripSwapPending && CANTRIP_SWAP_CLASSES.has(cls));
-    if(!canRemove){
+  if(idx2 >= 0){
+    // REMOVER — livre enquanto Gerenciar estiver aberto
+    if(!spellMgrEditing && !cantripSwapPending){
       showToast('Truques são permanentes — só troca ao subir de nível');
       return;
     }
-    heroKnownCantrips.splice(idx2,1);
-    el.style.background='rgba(15,10,4,.6)';
-    el.style.borderColor='rgba(139,111,208,.2)';
-    el.style.color='rgba(180,140,255,.4)';
-    el.textContent=name;
+    heroKnownCantrips.splice(idx2, 1);
   } else {
-    // ADICIONAR truque
-    if(max>0 && heroKnownCantrips.length>=max){
-      if(cantripSwapPending && CANTRIP_SWAP_CLASSES.has(cls)){
-        showToast('Remova 1 truque primeiro para trocar');
-      } else {
-        showToast(`Máximo ${max} truques no nível ${lv}. Truques são permanentes.`);
-      }
+    // ADICIONAR
+    if(max > 0 && heroKnownCantrips.length >= max && !spellMgrEditing){
+      showToast('Máximo '+max+' truques. Abra Gerenciar para trocar.');
+      return;
+    }
+    // No modal aberto: permite ultrapassar limite temporariamente para swap
+    if(max > 0 && heroKnownCantrips.length >= max && spellMgrEditing){
+      showToast('Remova um truque antes de adicionar outro (máx '+max+')');
       return;
     }
     heroKnownCantrips.push(name);
-    el.style.background='rgba(91,63,160,.3)';
-    el.style.borderColor='rgba(139,111,208,.7)';
-    el.style.color='#E0C0FF';
-    el.textContent='✓ '+name;
-    if(cantripSwapPending && heroKnownCantrips.length>=max){
-      cantripSwapPending=false;
+    if(cantripSwapPending && heroKnownCantrips.length >= max){
+      cantripSwapPending = false;
       showToast('✅ Truque trocado!');
     }
   }
   saveSpellChoices();
 }
 
-// Preparar feitiço (Mago/Clérigo/Druida/Paladino/Ranger)
+// ── Preparar/despreperar feitiço (Mago/Clérigo/Druida/Paladino/Ranger) ──
 function prepareMgr(name, maxPrep){
-  if(preparedSpells.length>=maxPrep){ showToast(`Máximo ${maxPrep} feitiços preparados`); return; }
+  if(preparedSpells.length>=maxPrep){ showToast('Máximo '+maxPrep+' feitiços preparados'); return; }
   if(!preparedSpells.includes(name)) preparedSpells.push(name);
+  // Para Mago: adiciona ao grimório se ainda não estiver
+  if(hero.cls==='Mago' && !heroKnownSpells.includes(name) && !learnedSpells.includes(name)){
+    learnedSpells.push(name);
+  }
   saveSpellbook();
   openSpellManager();
 }
 function unprepareMgr(name){
   preparedSpells = preparedSpells.filter(s=>s!==name);
+  // Mago: também remove do grimório se estiver editando
+  if(hero.cls==='Mago' && spellMgrEditing){
+    heroKnownSpells = heroKnownSpells.filter(s=>s!==name);
+    learnedSpells   = learnedSpells.filter(s=>s!==name);
+  }
   saveSpellbook();
   openSpellManager();
 }
 
-// Aprender feitiço (Bardo/Feiticeiro/Bruxo)
+// ── Aprender/esquecer feitiço (Bardo/Feiticeiro/Bruxo) ──
 function learnSpell(name){
-  if(heroKnownSpells.includes(name)||learnedSpells.includes(name)){
-    showToast('Feitiço já conhecido'); return;
-  }
-  // Limite pelo nível e classe (PHB tabela de feitiços conhecidos)
-  const lv  = hero.level||1;
-  const maxKnown = SPELLS_KNOWN_TABLE[hero.cls]?.[lv-1] || 99; // 99 = sem limite (prepara)
+  if(heroKnownSpells.includes(name)||learnedSpells.includes(name)){ showToast('Feitiço já conhecido'); return; }
+  const lv = hero.level||1;
+  const maxKnown = SPELLS_KNOWN_TABLE[hero.cls]?.[lv-1] || 99;
   const total = [...heroKnownSpells,...learnedSpells].length;
-  if(total >= maxKnown){ showToast(`Limite: ${maxKnown} feitiços no nível ${lv}`); return; }
+  if(total >= maxKnown){ showToast('Limite: '+maxKnown+' feitiços no nível '+lv); return; }
   learnedSpells.push(name);
   saveSpellbook();
   openSpellManager();
@@ -4857,11 +4948,12 @@ function forgetSpell(name){
   openSpellManager();
 }
 
-// Descansa longo → limpa preparados (precisará preparar de novo amanhã)
+// ── Descanso longo → limpa feitiços preparados ──
 function clearPreparedOnRest(){
   preparedSpells = [];
   saveSpellbook();
 }
+
 
 function detectActionRequiresRoll(action){
   const a = action.trim();
@@ -5007,8 +5099,9 @@ async function rollInlineD20(attrKey, label, cd){
   faceEl.style.borderColor = totalColor+'60';
 
   // Limpa estado pendente e desbloqueia a UI
-  pendingRollAttr = null;
-  pendingRollCD   = null;
+  pendingRollAttr  = null;
+  pendingRollCD    = null;
+  pendingRollLabel = null;
   updateD20ButtonState(); // Desbloqueia botões de ação
 
   const rollResult = {diceVal, modVal, total, isCrit, isFail, ok, label, attrKey, cd};
