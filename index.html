@@ -834,7 +834,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
       </svg>
       <span class="fbl">Descanso</span>
     </button>
-    <button class="fbar-btn" onclick="openMemoryModal()" title="Memória da Aventura"><span class="fbi">🧠</span><span class="fbl">Memória</span></button>
+    <button class="fbar-btn" onclick="openMemoryModal()" title="Memória da Aventura"><span class="fbi">📖</span><span class="fbl">Memória</span></button>
     <button class="fbar-btn" onclick="openMo('mo-api')" title="API"><span class="fbi">🔑</span><span class="fbl">API</span></button>
   </div>
 </div>
@@ -1236,9 +1236,9 @@ body{font-family:var(--font-narr);color:var(--parch);}
 </div></div>
 
 
-<!-- MODAL MEMÓRIA DA AVENTURA -->
+<!-- MODAL DIÁRIO DA AVENTURA -->
 <div class="mo" id="mo-memory"><div class="ms" style="max-height:85vh;overflow-y:auto">
-  <div class="mt">🧠 Memória da Aventura <button class="mc" onclick="closeMo('mo-memory')">×</button></div>
+  <div class="mt">📖 Diário de Aventura <button class="mc" onclick="closeMo('mo-memory')">×</button></div>
   <div id="memory-modal-content"></div>
 </div></div>
 
@@ -2495,8 +2495,7 @@ function startAdventure(){
   merchantCD=(cls==='Paladino'||cls==='Clérigo')?10:(race==='Tiefling'?14:12);
   gameHistory=[];
   // Carrega memória ou inicia nova sessão
-  loadMemory();
-  if(!gameMemory.session) gameMemory.session = 1;
+  resetMemory(); // ★ Novo personagem = memória zerada do início
 
   // ── Game screen top bar ──
   document.getElementById('g-av').textContent=classAv[cls]||'⚔️';
@@ -2560,10 +2559,19 @@ function startAdventure(){
   buildSpellsTab(cls,1);
   usedSpellSlots=[0,0,0,0,0,0,0,0,0];
   // Reset spell choices for new character
+  // ★ Zera COMPLETAMENTE o estado de magias para novo personagem
   heroKnownCantrips=[];
   heroKnownSpells=[];
   learnedSpells=[];
   preparedSpells=[];
+  spellMgrEditing=false;
+  cantripSwapPending=false;
+  heroCombatStyle=null;
+  // Limpa dados salvos no localStorage do personagem anterior
+  try{
+    localStorage.removeItem('aimaster_spells');
+    localStorage.removeItem('aimaster_spellbook');
+  }catch(e){}
   cantripSwapPending=false;
   heroCombatStyle=null;
   initInventory(cls); // recalcCA() é chamado dentro
@@ -3211,57 +3219,80 @@ ${(questData.npcs&&questData.npcs.length)?'NPCs da missão:\n'+questData.npcs.ma
 Arco narrativo: ${questData.jornada||'Jornada do Herói — Partida'}
 
 ━━━ COMO NARRAR ━━━
-Você é um narrador literário de fantasia épica. Escreva como um romancista — não como um chatbot.
+Você é um narrador literário de fantasia épica. Escreva como um romancista premiado — não como um chatbot.
+Sua missão é criar uma experiência inesquecível. Cada resposta deve fazer o jogador querer continuar imediatamente.
 
-ESTRUTURA DE CADA RESPOSTA:
+══ ESTRUTURA DE CADA RESPOSTA ══
 
-1. TÍTULO DA CENA em negrito (use quando muda de local ou momento importante)
+1. TÍTULO DA CENA em negrito (use quando muda de local, tempo ou momento importante)
 
 2. NARRAÇÃO em parágrafos curtos e sensoriais:
    - 2-3 frases por parágrafo, linha em branco entre eles
    - Uma ação ou sensação por vez — ritmo cinematográfico
-   - Use todos os sentidos: o que VÊ, OUVE, CHEIRA, SENTE no corpo
+   - Use TODOS os sentidos: o que VÊ, OUVE, CHEIRA, SENTE no corpo, PROVA
 
 3. DIÁLOGO DE NPC — formato obrigatório:
    NomeNPC: (emoção entre parênteses) "Fala aqui."
-   Exemplo: Kaelen: (voz rouca) "Eu sabia que você conseguiria."
+   Exemplo: Kaelen: (voz rouca, sem olhar nos olhos) "Eu sabia que você conseguiria."
 
-4. GANCHO — termine com situação ou pergunta que exige decisão imediata.
+4. GANCHO OBRIGATÓRIO — termine SEMPRE com tensão não resolvida ou pergunta que exige decisão imediata.
 
-5. [AÇÕES:] — 4 opções curtas, fora do texto narrativo.
+5. [AÇÕES:] — 4 opções curtas e distintas, fora do texto narrativo.
 
-═══ EXEMPLO MODELO DE NARRATIVA NÍVEL 1 ═══
-(Copie este estilo — mundo comum, vida simples, personagem descobrindo seu destino)
+══ LIBERDADE CRIATIVA — REGRAS QUE TORNAM A HISTÓRIA INESQUECÍVEL ══
 
-O Amanhecer no Vale
+▸ NPCs TÊM AGENDA PRÓPRIA
+  Cada NPC quer algo que pode conflitar com o jogador. O informante protege o irmão.
+  O guarda quer promoção. O mercador esconde dívidas. Eles mentem, manipulam, surpreendem.
+  Jamais crie NPC que existe apenas para dar informação — dê a ele um segredo, um medo, um desejo.
 
-O sol da manhã filtra pelas frestas da janela de madeira, pintando listras de luz no chão batido da cabana. O cheiro de mingau com mel toma conta do ar.
+▸ CONFLITOS DURAM PELO MENOS 3 CENAS
+  NUNCA resolva uma situação tensa em 1-2 turnos. Escale. Uma perseguição tem:
+  cena 1 (fuga inicial), cena 2 (complicação inesperada), cena 3 (ponto de virada decisivo).
+  Um confronto tem: provocação → escalada → ponto sem retorno → consequência.
 
-Avó Maren: (voz serena) "Acorda, dorminhoco. Teu pai já está no quintal desde antes do galo cantar."
+▸ CLIFFHANGERS OBRIGATÓRIOS
+  Termine cada cena no PICO da tensão — não depois da resolução.
+  ERRADO: "Você derrota o goblin. A sala está limpa."
+  CERTO: "O goblin cai. Mas atrás da porta rangida, você ouve — passos. Muitos."
 
-Você se espreguiça. Lá fora, o ritmo metódico da pedra de amolar contra o aço. É o som da sua vida até hoje: disciplina, treino, e a paz simples do vale.
+▸ ELEMENTO INESPERADO A CADA 3 TURNOS
+  Introduza algo que o jogador não esperava: uma testemunha, uma traição, um aliado improvável,
+  o tempo mudando, um terceiro grupo chegando, uma revelação sobre o passado do personagem.
+  Mantenha a contagem interna e surpreenda.
 
-Seu pai está sentado num toco, afiando uma espada longa com movimentos lentos e deliberados. Ele mal levanta os olhos.
+▸ MUNDO VIVO — CONSEQUÊNCIAS PERSISTENTES
+  O que aconteceu importa. O guarda que o jogador humilhou no turno 3 aparece de novo
+  mais agressivo. O comerciante que ajudou manda um bilhete mais tarde.
+  Mencione que eventos aconteceram enquanto o personagem dormia ou se afastou.
+  O mundo não pausa esperando o jogador agir.
 
-Pai: (sem parar de afiar) "Sentei de noite esperando notícia do vilarejo. Os mercadores não chegaram. Terceira semana seguida."
+▸ CONSEQUÊNCIAS REAIS E PERMANENTES
+  Falhas têm custo. Vitórias têm preço. Uma escolha que parecia certa revela lado sombrio.
+  Nunca ofereça saídas fáceis. Se o jogador queimou a ponte, a ponte está queimada.
 
-Há uma tensão nova na postura dele. Algo está errado.
+▸ NUNCA DIGA, MOSTRE
+  ERRADO: "O mercador parece nervoso."
+  CERTO: "Os dedos do mercador tamborilam no balcão. Ele não olha para o peso que acabou de pesar."
 
-O que você faz?
-═══════════════════════════════════════════
+══ GESTÃO DA TENSÃO DRAMÁTICA ══
 
-REGRAS DE IMERSÃO:
-- NUNCA quebre a 4ª parede (não diga "como Mestre", "no jogo", "mecanicamente")
+TENSÃO CRESCENTE: Cada cena deve terminar mais tensa que começou.
+RESPIRAÇÃO: Após cena de alta tensão, permita 1 cena de alívio antes de escalar de novo.
+Stakes CLAROS: O jogador deve sempre saber o que perde se falhar — não abstratamente, concretamente.
+RELÓGIO DRAMÁTICO: Quando apropriado, crie urgência. "Você tem até o amanhecer." "Ela está sangrando."
+
+══ REGRAS DE IMERSÃO ══
+- NUNCA quebre a 4ª parede (não diga "como Mestre", "no jogo", "mecanicamente", "narrativamente")
 - NUNCA faça resumos de ouro, inventário ou stats em formato de lista na narrativa
 - Nunca resolva conflitos abertos sem o jogador agir
-- Descreva consequências reais das escolhas — o mundo reage
 - Em Nível 1: o herói é FRÁGIL. Uma faca no beco é ameaça real. Faça o jogador sentir isso.
+- Use o NOME do personagem nas narrações — cria pertencimento
 
 TESTES — REGRA CRÍTICA DE ESPERA:
 ▸ Quando pedir um teste, PARE completamente e aguarde o resultado
 ▸ NÃO continue a narrativa, NÃO descreva o que acontece ANTES do jogador rolar
 ▸ NÃO pergunte "qual foi seu resultado?" — o sistema registra automaticamente
-▸ NÃO diga "você rolou X" — isso é decisão do jogador
 ▸ CORRETO: Narre até o momento do teste → inclua [TESTE:attr:CD] → inclua opção "Rolar X CD Y" → PARE
 ▸ ERRADO: pedir teste E continuar narrando o resultado na mesma resposta
 
@@ -3270,15 +3301,15 @@ NPCs — MEMÓRIA OBRIGATÓRIA:
 ▸ NUNCA contrarie informações de NPCs já estabelecidos na memória
 ▸ NUNCA invente NPCs sem introdução narrativa (diga o nome + aparência + papel)
 ▸ Ao apresentar NPC importante: use tag [NPC:Nome:descrição:relação] para registrar
-▸ Se jogador menciona alguém não registrado, peça esclarecimento ao invés de inventar
+▸ Todo NPC importante tem: 1 segredo, 1 desejo, 1 medo — use-os para criar conflito
 
 DANO E CURA — TAGS OBRIGATÓRIAS:
-▸ Dano ao personagem: [PV:-X] onde X é o dano calculado
-▸ Cura: [PV:+X] onde X é a cura calculada
-▸ SEMPRE inclua a tag [PV:] quando o personagem sofre dano ou cura
+▸ [PV:-X] SOMENTE quando o PERSONAGEM DO JOGADOR sofre dano (inimigo acerta o jogador)
+▸ [PV:+X] quando o personagem é curado
+▸ NUNCA use [PV:-X] quando o jogador acerta um inimigo — inimigos não têm PV rastreado
 ▸ Calcule o dano COMPLETO antes de narrar (dado de arma + modificador)
-▸ Exemplo: "A espada corta seu ombro causando 7 de dano [PV:-7]"
-▸ Se o dano for 0 (miss), não inclua [PV:]
+▸ Exemplo: "A espada corta seu ombro — você sente o fogo do corte [PV:-7]"
+▸ Se o jogador errar (miss), descreva o erro sem tag [PV:]
 
 ━━━ JORNADA DO HERÓI — TOM NARRATIVO POR NÍVEL ━━━
 
@@ -3303,12 +3334,25 @@ Você se espreguiça, sentindo a madeira da cama ranger. Lá fora, ouve o ritmo 
 
 REGRAS DE TOM:
 • Parágrafos curtos (2-3 frases) com linha em branco entre eles
-• Detalhes sensoriais: o que VÊ, OUVE, CHEIRA, SENTE, PROVA
-• Diálogo NPC sempre com nome e emoção: Nome: (tom) "fala"
-• Verbos de ação no presente para imersão
-• Termine cenas com pergunta ou tensão leve que exige decisão
+• Detalhes sensoriais: o que VÊ, OUVE, CHEIRA, SENTE no corpo, PROVA
+• Diálogo NPC sempre com nome e emoção específica: Nome: (descritor físico + emocional) "fala"
+• Verbos de ação no PRESENTE para imersão máxima
+• Termine SEMPRE com tensão não resolvida — nunca feche um loop sem abrir outro
 
-- Mortes são possíveis: 0 PV → inconsciente → testes de morte (d20, 10+ sucesso, 3 = estável, 3 falhas = morto)
+ARCO DRAMÁTICO POR FASE:
+• Nível 1-2: Apresentação → Incidente Perturbador → Primeira Escolha Difícil
+• Nível 3-4: Aliados se revelam → Primeiro Grande Obstáculo → Ponto de Não Retorno
+• Nível 5+: O custo real do poder → Verdade sobre a missão → Transformação pessoal
+
+SEGREDOS ATIVOS (mantenha sempre 1-3 revelações pendentes):
+• Um NPC esconde algo que muda tudo quando revelado
+• A missão tem uma camada mais profunda que o jogador não vê ainda
+• O passado do personagem tem ligação com o conflito atual
+
+MORTE E CONSEQUÊNCIAS:
+• 0 PV → inconsciente → testes de morte (d20, 10+ sucesso, 3 sucessos = estável, 3 falhas = morto)
+• Mortes de NPCs queridos têm peso narrativo — não apague, use como motivação
+• Falhas críticas criam cicatrizes: mecânicas, reputacionais, emocionais
 
 ━━━ REGRAS D&D 5e OFICIAL — PHB COMPLETO ━━━
 Você tem o PHB completo (314p) como referência. Aplique TODAS as regras abaixo.
@@ -4079,63 +4123,96 @@ function buildMemoryBlock(){
 
 // ★ Modal de memória — visualizar/editar
 function openMemoryModal(){
-  const npcs = gameMemory.npcs;
+  const npcs   = gameMemory.npcs;
   const events = gameMemory.events;
-  
-  let html = `<div style="font-family:var(--font-title);font-size:11px;color:rgba(200,146,42,.5);letter-spacing:2px;margin-bottom:10px">
-    SESSÃO ${gameMemory.session||1} · TURNO ${gameMemory.turnCount}
+  const quest  = QUESTS[hero.questId||0]||QUESTS[0];
+
+  // ── Classifica NPCs por relação
+  const aliados  = npcs.filter(n=>n.alive!==false && /aliado|amigo|confia|helpful|protege/i.test(n.relation||''));
+  const inimigos = npcs.filter(n=>n.alive!==false && /inimigo|hostil|perigoso|enemy|rival/i.test(n.relation||''));
+  const neutros  = npcs.filter(n=>n.alive!==false && !aliados.includes(n) && !inimigos.includes(n));
+  const mortos   = npcs.filter(n=>n.alive===false);
+
+  // ── Classifica eventos por tipo
+  const combats  = events.filter(e=>e.type==='combate'||e.type==='vitória');
+  const items    = events.filter(e=>e.type==='item');
+  const story    = events.filter(e=>!combats.includes(e)&&!items.includes(e)&&e.type!=='premium');
+
+  let html = '';
+
+  // ── Cabeçalho
+  html += `<div style="text-align:center;padding:8px 0 16px">
+    <div style="font-family:var(--font-title);font-size:10px;color:rgba(200,146,42,.5);letter-spacing:2px;margin-bottom:4px">SESSÃO ${gameMemory.session||1} · TURNO ${gameMemory.turnCount||0}</div>
+    <div style="font-size:13px;color:var(--parch-l);font-style:italic">${hero.name||'Aventureiro'} — ${hero.race||''} ${hero.cls||''} Nível ${hero.level||1}</div>
+    <div style="font-size:11px;color:rgba(200,180,120,.5);margin-top:4px">📜 ${quest.title||'Aventura Livre'}</div>
   </div>`;
-  
-  html += `<div style="font-family:var(--font-title);font-size:12px;color:var(--gold-l);margin-bottom:6px">NPCs (${npcs.length})</div>`;
-  
-  if(npcs.length === 0){
-    html += `<p style="font-size:12px;color:var(--parch-d);font-style:italic;margin-bottom:12px">Nenhum NPC registrado ainda.</p>`;
-  } else {
-    html += `<div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">`;
-    npcs.forEach((n,i) => {
-      const deadStyle = n.alive===false ? 'opacity:.5;text-decoration:line-through' : '';
-      html += `<div style="background:rgba(15,10,4,.6);border:1px solid rgba(200,146,42,.18);border-radius:8px;padding:8px 10px;${deadStyle}">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start">
-          <div>
-            <span style="font-family:var(--font-title);font-size:12px;color:var(--gold-l)">${n.name}</span>
-            ${n.alive===false?'<span style="font-size:9px;color:#E74C3C;margin-left:6px">MORTO</span>':''}
-            <div style="font-size:11px;color:var(--parch-d);margin-top:2px">${n.desc||''}</div>
-            ${n.relation&&n.relation!=='neutro'?`<div style="font-size:10px;color:rgba(200,146,42,.5);margin-top:2px">${n.relation}</div>`:''}
-          </div>
-          <button onclick="removeNPCFromMemory(${i})" style="background:rgba(200,0,0,.15);border:1px solid rgba(200,0,0,.2);border-radius:5px;padding:2px 6px;font-size:10px;color:rgba(200,60,60,.8);cursor:pointer;flex-shrink:0">✕</button>
+
+  if(npcs.length===0 && events.length===0){
+    html += `<div style="text-align:center;padding:30px 0;color:rgba(200,180,120,.4);font-style:italic">
+      O diário está em branco.<br>Inicie uma aventura para registrar sua história.
+    </div>`;
+  }
+
+  // ── NPCs / Personagens
+  if(npcs.length > 0){
+    html += `<div class="sec-hdr" style="margin-bottom:8px">👥 PERSONAGENS</div>`;
+
+    const renderNPC = (n, accentColor) => `
+      <div style="background:rgba(10,8,4,.5);border:1px solid rgba(${accentColor},.25);border-radius:8px;padding:8px 12px;margin-bottom:5px;display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--parch-l)${n.alive===false?';opacity:.5;text-decoration:line-through':''}">${n.name}${n.alive===false?' <span style="font-size:9px;color:#E74C3C">✝</span>':''}</div>
+          <div style="font-size:11px;color:rgba(200,180,120,.55);margin-top:2px">${n.desc||'personagem'}</div>
+        </div>
+        <div style="font-size:9px;color:rgba(${accentColor},.7);font-family:var(--font-title);text-align:right;flex-shrink:0;margin-left:8px">${n.relation||'neutro'}</div>
+      </div>`;
+
+    if(aliados.length)  { html += `<div style="font-size:10px;color:rgba(80,200,120,.5);font-family:var(--font-title);letter-spacing:1px;margin:8px 0 4px">ALIADOS</div>`; aliados.forEach(n=>html+=renderNPC(n,'80,200,120')); }
+    if(inimigos.length) { html += `<div style="font-size:10px;color:rgba(220,80,80,.5);font-family:var(--font-title);letter-spacing:1px;margin:8px 0 4px">INIMIGOS</div>`; inimigos.forEach(n=>html+=renderNPC(n,'220,80,80')); }
+    if(neutros.length)  { html += `<div style="font-size:10px;color:rgba(200,180,120,.4);font-family:var(--font-title);letter-spacing:1px;margin:8px 0 4px">CONHECIDOS</div>`; neutros.forEach(n=>html+=renderNPC(n,'200,180,120')); }
+    if(mortos.length)   { html += `<div style="font-size:10px;color:rgba(150,150,150,.4);font-family:var(--font-title);letter-spacing:1px;margin:8px 0 4px">CAÍDOS</div>`; mortos.forEach(n=>html+=renderNPC(n,'150,150,150')); }
+  }
+
+  // ── Linha do tempo
+  if(story.length > 0){
+    html += `<div class="sec-hdr" style="margin:14px 0 8px">📜 LINHA DO TEMPO</div>`;
+    const typeIcon = {combate:'⚔️',vitória:'🏆',morte:'💀',item:'📦',local:'📍',evento:'📌',premium:'💎'};
+    [...story].reverse().forEach(e=>{
+      const icon = typeIcon[e.type]||'📌';
+      html += `<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(200,180,120,.06)">
+        <span style="font-size:13px;flex-shrink:0">${icon}</span>
+        <div>
+          <div style="font-size:11px;color:var(--parch-d)">${e.summary}</div>
+          <div style="font-size:9px;color:rgba(200,180,120,.3);margin-top:1px">Turno ${e.turn||0}</div>
         </div>
       </div>`;
     });
-    html += `</div>`;
   }
-  
-  // Adicionar NPC manual
-  html += `<div style="display:flex;gap:6px;margin-bottom:16px">
-    <input id="mem-npc-name" placeholder="Nome do NPC" style="flex:1;background:rgba(15,10,4,.8);border:1px solid rgba(200,146,42,.2);border-radius:6px;padding:7px 10px;color:var(--parch);font-size:13px;outline:none"/>
-    <input id="mem-npc-desc" placeholder="Descrição" style="flex:2;background:rgba(15,10,4,.8);border:1px solid rgba(200,146,42,.2);border-radius:6px;padding:7px 10px;color:var(--parch);font-size:13px;outline:none"/>
-    <button onclick="addNPCManual()" style="background:rgba(200,146,42,.2);border:1px solid rgba(200,146,42,.35);border-radius:6px;padding:7px 12px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">+ NPC</button>
-  </div>`;
-  
-  html += `<div style="font-family:var(--font-title);font-size:12px;color:var(--gold-l);margin-bottom:6px">Eventos (${events.length})</div>`;
-  if(events.length === 0){
-    html += `<p style="font-size:12px;color:var(--parch-d);font-style:italic">Nenhum evento registrado.</p>`;
-  } else {
-    html += `<div style="display:flex;flex-direction:column;gap:3px">`;
-    [...events].reverse().forEach(e => {
-      html += `<div style="font-size:12px;color:var(--parch-d);padding:4px 8px;border-left:2px solid rgba(200,146,42,.25)">${e.summary}</div>`;
+
+  // ── Combates e Itens
+  if(combats.length > 0){
+    html += `<div class="sec-hdr" style="margin:14px 0 8px">⚔️ COMBATES</div>`;
+    [...combats].reverse().slice(0,5).forEach(e=>{
+      html += `<div style="font-size:11px;color:var(--parch-d);padding:4px 0;border-bottom:1px solid rgba(200,180,120,.06)">🗡️ ${e.summary}</div>`;
     });
-    html += `</div>`;
   }
-  
-  html += `<div style="display:flex;gap:8px;margin-top:16px">
-    <button onclick="resetMemory();openMemoryModal()" style="flex:1;background:rgba(200,0,0,.1);border:1px solid rgba(200,0,0,.2);border-radius:8px;padding:8px;font-family:var(--font-title);font-size:11px;color:rgba(200,60,60,.8);cursor:pointer">🗑 Limpar Memória</button>
-    <button onclick="closeMo('mo-memory')" style="flex:1;background:rgba(200,146,42,.15);border:1px solid rgba(200,146,42,.3);border-radius:8px;padding:8px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">✓ Fechar</button>
+
+  if(items.length > 0){
+    html += `<div class="sec-hdr" style="margin:14px 0 8px">📦 ITENS ENCONTRADOS</div>`;
+    items.forEach(e=>{
+      html += `<div style="font-size:11px;color:var(--parch-d);padding:3px 0">• ${e.summary.replace('Obteve: ','')}</div>`;
+    });
+  }
+
+  // ── Rodapé
+  html += `<div style="margin-top:20px;padding-top:12px;border-top:1px solid rgba(200,180,120,.1);display:flex;gap:8px">
+    <button onclick="closeMo('mo-memory')" style="flex:1;background:rgba(200,146,42,.15);border:1px solid rgba(200,146,42,.3);border-radius:8px;padding:10px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">✓ Fechar</button>
   </div>`;
-  
+
   const container = document.getElementById('memory-modal-content');
   if(container) container.innerHTML = html;
   openMo('mo-memory');
 }
+
 
 function removeNPCFromMemory(idx){
   gameMemory.npcs.splice(idx, 1);
