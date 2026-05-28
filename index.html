@@ -647,6 +647,18 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .inv-item-desc{font-size:10px;color:rgba(200,146,42,.48);margin-top:2px;line-height:1.35;}
 .inv-item-weight{font-size:10px;color:rgba(200,146,42,.42);font-family:var(--font-title);flex-shrink:0;text-align:right;}
 .inv-item-weight .kg{display:block;font-size:9px;color:rgba(200,146,42,.28);}
+
+/* ── Dice Tray ── */
+#dice-tray-btn:hover{background:rgba(91,63,160,.3)!important;border-color:rgba(139,111,208,.6)!important;}
+#dice-tray-btn.active{background:rgba(91,63,160,.4)!important;border-color:rgba(139,111,208,.8)!important;}
+.dtrow{display:flex;align-items:center;gap:6px;padding:5px 4px;border-radius:8px;}
+.dtrow:hover{background:rgba(255,255,255,.03);}
+.dtlbl{font-family:var(--font-title);font-size:12px;color:var(--parch-l);width:28px;text-align:center;}
+.dtcount{font-family:var(--font-title);font-size:14px;color:var(--gold-l);width:20px;text-align:center;}
+.dtbtn{background:rgba(91,63,160,.2);border:1px solid rgba(139,111,208,.3);border-radius:6px;
+  width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;color:#C0A0FF;line-height:1;}
+.dtbtn:active{background:rgba(91,63,160,.5);}
 </style>
 </head>
 <body>
@@ -783,7 +795,35 @@ body{font-family:var(--font-narr);color:var(--parch);}
     </div>
   </div>
   <div class="narr-border"></div>
-  <div class="narr" id="narr"></div>
+  <!-- Floating dice tray button -->
+  <button id="dice-tray-btn" onclick="openDiceTray()" title="Bandeja de Dados"
+    style="position:fixed;left:8px;top:50%;transform:translateY(-50%);
+    z-index:92;background:rgba(15,10,4,.9);border:1px solid rgba(139,111,208,.4);
+    border-radius:12px;width:36px;height:36px;display:flex;align-items:center;
+    justify-content:center;cursor:pointer;font-size:18px;
+    box-shadow:0 2px 10px rgba(0,0,0,.5);transition:all .2s">🎲</button>
+  <!-- Dice tray panel (slides in from left) -->
+  <div id="dice-tray-panel" style="position:fixed;left:-230px;top:0;height:100%;width:220px;
+    background:rgba(15,10,4,.97);border-right:1px solid rgba(139,111,208,.25);
+    z-index:91;transition:transform .25s ease;transform:translateX(0);
+    padding:12px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;
+    visibility:hidden">
+    <div style="font-family:var(--font-title);font-size:11px;color:rgba(200,146,42,.7);
+      letter-spacing:1px;margin-bottom:4px;text-align:center">🎲 BANDEJA DE DADOS</div>
+    <div id="dice-tray-rows"></div>
+    <div id="dice-tray-hint" style="font-size:10px;color:rgba(200,180,120,.4);
+      text-align:center;min-height:28px;padding:4px 0"></div>
+    <button onclick="rollDiceTray()" id="dice-tray-roll-btn"
+      style="background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));
+      border:1px solid rgba(139,111,208,.5);border-radius:10px;padding:10px;
+      font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;
+      letter-spacing:.5px;margin-top:auto">🎲 Rolar</button>
+    <button onclick="closeDiceTray()"
+      style="background:rgba(20,15,8,.6);border:1px solid rgba(139,111,208,.2);
+      border-radius:8px;padding:7px;font-size:11px;color:rgba(200,180,120,.5);cursor:pointer">
+      Fechar</button>
+  </div>
+  <div class="narr" id="narr" onclick="if(diceTrayOpen)closeDiceTray()"></div>
   <div class="actions-wrap">
     <div class="acts-lbl" id="acts-lbl">— O QUE VOCÊ FAZ? —</div>
     <div class="act-grid" id="act-grid">
@@ -823,7 +863,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <span class="fbl">Guia</span>
     </button>
     <button class="fbar-btn" onclick="openMo('mo-char')" title="Ficha"><span class="fbi">📜</span><span class="fbl">Ficha</span></button>
-    <button class="fbar-btn" onclick="openMo('mo-rep')" title="Reputação"><span class="fbi">🏅</span><span class="fbl">Reputação</span></button>
+    <button class="fbar-btn" onclick="openDestino()" title="Destino Favorável" id="destino-btn"><span class="fbi">🌟</span><span class="fbl">Destino</span></button>
     <button class="fbar-btn" onclick="openMo('mo-shop')" title="Diamantes"><span class="fbi">💎</span><span class="fbl">Diamantes</span></button>
     <button class="fbar-btn" onclick="openMo('mo-map')" title="Mapa"><span class="fbi">🗺️</span><span class="fbl">Mapa</span></button>
     <button class="fbar-btn" onclick="openRestModal()" title="Descanso" id="rest-footer-btn">
@@ -988,6 +1028,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <div class="stab" onclick="switchTab('tab-inv')">Inventário</div>
     <div class="stab" onclick="switchTab('tab-skills')">Habilidades</div>
     <div class="stab" onclick="switchTab('tab-spells')">Magias</div>
+    <div class="stab" onclick="switchTab('tab-world')">Mundo</div>
   </div>
   <!-- Status -->
   <div class="sheet-page active" id="tab-stats">
@@ -1064,6 +1105,25 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <p style="font-size:13px;color:var(--parch-d);text-align:center;font-style:italic;padding:16px 0">Inicie uma aventura para ver as habilidades do seu personagem.</p>
     </div>
   </div>
+  <!-- Mundo -->
+  <div class="sheet-page" id="tab-world">
+    <div id="world-content" style="padding:4px 0">
+      <!-- Reputação -->
+      <div class="sec-hdr" style="margin-bottom:8px">🏅 REPUTAÇÃO</div>
+      <div class="rep-bar-wrap" style="margin-bottom:12px">
+        <div class="rep-current" id="rep-display-world">0 pts · Viajante</div>
+        <div class="rep-track" style="margin-top:4px"><div class="rep-fill" id="rep-fill-world" style="width:0%"></div></div>
+      </div>
+      <div id="rep-tiers-world" style="font-size:11px;color:rgba(200,180,120,.5);margin-bottom:16px"></div>
+      <!-- Localização -->
+      <div class="sec-hdr" style="margin-bottom:6px">📍 LOCALIZAÇÃO ATUAL</div>
+      <div id="world-location" style="font-size:12px;color:var(--parch-d);margin-bottom:14px;font-style:italic">Desconhecida — inicie uma aventura</div>
+      <!-- Facções -->
+      <div class="sec-hdr" style="margin-bottom:6px">🏛️ FACÇÕES</div>
+      <div id="world-factions" style="font-size:11px;color:rgba(200,180,120,.5);font-style:italic">Nenhuma facção conhecida ainda</div>
+    </div>
+  </div>
+
   <!-- Magias -->
   <div class="sheet-page" id="tab-spells">
     <div id="spells-content">
@@ -1268,6 +1328,12 @@ body{font-family:var(--font-narr);color:var(--parch);}
   </div>
   <div id="spell-mgr-body"></div>
 </div></div>
+<!-- MODAL: DESTINO FAVORÁVEL -->
+<div class="mo" id="mo-destino" style="z-index:350"><div class="ms" style="max-height:70vh;overflow-y:auto">
+  <div class="mt">🌟 Destino Favorável <button class="mc" onclick="closeMo('mo-destino')">×</button></div>
+  <div id="destino-body" style="padding:4px 0"></div>
+</div></div>
+
 </div><!-- #app -->
 <div class="toast" id="toast"></div>
 
@@ -3051,7 +3117,8 @@ function updateD20ButtonState(){
     if(freeSend){ freeSend.style.opacity=''; freeSend.style.pointerEvents=''; }
 
     // ── Hint na barra ──
-    if(hintEl){
+    updateDestinoButton();
+  if(hintEl){
       hintEl.style.display='inline';
       hintEl.textContent='🎲 Role '+(pendingRollLabel||attrLabels[pendingRollAttr]||'atributo')+(pendingRollCD?' CD '+pendingRollCD:'');
       hintEl.style.color='var(--gold-l)';
@@ -3703,7 +3770,7 @@ Mercador: Sobrevivência CD ${merchantCD} para encontrar.`;
 }
 
 
-async function askMaster(acao, oocMode=false){
+async function askMaster(acao, oocMode=false, skipTurn=false){
   if(thinking)return;
 
   // ★ Chunk contextual de magia — injeta descrição PHB quando jogador menciona magia
@@ -3719,7 +3786,7 @@ async function askMaster(acao, oocMode=false){
   // (A barra de dados com d20 em destaque já indica o que o mestre espera)
 
   // ★ Verifica limite de turnos (Sessão Premium) — ignora em modo OOC
-  if(!oocMode && typeof checkTurnLimit==='function'){
+  if(!oocMode && !skipTurn && typeof checkTurnLimit==='function'){
     if(!checkTurnLimit()) return; // mostra paywall
   }
   setThinking(true);
@@ -5402,16 +5469,8 @@ async function rollInlineD20(attrKey, label, cd){
   const rollResult = {diceVal, modVal, total, isCrit, isFail, ok, label, attrKey, cd};
   
   // ★ Mostra botão Relançar se falhou
-  // ★ Reroll apenas em momentos com peso narrativo (PHB + contexto)
-  const _shouldReroll = !isCrit && (
-    isFail ||                           // Natural 1 — sempre
-    (inCombat && ok === false) ||       // Combate com CD e falhou
-    (pendingRollCritical && ok === false) // Mestre marcou :crítico
-  );
-  if(_shouldReroll){
-    const _dramatic = isFail || pendingRollCritical;
-    showRerollButton(rollResult, `Reteste de ${label}`, _dramatic);
-  }
+  // Reroll disponível via botão 🌟 Destino Favorável (sem pop-up automático)
+  // lastRollData já foi setado acima para uso no openDestino()
   
   return rollResult;
 }
@@ -5512,15 +5571,7 @@ async function rollD20Modal(){
     // ★ Mostra reroll se falhou
     const _rollResult = {diceVal:dr, modVal:m, total, isCrit:dr===20, isFail:dr===1,
                          ok:cd?(total>=cd):null, label:skillLbl, attrKey:attr, cd};
-    const _shouldReroll2 = !_rollResult.isCrit && (
-      _rollResult.isFail ||
-      (inCombat && _rollResult.ok === false) ||
-      (pendingRollCritical && _rollResult.ok === false)
-    );
-    if(_shouldReroll2){
-      const _dramatic2 = _rollResult.isFail || pendingRollCritical;
-      showRerollButton(_rollResult, `Reteste de ${skillLbl}`, _dramatic2);
-    }
+    // Reroll via 🌟 Destino Favorável — lastRollData setado em rollInlineD20
     askMaster(`Jogador rolou ${skillLbl}: d20(${dr}) ${modStr(attrM)}${profTxt} = ${total}${cd?` vs CD ${cd}`:''} — ${total>=(cd||0)?'SUCESSO':'FALHA'}. Aplique o resultado na narrativa e continue.`);
   },900);
 }
@@ -5536,6 +5587,7 @@ function switchTab(id){
   if(id==='tab-spells' && hero && hero.cls){
     buildSpellsTab(hero.cls, hero.level||1);
   }
+  if(id==='tab-world') updateWorldTab();
   if(id==='tab-inv' && hero && hero.cls){
     renderInventory();
   }
@@ -6392,6 +6444,320 @@ function openRestModal(){
 updatePreview();
 
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+
+// ══ DESTINO FAVORÁVEL 🌟 ══
+const DESTINO_COST = 2; // diamantes por uso
+
+function openDestino(){
+  if(!hero || !hero.name){ showToast('⚠️ Crie um personagem primeiro'); return; }
+  const credits = hero.credits||0;
+  const body = document.getElementById('destino-body');
+  if(!body) return;
+
+  const hasPending  = !!pendingRollAttr;
+  const hasLastRoll = !!(lastRollData && lastRollData.diceVal);
+  const canAfford   = credits >= DESTINO_COST;
+
+  let html = '';
+
+  // ── Header
+  html += `<div style="text-align:center;padding:8px 0 14px">
+    <div style="font-size:28px;margin-bottom:4px">🌟</div>
+    <div style="font-family:var(--font-title);font-size:13px;color:var(--parch-l);letter-spacing:1px">DESTINO FAVORÁVEL</div>
+    <div style="font-size:11px;color:rgba(200,180,120,.5);margin-top:4px">Curvando o destino a seu favor</div>
+  </div>`;
+
+  // ── Saldo
+  html += `<div style="background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <span style="font-size:12px;color:var(--parch-d)">Seus Diamantes</span>
+    <span style="font-size:16px;font-family:var(--font-title);color:var(--gold-l)">💎 ${credits}</span>
+  </div>`;
+
+  if(!canAfford){
+    html += `<div style="text-align:center;padding:10px 0;font-size:12px;color:rgba(200,160,255,.5);margin-bottom:12px">
+      Você precisa de ${DESTINO_COST} 💎 para usar o Destino Favorável.
+    </div>
+    <button onclick="closeMo('mo-destino');openMo('mo-shop')" style="width:100%;background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:12px;font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
+      💎 Obter Diamantes
+    </button>`;
+  } else {
+    // ── Opção 1: VANTAGEM (antes de rolar)
+    const cantVantagem = !hasPending;
+    html += `<div style="margin-bottom:8px">
+      <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,180,120,.4);letter-spacing:1px;margin-bottom:6px">ANTES DE ROLAR</div>
+      <button onclick="usarDestinoVantagem()" ${cantVantagem?'disabled style="opacity:.3;cursor:not-allowed"':''} style="width:100%;background:${cantVantagem?'rgba(20,15,8,.5)':'linear-gradient(135deg,rgba(46,204,113,.15),rgba(39,174,96,.1))'};border:1px solid rgba(46,204,113,${cantVantagem?'.1':'.4'});border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:${cantVantagem?'not-allowed':'pointer'};text-align:left">
+        <span style="font-size:22px">🎲🎲</span>
+        <div>
+          <div style="font-size:12px;color:${cantVantagem?'rgba(200,200,200,.3)':'#90EE90'};font-family:var(--font-title)">Vantagem Forçada</div>
+          <div style="font-size:10px;color:rgba(200,180,120,.4);margin-top:2px">Rola 2 dados — fica com o maior · ${DESTINO_COST} 💎</div>
+          ${cantVantagem?'<div style="font-size:9px;color:rgba(200,160,100,.3);margin-top:2px">⚠️ Aguarde o Mestre pedir um teste</div>':''}
+        </div>
+      </button>
+    </div>`;
+
+    // ── Opção 2: REROLL (depois de rolar)
+    const cantReroll = !hasLastRoll;
+    const lastInfo   = hasLastRoll ? `Último: ${lastRollData.label||'dado'} = ${lastRollData.total}` : 'Nenhuma rolagem recente';
+    html += `<div style="margin-bottom:14px">
+      <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,180,120,.4);letter-spacing:1px;margin-bottom:6px">APÓS ROLAR</div>
+      <button onclick="usarDestinoReroll()" ${cantReroll?'disabled style="opacity:.3;cursor:not-allowed"':''} style="width:100%;background:${cantReroll?'rgba(20,15,8,.5)':'linear-gradient(135deg,rgba(91,63,160,.25),rgba(139,111,208,.15))'};border:1px solid rgba(139,111,208,${cantReroll?'.1':'.4'});border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:${cantReroll?'not-allowed':'pointer'};text-align:left">
+        <span style="font-size:22px">🔄</span>
+        <div>
+          <div style="font-size:12px;color:${cantReroll?'rgba(200,200,200,.3)':'#C0A0FF'};font-family:var(--font-title)">Relançar Dado</div>
+          <div style="font-size:10px;color:rgba(200,180,120,.4);margin-top:2px">${lastInfo} · ${DESTINO_COST} 💎</div>
+          ${cantReroll?'<div style="font-size:9px;color:rgba(200,160,100,.3);margin-top:2px">⚠️ Role um dado primeiro</div>':''}
+        </div>
+      </button>
+    </div>`;
+
+    // ── Info
+    html += `<div style="font-size:10px;color:rgba(200,180,120,.3);text-align:center;border-top:1px solid rgba(200,180,120,.08);padding-top:10px">
+      1 uso por cena · Funciona em ataques, testes e salvaguardas
+    </div>`;
+  }
+
+  body.innerHTML = html;
+  openMo('mo-destino');
+}
+
+// Vantagem forçada: rola 2d20, usa o maior
+function usarDestinoVantagem(){
+  if((hero.credits||0) < DESTINO_COST){ showToast('💎 Diamantes insuficientes!'); return; }
+  if(!pendingRollAttr){ showToast('⚠️ Aguarde o Mestre pedir um teste'); return; }
+  hero.credits -= DESTINO_COST;
+  updateVitals();
+  closeMo('mo-destino');
+  showToast('🌟 Destino Favorável! Rolando com vantagem...');
+  // Rola 2 dados, usa o maior
+  const r1 = rollD(20), r2 = rollD(20);
+  const best = Math.max(r1, r2);
+  // Injeta no rollInlineD20 simulando o melhor resultado
+  const attr  = pendingRollAttr;
+  const label = pendingRollLabel || attrLabels[attr] || 'Teste';
+  const cd    = pendingRollCD;
+  // Cria o result manualmente com o maior dado
+  const profLv2 = PROF_BONUS[Math.min(hero.level||1,20)]||2;
+  const attrMod2 = mod(stats[attr]||10);
+  const rollType2 = pendingRollType||'check';
+  let prof2 = 0;
+  if(rollType2==='attack') prof2=profLv2;
+  else if(rollType2==='save') prof2=(CLASS_SAVES[hero.cls]||[]).includes(attr)?profLv2:0;
+  const total2 = best + attrMod2 + prof2;
+  const ok2 = cd ? total2>=cd : null;
+  const rollResult2 = {diceVal:best, modVal:attrMod2+prof2, total:total2, isCrit:best===20, isFail:best===1, ok:ok2, label, attrKey:attr, cd};
+  addRollCard(`🌟 ${label} (vantagem: ${r1}/${r2})`, best, attrMod2+prof2, total2, cd);
+  pendingRollAttr=null; pendingRollCD=null; pendingRollLabel=null; pendingRollCritical=false; pendingRollType='check';
+  updateD20ButtonState();
+  const outcome = rollResult2.isCrit?'CRÍTICO':rollResult2.isFail?'FALHA CRÍTICA':ok2===true?'SUCESSO':ok2===false?'FALHA':`total ${total2}`;
+  askMaster(`Jogador usou Destino Favorável (vantagem). Rolou 2d20: ${r1} e ${r2}, ficou com ${best}. ${label}: d20(${best}) +${attrMod2+prof2} = ${total2}${cd?' vs CD '+cd:''} — ${outcome}. Continue a narrativa com este resultado.`);
+}
+
+// Reroll: relança o último dado
+function usarDestinoReroll(){
+  if((hero.credits||0) < DESTINO_COST){ showToast('💎 Diamantes insuficientes!'); return; }
+  if(!lastRollData || !lastRollData.diceVal){ showToast('⚠️ Nenhuma rolagem recente'); return; }
+  hero.credits -= DESTINO_COST;
+  updateVitals();
+  closeMo('mo-destino');
+  const r = lastRollData;
+  showToast('🌟 Destino Favorável! Relançando...');
+  useReroll(); // reutiliza a lógica existente
+}
+
+// Atualiza botão Destino com indicador visual quando há teste pendente
+function updateDestinoButton(){
+  const btn = document.getElementById('destino-btn');
+  if(!btn) return;
+  if(pendingRollAttr || lastRollData){
+    btn.style.color='var(--gold-l)';
+    btn.style.borderColor='rgba(200,146,42,.4)';
+  } else {
+    btn.style.color='';
+    btn.style.borderColor='';
+  }
+}
+
+
+// ══ Atualiza aba Mundo ══
+function updateWorldTab(){
+  // Reputação
+  const rep = hero.rep||0;
+  const REP_TIERS=[
+    {min:0,max:49,name:'Viajante',color:'rgba(200,180,120,.6)'},
+    {min:50,max:149,name:'Aventureiro',color:'#C0A0FF'},
+    {min:150,max:299,name:'Herói',color:'#90EE90'},
+    {min:300,max:499,name:'Campeão',color:'#FFD700'},
+    {min:500,max:9999,name:'Lendário',color:'#FF6B35'}
+  ];
+  const tier = REP_TIERS.find(t=>rep>=t.min&&rep<=t.max)||REP_TIERS[0];
+  const next = REP_TIERS[REP_TIERS.indexOf(tier)+1];
+  const pct  = next ? Math.min(100,((rep-tier.min)/(next.min-tier.min))*100) : 100;
+  const wd = document.getElementById('rep-display-world');
+  const wf = document.getElementById('rep-fill-world');
+  const wt = document.getElementById('rep-tiers-world');
+  if(wd) wd.textContent = `${rep} pts · ${tier.name}`;
+  if(wd) wd.style.color = tier.color;
+  if(wf) wf.style.width = pct+'%';
+  if(wf) wf.style.background = `linear-gradient(90deg,${tier.color},${tier.color}99)`;
+  if(wt) wt.innerHTML = next
+    ? `Próximo: <b style="color:${next.color}">${next.name}</b> em ${next.min-rep} pts`
+    : `<span style="color:#FFD700">✨ Reputação máxima atingida!</span>`;
+  // Localização
+  const loc = document.getElementById('world-location');
+  if(loc && gameMemory.events){
+    const locEvent = [...(gameMemory.events||[])].reverse().find(e=>e.type==='local');
+    loc.textContent = locEvent ? locEvent.summary.replace('Local: ','') : (inCity?'Cidade':'Região selvagem');
+  }
+}
+
+
+// ══ BANDEJA DE DADOS 🎲 ══
+const DICE_TYPES = [4, 6, 8, 10, 12, 20, 100];
+let diceTrayCounts = {4:0, 6:0, 8:0, 10:0, 12:0, 20:0, 100:0};
+let diceTrayOpen = false;
+
+function openDiceTray(){
+  const panel = document.getElementById('dice-tray-panel');
+  const btn   = document.getElementById('dice-tray-btn');
+  if(!panel) return;
+  diceTrayOpen = true;
+  panel.style.visibility = 'visible';
+  panel.style.transform = 'translateX(230px)';
+  btn.classList.add('active');
+  // Reset counts
+  DICE_TYPES.forEach(d => diceTrayCounts[d] = 0);
+  // If pending test, pre-set d20=1
+  if(pendingRollAttr) diceTrayCounts[20] = 1;
+  renderDiceTrayRows();
+  updateDiceTrayHint();
+}
+
+function closeDiceTray(){
+  const panel = document.getElementById('dice-tray-panel');
+  const btn   = document.getElementById('dice-tray-btn');
+  if(panel){ panel.style.transform='translateX(0)'; setTimeout(()=>{if(panel)panel.style.visibility='hidden';},250); }
+  if(btn)   btn.classList.remove('active');
+  diceTrayOpen = false;
+}
+
+function renderDiceTrayRows(){
+  const container = document.getElementById('dice-tray-rows');
+  if(!container) return;
+  const isPendingD20 = !!pendingRollAttr;
+  container.innerHTML = DICE_TYPES.map(d => {
+    const locked = isPendingD20 && d === 20; // d20 locked to 1 when test pending
+    const count  = diceTrayCounts[d];
+    const dLabel = d === 100 ? 'd%' : 'd'+d;
+    return `<div class="dtrow">
+      <div class="dtlbl">${dLabel}</div>
+      <button class="dtbtn" onclick="adjustDice(${d},-1)" ${count<=0?'disabled style="opacity:.3"':''}>−</button>
+      <div class="dtcount" id="dtc-${d}">${count}</div>
+      <button class="dtbtn" onclick="adjustDice(${d},1)" ${locked&&count>=1?'disabled style="opacity:.3;font-size:10px" title="Testes usam 1d20"':''}>+</button>
+      ${d===20 && isPendingD20 ? '<div style="font-size:9px;color:rgba(139,111,208,.5);margin-left:2px">🔒</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function adjustDice(sides, delta){
+  const isPendingD20 = !!pendingRollAttr;
+  // Block: d20 more than 1 when test pending without vantagem
+  if(sides === 20 && isPendingD20 && delta > 0 && diceTrayCounts[20] >= 1){
+    showToast('🎲 Testes usam 1d20. Use 🌟 Destino para vantagem.');
+    return;
+  }
+  diceTrayCounts[sides] = Math.max(0, Math.min(9, diceTrayCounts[sides] + delta));
+  const el = document.getElementById('dtc-'+sides);
+  if(el) el.textContent = diceTrayCounts[sides];
+  renderDiceTrayRows();
+  updateDiceTrayHint();
+}
+
+function updateDiceTrayHint(){
+  const hint = document.getElementById('dice-tray-hint');
+  if(!hint) return;
+  const total = DICE_TYPES.reduce((s,d)=>s+diceTrayCounts[d],0);
+  if(total === 0){
+    hint.textContent = 'Selecione os dados para rolar';
+    return;
+  }
+  const parts = DICE_TYPES.filter(d=>diceTrayCounts[d]>0).map(d=>{
+    const lbl = d===100?'d%':'d'+d;
+    return diceTrayCounts[d]+''+lbl;
+  });
+  if(pendingRollAttr && diceTrayCounts[20]===1){
+    const pb = PROF_BONUS[Math.min(hero.level||1,20)]||2;
+    const attrM = mod(stats[pendingRollAttr]||10);
+    const rollType2 = pendingRollType||'check';
+    let profB = 0;
+    if(rollType2==='attack') profB=pb;
+    else if(rollType2==='initiative') profB=0;
+    else if(rollType2==='save') profB=(CLASS_SAVES[hero.cls]||[]).includes(pendingRollAttr)?pb:0;
+    const totalMod = attrM+profB;
+    hint.innerHTML = `${parts.join('+')} <span style="color:#C0A0FF">+${totalMod}</span> = ?<br>
+      <span style="font-size:9px;opacity:.7">${pendingRollLabel||'Teste'}${pendingRollCD?' CD '+pendingRollCD:''}</span>`;
+  } else {
+    hint.textContent = parts.join(' + ') + ' = ?';
+  }
+}
+
+async function rollDiceTray(){
+  const total = DICE_TYPES.reduce((s,d)=>s+diceTrayCounts[d],0);
+  if(total === 0){ showToast('Selecione pelo menos 1 dado!'); return; }
+
+  closeDiceTray();
+
+  const isPendingTest = !!pendingRollAttr && diceTrayCounts[20] === 1;
+
+  if(isPendingTest){
+    // ── d20 com teste formal: usa rollInlineD20
+    const label = pendingRollLabel || attrLabels[pendingRollAttr] || 'Teste';
+    await rollInlineD20(pendingRollAttr, label, pendingRollCD);
+    return;
+  }
+
+  // ── Dados livres: rola tudo e monta resultado
+  const results = [];
+  let grandTotal = 0;
+  const breakdown = [];
+
+  for(const sides of DICE_TYPES){
+    const count = diceTrayCounts[sides];
+    if(count === 0) continue;
+    const rolls = [];
+    for(let i=0;i<count;i++){
+      const r = rollD(sides === 100 ? 10 : sides) * (sides === 100 ? 10 : 1);
+      rolls.push(r);
+      grandTotal += r;
+    }
+    const lbl = sides===100?'d%':'d'+sides;
+    breakdown.push(`${count}${lbl}(${rolls.join(',')})`);
+    results.push({sides, count, rolls});
+  }
+
+  // Add damage modifier if in combat
+  let bonusTxt = '';
+  if(inCombat && results.length===1){
+    const weapon = inventory.find(i=>i.equipped&&i.slot==='rhand');
+    const hasFinesse = weapon&&/finesse|adaga|rapieira/i.test(weapon.name||'');
+    const strM = mod(stats.str||10), dexM = mod(stats.dex||10);
+    const dmgMod = hasFinesse ? Math.max(strM,dexM) : strM;
+    if(dmgMod !== 0){
+      grandTotal += dmgMod;
+      bonusTxt = ` ${dmgMod>=0?'+':''} ${dmgMod}(mod)`;
+    }
+  }
+
+  const formula = breakdown.join(' + ');
+  const context = inCombat ? 'dano em combate' : 'dados livres';
+  addRollCard(formula, grandTotal, 0, grandTotal, null);
+
+  // Send to master (no turn cost for free rolls)
+  const msgTxt = inCombat
+    ? `Jogador rolou ${formula}${bonusTxt} = ${grandTotal} de ${context}.`
+    : `Jogador rolou dados livres: ${formula} = ${grandTotal}.`;
+  askMaster(msgTxt, true); // true = skip turn counter
+}
+
 </script>
 </body>
 </html>
