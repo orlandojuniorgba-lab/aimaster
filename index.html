@@ -2451,10 +2451,11 @@ const attrNames={str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligê
 const attrLabels={str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
 
 let hero={xp:0,level:1,credits:0}, stats={}, thinking=false;
-let inCombat=false, inCity=false; // estados de contexto
+let inCombat=false, inCity=false; // currentEnemy declared separately // estados de contexto
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
 let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null, pendingRollCritical=false, pendingRollType='check'; // teste pendente
+let currentEnemy=null; // inimigo atual em combate
 
 // Partículas
 (function(){
@@ -3364,7 +3365,7 @@ function buildSystemPrompt(){
 ━━━ PERSONAGEM ━━━
 Nome: ${hero.name} | Raça: ${hero.race} | Classe: ${hero.cls} Nível ${hero.level||1} | Alinhamento: ${hero.align||'N'}${heroCombatStyle?' | Estilo de Combate: '+heroCombatStyle:''}
 Antecedente: ${hero.bg} | Alinhamento: ${hero.align}
-PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | XP: ${hero.xp||0} | Ouro: ${Math.round(hero.gold||0)} PO
+PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | XP: ${hero.xp||0} | Ouro: ${Math.round(hero.gold||0)} PO${currentEnemy?' | Inimigo atual: '+currentEnemy:''}
 Combate: ${combatStats}
 Atributos: ${atrs}
 Itens equipados: ${equippedItems}
@@ -3941,7 +3942,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // Mercador encontrado = contexto de cidade temporário
       if(/mercador|vendedor|lojista|comerciante/i.test(reply))inCity=true;
       // Combat: only ON via [COMBATE:] tag, OFF via keywords or [FIM_COMBATE]
-      if(enemyName) inCombat=true;
+      if(enemyName){ inCombat=true; currentEnemy=enemyName; }
       else if(/\[FIM_COMBATE\]/i.test(reply)||/(?:inimigo derrotado|combate encerrado|foge da batalha|escapa da luta|silêncio volta|ameaça eliminada)/i.test(reply)) inCombat=false;
       // (inCombat persists until explicitly ended)
       updateContextUI();
@@ -6931,9 +6932,14 @@ document.addEventListener('visibilitychange', function(){
         updateVitals();
         renderInventory();
         // Reconstrói mensagens do histórico no narr
-        gameHistory.forEach(m => {
-          if(m.role === 'assistant') addNarrCard(m.content, 'master');
-          // (mensagens do jogador não são re-renderizadas)
+        gameHistory.forEach(msg => {
+          if(msg.role === 'assistant' && msg.content){
+            const card = document.createElement('div');
+            card.className = 'bbl bbl-m';
+            card.innerHTML = formatNarrative(cleanTextForDisplay(msg.content));
+            const narr = document.getElementById('narr');
+            if(narr) narr.appendChild(card);
+          }
         });
       }
     }
