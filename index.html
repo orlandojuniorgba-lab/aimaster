@@ -992,11 +992,50 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
 <!-- MODAL LOJA -->
 <div class="mo" id="mo-shop"><div class="ms">
-  <div class="mt">💎 Diamantes &amp; Mercador <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
-  <!-- Contexto de localização -->
-  <div id="shop-context-banner" style="background:rgba(200,146,42,0.08);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--gold-d);text-align:center;font-family:var(--font-title);letter-spacing:.5px"></div>
-  <p class="mo-note">💎 1 Diamante = 10 Peças de Ouro in-game</p>
-  <div class="sp-pack" id="shop-pack1" style="transition:opacity .3s"><div><div class="sp-nm">Bolsa do Viajante</div><div class="sp-cr">10 💎 → 100 PO</div><div class="sp-pr">R$ 4,90</div></div><button class="btn-buy" onclick="buyCredits(1)">COMPRAR</button></div>
+  <div class="mt">💎 Diamantes &amp; Mercado <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+
+  <!-- Conversão -->
+  <div style="background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center">
+    <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,146,42,.6);letter-spacing:1px;margin-bottom:4px">CONVERSÃO</div>
+    <div style="font-size:13px;color:var(--gold-l)">💎 1 Diamante = 10 Peças de Ouro</div>
+    <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:3px">Compre ouro para itens, mapas e informações de NPCs</div>
+  </div>
+
+  <!-- Pacote 1 -->
+  <div class="sp-pack" id="shop-pack1" onclick="buyCredits(1)" style="cursor:pointer">
+    <div>
+      <div class="sp-nm">🎒 Bolsa do Viajante</div>
+      <div class="sp-cr">15 💎 · 150 PO · 3 sessões extras</div>
+      <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:2px">Ideal para continuar uma aventura hoje</div>
+    </div>
+    <div class="sp-pr">R$ 4,90</div>
+  </div>
+
+  <!-- Pacote 2 -->
+  <div class="sp-pack" id="shop-pack2" onclick="buyCredits(2)" style="cursor:pointer">
+    <div>
+      <div class="sp-nm">💰 Tesouro do Negociante</div>
+      <div class="sp-cr">70 💎 · 700 PO · 14 sessões extras</div>
+      <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:2px">Ouro suficiente para itens raros e NPCs</div>
+    </div>
+    <div class="sp-pr">R$ 19,90</div>
+  </div>
+
+  <!-- Pacote 3 -->
+  <div class="sp-pack" id="shop-pack3" onclick="buyCredits(3)" style="cursor:pointer;border-color:rgba(200,146,42,.5);background:rgba(200,146,42,.06)">
+    <div>
+      <div class="sp-nm">👑 Cofre do Patrono <span style="font-size:9px;color:#FFD700;background:rgba(200,146,42,.2);border-radius:4px;padding:1px 5px;margin-left:4px">+50💎 BÔNUS</span></div>
+      <div class="sp-cr">130 💎 · 1300 PO · 26 sessões extras</div>
+      <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:2px">Para o aventureiro sério — melhor custo-benefício</div>
+    </div>
+    <div class="sp-pr">R$ 34,90</div>
+  </div>
+
+  <!-- Nota de ouro -->
+  <div style="font-size:10px;color:rgba(200,180,120,.4);text-align:center;margin-top:10px;padding:0 8px">
+    💡 Diamantes também servem para <b style="color:rgba(200,180,120,.65)">Destino Favorável</b> (2💎) e <b style="color:rgba(200,180,120,.65)">Ilustrar Cena</b> (3💎)
+  </div>
+</div></div><button class="btn-buy" onclick="buyCredits(1)">COMPRAR</button></div>
   <div class="sp-pack" id="shop-pack2" style="transition:opacity .3s"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 💎 → 500 PO</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy" onclick="buyCredits(2)">COMPRAR</button></div>
   <div class="sp-pack featured" id="shop-pack3" style="transition:opacity .3s"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 💎 → 1000 PO</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy" onclick="buyCredits(3)">COMPRAR</button></div>
   <!-- Procurar Mercador dentro da loja -->
@@ -2759,6 +2798,16 @@ function updateVitals(){
   if(shXpSub) shXpSub.textContent=`/${xpNext} XP (Nv${lv+1<20?lv+1:20})`;
   if(shXpBar) shXpBar.style.width=xpPct+'%';
   updateXPRing();
+  // Update rep display in header if exists
+  const repEl = document.getElementById('rep-display');
+  if(repEl){
+    const REP_TIERS_V=[
+      {min:0,max:49,name:'Viajante'},{min:50,max:149,name:'Aventureiro'},
+      {min:150,max:299,name:'Herói'},{min:300,max:499,name:'Campeão'},{min:500,max:9999,name:'Lendário'}
+    ];
+    const rt = REP_TIERS_V.find(t=>(hero.rep||0)>=t.min&&(hero.rep||0)<=t.max)||REP_TIERS_V[0];
+    repEl.textContent = `${hero.rep||0} pts · ${rt.name}`;
+  }
 }
 
 function updateXPRing(){
@@ -2811,6 +2860,11 @@ function gainXP(amount){
     // Notifica com habilidades ganhas
     const newAbilities=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv===lv).map(a=>a.name).join(', ');
     showToast(`🌟 NÍVEL ${lv}!${newAbilities?' +'+newAbilities:''}`);
+    // ★ Reputação bônus por subir de nível (reconhecimento no mundo)
+    const _repBonus = lv * 5;
+    hero.rep = (hero.rep||0) + _repBonus;
+    setTimeout(()=>showToast(`⭐ +${_repBonus} Reputação por subir ao Nível ${lv}!`),1200);
+    updateWorldTab();
     // Libera troca de truque para classes que permitem (PHB)
     if(CANTRIP_SWAP_CLASSES&&CANTRIP_SWAP_CLASSES.has(hero.cls)){
       cantripSwapPending=true;
@@ -2991,6 +3045,7 @@ function cleanTextForDisplay(text){
     .replace(/\[NPC:[^\]]+\]/gi, '')
     .replace(/\[LOCALIZAÇÃO:[^\]]+\]/gi, '')
     .replace(/\[TESTE:[^\]]+\]/gi, '')
+    .replace(/\[REP:[^\]]+\]/gi, '')
     .replace(/\[FIM[^\]]*\]/gi, '')
     // Remove linhas que ficaram vazias após remover tags
     .replace(/\n{3,}/g, '\n\n')
@@ -3362,6 +3417,7 @@ function buildSystemPrompt(){
 
   // ★ Chunk de magias preparadas — PHB reference
   const prepSpellChunk = buildPreparedSpellsChunk();
+  const remainingTurns = Math.max(0, FREE_TURNS_PER_DAY + getBonusTurns() - getTurnsUsedToday());
 
   return `Você é o Mestre de Dungeons do AiMaster — sistema D&D 5e SRD, solo, em português brasileiro.
 
@@ -3374,10 +3430,15 @@ Atributos: ${atrs}
 Itens equipados: ${equippedItems}
 Magias: ${spellList}
 Habilidades de classe: ${classAbilsNow}
+Reputação: ${hero.rep||0} pts · ${['Viajante','Aventureiro','Herói','Campeão','Lendário'].reduce((t,n,i)=>(hero.rep||0)>=[0,50,150,300,500][i]?n:t,'Viajante')}
 Traços/Bônus: ${allTags} | ${allBonuses}
 Regras especiais do personagem:${especiais}
 
 ${memoryBlock}${prepSpellChunk}
+━━━ RITMO NARRATIVO ━━━
+Turnos restantes hoje: \${remainingTurns}
+\${remainingTurns<=3?'⚠️ ÚLTIMOS TURNOS — Acelere para o cliffhanger máximo agora!':remainingTurns<=1?'🎬 ÚLTIMO TURNO — Termine no pico absoluto da tensão. Gancho irresistível obrigatório.':''}
+
 ━━━ MISSÃO ATIVA ━━━
 MISSÃO: ${questData.title} (Tier ${questData.tier||1} — Nv${questData.minLevel||1}-${questData.maxLevel||4})
 Localização: ${questData.location||''}
@@ -3428,6 +3489,16 @@ Sua missão é criar uma experiência inesquecível. Cada resposta deve fazer o 
   Termine cada cena no PICO da tensão — não depois da resolução.
   ERRADO: "Você derrota o goblin. A sala está limpa."
   CERTO: "O goblin cai. Mas atrás da porta rangida, você ouve — passos. Muitos."
+
+▸ GESTÃO DE ARCO POR TURNOS RESTANTES
+  Se turnos restantes > 5: desenvolva narrativa normalmente, construa tensão
+  Se turnos restantes = 3-5: acelere — corte para o momento mais tenso da cena
+  Se turnos restantes = 1-2: CLIFFHANGER MÁXIMO obrigatório
+    → Revelação bombástica, ameaça imediata, ou decisão impossível
+    → O jogador DEVE sentir que abandonar agora seria um erro
+    → Exemplos: "A porta se abre. Do outro lado — um rosto que você reconhece."
+                "Ela sussurra o nome do traidor. É alguém que você confia."
+                "O monstro ergue a cabeça. Ele encontrou você."
 
 ▸ ELEMENTO INESPERADO A CADA 3 TURNOS
   Introduza algo que o jogador não esperava: uma testemunha, uma traição, um aliado improvável,
@@ -3527,7 +3598,41 @@ NPCs — MEMÓRIA OBRIGATÓRIA:
 ▸ NUNCA contrarie informações de NPCs já estabelecidos na memória
 ▸ NUNCA invente NPCs sem introdução narrativa (diga o nome + aparência + papel)
 ▸ Ao apresentar NPC importante: use tag [NPC:Nome:descrição:relação] para registrar
+
+REPUTAÇÃO — MECÂNICA AUTOMÁTICA:
+▸ Use [REP:+X] quando o personagem fizer algo notável no mundo:
+  • Salvar inocentes: [REP:+15] | Derrotar vilão conhecido: [REP:+25]
+  • Trair aliados: [REP:-20] | Roubar de mercadores: [REP:-10]
+  • Completar missão principal: [REP:+30] | Ato heroico: [REP:+20]
+▸ NPCs reconhecem personagens com alta reputação — melhores preços, informações, favores
+▸ Reputação alta (Herói/Campeão) abre portas que ouro não compra
+▸ Reputação baixa fecha portas — guardas ficam hostis, mercadores recusam negócio
 ▸ Todo NPC importante tem: 1 segredo, 1 desejo, 1 medo — use-os para criar conflito
+
+━━━ ECONOMIA DO MUNDO — DESIGN MONETÁRIO ━━━
+
+OURO É ESCASSO E VALIOSO:
+▸ Itens comuns: 10-50 PO | Itens raros: 200-800 PO | Itens épicos: 1000-3000 PO
+▸ Informações valiosas custam ouro — NPCs cobram pelo que sabem
+▸ Mapas, senhas, favores, passagens secretas têm preço
+▸ Saldo atual do jogador: \${Math.round(hero.gold||0)} PO — calibre preços de acordo
+
+CRIAR DESEJO POR ITENS E INFORMAÇÕES CARAS:
+▸ Apresente itens únicos que o jogador claramente precisa mas não pode pagar ainda
+▸ NPCs com informação crucial pedem pagamento: "Isso vale 400 PO. Você tem?"
+▸ NUNCA dê itens raros de graça — sempre há um preço (ouro, favor, missão)
+▸ Mostre o item, descreva seu poder, revele o preço — crie o desejo
+
+EXEMPLOS DE ECONOMIA NARRATIVA:
+▸ "O ferreiro Aldric tem exatamente o que você procura. Cobra 600 PO pelo privilégio."
+▸ "O velho informante conhece o caminho. Quer 300 PO ou um favor que você talvez não queira deber."
+▸ "A Mestra Corva tem o mapa. Não está à venda. Mas você notou que ela olhou para sua bolsa."
+▸ "O boticário tem a poção rara. 500 PO. Diz que é o último frasco."
+
+REGRA DO DESEJO:
+▸ Sempre que possível, termine a cena com o jogador querendo algo que custa ouro
+▸ O tesouro encontrado deve ser sempre um pouco menos que o item que ele quer comprar
+▸ Recompensas de missão devem cobrir ~60% do próximo objetivo — nunca tudo
 
 DADOS DE DANO — COMO FUNCIONA:
 ▸ Quando o jogador acerta um ataque, o SISTEMA envia o resultado de dano automaticamente
@@ -4646,7 +4751,7 @@ function acceptFailure(){
 
 
 // ══ FEATURE: SESSÃO PREMIUM 💎 ══
-const FREE_TURNS_PER_DAY = 15;
+const FREE_TURNS_PER_DAY = 10; // 10 turnos grátis/dia — sessão de ~30min
 const SESSION_COST = 5; // diamantes por sessão extra
 const SESSION_TURNS = 10; // turnos extras por sessão
 
@@ -5713,9 +5818,9 @@ function openMo(id){
 // Pacotes de diamantes disponíveis
 const CREDIT_PACKS = [
   null, // índice 0 vazio
-  {id:1, name:'Bolsa do Viajante',  credits:10,  gp:100,  price:'R$ 4,90',   bonus:0},
-  {id:2, name:'Tesouro do Negociante', credits:50, gp:500,  price:'R$ 19,90',  bonus:0},
-  {id:3, name:'Cofre do Patrono',   credits:100, gp:1000, price:'R$ 34,90',  bonus:50}, // bônus rep
+  {id:1, name:'Bolsa do Viajante',     credits:15,  gp:150,  price:'R$ 4,90',  bonus:0,  desc:'3 sessões extras'},
+  {id:2, name:'Tesouro do Negociante', credits:70,  gp:700,  price:'R$ 19,90', bonus:0,  desc:'14 sessões + itens raros'},
+  {id:3, name:'Cofre do Patrono',      credits:130, gp:1300, price:'R$ 34,90', bonus:50, desc:'26 sessões + 50💎 bônus + rep'},
 ];
 
 // ★ Adiciona ouro via diamante (chamado pelo sistema de pagamento)
@@ -5853,7 +5958,12 @@ function showEconomyLog(){
 }
 
 function updateShopContext(){
-  const banner=document.getElementById('shop-context-banner');
+  const banner=document.getElementById('shop-context-banner').innerHTML = 
+      `<div style="font-family:var(--font-title);font-size:10px;color:rgba(200,146,42,.7);letter-spacing:.5px">
+        Você tem <b style="color:var(--gold-l)">\${Math.round(hero.gold||0)} PO</b> · 
+        <b style="color:#C0A0FF">\${hero.credits||0} 💎</b>
+        &nbsp;·&nbsp; 1💎 = 10 PO
+      </div>`
   const packs=['shop-pack1','shop-pack2','shop-pack3'];
   const mercBtn=document.getElementById('shop-mercador-btn');
   const atTurnLimit=getTurnsUsedToday()>=(FREE_TURNS_PER_DAY+getBonusTurns());
