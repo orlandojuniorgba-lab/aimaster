@@ -29,6 +29,7 @@ html,body{height:100%;overflow:hidden;background:#0F0A04;}
 #app{width:100%;max-width:430px;height:100vh;margin:0 auto;background:var(--bg2);position:relative;overflow:hidden;display:flex;flex-direction:column;}
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
 .screen.active{display:flex;}
+#s-game{padding-bottom:58px;}
 body{font-family:var(--font-narr);color:var(--parch);}
 
 /* ══ SPLASH ══ */
@@ -132,7 +133,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .narr-border{height:1px;flex-shrink:0;background:linear-gradient(90deg,transparent,var(--gold-d),rgba(200,146,42,.5),var(--gold-d),transparent);}
 
 /* ══ NARRATIVA ══ */
-.narr{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;}
+.narr{flex:1;overflow-y:auto;padding:12px 14px 80px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;}
 .narr::-webkit-scrollbar{width:3px;}
 .narr::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
 .msg{animation:fadein .35s ease;max-width:100%;}
@@ -4827,27 +4828,29 @@ function showTurnLimitModal(used, limit){
   
   const wrap = document.createElement('div');
   wrap.id = 'paywall-wrap';
-  wrap.style.cssText = 'margin:16px 0;padding:16px;background:linear-gradient(135deg,rgba(91,63,160,.15),rgba(26,18,8,.9));border:1px solid rgba(139,111,208,.4);border-radius:14px;text-align:center';
+  wrap.style.cssText = 'position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:20px';
   wrap.innerHTML = `
-    <div style="font-size:28px;margin-bottom:8px">💎</div>
-    <div style="font-family:var(--font-title);font-size:14px;color:#C0A0FF;margin-bottom:4px">Limite Diário Atingido</div>
-    <div style="font-size:12px;color:var(--parch-d);margin-bottom:12px">
-      Você usou ${used} de ${limit} turnos de hoje.<br>
-      <span style="color:rgba(200,160,255,.6);font-size:11px">Renova à meia-noite</span>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <button onclick="buySession()" style="background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:10px;font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
-        💎 ${SESSION_COST} Diamantes — +${SESSION_TURNS} Turnos agora
-      </button>
-      <button onclick="openMo('mo-shop')" style="background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.25);border-radius:10px;padding:8px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">
-        🛒 Comprar mais Diamantes
-      </button>
-      <div style="font-size:10px;color:rgba(200,160,255,.4);margin-top:4px">
-        Você tem 💎 ${hero.credits||0} Diamantes
+    <div style="background:linear-gradient(135deg,rgba(15,10,4,.98),rgba(26,18,8,.98));border:1px solid rgba(139,111,208,.4);border-radius:16px;padding:24px 20px;max-width:320px;width:100%;text-align:center">
+      <div style="font-size:36px;margin-bottom:10px">💎</div>
+      <div style="font-family:var(--font-title);font-size:15px;color:#C0A0FF;margin-bottom:6px;letter-spacing:.5px">LIMITE DIÁRIO ATINGIDO</div>
+      <div style="font-size:12px;color:var(--parch-d);margin-bottom:16px">
+        Você usou ${used} de ${limit} turnos de hoje.<br>
+        <span style="color:rgba(200,160,255,.5);font-size:11px">Renova à meia-noite</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button onclick="buySession()" style="background:linear-gradient(135deg,rgba(91,63,160,.5),rgba(139,111,208,.35));border:1px solid rgba(139,111,208,.7);border-radius:12px;padding:14px;font-family:var(--font-title);font-size:13px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
+          💎 ${SESSION_COST} Diamantes — +${SESSION_TURNS} Turnos<br>
+          <span style="font-size:10px;opacity:.6">Você tem ${hero.credits||0} 💎</span>
+        </button>
+        <button onclick="document.getElementById('paywall-wrap').remove();openMo('mo-shop')" style="background:rgba(200,146,42,.12);border:1px solid rgba(200,146,42,.3);border-radius:12px;padding:12px;font-family:var(--font-title);font-size:12px;color:var(--gold-l);cursor:pointer">
+          🛒 Comprar mais Diamantes
+        </button>
+        <button onclick="document.getElementById('paywall-wrap').remove()" style="background:none;border:none;font-size:11px;color:rgba(200,180,120,.3);cursor:pointer;padding:4px">
+          Voltar (aguardar meia-noite)
+        </button>
       </div>
     </div>`;
-  narr.appendChild(wrap);
-  wrap.scrollIntoView({behavior:'smooth',block:'center'});
+  document.body.appendChild(wrap);
 }
 
 function buySession(){
