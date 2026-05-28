@@ -656,9 +656,18 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .dtlbl{font-family:var(--font-title);font-size:12px;color:var(--parch-l);width:28px;text-align:center;}
 .dtcount{font-family:var(--font-title);font-size:14px;color:var(--gold-l);width:20px;text-align:center;}
 .dtbtn{background:rgba(91,63,160,.2);border:1px solid rgba(139,111,208,.3);border-radius:6px;
-  width:24px;height:24px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:14px;color:#C0A0FF;line-height:1;}
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:15px;color:#C0A0FF;line-height:1;}
 .dtbtn:active{background:rgba(91,63,160,.5);}
+.dtsvg{display:flex;align-items:center;justify-content:center;}
+.dice3d{cursor:pointer;transition:transform .15s,filter .15s;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));}
+.dice3d:hover{transform:scale(1.08) translateY(-1px);filter:drop-shadow(0 0 7px rgba(240,180,40,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.4));}
+.dice3d.active{transform:scale(1.12) translateY(-2px);filter:drop-shadow(0 0 10px rgba(255,200,50,.85)) drop-shadow(0 0 20px rgba(240,160,20,.45)) drop-shadow(0 2px 4px rgba(0,0,0,.4));}
+@keyframes diceGlow{0%,100%{filter:drop-shadow(0 0 6px rgba(240,180,40,.6));}50%{filter:drop-shadow(0 0 14px rgba(255,210,60,1));}}
+.dice3d.rolling{animation:diceGlow .4s ease-in-out;}
+.dtrow{display:flex;align-items:center;gap:6px;padding:4px 2px;border-radius:8px;transition:background .15s;}
+.dtrow:hover{background:rgba(139,111,208,.08);}
+.dtcount{font-family:var(--font-title);font-size:15px;color:var(--gold-l);width:22px;text-align:center;min-width:22px;}
 </style>
 </head>
 <body>
@@ -795,34 +804,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
     </div>
   </div>
   <div class="narr-border"></div>
-  <!-- Floating dice tray button -->
-  <button id="dice-tray-btn" onclick="openDiceTray()" title="Bandeja de Dados"
-    style="position:fixed;left:8px;top:50%;transform:translateY(-50%);
-    z-index:92;background:rgba(15,10,4,.9);border:1px solid rgba(139,111,208,.4);
-    border-radius:12px;width:36px;height:36px;display:flex;align-items:center;
-    justify-content:center;cursor:pointer;font-size:18px;
-    box-shadow:0 2px 10px rgba(0,0,0,.5);transition:all .2s">🎲</button>
-  <!-- Dice tray panel (slides in from left) -->
-  <div id="dice-tray-panel" style="position:fixed;left:-230px;top:0;height:100%;width:220px;
-    background:rgba(15,10,4,.97);border-right:1px solid rgba(139,111,208,.25);
-    z-index:91;transition:transform .25s ease;transform:translateX(0);
-    padding:12px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;
-    visibility:hidden">
-    <div style="font-family:var(--font-title);font-size:11px;color:rgba(200,146,42,.7);
-      letter-spacing:1px;margin-bottom:4px;text-align:center">🎲 BANDEJA DE DADOS</div>
-    <div id="dice-tray-rows"></div>
-    <div id="dice-tray-hint" style="font-size:10px;color:rgba(200,180,120,.4);
-      text-align:center;min-height:28px;padding:4px 0"></div>
-    <button onclick="rollDiceTray()" id="dice-tray-roll-btn"
-      style="background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));
-      border:1px solid rgba(139,111,208,.5);border-radius:10px;padding:10px;
-      font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;
-      letter-spacing:.5px;margin-top:auto">🎲 Rolar</button>
-    <button onclick="closeDiceTray()"
-      style="background:rgba(20,15,8,.6);border:1px solid rgba(139,111,208,.2);
-      border-radius:8px;padding:7px;font-size:11px;color:rgba(200,180,120,.5);cursor:pointer">
-      Fechar</button>
-  </div>
+
   <div class="narr" id="narr" onclick="if(diceTrayOpen)closeDiceTray()"></div>
   <div class="actions-wrap">
     <div class="acts-lbl" id="acts-lbl">— O QUE VOCÊ FAZ? —</div>
@@ -833,15 +815,6 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <button class="act-btn suggested" id="ab4" onclick="doAct('Investigar o local')"><div class="a-circle">🔍</div><div class="a-text"><span class="a-title">Investigar o local</span><span class="a-hint">Investigação</span></div><span class="a-arrow">›</span></button>
     </div>
   <!-- Barra de Dados de Dano -->
-  <div id="dice-bar" style="display:none;align-items:center;gap:4px;padding:4px 10px 2px;background:rgba(10,8,4,.9);border-top:1px solid rgba(200,146,42,.08)">
-    <span style="font-family:var(--font-title);font-size:9px;color:rgba(200,146,42,.4);letter-spacing:1px;flex-shrink:0">DADOS:</span>
-    <button class="dice-btn" onclick="rollDiceBar(4)"  title="Rolar d4">d4</button>
-    <button class="dice-btn" onclick="rollDiceBar(6)"  title="Rolar d6">d6</button>
-    <button class="dice-btn" onclick="rollDiceBar(8)"  title="Rolar d8">d8</button>
-    <button class="dice-btn" onclick="rollDiceBar(10)" title="Rolar d10">d10</button>
-    <button class="dice-btn" onclick="rollDiceBar(12)" title="Rolar d12">d12</button>
-    <button class="dice-btn" id="fbar-d20-btn" onclick="rollDiceBar(20)" title="Rolar d20" style="background:rgba(200,146,42,.2);border-color:rgba(200,146,42,.5);color:var(--gold-l)">d20</button>
-    <div id="dice-bar-result" style="margin-left:auto;font-family:var(--font-title);font-size:14px;font-weight:700;color:var(--gold-l);min-width:50px;text-align:right"></div>
     <span id="d20-hint-txt" style="display:none;font-size:10px;color:var(--gold-l);margin-left:4px"></span>
   </div>
     <div class="ooc-toggle-row">
@@ -2460,7 +2433,14 @@ let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null, pendingRoll
   for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const s=(Math.random()*3+1)+'px';p.style.cssText=`width:${s};height:${s};left:${Math.random()*100}%;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s;`;c.appendChild(p);}
 })();
 
-function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // Show dice tray button only in game screen
+  const diceBtn = document.getElementById('dice-tray-btn');
+  if(diceBtn) diceBtn.style.display = (id==='s-game') ? 'flex' : 'none';
+  if(id!=='s-game') closeDiceTray();
+}
 function rollD(s){return Math.ceil(Math.random()*s);}
 function roll4d6drop(){let r=[rollD(6),rollD(6),rollD(6),rollD(6)];r.sort((a,b)=>a-b);return Math.max(11,r[1]+r[2]+r[3]);}
 function mod(v){return Math.floor((v-10)/2);}
@@ -2979,6 +2959,9 @@ function cleanTextForDisplay(text){
     .replace(/\[FIM[^\]]*\]/gi, '')
     // Remove linhas que ficaram vazias após remover tags
     .replace(/\n{3,}/g, '\n\n')
+    .replace(/^#{1,3}\s+/gm,'')
+    .replace(/\*\*([^*]+)\*\*/g,'$1')
+    .replace(/\*([^*]+)\*/g,'$1')
     .trim();
 }
 
@@ -3090,55 +3073,38 @@ function updateActionButtons(actions){
 
 // ══ D20 BUTTON — só libera quando mestre pede teste ══
 function updateD20ButtonState(){
-  const btn      = document.getElementById('fbar-d20-btn');
-  const bar      = document.getElementById('dice-bar');
-  const hintEl   = document.getElementById('d20-hint-txt');
   const actGrid  = document.getElementById('act-grid');
   const freeIn   = document.getElementById('free-in');
-  const freeSend = document.getElementById('free-send');
+  const diceTrayBtn = document.getElementById('dice-tray-btn');
 
   if(pendingRollAttr){
-    // ── Mostra barra de dados ──
-    if(bar) bar.style.display='flex';
-
-    // ── Destaca botão d20 ──
-    if(btn){
-      btn.style.background='rgba(200,146,42,.5)';
-      btn.style.borderColor='rgba(200,146,42,1)';
-      btn.style.color='#FFD700';
-      btn.style.boxShadow='0 0 10px rgba(200,146,42,.6)';
-      btn.title='🎲 ROLAR '+(pendingRollLabel||attrLabels[pendingRollAttr]||pendingRollAttr)+(pendingRollCD?' CD '+pendingRollCD:'');
-    }
-
-    // ── Bloqueia apenas botões de ação (free-in e OOC ficam livres) ──
+    // ── Bloqueia botões de ação — free-in fica livre ──
     if(actGrid){ actGrid.style.opacity='0.3'; actGrid.style.pointerEvents='none'; }
-    // free-in permanece habilitado — jogador pode escrever pergunta em off ou decisão livre
-    if(freeIn) { freeIn.disabled=false; freeIn.placeholder='Outra decisão ou pergunta em off...'; }
-    if(freeSend){ freeSend.style.opacity=''; freeSend.style.pointerEvents=''; }
+    if(freeIn){ freeIn.disabled=false; freeIn.placeholder='Outra decisão ou pergunta em off...'; }
 
-    // ── Hint na barra ──
+    // ── Destaca botão da bandeja de dados ──
+    if(diceTrayBtn){
+      diceTrayBtn.style.background='rgba(200,146,42,.5)';
+      diceTrayBtn.style.borderColor='rgba(200,146,42,1)';
+      diceTrayBtn.style.boxShadow='0 0 12px rgba(200,146,42,.7)';
+      diceTrayBtn.title='🎲 ROLAR '+(pendingRollLabel||attrLabels[pendingRollAttr]||'teste')+(pendingRollCD?' CD '+pendingRollCD:'');
+    }
     updateDestinoButton();
-  if(hintEl){
-      hintEl.style.display='inline';
-      hintEl.textContent='🎲 Role '+(pendingRollLabel||attrLabels[pendingRollAttr]||'atributo')+(pendingRollCD?' CD '+pendingRollCD:'');
-      hintEl.style.color='var(--gold-l)';
-    }
-
+    // Auto-abre a bandeja se ainda não estiver aberta
+    if(!diceTrayOpen) openDiceTray();
   } else {
-    // ── Esconde barra / desbloqueia ──
-    if(bar) bar.style.display='none';
-
-    if(btn){
-      btn.style.background='rgba(200,146,42,.2)';
-      btn.style.borderColor='rgba(200,146,42,.5)';
-      btn.style.color='var(--gold-l)';
-      btn.style.boxShadow='none';
-      btn.title='Rolar d20';
-    }
-
+    // ── Desbloqueia tudo ──
     if(actGrid){ actGrid.style.opacity=''; actGrid.style.pointerEvents=''; }
-    if(freeIn) { freeIn.disabled=false; freeIn.placeholder='Outra decisão...'; }
-    if(freeSend){ freeSend.style.opacity=''; freeSend.style.pointerEvents=''; }
+    if(freeIn){ freeIn.disabled=false; freeIn.placeholder='Outra decisão...'; }
+
+    if(diceTrayBtn){
+      diceTrayBtn.style.background='';
+      diceTrayBtn.style.borderColor='';
+      diceTrayBtn.style.boxShadow='';
+      diceTrayBtn.title='Bandeja de Dados';
+    }
+    // Fecha bandeja automaticamente quando teste resolvido
+    if(diceTrayOpen) closeDiceTray();
   }
 }
 
@@ -3603,10 +3569,13 @@ AÇÕES DE COMBATE:
 - Conjurar: magia com tempo de conjuração de 1 ação
 
 INICIATIVA:
-▸ Ao iniciar combate, sempre inclua [COMBATE:NomeInimigo] E peça iniciativa ao jogador
-▸ Formato: [TESTE:Iniciativa] ou escreva "Role sua Iniciativa!" — o sistema detecta automaticamente
-▸ Iniciativa = d20 + modificador de DES (sem proficiência)
-▸ Após o resultado, narre a ordem do combate
+▸ Ao iniciar combate: inclua [COMBATE:NomeInimigo] E peça iniciativa em seguida
+▸ Use EXATAMENTE: [TESTE:Iniciativa] — o sistema detecta e aplica mod de DES automaticamente
+▸ Iniciativa = d20 + mod(DES), sem proficiência (PHB p.189)
+▸ Quando receber "Jogador rolou Iniciativa: d20(X) +Y = Z" → SEMPRE continue narrando:
+  • Se Z alto: jogador age primeiro — descreva sua chance de agir
+  • Se Z baixo: inimigo age primeiro — descreva o ataque surpresa do inimigo
+▸ NUNCA ignore o resultado de iniciativa — é a ordem do combate
 
 FLUXO DE ATAQUE CORRETO:
 1. Descreva o ataque do inimigo
@@ -6616,14 +6585,21 @@ const DICE_TYPES = [4, 6, 8, 10, 12, 20, 100];
 let diceTrayCounts = {4:0, 6:0, 8:0, 10:0, 12:0, 20:0, 100:0};
 let diceTrayOpen = false;
 
+function toggleDiceTray(){
+  if(diceTrayOpen) closeDiceTray();
+  else openDiceTray();
+}
+
 function openDiceTray(){
   const panel = document.getElementById('dice-tray-panel');
   const btn   = document.getElementById('dice-tray-btn');
   if(!panel) return;
   diceTrayOpen = true;
   panel.style.visibility = 'visible';
-  panel.style.transform = 'translateX(230px)';
+  panel.style.transform = 'translateX(190px)';
   btn.classList.add('active');
+  btn.style.background='rgba(91,63,160,.5)';
+  btn.style.borderColor='rgba(139,111,208,.8)';
   // Reset counts
   DICE_TYPES.forEach(d => diceTrayCounts[d] = 0);
   // If pending test, pre-set d20=1
@@ -6635,8 +6611,8 @@ function openDiceTray(){
 function closeDiceTray(){
   const panel = document.getElementById('dice-tray-panel');
   const btn   = document.getElementById('dice-tray-btn');
-  if(panel){ panel.style.transform='translateX(0)'; setTimeout(()=>{if(panel)panel.style.visibility='hidden';},250); }
-  if(btn)   btn.classList.remove('active');
+  if(panel){ panel.style.transform='translateX(-190px)'; setTimeout(()=>{if(panel)panel.style.visibility='hidden';},250); }
+  if(btn){ btn.classList.remove('active'); btn.style.background=''; btn.style.borderColor=''; }
   diceTrayOpen = false;
 }
 
@@ -6658,6 +6634,13 @@ function renderDiceTrayRows(){
   }).join('');
 }
 
+function quickAdjustDice(sides){
+  adjustDice(sides, 1);
+  // Glow effect
+  const el = document.getElementById('dtsvg-'+sides);
+  if(el){ el.classList.add('rolling'); setTimeout(()=>el.classList.remove('rolling'),400); }
+}
+
 function adjustDice(sides, delta){
   const isPendingD20 = !!pendingRollAttr;
   // Block: d20 more than 1 when test pending without vantagem
@@ -6668,7 +6651,10 @@ function adjustDice(sides, delta){
   diceTrayCounts[sides] = Math.max(0, Math.min(9, diceTrayCounts[sides] + delta));
   const el = document.getElementById('dtc-'+sides);
   if(el) el.textContent = diceTrayCounts[sides];
-  renderDiceTrayRows();
+  // Glow active dice
+  const svgEl = document.getElementById('dtsvg-'+sides);
+  if(svgEl){ svgEl.classList.toggle('active', diceTrayCounts[sides]>0); }
+  updateDiceTrayHint();
   updateDiceTrayHint();
 }
 
@@ -6709,9 +6695,17 @@ async function rollDiceTray(){
   const isPendingTest = !!pendingRollAttr && diceTrayCounts[20] === 1;
 
   if(isPendingTest){
-    // ── d20 com teste formal: usa rollInlineD20
-    const label = pendingRollLabel || attrLabels[pendingRollAttr] || 'Teste';
-    await rollInlineD20(pendingRollAttr, label, pendingRollCD);
+    // ── d20 com teste formal: usa rollInlineD20 e envia resultado ao mestre
+    const attr2  = pendingRollAttr;
+    const label2 = pendingRollLabel || attrLabels[attr2] || 'Teste';
+    const cd2    = pendingRollCD;
+    const result = await rollInlineD20(attr2, label2, cd2);
+    if(result){
+      const outcome = result.isCrit?'CRÍTICO':result.isFail?'FALHA CRÍTICA':
+                      result.ok===true?'SUCESSO':result.ok===false?'FALHA':`total ${result.total}`;
+      const modSign = result.modVal>=0?'+':'';
+      askMaster(`Jogador rolou ${label2}: d20(${result.diceVal}) ${modSign}${result.modVal} = ${result.total}${cd2?' vs CD '+cd2:''} — ${outcome}. Continue a narrativa com este resultado.`);
+    }
     return;
   }
 
@@ -6759,5 +6753,124 @@ async function rollDiceTray(){
 }
 
 </script>
+
+<!-- BANDEJA DE DADOS — body level -->
+<!-- Toggle button: flutuante à esquerda, toggle open/close -->
+<button id="dice-tray-btn" onclick="toggleDiceTray()" title="Bandeja de Dados"
+  style="position:fixed;left:8px;top:50%;transform:translateY(-50%);
+  z-index:500;background:rgba(15,10,4,.85);border:1px solid rgba(139,111,208,.35);
+  border-radius:14px;width:40px;height:40px;display:none;align-items:center;
+  justify-content:center;cursor:pointer;
+  box-shadow:0 3px 12px rgba(0,0,0,.5);transition:all .2s">
+  <svg viewBox="0 0 40 40" width="24" height="24" id="dice-tray-icon">
+    <polygon points="20,2 38,14 34,35 6,35 2,14" fill="none" stroke="rgba(139,111,208,.9)" stroke-width="2.5" stroke-linejoin="round"/>
+    <text x="20" y="26" text-anchor="middle" font-size="10" fill="rgba(200,180,120,.9)" font-family="sans-serif">20</text>
+  </svg>
+</button>
+
+<!-- Painel lateral -->
+<div id="dice-tray-panel" style="position:fixed;left:0;top:0;height:100%;width:180px;
+  background:rgba(12,6,1,.97);border-right:1px solid rgba(200,146,42,.2);
+  z-index:499;transition:transform .25s cubic-bezier(.4,0,.2,1);
+  transform:translateX(-190px);padding:10px 8px 10px 8px;
+  overflow-y:auto;display:flex;flex-direction:column;gap:4px;visibility:hidden">
+
+  <!-- Header -->
+  <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,146,42,.6);
+    letter-spacing:1.5px;text-align:center;padding:4px 0 8px;color:rgba(200,146,42,.7)">🎲 BANDEJA DE DADOS</div>
+
+  <!-- Dice rows with SVG icons -->
+  
+    <div class="dtrow" id="dtrow-4">
+      <div class="dtsvg dice3d" id="dtsvg-4" onclick="quickAdjustDice(4)" title="d4"><svg viewBox="0 0 60 60" width="48" height="48"><defs><linearGradient id="gA4" x1="20%" y1="0%" x2="80%" y2="100%"><stop offset="0%" stop-color="#f2c048"/><stop offset="50%" stop-color="#c07828"/><stop offset="100%" stop-color="#3a1a04"/></linearGradient><linearGradient id="gB4" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a86020"/><stop offset="100%" stop-color="#251005"/></linearGradient><linearGradient id="gC4" x1="50%" y1="0%" x2="50%" y2="100%"><stop offset="0%" stop-color="#7a3e10"/><stop offset="100%" stop-color="#180902"/></linearGradient><filter id="dsg4"><feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="rgba(30,8,0,.8)"/></filter></defs><ellipse cx="30" cy="56" rx="18" ry="4" fill="rgba(30,8,0,.5)"/><g filter="url(#dsg4)"><polygon points="30,3 6,52 30,44" fill="url(#gB4)" stroke="rgba(255,210,80,.4)" stroke-width="1.3" stroke-linejoin="round"/><polygon points="30,3 54,52 30,44" fill="url(#gA4)" stroke="rgba(255,210,80,.4)" stroke-width="1.3" stroke-linejoin="round"/><polygon points="6,52 54,52 30,44" fill="url(#gC4)" stroke="rgba(255,210,80,.3)" stroke-width="1.3" stroke-linejoin="round"/><polygon points="30,4 38,20 22,20" fill="rgba(255,230,120,.22)"/><polygon points="30,4 34,14 26,14" fill="rgba(255,240,150,.4)"/></g><text x="30" y="38" text-anchor="middle" font-size="14" font-weight="900" fill="#ffe080" font-family="Georgia,serif" filter="url(#dsg4)">4</text><text x="16" y="51" text-anchor="middle" font-size="8" fill="rgba(255,210,80,.65)" font-family="Georgia,serif">3</text><text x="44" y="51" text-anchor="middle" font-size="8" fill="rgba(255,210,80,.55)" font-family="Georgia,serif">8</text></svg></div>
+      <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+        <div style="font-family:var(--font-title);font-size:8px;color:rgba(200,146,42,.55);letter-spacing:1px">D4</div>
+        <div style="display:flex;align-items:center;gap:3px">
+          <button class="dtbtn" onclick="adjustDice(4,-1)">−</button>
+          <div class="dtcount" id="dtc-4">0</div>
+          <button class="dtbtn" onclick="adjustDice(4,1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="dtrow" id="dtrow-6">
+      <div class="dtsvg dice3d" id="dtsvg-6" onclick="quickAdjustDice(6)" title="d6"><svg viewBox="0 0 60 60" width="48" height="48"><defs><linearGradient id="gA6" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f2c048"/><stop offset="100%" stop-color="#3a1a04"/></linearGradient><linearGradient id="gB6" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9a5820"/><stop offset="100%" stop-color="#220e04"/></linearGradient><linearGradient id="gC6" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#c07030"/><stop offset="100%" stop-color="#2e1206"/></linearGradient><filter id="dsg6"><feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="rgba(30,8,0,.8)"/></filter></defs><ellipse cx="30" cy="57" rx="20" ry="4" fill="rgba(30,8,0,.5)"/><g filter="url(#dsg6)"><polygon points="6,22 30,8 30,48 6,54" fill="url(#gC6)" stroke="rgba(255,210,80,.32)" stroke-width="1.3"/><polygon points="30,8 54,22 54,54 30,48" fill="url(#gB6)" stroke="rgba(255,210,80,.28)" stroke-width="1.3"/><polygon points="6,22 30,8 54,22 30,36" fill="url(#gA6)" stroke="rgba(255,210,80,.5)" stroke-width="1.4"/><polygon points="16,18 30,11 42,18 30,26" fill="rgba(255,230,120,.22)"/><polygon points="22,14 30,10 38,14" fill="rgba(255,240,150,.38)"/></g><text x="30" y="27" text-anchor="middle" font-size="14" font-weight="900" fill="#ffe080" font-family="Georgia,serif">6</text><text x="15" y="44" text-anchor="middle" font-size="9" fill="rgba(255,210,80,.65)" font-family="Georgia,serif">2</text><text x="46" y="44" text-anchor="middle" font-size="9" fill="rgba(255,200,70,.5)" font-family="Georgia,serif">3</text></svg></div>
+      <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+        <div style="font-family:var(--font-title);font-size:8px;color:rgba(200,146,42,.55);letter-spacing:1px">D6</div>
+        <div style="display:flex;align-items:center;gap:3px">
+          <button class="dtbtn" onclick="adjustDice(6,-1)">−</button>
+          <div class="dtcount" id="dtc-6">0</div>
+          <button class="dtbtn" onclick="adjustDice(6,1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="dtrow" id="dtrow-8">
+      <div class="dtsvg dice3d" id="dtsvg-8" onclick="quickAdjustDice(8)" title="d8"><svg viewBox="0 0 60 60" width="48" height="48"><defs><linearGradient id="gA8" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0c048"/><stop offset="100%" stop-color="#2e1504"/></linearGradient><linearGradient id="gB8" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a06020"/><stop offset="100%" stop-color="#1e0c04"/></linearGradient><linearGradient id="gC8" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#180a02"/><stop offset="100%" stop-color="#7a3e14"/></linearGradient><linearGradient id="gD8" x1="100%" y1="100%" x2="0%" y2="0%"><stop offset="0%" stop-color="#0e0602"/><stop offset="100%" stop-color="#5a2c0c"/></linearGradient><filter id="dsg8"><feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="rgba(30,8,0,.8)"/></filter></defs><ellipse cx="30" cy="58" rx="18" ry="3.5" fill="rgba(30,8,0,.5)"/><g filter="url(#dsg8)"><polygon points="30,4 54,30 30,30" fill="url(#gB8)" stroke="rgba(255,210,80,.32)" stroke-width="1.3"/><polygon points="30,4 6,30 30,30" fill="url(#gA8)" stroke="rgba(255,210,80,.32)" stroke-width="1.3"/><polygon points="30,56 54,30 30,30" fill="url(#gD8)" stroke="rgba(255,210,80,.2)" stroke-width="1.3"/><polygon points="30,56 6,30 30,30" fill="url(#gC8)" stroke="rgba(255,210,80,.2)" stroke-width="1.3"/><line x1="6" y1="30" x2="54" y2="30" stroke="rgba(255,210,80,.32)" stroke-width="1.3"/><polygon points="30,5 40,20 30,20" fill="rgba(255,230,120,.22)"/><polygon points="30,5 35,14 25,14" fill="rgba(255,240,150,.4)"/></g><text x="30" y="24" text-anchor="middle" font-size="14" font-weight="900" fill="#ffe080" font-family="Georgia,serif">8</text><text x="14" y="29" text-anchor="middle" font-size="8.5" fill="rgba(255,210,80,.62)" font-family="Georgia,serif">4</text><text x="46" y="29" text-anchor="middle" font-size="8.5" fill="rgba(255,200,70,.5)" font-family="Georgia,serif">3</text><text x="30" y="47" text-anchor="middle" font-size="8.5" fill="rgba(255,190,60,.38)" font-family="Georgia,serif">7</text></svg></div>
+      <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+        <div style="font-family:var(--font-title);font-size:8px;color:rgba(200,146,42,.55);letter-spacing:1px">D8</div>
+        <div style="display:flex;align-items:center;gap:3px">
+          <button class="dtbtn" onclick="adjustDice(8,-1)">−</button>
+          <div class="dtcount" id="dtc-8">0</div>
+          <button class="dtbtn" onclick="adjustDice(8,1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="dtrow" id="dtrow-10">
+      <div class="dtsvg dice3d" id="dtsvg-10" onclick="quickAdjustDice(10)" title="d10"><svg viewBox="0 0 60 60" width="48" height="48"><defs><linearGradient id="gA10" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0c048"/><stop offset="100%" stop-color="#2e1504"/></linearGradient><linearGradient id="gB10" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a06020"/><stop offset="100%" stop-color="#1e0c04"/></linearGradient><linearGradient id="gC10" x1="50%" y1="0%" x2="50%" y2="100%"><stop offset="0%" stop-color="#5a2c0c"/><stop offset="100%" stop-color="#0e0602"/></linearGradient><filter id="dsg10"><feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="rgba(30,8,0,.8)"/></filter></defs><ellipse cx="30" cy="58" rx="16" ry="3.5" fill="rgba(30,8,0,.5)"/><g filter="url(#dsg10)"><polygon points="30,4 6,26 22,48 30,38" fill="url(#gA10)" stroke="rgba(255,210,80,.38)" stroke-width="1.3"/><polygon points="30,4 54,26 38,48 30,38" fill="url(#gB10)" stroke="rgba(255,210,80,.32)" stroke-width="1.3"/><polygon points="22,48 38,48 30,57" fill="url(#gC10)" stroke="rgba(255,210,80,.2)" stroke-width="1.3"/><line x1="30" y1="4" x2="30" y2="38" stroke="rgba(255,210,80,.2)" stroke-width=".9"/><polygon points="30,5 26,15 34,15" fill="rgba(255,240,150,.4)"/></g><text x="30" y="28" text-anchor="middle" font-size="13" font-weight="900" fill="#ffe080" font-family="Georgia,serif">10</text><text x="13" y="38" text-anchor="middle" font-size="8.5" fill="rgba(255,210,80,.62)" font-family="Georgia,serif">0</text><text x="47" y="38" text-anchor="middle" font-size="8.5" fill="rgba(255,200,70,.5)" font-family="Georgia,serif">7</text></svg></div>
+      <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+        <div style="font-family:var(--font-title);font-size:8px;color:rgba(200,146,42,.55);letter-spacing:1px">D10</div>
+        <div style="display:flex;align-items:center;gap:3px">
+          <button class="dtbtn" onclick="adjustDice(10,-1)">−</button>
+          <div class="dtcount" id="dtc-10">0</div>
+          <button class="dtbtn" onclick="adjustDice(10,1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="dtrow" id="dtrow-12">
+      <div class="dtsvg dice3d" id="dtsvg-12" onclick="quickAdjustDice(12)" title="d12"><svg viewBox="0 0 60 60" width="48" height="48"><defs><linearGradient id="gA12" x1="10%" y1="0%" x2="90%" y2="100%"><stop offset="0%" stop-color="#f0c048"/><stop offset="50%" stop-color="#b07030"/><stop offset="100%" stop-color="#2a1204"/></linearGradient><linearGradient id="gB12" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#905018"/><stop offset="100%" stop-color="#1c0a02"/></linearGradient><linearGradient id="gC12" x1="50%" y1="0%" x2="50%" y2="100%"><stop offset="0%" stop-color="#50280a"/><stop offset="100%" stop-color="#0c0502"/></linearGradient><filter id="dsg12"><feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="rgba(30,8,0,.8)"/></filter></defs><ellipse cx="30" cy="58" rx="20" ry="3.5" fill="rgba(30,8,0,.5)"/><g filter="url(#dsg12)"><polygon points="10,46 30,57 50,46 52,30 30,22 8,30" fill="url(#gC12)" stroke="rgba(255,210,80,.2)" stroke-width="1.3"/><polygon points="30,4 52,16 52,30 30,22 18,12" fill="url(#gB12)" stroke="rgba(255,210,80,.28)" stroke-width="1.3"/><polygon points="30,4 18,12 8,30 10,46 30,38 50,46 52,30 42,12" fill="url(#gA12)" stroke="rgba(255,210,80,.48)" stroke-width="1.4"/><polygon points="30,14 38,20 36,30 24,30 22,20" fill="none" stroke="rgba(255,210,80,.15)" stroke-width=".9"/><polygon points="22,10 30,5 38,10 30,16" fill="rgba(255,230,120,.2)"/><polygon points="26,8 30,5 34,8" fill="rgba(255,240,150,.38)"/></g><text x="30" y="28" text-anchor="middle" font-size="13" font-weight="900" fill="#ffe080" font-family="Georgia,serif">12</text><text x="45" y="32" text-anchor="middle" font-size="8.5" fill="rgba(255,210,80,.55)" font-family="Georgia,serif">5</text><text x="15" y="42" text-anchor="middle" font-size="8.5" fill="rgba(255,200,70,.42)" font-family="Georgia,serif">4</text></svg></div>
+      <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+        <div style="font-family:var(--font-title);font-size:8px;color:rgba(200,146,42,.55);letter-spacing:1px">D12</div>
+        <div style="display:flex;align-items:center;gap:3px">
+          <button class="dtbtn" onclick="adjustDice(12,-1)">−</button>
+          <div class="dtcount" id="dtc-12">0</div>
+          <button class="dtbtn" onclick="adjustDice(12,1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="dtrow" id="dtrow-20">
+      <div class="dtsvg dice3d" id="dtsvg-20" onclick="quickAdjustDice(20)" title="d20"><svg viewBox="0 0 60 60" width="48" height="48"><defs><linearGradient id="gA20" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f4c84c"/><stop offset="45%" stop-color="#c08030"/><stop offset="100%" stop-color="#2a1004"/></linearGradient><linearGradient id="gC20" x1="50%" y1="0%" x2="50%" y2="100%"><stop offset="0%" stop-color="#905018"/><stop offset="100%" stop-color="#180802"/></linearGradient><linearGradient id="gD20" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0c0502"/><stop offset="100%" stop-color="#6a3410"/></linearGradient><filter id="dsg20"><feDropShadow dx="1" dy="4" stdDeviation="3.5" flood-color="rgba(30,8,0,.85)"/></filter></defs><ellipse cx="30" cy="57" rx="22" ry="4" fill="rgba(30,8,0,.55)"/><g filter="url(#dsg20)"><polygon points="30,4 50,18 30,28" fill="#1e0e04" stroke="rgba(255,210,80,.16)" stroke-width="1"/><polygon points="30,4 10,18 30,28" fill="#261204" stroke="rgba(255,210,80,.16)" stroke-width="1"/><polygon points="10,18 30,28 10,42" fill="url(#gC20)" stroke="rgba(255,210,80,.26)" stroke-width="1.3"/><polygon points="50,18 30,28 50,42" fill="#7a4018" stroke="rgba(255,210,80,.22)" stroke-width="1.3"/><polygon points="10,42 30,28 30,54" fill="url(#gD20)" stroke="rgba(255,210,80,.2)" stroke-width="1.3"/><polygon points="50,42 30,28 30,54" fill="#0e0604" stroke="rgba(255,210,80,.16)" stroke-width="1.3"/><polygon points="10,42 30,54 50,42" fill="#180a02" stroke="rgba(255,210,80,.14)" stroke-width="1"/><polygon points="30,4 50,18 30,28 10,18" fill="url(#gA20)" stroke="rgba(255,215,80,.55)" stroke-width="1.5"/><line x1="30" y1="4" x2="30" y2="28" stroke="rgba(255,210,80,.2)" stroke-width=".9"/><line x1="10" y1="18" x2="50" y2="18" stroke="rgba(255,210,80,.2)" stroke-width=".9"/><polygon points="30,5 40,12 30,12" fill="rgba(255,230,120,.25)"/><polygon points="30,5 36,10 24,10" fill="rgba(255,245,150,.42)"/><ellipse cx="28" cy="8" rx="5" ry="2.5" fill="rgba(255,240,160,.2)" transform="rotate(-10,28,8)"/></g><text x="30" y="20" text-anchor="middle" font-size="13" font-weight="900" fill="#ffe080" font-family="Georgia,serif" letter-spacing="-.5">20</text><text x="12" y="36" text-anchor="middle" font-size="8" fill="rgba(255,210,80,.62)" font-family="Georgia,serif">14</text><text x="48" y="36" text-anchor="middle" font-size="8" fill="rgba(255,200,70,.5)" font-family="Georgia,serif">3</text><text x="30" y="50" text-anchor="middle" font-size="8" fill="rgba(255,190,60,.36)" font-family="Georgia,serif">7</text></svg></div>
+      <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+        <div style="font-family:var(--font-title);font-size:8px;color:rgba(200,146,42,.55);letter-spacing:1px">D20</div>
+        <div style="display:flex;align-items:center;gap:3px">
+          <button class="dtbtn" onclick="adjustDice(20,-1)">−</button>
+          <div class="dtcount" id="dtc-20">0</div>
+          <button class="dtbtn" onclick="adjustDice(20,1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="dtrow" id="dtrow-100">
+      <div class="dtsvg dice3d" id="dtsvg-100" onclick="quickAdjustDice(100)" title="d%"><svg viewBox="0 0 60 60" width="48" height="48"><defs><linearGradient id="gA100" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f0c048"/><stop offset="100%" stop-color="#2e1504"/></linearGradient><linearGradient id="gB100" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a06020"/><stop offset="100%" stop-color="#1e0c04"/></linearGradient><linearGradient id="gC100" x1="50%" y1="0%" x2="50%" y2="100%"><stop offset="0%" stop-color="#5a2c0c"/><stop offset="100%" stop-color="#0e0602"/></linearGradient><filter id="dsg100"><feDropShadow dx="1" dy="4" stdDeviation="3" flood-color="rgba(30,8,0,.8)"/></filter></defs><ellipse cx="30" cy="58" rx="16" ry="3.5" fill="rgba(30,8,0,.5)"/><g filter="url(#dsg100)"><polygon points="30,4 6,26 22,48 30,38" fill="url(#gA100)" stroke="rgba(255,210,80,.38)" stroke-width="1.3"/><polygon points="30,4 54,26 38,48 30,38" fill="url(#gB100)" stroke="rgba(255,210,80,.32)" stroke-width="1.3"/><polygon points="22,48 38,48 30,57" fill="url(#gC100)" stroke="rgba(255,210,80,.2)" stroke-width="1.3"/><line x1="30" y1="4" x2="30" y2="38" stroke="rgba(255,210,80,.2)" stroke-width=".9"/><polygon points="30,5 26,15 34,15" fill="rgba(255,240,150,.4)"/></g><text x="30" y="27" text-anchor="middle" font-size="12" font-weight="900" fill="#ffe080" font-family="Georgia,serif">00</text><text x="13" y="38" text-anchor="middle" font-size="8.5" fill="rgba(255,210,80,.62)" font-family="Georgia,serif">60</text><text x="47" y="38" text-anchor="middle" font-size="8.5" fill="rgba(255,200,70,.5)" font-family="Georgia,serif">70</text></svg></div>
+      <div style="display:flex;flex-direction:column;flex:1;gap:2px">
+        <div style="font-family:var(--font-title);font-size:8px;color:rgba(200,146,42,.55);letter-spacing:1px">D%</div>
+        <div style="display:flex;align-items:center;gap:3px">
+          <button class="dtbtn" onclick="adjustDice(100,-1)">−</button>
+          <div class="dtcount" id="dtc-100">0</div>
+          <button class="dtbtn" onclick="adjustDice(100,1)">+</button>
+        </div>
+      </div>
+    </div>
+
+  <!-- Hint -->
+  <div id="dice-tray-hint" style="font-size:10px;color:rgba(200,180,120,.45);
+    text-align:center;padding:6px 4px;border-top:1px solid rgba(139,111,208,.1);margin-top:4px">
+    Selecione os dados
+  </div>
+
+  <!-- Roll button -->
+  <button onclick="rollDiceTray()"
+    style="background:linear-gradient(135deg,rgba(91,63,160,.5),rgba(139,111,208,.35));
+    border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:11px 8px;
+    font-family:var(--font-title);font-size:11px;color:#C0A0FF;cursor:pointer;
+    letter-spacing:.5px;margin-top:4px">🎲 Rolar</button>
+</div>
 </body>
 </html>
