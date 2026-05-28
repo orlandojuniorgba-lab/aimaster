@@ -485,6 +485,9 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .fbar-btn.d20-dim .d20-icon-svg polygon { stroke: rgba(200,146,42,0.3); }
 .fbar-btn.d20-active { opacity: 1; }
 .fbar-btn.d20-active .d20-icon-svg { filter: drop-shadow(0 0 6px rgba(200,146,42,0.6)); }
+/* Dados button in fbar — glow when pending test */
+#dados-fbar-btn.pending { background:rgba(200,146,42,.15); }
+#dados-fbar-btn.pending .d20-icon-svg { filter:drop-shadow(0 0 8px rgba(200,146,42,.8)); animation:diceGlow .9s ease-in-out infinite; }
 
 /* ══ INVENTORY AVATAR ══ */
 .equip-avatar-wrap{display:flex;align-items:flex-start;gap:12px;background:rgba(26,18,8,.6);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;}
@@ -805,7 +808,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
   </div>
   <div class="narr-border"></div>
 
-  <div class="narr" id="narr" onclick="if(diceTrayOpen)closeDiceTray()"></div>
+  <div class="narr" id="narr"></div>
   <div class="actions-wrap">
     <div class="acts-lbl" id="acts-lbl">— O QUE VOCÊ FAZ? —</div>
     <div class="act-grid" id="act-grid">
@@ -822,7 +825,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
           <span class="ooc-icon" id="ooc-icon">⚔️</span>
           <span class="ooc-label" id="ooc-label">AÇÃO</span>
         </button>
-        <input class="free-in" id="free-in" type="text" placeholder="Outra decisão..." autocomplete="off"/>
+        <input class="free-in" id="free-in" type="text" placeholder="Outra decisão..." autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" inputmode="text"/>
         <button class="free-send" id="free-send" onclick="sendFree()">➤</button>
       </div>
   </div>
@@ -836,7 +839,33 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <span class="fbl">Guia</span>
     </button>
     <button class="fbar-btn" onclick="openMo('mo-char')" title="Ficha"><span class="fbi">📜</span><span class="fbl">Ficha</span></button>
-    <button class="fbar-btn" onclick="openDestino()" title="Destino Favorável" id="destino-btn"><span class="fbi">🌟</span><span class="fbl">Destino</span></button>
+    <button class="fbar-btn" onclick="toggleDiceTray()" title="Bandeja de Dados" id="dados-fbar-btn">
+      <svg class="d20-icon-svg" viewBox="0 0 36 36" width="24" height="24">
+  <defs>
+    <linearGradient id="fbd20" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f4c84c"/>
+      <stop offset="50%" stop-color="#c08030"/>
+      <stop offset="100%" stop-color="#2a1004"/>
+    </linearGradient>
+    <filter id="fbsh"><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="rgba(30,8,0,.6)"/></filter>
+  </defs>
+  <g filter="url(#fbsh)">
+    <polygon points="18,2 32,11 29,28 7,28 4,11" fill="#0e0602"/>
+    <polygon points="18,3 31,11 28,27 8,27 5,11" fill="url(#fbd20)"/>
+    <polygon points="5,11 4,11 7,28 8,27" fill="#8a4820"/>
+    <polygon points="31,11 32,11 29,28 28,27" fill="#1a0804"/>
+    <line x1="18" y1="3" x2="18" y2="27" stroke="rgba(255,210,80,.14)" stroke-width=".6"/>
+    <line x1="5" y1="11" x2="31" y2="11" stroke="rgba(255,210,80,.14)" stroke-width=".6"/>
+    <line x1="8" y1="27" x2="18" y2="11" stroke="rgba(255,200,60,.08)" stroke-width=".6"/>
+    <line x1="28" y1="27" x2="18" y2="11" stroke="rgba(255,200,60,.08)" stroke-width=".6"/>
+    <polygon points="18,4 24,8 18,8" fill="rgba(255,230,120,.28)"/>
+    <ellipse cx="17" cy="6" rx="3.5" ry="1.8" fill="rgba(255,235,140,.18)" transform="rotate(-10,17,6)"/>
+  </g>
+  <text x="18" y="21" text-anchor="middle" font-size="9" font-weight="900"
+    fill="#ffe080" font-family="Georgia,serif" letter-spacing="-.3">20</text>
+</svg>
+      <span class="fbl">Dados</span>
+    </button>
     <button class="fbar-btn" onclick="openMo('mo-shop')" title="Diamantes"><span class="fbi">💎</span><span class="fbl">Diamantes</span></button>
     <button class="fbar-btn" onclick="openMo('mo-map')" title="Mapa"><span class="fbi">🗺️</span><span class="fbl">Mapa</span></button>
     <button class="fbar-btn" onclick="openRestModal()" title="Descanso" id="rest-footer-btn">
@@ -2437,9 +2466,7 @@ function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   // Show dice tray button only in game screen
-  const diceBtn = document.getElementById('dice-tray-btn');
-  if(diceBtn) diceBtn.style.display = (id==='s-game') ? 'flex' : 'none';
-  if(id!=='s-game') closeDiceTray();
+  // dados button is always in fbar — visibility controlled by screen
 }
 function rollD(s){return Math.ceil(Math.random()*s);}
 function roll4d6drop(){let r=[rollD(6),rollD(6),rollD(6),rollD(6)];r.sort((a,b)=>a-b);return Math.max(11,r[1]+r[2]+r[3]);}
@@ -2605,11 +2632,12 @@ function startAdventure(){
   buildSpellsTab(cls,1);
   usedSpellSlots=[0,0,0,0,0,0,0,0,0];
   // Reset spell choices for new character
-  // ★ Zera turno e bônus ao iniciar novo personagem
+  // ★ Zera turno, bônus e estado salvo ao iniciar novo personagem
   try{
     localStorage.removeItem(getTodayKey());
     localStorage.removeItem(getBonusTurnsKey());
-    localStorage.removeItem('aimaster_bonus_turns'); // limpa chave legada
+    localStorage.removeItem('aimaster_bonus_turns');
+    localStorage.removeItem('aimaster_state');
   }catch(e){}
 
   // ★ Zera COMPLETAMENTE o estado de magias para novo personagem
@@ -2681,9 +2709,12 @@ function updateTurnCounter(){
 }
 
 function updateVitals(){
-  const hpP=Math.max(0,Math.round((hero.hp/hero.maxHP)*100));
+  // Guard: ensure valid values
+  hero.hp    = Math.max(0, Math.min(hero.maxHP||1, hero.hp||0));
+  hero.mp    = Math.max(0, Math.min(hero.maxMP||0, hero.mp||0));
+  const hpP  = hero.maxHP>0 ? Math.max(0,Math.min(100,Math.round((hero.hp/hero.maxHP)*100))) : 0;
   const _isCasterNow = !NON_CASTERS.has(hero.cls||'');
-  const mpP = _isCasterNow&&hero.maxMP>0 ? Math.max(0,Math.round((hero.mp/hero.maxMP)*100)) : 0;
+  const mpP  = _isCasterNow&&hero.maxMP>0 ? Math.max(0,Math.min(100,Math.round((hero.mp/hero.maxMP)*100))) : 0;
   document.getElementById('bar-hp').style.width=hpP+'%';
   document.getElementById('bar-mp').style.width=mpP+'%';
   // Oculta linha MP para não-conjuradores
@@ -2959,9 +2990,26 @@ function cleanTextForDisplay(text){
     .replace(/\[FIM[^\]]*\]/gi, '')
     // Remove linhas que ficaram vazias após remover tags
     .replace(/\n{3,}/g, '\n\n')
-    .replace(/^#{1,3}\s+/gm,'')
-    .replace(/\*\*([^*]+)\*\*/g,'$1')
-    .replace(/\*([^*]+)\*/g,'$1')
+    // Remove markdown headers (# ## ###)
+    .replace(/^#{1,6}\s*/gm, '')
+    // Remove markdown bold/italic (**text** *text* __text__ _text_)
+    .replace(/\*{2,3}([^*]+)\*{2,3}/g, '$1')
+    .replace(/\*([^*\n]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/_([^_\n]+)_/g, '$1')
+    // Remove horizontal rules (--- ___ ***)
+    .replace(/^[-_*]{3,}\s*$/gm, '')
+    // Remove markdown list markers (- item, * item, + item at start of line)
+    .replace(/^[\-\*\+]\s+/gm, '')
+    // Remove numbered list markers that are standalone (1. 2. etc — keep if part of narrative)
+    // Remove empty bold/italic artifacts (** *** **** alone)
+    .replace(/\*{2,}/g, '')
+    // Remove backtick code markers
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/```[\s\S]*?```/g, '')
+    // Clean up extra spaces and blank lines left behind
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
     .trim();
 }
 
@@ -3075,36 +3123,29 @@ function updateActionButtons(actions){
 function updateD20ButtonState(){
   const actGrid  = document.getElementById('act-grid');
   const freeIn   = document.getElementById('free-in');
-  const diceTrayBtn = document.getElementById('dice-tray-btn');
+  const diceTrayBtn = document.getElementById('dados-fbar-btn');
 
   if(pendingRollAttr){
     // ── Bloqueia botões de ação — free-in fica livre ──
     if(actGrid){ actGrid.style.opacity='0.3'; actGrid.style.pointerEvents='none'; }
     if(freeIn){ freeIn.disabled=false; freeIn.placeholder='Outra decisão ou pergunta em off...'; }
 
-    // ── Destaca botão da bandeja de dados ──
+    // ── Destaca botão da bandeja ──
     if(diceTrayBtn){
-      diceTrayBtn.style.background='rgba(200,146,42,.5)';
-      diceTrayBtn.style.borderColor='rgba(200,146,42,1)';
-      diceTrayBtn.style.boxShadow='0 0 12px rgba(200,146,42,.7)';
+      diceTrayBtn.classList.add('pending');
       diceTrayBtn.title='🎲 ROLAR '+(pendingRollLabel||attrLabels[pendingRollAttr]||'teste')+(pendingRollCD?' CD '+pendingRollCD:'');
     }
     updateDestinoButton();
-    // Auto-abre a bandeja se ainda não estiver aberta
-    if(!diceTrayOpen) openDiceTray();
+    // ★ NÃO abre/fecha automaticamente — jogador controla manualmente
   } else {
     // ── Desbloqueia tudo ──
     if(actGrid){ actGrid.style.opacity=''; actGrid.style.pointerEvents=''; }
     if(freeIn){ freeIn.disabled=false; freeIn.placeholder='Outra decisão...'; }
-
     if(diceTrayBtn){
-      diceTrayBtn.style.background='';
-      diceTrayBtn.style.borderColor='';
-      diceTrayBtn.style.boxShadow='';
+      diceTrayBtn.classList.remove('pending');
       diceTrayBtn.title='Bandeja de Dados';
     }
-    // Fecha bandeja automaticamente quando teste resolvido
-    if(diceTrayOpen) closeDiceTray();
+    // ★ NÃO fecha automaticamente — jogador controla
   }
 }
 
@@ -3341,7 +3382,13 @@ ${(questData.npcs&&questData.npcs.length)?'NPCs da missão:\n'+questData.npcs.ma
 Arco narrativo: ${questData.jornada||'Jornada do Herói — Partida'}
 
 ━━━ COMO NARRAR ━━━
-Você é um narrador literário de fantasia épica. Escreva como um romancista premiado — não como um chatbot.
+Você é um narrador literário de fantasia épica. Escreva como um romancista premiado
+
+FORMATAÇÃO — REGRAS ABSOLUTAS:
+▸ NUNCA use markdown: sem **, sem *, sem ##, sem ---, sem listas com -, sem backticks
+▸ NUNCA use asteriscos, underscores, hashtags ou traços como formatação
+▸ Use apenas texto puro com quebras de linha para separar parágrafos
+▸ Diálogo de NPC: escreva como "Nome: (emoção) fala" — sem markdown — não como um chatbot.
 Sua missão é criar uma experiência inesquecível. Cada resposta deve fazer o jogador querer continuar imediatamente.
 
 ══ ESTRUTURA DE CADA RESPOSTA ══
@@ -3413,6 +3460,13 @@ RELÓGIO DRAMÁTICO: Quando apropriado, crie urgência. "Você tem até o amanhe
 
 TESTES — REGRAS PHB (MUITO IMPORTANTE):
 
+PROFICIÊNCIA DOS PERSONAGENS (calculada automaticamente pelo sistema):
+▸ Bônus de Proficiência: Nv1-4=+2, Nv5-8=+3, Nv9-12=+4, Nv13-16=+5, Nv17+=+6
+▸ Bardo: Jack of All Trades — +½ prof em testes de habilidade sem proficiência
+▸ Competência (Bardo/Ladino): dobra o bônus de proficiência em perícias escolhidas
+▸ O campo "Combate" do personagem já mostra os bônus de ataque calculados
+▸ NUNCA calcule proficiência manualmente — use os valores do bloco PERSONAGEM
+
 QUANDO PEDIR TESTE (regra de ouro D&D 5e):
 ▸ SÓ peça teste quando: (1) resultado é incerto E (2) falha tem consequência narrativa real
 ▸ NUNCA peça teste para: ações triviais, coisas que o personagem faria automaticamente,
@@ -3428,15 +3482,41 @@ QUANDO PEDIR TESTE (regra de ouro D&D 5e):
 ▸ A ação do JOGADOR deve provocar o teste — não o Mestre inventar obstáculos
 ▸ Testes de atributo puro (FOR, DES etc) SÓ quando nenhuma perícia se aplica
 
-TESTES — REGRA CRÍTICA DE ESPERA:
-▸ Quando pedir um teste, PARE completamente e aguarde o resultado
-▸ NÃO continue a narrativa, NÃO descreva o que acontece ANTES do jogador rolar
-▸ NÃO pergunte "qual foi seu resultado?" — o sistema registra automaticamente
-▸ CORRETO: Narre até o momento do teste → inclua [TESTE:attr:CD] → inclua opção "Rolar X CD Y" → PARE
-▸ FORMATO CRÍTICO: [TESTE:attr:CD:crítico] — adicione :crítico quando a falha tiver consequências graves
-▸ Quando usar :crítico: combate com risco de morte, diálogo que muda a missão, armadilha letal, negociação decisiva
-▸ Quando NÃO usar :crítico: percepção casual, testes de exploração menor, nada irreversível
-▸ ERRADO: pedir teste E continuar narrando o resultado na mesma resposta
+TESTES — REGRAS CRÍTICAS (LEIA COM ATENÇÃO):
+
+QUANDO PEDIR TESTE:
+▸ SÓ peça quando: resultado é INCERTO e FALHA importa narrativamente
+▸ NUNCA para: ações triviais, coisas que o personagem faz automaticamente
+
+COMO PEDIR (OBRIGATÓRIO):
+▸ 1. Narre a situação até o momento do teste
+▸ 2. Inclua a tag: [TESTE:atributo:CD] ou [TESTE:atributo:CD:crítico]
+▸ 3. PARE COMPLETAMENTE — não narre o resultado antes do jogador rolar
+▸ 4. O sistema enviará automaticamente o resultado quando o jogador rolar
+▸ 5. Só continue após receber "Jogador rolou X: resultado Y"
+
+FORMATO DAS TAGS:
+▸ [TESTE:per:13] = Percepção CD 13
+▸ [TESTE:str:15] = Força CD 15  
+▸ [TESTE:Iniciativa] = Iniciativa (DES, sem CD)
+▸ [TESTE:per:14:crítico] = Percepção crítica (ativa oferta de diamantes ao falhar)
+
+BÔNUS ATIVOS (IMPORTANTÍSSIMO):
+▸ Se o personagem tiver Bênção ativa: o sistema enviará "d20(X)+d4(Y)+mod = total"
+▸ Se tiver Inspiração, Vantagem ou outro bônus de dado: o jogador seleciona manualmente na bandeja
+▸ Ao receber resultado com "COM BÔNUS ATIVO": considere o total final, não só o d20
+▸ NUNCA ignore dados extras no resultado — eles são bônus mecânicos reais
+
+DESTINO FAVORÁVEL (botão 🌟):
+▸ Antes de rolar: jogador pode ativar Vantagem (rola 2d20, usa o maior) — 2💎
+▸ Após rolar: jogador pode Relançar o dado — 2💎
+▸ Ao receber "DESTINO FAVORÁVEL — Vantagem": dois d20 foram rolados, use o maior
+▸ Ao receber "DESTINO FAVORÁVEL — Relançou": ignore a rolagem anterior, use a nova
+
+AGUARDAR RESULTADO — REGRA ABSOLUTA:
+▸ NUNCA continue a narrativa na MESMA RESPOSTA em que pede o teste
+▸ NUNCA escreva "se você passar..." ou "na falha..." antes do jogador rolar
+▸ Apenas aguarde — o resultado chegará automaticamente com todos os bônus calculados
 
 NPCs — MEMÓRIA OBRIGATÓRIA:
 ▸ O bloco MEMÓRIA DA AVENTURA acima lista todos os NPCs e eventos registrados — consulte SEMPRE
@@ -3444,6 +3524,14 @@ NPCs — MEMÓRIA OBRIGATÓRIA:
 ▸ NUNCA invente NPCs sem introdução narrativa (diga o nome + aparência + papel)
 ▸ Ao apresentar NPC importante: use tag [NPC:Nome:descrição:relação] para registrar
 ▸ Todo NPC importante tem: 1 segredo, 1 desejo, 1 medo — use-os para criar conflito
+
+DADOS DE DANO — COMO FUNCIONA:
+▸ Quando o jogador acerta um ataque, o SISTEMA envia o resultado de dano automaticamente
+▸ A mensagem começa com "⚔️ DANO:" — use o valor para narrar o impacto no inimigo
+▸ NUNCA calcule dano por conta própria — aguarde a jogada do jogador
+▸ Magias com salvaguarda: após o [TESTE:] ser resolvido, peça os dados de dano ao jogador
+▸ Dano de arma: jogador rola na bandeja (ex: 1d8+3 para espada longa)
+▸ Dano de magia: jogador rola na bandeja (ex: 2d6 para Queimar Mãos)
 
 DANO E CURA — TAGS OBRIGATÓRIAS:
 ▸ [PV:-X] SOMENTE quando o PERSONAGEM DO JOGADOR sofre dano (inimigo acerta o jogador)
@@ -4537,7 +4625,7 @@ async function useReroll(){
   const outcome = result.isCrit ? 'CRÍTICO' : result.isFail ? 'FALHA CRÍTICA' :
                   result.ok === true ? 'SUCESSO' : result.ok === false ? 'FALHA' : `total ${result.total}`;
   
-  askMaster(`Jogador usou 💎 Relançar Dado. Novo resultado: ${r.label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${r.cd?' vs CD '+r.cd:''} — ${outcome}. ${lastRollData.context||'Continue a narrativa com este novo resultado.'}`);
+  askMaster(`🌟 DESTINO FAVORÁVEL — Relançou. Novo resultado: ${r.label}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${r.cd?' vs CD '+r.cd:''} — ${outcome}. ${lastRollData.context||'Continue a narrativa com este novo resultado.'}`);
   
   lastRollData = null;
 }
@@ -6522,15 +6610,15 @@ function usarDestinoVantagem(){
 }
 
 // Reroll: relança o último dado
-function usarDestinoReroll(){
+async function usarDestinoReroll(){
   if((hero.credits||0) < DESTINO_COST){ showToast('💎 Diamantes insuficientes!'); return; }
   if(!lastRollData || !lastRollData.diceVal){ showToast('⚠️ Nenhuma rolagem recente'); return; }
   hero.credits -= DESTINO_COST;
   updateVitals();
   closeMo('mo-destino');
-  const r = lastRollData;
   showToast('🌟 Destino Favorável! Relançando...');
-  useReroll(); // reutiliza a lógica existente
+  // Reuse useReroll which handles the full re-roll and sends to master
+  useReroll();
 }
 
 // Atualiza botão Destino com indicador visual quando há teste pendente
@@ -6679,8 +6767,9 @@ function updateDiceTrayHint(){
     else if(rollType2==='initiative') profB=0;
     else if(rollType2==='save') profB=(CLASS_SAVES[hero.cls]||[]).includes(pendingRollAttr)?pb:0;
     const totalMod = attrM+profB;
-    hint.innerHTML = `${parts.join('+')} <span style="color:#C0A0FF">+${totalMod}</span> = ?<br>
-      <span style="font-size:9px;opacity:.7">${pendingRollLabel||'Teste'}${pendingRollCD?' CD '+pendingRollCD:''}</span>`;
+    const extraNote = parts.length > 1 ? '<br><span style="font-size:9px;color:rgba(200,180,80,.6)">⚡ Bônus extra incluído</span>' : '';
+    hint.innerHTML = `${parts.join('+')} <span style="color:#ffe080">+${totalMod}</span> = ?<br>
+      <span style="font-size:9px;color:rgba(200,180,120,.6)">${pendingRollLabel||'Teste'}${pendingRollCD?' CD '+pendingRollCD:''}</span>${extraNote}`;
   } else {
     hint.textContent = parts.join(' + ') + ' = ?';
   }
@@ -6695,16 +6784,39 @@ async function rollDiceTray(){
   const isPendingTest = !!pendingRollAttr && diceTrayCounts[20] === 1;
 
   if(isPendingTest){
-    // ── d20 com teste formal: usa rollInlineD20 e envia resultado ao mestre
+    // Verifica se há dados extras além do d20 (ex: d4 de Bênção)
+    const extraDice = DICE_TYPES.filter(d=>d!==20 && diceTrayCounts[d]>0);
     const attr2  = pendingRollAttr;
     const label2 = pendingRollLabel || attrLabels[attr2] || 'Teste';
     const cd2    = pendingRollCD;
-    const result = await rollInlineD20(attr2, label2, cd2);
-    if(result){
+
+    if(extraDice.length > 0){
+      // ── Teste com bônus extra (ex: Bênção = d20+d4, Vantagem manual, etc) ──
+      const result = await rollInlineD20(attr2, label2, cd2);
+      if(!result) return;
+      // Rola os dados extras
+      let extraTotal = 0;
+      const extraParts = [];
+      for(const sides of extraDice){
+        const count = diceTrayCounts[sides];
+        const rolls = [];
+        for(let i=0;i<count;i++){ const r=rollD(sides); rolls.push(r); extraTotal+=r; }
+        extraParts.push(`${count}d${sides}(${rolls.join(',')})`);
+      }
+      const finalTotal = result.total + extraTotal;
+      const extraDesc  = extraParts.join('+');
       const outcome = result.isCrit?'CRÍTICO':result.isFail?'FALHA CRÍTICA':
-                      result.ok===true?'SUCESSO':result.ok===false?'FALHA':`total ${result.total}`;
-      const modSign = result.modVal>=0?'+':'';
-      askMaster(`Jogador rolou ${label2}: d20(${result.diceVal}) ${modSign}${result.modVal} = ${result.total}${cd2?' vs CD '+cd2:''} — ${outcome}. Continue a narrativa com este resultado.`);
+                      (cd2?(finalTotal>=cd2?'SUCESSO':'FALHA'):`total ${finalTotal}`);
+      addRollCard(`${label2}+bônus`, result.diceVal, result.modVal+extraTotal, finalTotal, cd2);
+      askMaster(`Jogador rolou ${label2} COM BÔNUS ATIVO: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} + ${extraDesc}(+${extraTotal}) = ${finalTotal}${cd2?' vs CD '+cd2:''} — ${outcome}. O bônus foi aplicado (efeito ativo como Bênção ou similar). Continue a narrativa.`);
+    } else {
+      // ── Teste simples com d20 ──
+      const result = await rollInlineD20(attr2, label2, cd2);
+      if(result){
+        const outcome = result.isCrit?'CRÍTICO':result.isFail?'FALHA CRÍTICA':
+                        result.ok===true?'SUCESSO':result.ok===false?'FALHA':`total ${result.total}`;
+        askMaster(`Jogador rolou ${label2}: d20(${result.diceVal}) ${result.modVal>=0?'+':''}${result.modVal} = ${result.total}${cd2?' vs CD '+cd2:''} — ${outcome}. Continue a narrativa com este resultado.`);
+      }
     }
     return;
   }
@@ -6742,33 +6854,98 @@ async function rollDiceTray(){
   }
 
   const formula = breakdown.join(' + ');
-  const context = inCombat ? 'dano em combate' : 'dados livres';
   addRollCard(formula, grandTotal, 0, grandTotal, null);
 
-  // Send to master (no turn cost for free rolls)
-  const msgTxt = inCombat
-    ? `Jogador rolou ${formula}${bonusTxt} = ${grandTotal} de ${context}.`
-    : `Jogador rolou dados livres: ${formula} = ${grandTotal}.`;
-  askMaster(msgTxt, true); // true = skip turn counter
+  // ★ Se em combate: envia resultado de dano ao mestre
+  // Se fora de combate: funciona apenas como calculadora (sem chamar o mestre)
+  if(inCombat){
+    // Detecta contexto do dano pelo tipo/quantidade de dados
+    const hasD6  = diceTrayCounts[6]  > 0;
+    const hasD8  = diceTrayCounts[8]  > 0;
+    const hasD10 = diceTrayCounts[10] > 0;
+    const multiDice = results.length > 1 || results[0]?.count > 1;
+    const likelySpell = multiDice && !diceTrayCounts[12] && !diceTrayCounts[20];
+    const dmgType = likelySpell ? 'dano de magia' : 'dano de arma';
+    askMaster(`⚔️ DANO: Jogador rolou ${formula}${bonusTxt} = **${grandTotal}** de ${dmgType}. Aplique ${grandTotal} de dano ao inimigo e narre o resultado — descreva o impacto visualmente.`, false);
+  }
+  // Fora de combate: calculadora silenciosa
 }
+
+
+// ══ SAVE/RESTORE — persiste estado quando app minimiza ══
+function saveGameState(){
+  if(!hero || !hero.name) return; // não salva estado vazio
+  try {
+    const state = {
+      hero, stats, inventory,
+      gameHistory: gameHistory.slice(-30), // últimas 30 msgs
+      inCombat, inCity, currentEnemy,
+      heroKnownCantrips, heroKnownSpells, learnedSpells,
+      preparedSpells, usedSpellSlots,
+      heroCombatStyle, cantripSwapPending,
+      gameMemory,
+      savedAt: Date.now()
+    };
+    localStorage.setItem('aimaster_state', JSON.stringify(state));
+  } catch(e){ console.warn('saveGameState error', e); }
+}
+
+function loadGameState(){
+  try {
+    const raw = localStorage.getItem('aimaster_state');
+    if(!raw) return false;
+    const state = JSON.parse(raw);
+    // Só restaura se foi salvo nas últimas 2 horas
+    if(Date.now() - (state.savedAt||0) > 2*60*60*1000) return false;
+    if(!state.hero || !state.hero.name) return false;
+
+    Object.assign(hero, state.hero);
+    Object.assign(stats, state.stats||{});
+    inventory = state.inventory || [];
+    gameHistory = state.gameHistory || [];
+    inCombat = state.inCombat || false;
+    inCity   = state.inCity   || false;
+    currentEnemy = state.currentEnemy || null;
+    heroKnownCantrips = state.heroKnownCantrips || [];
+    heroKnownSpells   = state.heroKnownSpells   || [];
+    learnedSpells     = state.learnedSpells     || [];
+    preparedSpells    = state.preparedSpells    || [];
+    usedSpellSlots    = state.usedSpellSlots    || [0,0,0,0,0,0,0,0,0];
+    heroCombatStyle   = state.heroCombatStyle   || null;
+    cantripSwapPending = state.cantripSwapPending || false;
+    if(state.gameMemory) Object.assign(gameMemory, state.gameMemory);
+    return true;
+  } catch(e){ console.warn('loadGameState error', e); return false; }
+}
+
+// Salva ao minimizar/fechar e restaura ao voltar
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'hidden'){
+    saveGameState();
+  } else if(document.visibilityState === 'visible'){
+    // Restaura se havia estado salvo e o jogo estava rodando
+    const narr = document.getElementById('narr');
+    if(narr && narr.children.length === 0 && hero && hero.name){
+      // Tela vazia mas tinha herói — tenta restaurar histórico
+      if(loadGameState()){
+        updateVitals();
+        renderInventory();
+        // Reconstrói mensagens do histórico no narr
+        gameHistory.forEach(m => {
+          if(m.role === 'assistant') addNarrCard(m.content, 'master');
+          // (mensagens do jogador não são re-renderizadas)
+        });
+      }
+    }
+  }
+});
+
+// Salva periodicamente a cada 30 segundos
+setInterval(saveGameState, 30000);
 
 </script>
 
-<!-- BANDEJA DE DADOS — body level -->
-<!-- Toggle button: flutuante à esquerda, toggle open/close -->
-<button id="dice-tray-btn" onclick="toggleDiceTray()" title="Bandeja de Dados"
-  style="position:fixed;left:8px;top:50%;transform:translateY(-50%);
-  z-index:500;background:rgba(15,10,4,.85);border:1px solid rgba(139,111,208,.35);
-  border-radius:14px;width:40px;height:40px;display:none;align-items:center;
-  justify-content:center;cursor:pointer;
-  box-shadow:0 3px 12px rgba(0,0,0,.5);transition:all .2s">
-  <svg viewBox="0 0 40 40" width="24" height="24" id="dice-tray-icon">
-    <polygon points="20,2 38,14 34,35 6,35 2,14" fill="none" stroke="rgba(139,111,208,.9)" stroke-width="2.5" stroke-linejoin="round"/>
-    <text x="20" y="26" text-anchor="middle" font-size="10" fill="rgba(200,180,120,.9)" font-family="sans-serif">20</text>
-  </svg>
-</button>
-
-<!-- Painel lateral -->
+<!-- BANDEJA DE DADOS — body level (botão movido para fbar) -->
 <div id="dice-tray-panel" style="position:fixed;left:0;top:0;height:100%;width:180px;
   background:rgba(12,6,1,.97);border-right:1px solid rgba(200,146,42,.2);
   z-index:499;transition:transform .25s cubic-bezier(.4,0,.2,1);
@@ -6863,6 +7040,21 @@ async function rollDiceTray(){
   <div id="dice-tray-hint" style="font-size:10px;color:rgba(200,180,120,.45);
     text-align:center;padding:6px 4px;border-top:1px solid rgba(139,111,208,.1);margin-top:4px">
     Selecione os dados
+  </div>
+
+  <!-- Destino Favorável dentro da bandeja -->
+  <div style="border-top:1px solid rgba(200,146,42,.15);margin-top:6px;padding-top:8px">
+    <button onclick="openDestino();closeDiceTray()" id="destino-btn"
+      style="width:100%;background:linear-gradient(135deg,rgba(200,146,42,.15),rgba(180,120,20,.08));
+      border:1px solid rgba(200,146,42,.3);border-radius:10px;padding:9px 8px;
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      font-family:var(--font-title);font-size:10px;color:var(--gold-l);cursor:pointer;letter-spacing:.5px">
+      <span style="font-size:14px">🌟</span>
+      <div style="text-align:left">
+        <div>Destino Favorável</div>
+        <div style="font-size:9px;color:rgba(200,180,120,.5)">Vantagem ou Reroll · 2💎</div>
+      </div>
+    </button>
   </div>
 
   <!-- Roll button -->
