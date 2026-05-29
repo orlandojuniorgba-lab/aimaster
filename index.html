@@ -707,7 +707,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <div class="t-sub">Motor D&amp;D 5e · IA Narrador</div>
   <div class="t-divider"></div>
   <p class="t-desc">Raça, classe e antecedente moldam cada evento, teste e diálogo. O dado decide o destino.</p>
-  <button class="btn-start" onclick="goTo('s-char')">CRIAR PERSONAGEM</button>
+  <button class="btn-start" onclick="baseStats={};stats={};goTo('s-char')">CRIAR PERSONAGEM</button>
   <div class="ver-tag">MVP v0.8 · PWA · Motor Vivo</div>
 </div>
 
@@ -992,79 +992,96 @@ body{font-family:var(--font-narr);color:var(--parch);}
 </div></div>
 
 <!-- MODAL LOJA -->
-<div class="mo" id="mo-shop"><div class="ms">
-  <div class="mt">💎 Diamantes &amp; Mercado <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+<div class="mo" id="mo-shop">
+  <div class="ms" style="padding:16px 14px;gap:0">
+    <!-- Header -->
+    <div class="mt">💎 Diamantes <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
 
-  <!-- Conversão -->
-  <div style="background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:10px 14px;margin-bottom:12px;text-align:center">
-    <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,146,42,.6);letter-spacing:1px;margin-bottom:4px">CONVERSÃO</div>
-    <div style="font-size:13px;color:var(--gold-l)">💎 1 Diamante = 10 Peças de Ouro</div>
-    <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:3px">Compre ouro para itens, mapas e informações de NPCs</div>
-  </div>
-
-  <!-- Pacote 1 -->
-  <div class="sp-pack" id="shop-pack1" onclick="buyCredits(1)" style="cursor:pointer">
-    <div>
-      <div class="sp-nm">🎒 Bolsa do Viajante</div>
-      <div class="sp-cr">15 💎 · 150 PO · 3 sessões extras</div>
-      <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:2px">Ideal para continuar uma aventura hoje</div>
+    <!-- Saldo -->
+    <div id="shop-context-banner" style="font-size:11px;color:var(--gold-d);text-align:center;padding:8px 0 12px;border-bottom:1px solid rgba(200,146,42,.12);margin-bottom:12px">
+      💎 1 Diamante = 10 Peças de Ouro
     </div>
-    <div class="sp-pr">R$ 4,90</div>
-  </div>
 
-  <!-- Pacote 2 -->
-  <div class="sp-pack" id="shop-pack2" onclick="buyCredits(2)" style="cursor:pointer">
-    <div>
-      <div class="sp-nm">💰 Tesouro do Negociante</div>
-      <div class="sp-cr">70 💎 · 700 PO · 14 sessões extras</div>
-      <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:2px">Ouro suficiente para itens raros e NPCs</div>
+    <!-- Pack 1 -->
+    <div onclick="buyCredits(1)" id="shop-pack1" style="display:flex;justify-content:space-between;align-items:center;padding:12px 10px;margin-bottom:8px;background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:10px;cursor:pointer">
+      <div>
+        <div style="font-size:13px;color:var(--parch-l);font-weight:600">🎒 Bolsa do Viajante</div>
+        <div style="font-size:11px;color:var(--parch-d);margin-top:2px">15 💎 · 150 PO · 3 sessões</div>
+      </div>
+      <div style="font-family:var(--font-title);font-size:15px;color:var(--gold-l);flex-shrink:0;margin-left:12px">R$&nbsp;4,90</div>
     </div>
-    <div class="sp-pr">R$ 19,90</div>
-  </div>
 
-  <!-- Pacote 3 -->
-  <div class="sp-pack" id="shop-pack3" onclick="buyCredits(3)" style="cursor:pointer;border-color:rgba(200,146,42,.5);background:rgba(200,146,42,.06)">
-    <div>
-      <div class="sp-nm">👑 Cofre do Patrono <span style="font-size:9px;color:#FFD700;background:rgba(200,146,42,.2);border-radius:4px;padding:1px 5px;margin-left:4px">+50💎 BÔNUS</span></div>
-      <div class="sp-cr">130 💎 · 1300 PO · 26 sessões extras</div>
-      <div style="font-size:10px;color:rgba(200,180,120,.5);margin-top:2px">Para o aventureiro sério — melhor custo-benefício</div>
+    <!-- Pack 2 -->
+    <div onclick="buyCredits(2)" id="shop-pack2" style="display:flex;justify-content:space-between;align-items:center;padding:12px 10px;margin-bottom:8px;background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:10px;cursor:pointer">
+      <div>
+        <div style="font-size:13px;color:var(--parch-l);font-weight:600">💰 Tesouro do Negociante</div>
+        <div style="font-size:11px;color:var(--parch-d);margin-top:2px">70 💎 · 700 PO · 14 sessões</div>
+      </div>
+      <div style="font-family:var(--font-title);font-size:15px;color:var(--gold-l);flex-shrink:0;margin-left:12px">R$&nbsp;19,90</div>
     </div>
-    <div class="sp-pr">R$ 34,90</div>
-  </div>
 
-  <!-- Nota de ouro -->
-  <div style="font-size:10px;color:rgba(200,180,120,.4);text-align:center;margin-top:10px;padding:0 8px">
-    💡 Diamantes também servem para <b style="color:rgba(200,180,120,.65)">Destino Favorável</b> (2💎) e <b style="color:rgba(200,180,120,.65)">Ilustrar Cena</b> (3💎)
-  </div>
-</div></div><button class="btn-buy" onclick="buyCredits(1)">COMPRAR</button></div>
-  <div class="sp-pack" id="shop-pack2" style="transition:opacity .3s"><div><div class="sp-nm">Tesouro do Negociante</div><div class="sp-cr">50 💎 → 500 PO</div><div class="sp-pr">R$ 19,90</div></div><button class="btn-buy" onclick="buyCredits(2)">COMPRAR</button></div>
-  <div class="sp-pack featured" id="shop-pack3" style="transition:opacity .3s"><div><div class="sp-nm">⭐ Cofre do Patrono</div><div class="sp-cr">100 💎 → 1000 PO</div><div class="sp-pr">R$ 34,90 · bônus rep</div></div><button class="btn-buy" onclick="buyCredits(3)">COMPRAR</button></div>
-  <!-- Procurar Mercador dentro da loja -->
-  <!-- Botão de teste (modo dev) -->
-  <div style="margin:8px 0;display:flex;gap:6px;flex-wrap:wrap">
-    <button onclick="addTestCredits(50)" style="flex:1;min-width:120px;background:rgba(0,180,80,.15);border:1px solid rgba(0,180,80,.3);color:#60D090;border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">🧪 +50 💎 (TESTE)</button>
-    <button onclick="showEconomyLog()" style="flex:1;min-width:80px;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.2);color:var(--gold-l);border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">📊 Log</button>
-    <button onclick="resetTurnCounter()" style="flex:1;min-width:100px;background:rgba(91,63,160,.15);border:1px solid rgba(139,111,208,.3);color:#C0A0FF;border-radius:8px;padding:8px;font-size:11px;font-family:var(--font-title);cursor:pointer">🔄 Reset Turnos</button>
-  </div>
-  <div id="shop-mercador-btn" style="transition:opacity .3s;cursor:pointer" onclick="closeMo('mo-shop');doAct('Procurar um Mercador na região')">
-    <div class="sp-pack" style="background:rgba(0,180,80,0.08);border-color:rgba(0,180,80,0.3)">
-      <div><div class="sp-nm" style="color:#60D090">🛒 Procurar Mercador</div><div class="sp-cr">Role Sobrevivência CD <span id="merch-hint">12</span></div><div class="sp-pr">Troca ouro do personagem por itens</div></div>
-      <div style="font-size:22px">→</div>
+    <!-- Pack 3 -->
+    <div onclick="buyCredits(3)" id="shop-pack3" style="display:flex;justify-content:space-between;align-items:center;padding:12px 10px;margin-bottom:12px;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.4);border-radius:10px;cursor:pointer">
+      <div>
+        <div style="font-size:13px;color:var(--parch-l);font-weight:600">👑 Cofre do Patrono <span style="font-size:9px;color:#FFD700;background:rgba(200,146,42,.25);border-radius:4px;padding:1px 4px">+50💎</span></div>
+        <div style="font-size:11px;color:var(--parch-d);margin-top:2px">130 💎 · 1300 PO · 26 sessões</div>
+      </div>
+      <div style="font-family:var(--font-title);font-size:15px;color:#FFD700;flex-shrink:0;margin-left:12px">R$&nbsp;34,90</div>
     </div>
+
+    <!-- Nota -->
+    <div style="font-size:10px;color:rgba(200,180,120,.35);text-align:center">
+      🌟 Destino Favorável: 2💎 &nbsp;·&nbsp; 🎨 Ilustrar Cena: 3💎
+    </div>
+  </div>
+</div>
+<!-- MODAL DIÁRIO DA AVENTURA -->
+<div class="mo" id="mo-memory"><div class="ms" style="max-height:85vh;overflow-y:auto">
+  <div class="mt">📖 Diário de Aventura <button class="mc" onclick="closeMo('mo-memory')">×</button></div>
+  <div id="memory-modal-content"></div>
+</div></div>
+
+
+<!-- MODAL: SELEÇÃO DE MAGIAS E ESTILO DE COMBATE -->
+<div class="mo" id="mo-spell-select" style="z-index:200">
+<div class="ms" style="max-height:90vh;overflow-y:auto">
+  <div class="mt" id="spell-select-title">⚗️ Escolha suas Magias <button class="mc" onclick="finishSpellSelection(true)">→</button></div>
+  <div id="spell-select-body"></div>
+  <div style="margin-top:12px">
+    <button id="spell-confirm-btn" onclick="finishSpellSelection(false)"
+      style="width:100%;background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:12px;font-family:var(--font-title);font-size:13px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
+      ✓ Confirmar e Iniciar Aventura
+    </button>
+    <p id="spell-select-hint" style="font-size:11px;color:rgba(139,111,208,.6);text-align:center;margin-top:6px"></p>
   </div>
 </div></div>
 
-<!-- MODAL REPUTAÇÃO -->
-<div class="mo" id="mo-rep"><div class="ms">
-  <div class="mt">🏅 Reputação <button class="mc" onclick="closeMo('mo-rep')">×</button></div>
-  <div class="rep-bar-wrap"><div class="rep-current" id="rep-display">0 pts · Viajante</div><div class="rep-track"><div class="rep-fill" id="rep-fill" style="width:0%"></div></div></div>
-  <div class="rt active" id="rt0"><div class="rn">🧳 Viajante (0–100)</div><div class="rb">Preço normal</div></div>
-  <div class="rt" id="rt1"><div class="rn">🤝 Negociante (101–500)</div><div class="rb">5% desconto</div></div>
-  <div class="rt" id="rt2"><div class="rn">🏛 Patrono (501–1500)</div><div class="rb">10% desconto · CD –2</div></div>
-  <div class="rt" id="rt3"><div class="rn">💼 Sócio (1501+)</div><div class="rb">15% desconto · Itens raros</div></div>
+
+
+
+
+<!-- MODAL: GERENCIADOR DE MAGIAS -->
+<div class="mo" id="mo-spell-manager" style="z-index:300"><div class="ms" style="max-height:88vh;overflow-y:auto">
+  <div class="mt" id="spell-mgr-title">📖 Gerenciar Magias
+    <button class="mc" onclick="closeMo('mo-spell-manager');buildSpellsTab(hero.cls,hero.level||1)">×</button>
+  </div>
+  <div id="spell-mgr-body"></div>
+</div></div>
+<!-- MODAL: DESTINO FAVORÁVEL -->
+<div class="mo" id="mo-destino" style="z-index:350"><div class="ms" style="max-height:70vh;overflow-y:auto">
+  <div class="mt">🌟 Destino Favorável <button class="mc" onclick="closeMo('mo-destino')">×</button></div>
+  <div id="destino-body" style="padding:4px 0"></div>
 </div></div>
 
-<!-- ★ MODAL FICHA COM ABAS -->
+
+<div class="mo" id="mo-api"><div class="ms">
+  <div class="mt">🔑 Mestre IA <button class="mc" onclick="closeMo('mo-api')">×</button></div>
+  <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo.</p>
+  <div class="api-field"><label>Chave Anthropic</label><input type="password" id="api-key-input" placeholder="sk-ant-..."/></div>
+  <button class="btn-primary" onclick="saveApiKey()">SALVAR CHAVE</button>
+  <p class="mo-note">console.anthropic.com</p>
+  <p class="mo-note" id="api-status" style="color:var(--green)"></p>
+</div></div>
 <div class="mo" id="mo-char"><div class="ms">
   <div class="mt">📜 Ficha do Herói <button class="mc" onclick="closeMo('mo-char')">×</button></div>
   <div class="sheet-tabs">
@@ -1072,7 +1089,6 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <div class="stab" onclick="switchTab('tab-inv')">Inventário</div>
     <div class="stab" onclick="switchTab('tab-skills')">Habilidades</div>
     <div class="stab" onclick="switchTab('tab-spells')">Magias</div>
-    <div class="stab" onclick="switchTab('tab-world')">Mundo</div>
   </div>
   <!-- Status -->
   <div class="sheet-page active" id="tab-stats">
@@ -1149,25 +1165,6 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <p style="font-size:13px;color:var(--parch-d);text-align:center;font-style:italic;padding:16px 0">Inicie uma aventura para ver as habilidades do seu personagem.</p>
     </div>
   </div>
-  <!-- Mundo -->
-  <div class="sheet-page" id="tab-world">
-    <div id="world-content" style="padding:4px 0">
-      <!-- Reputação -->
-      <div class="sec-hdr" style="margin-bottom:8px">🏅 REPUTAÇÃO</div>
-      <div class="rep-bar-wrap" style="margin-bottom:12px">
-        <div class="rep-current" id="rep-display-world">0 pts · Viajante</div>
-        <div class="rep-track" style="margin-top:4px"><div class="rep-fill" id="rep-fill-world" style="width:0%"></div></div>
-      </div>
-      <div id="rep-tiers-world" style="font-size:11px;color:rgba(200,180,120,.5);margin-bottom:16px"></div>
-      <!-- Localização -->
-      <div class="sec-hdr" style="margin-bottom:6px">📍 LOCALIZAÇÃO ATUAL</div>
-      <div id="world-location" style="font-size:12px;color:var(--parch-d);margin-bottom:14px;font-style:italic">Desconhecida — inicie uma aventura</div>
-      <!-- Facções -->
-      <div class="sec-hdr" style="margin-bottom:6px">🏛️ FACÇÕES</div>
-      <div id="world-factions" style="font-size:11px;color:rgba(200,180,120,.5);font-style:italic">Nenhuma facção conhecida ainda</div>
-    </div>
-  </div>
-
   <!-- Magias -->
   <div class="sheet-page" id="tab-spells">
     <div id="spells-content">
@@ -1175,25 +1172,6 @@ body{font-family:var(--font-narr);color:var(--parch);}
     </div>
   </div>
 </div></div>
-
-<!-- MODAL XP / NÍVEL -->
-<div class="mo" id="mo-xp"><div class="ms">
-  <div class="mt">⭐ Nível &amp; Experiência <button class="mc" onclick="closeMo('mo-xp')">×</button></div>
-  <div style="display:flex;gap:12px;align-items:center;">
-    <div class="level-badge"><div class="level-num" id="xp-level-num">1</div><div class="level-txt">NÍVEL</div></div>
-    <div style="flex:1">
-      <div class="xp-label-row"><span>XP ATUAL</span><span id="xp-cur-txt">0</span></div>
-      <div class="xp-bar-modal"><div class="xp-fill-modal" id="xp-fill-modal" style="width:0%"></div></div>
-      <div class="xp-label-row"><span>PRÓXIMO NÍVEL</span><span id="xp-next-txt">300</span></div>
-    </div>
-  </div>
-  <div class="sec-hdr" style="margin-top:4px">HABILIDADES DO NÍVEL ATUAL</div>
-  <div id="level-abilities" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
-  <div class="sec-hdr" style="margin-top:4px">NO PRÓXIMO NÍVEL</div>
-  <div id="next-level-abilities" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
-</div></div>
-
-<!-- MODAL MAPA MEDIEVAL -->
 <div class="mo" id="mo-map"><div class="ms" style="padding:0;overflow:hidden;border-radius:18px 18px 0 0">
   <!-- Header medieval -->
   <div class="map-header">
@@ -1236,19 +1214,6 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <span>📍 <span id="map-location-txt">Localização atual desconhecida</span></span>
   </div>
 </div></div>
-
-<!-- MODAL API -->
-<div class="mo" id="mo-api"><div class="ms">
-  <div class="mt">🔑 Mestre IA <button class="mc" onclick="closeMo('mo-api')">×</button></div>
-  <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo.</p>
-  <div class="api-field"><label>Chave Anthropic</label><input type="password" id="api-key-input" placeholder="sk-ant-..."/></div>
-  <button class="btn-primary" onclick="saveApiKey()">SALVAR CHAVE</button>
-  <p class="mo-note">console.anthropic.com</p>
-  <p class="mo-note" id="api-status" style="color:var(--green)"></p>
-</div></div>
-
-
-<!-- MODAL TUTORIAL / GUIA DO JOGO -->
 <div class="mo" id="mo-tutorial"><div class="ms" style="max-height:85vh;overflow-y:auto">
   <div class="mt">📖 Guia do AiMaster <button class="mc" onclick="closeMo('mo-tutorial')">×</button></div>
 
@@ -1338,46 +1303,21 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
   </div>
 </div></div>
-
-
-<!-- MODAL DIÁRIO DA AVENTURA -->
-<div class="mo" id="mo-memory"><div class="ms" style="max-height:85vh;overflow-y:auto">
-  <div class="mt">📖 Diário de Aventura <button class="mc" onclick="closeMo('mo-memory')">×</button></div>
-  <div id="memory-modal-content"></div>
-</div></div>
-
-
-<!-- MODAL: SELEÇÃO DE MAGIAS E ESTILO DE COMBATE -->
-<div class="mo" id="mo-spell-select" style="z-index:200">
-<div class="ms" style="max-height:90vh;overflow-y:auto">
-  <div class="mt" id="spell-select-title">⚗️ Escolha suas Magias <button class="mc" onclick="finishSpellSelection(true)">→</button></div>
-  <div id="spell-select-body"></div>
-  <div style="margin-top:12px">
-    <button id="spell-confirm-btn" onclick="finishSpellSelection(false)"
-      style="width:100%;background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:12px;font-family:var(--font-title);font-size:13px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
-      ✓ Confirmar e Iniciar Aventura
-    </button>
-    <p id="spell-select-hint" style="font-size:11px;color:rgba(139,111,208,.6);text-align:center;margin-top:6px"></p>
+<div class="mo" id="mo-xp"><div class="ms">
+  <div class="mt">⭐ Nível &amp; Experiência <button class="mc" onclick="closeMo('mo-xp')">×</button></div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <div class="level-badge"><div class="level-num" id="xp-level-num">1</div><div class="level-txt">NÍVEL</div></div>
+    <div style="flex:1">
+      <div class="xp-label-row"><span>XP ATUAL</span><span id="xp-cur-txt">0</span></div>
+      <div class="xp-bar-modal"><div class="xp-fill-modal" id="xp-fill-modal" style="width:0%"></div></div>
+      <div class="xp-label-row"><span>PRÓXIMO NÍVEL</span><span id="xp-next-txt">300</span></div>
+    </div>
   </div>
+  <div class="sec-hdr" style="margin-top:4px">HABILIDADES DO NÍVEL ATUAL</div>
+  <div id="level-abilities" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
+  <div class="sec-hdr" style="margin-top:4px">NO PRÓXIMO NÍVEL</div>
+  <div id="next-level-abilities" style="display:flex;flex-direction:column;gap:8px;margin-top:4px"></div>
 </div></div>
-
-
-
-
-
-<!-- MODAL: GERENCIADOR DE MAGIAS -->
-<div class="mo" id="mo-spell-manager" style="z-index:300"><div class="ms" style="max-height:88vh;overflow-y:auto">
-  <div class="mt" id="spell-mgr-title">📖 Gerenciar Magias
-    <button class="mc" onclick="closeMo('mo-spell-manager');buildSpellsTab(hero.cls,hero.level||1)">×</button>
-  </div>
-  <div id="spell-mgr-body"></div>
-</div></div>
-<!-- MODAL: DESTINO FAVORÁVEL -->
-<div class="mo" id="mo-destino" style="z-index:350"><div class="ms" style="max-height:70vh;overflow-y:auto">
-  <div class="mt">🌟 Destino Favorável <button class="mc" onclick="closeMo('mo-destino')">×</button></div>
-  <div id="destino-body" style="padding:4px 0"></div>
-</div></div>
-
 </div><!-- #app -->
 <div class="toast" id="toast"></div>
 
@@ -2492,7 +2432,7 @@ const classMP={Guerreiro:0,Mago:0,Ladino:0,Clérigo:0,Bardo:0,Paladino:0,Druida:
 const attrNames={str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
 const attrLabels={str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
 
-let hero={xp:0,level:1,credits:0}, stats={}, thinking=false;
+let hero={xp:0,level:1,credits:0}, stats={}, baseStats={}, thinking=false;
 let inCombat=false, inCity=false; // currentEnemy declared separately // estados de contexto
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
@@ -2502,6 +2442,7 @@ let currentEnemy=null; // inimigo atual em combate
 // Partículas
 (function(){
   const c=document.getElementById('particles');
+  if(!c) return; // ★ guard: particles element might not exist yet
   for(let i=0;i<18;i++){const p=document.createElement('div');p.className='particle';const s=(Math.random()*3+1)+'px';p.style.cssText=`width:${s};height:${s};left:${Math.random()*100}%;animation-duration:${Math.random()*8+6}s;animation-delay:${Math.random()*8}s;`;c.appendChild(p);}
 })();
 
@@ -2523,7 +2464,7 @@ async function rollStatsAnimated(){
     sb.classList.add('rolling');
     document.getElementById('s-'+k).textContent='?';
     await new Promise(r=>setTimeout(r,80));
-    const v=roll4d6drop();stats[k]=v;
+    const v=roll4d6drop();stats[k]=v;baseStats[k]=v;
     document.getElementById('s-'+k).textContent=v;
     document.getElementById('m-'+k).textContent=modStr(v);
     sb.classList.remove('rolling');
@@ -2567,18 +2508,23 @@ function loadSpellChoices(){
   }catch(e){}
 }
 function startAdventure(){
+  const _k=localStorage.getItem('aimaster_api_key')||'';
+  if(!_k){ showToast('🔑 Configure sua chave de API!'); openMo('mo-api'); return; }
   const name=document.getElementById('inp-name').value.trim()||'Herói Desconhecido';
   const race=document.getElementById('inp-race').value;
   const cls=document.getElementById('inp-class').value;
   const bg=document.getElementById('inp-bg').value;
   const align=document.getElementById('inp-align').value;
 
-  // Rola atributos se não rolou ainda
-  if(!Object.keys(stats).length){
-    ['str','dex','con','int','wis','cha'].forEach(k=>{stats[k]=roll4d6drop();});
+  // Usa baseStats se disponível (evita stack de bônus raciais)
+  // Se não rolou ainda, rola agora
+  if(!Object.keys(baseStats).length){
+    ['str','dex','con','int','wis','cha'].forEach(k=>{
+      baseStats[k]=roll4d6drop();
+    });
   }
-  // Aplica bônus raciais
-  stats=applyRacialBonuses(stats,race);
+  // Aplica bônus raciais SEMPRE sobre baseStats (nunca sobre stats já com bônus)
+  stats = applyRacialBonuses({...baseStats}, race);
 
   const maxHP=Math.max(1,(classHP[cls]||8)+mod(stats.con||10));
   // MP = total de slots de magia no nível 1 (tabela oficial PHB)
@@ -2677,6 +2623,7 @@ function startAdventure(){
   usedSpellSlots=[0,0,0,0,0,0,0,0,0];
   // Reset spell choices for new character
   // ★ Zera turno, bônus e estado salvo ao iniciar novo personagem
+  // baseStats preserved — cleared only on explicit new character
   try{
     localStorage.removeItem(getTodayKey());
     localStorage.removeItem(getBonusTurnsKey());
@@ -2831,15 +2778,15 @@ function updateXPModal(){
   const next=XP_TABLE[lv]||300;
   const prev=lv>1?XP_TABLE[lv-1]:0;
   const pct=next>prev?Math.min(100,Math.round(((cur-prev)/(next-prev))*100)):100;
-  document.getElementById('xp-level-num').textContent=lv;
-  document.getElementById('xp-cur-txt').textContent=cur;
-  document.getElementById('xp-next-txt').textContent=next;
-  document.getElementById('xp-fill-modal').style.width=pct+'%';
+  const _xln=document.getElementById('xp-level-num'); if(_xln) _xln.textContent=lv;
+  const _xct=document.getElementById('xp-cur-txt'); if(_xct) _xct.textContent=cur;
+  const _xnt=document.getElementById('xp-next-txt'); if(_xnt) _xnt.textContent=next;
+  const _xfm=document.getElementById('xp-fill-modal'); if(_xfm) _xfm.style.width=pct+'%';
   const abilities=CLASS_ABILITIES[hero.cls]||[];
   const curAbilities=abilities.filter(a=>a.lv<=lv);
   const nextAbilities=abilities.filter(a=>a.lv===lv+1);
-  document.getElementById('level-abilities').innerHTML=curAbilities.map(a=>`<div class="ability-card"><div class="ability-name">${a.name}</div><div class="ability-desc">${a.desc}</div></div>`).join('')||'<p style="color:var(--parch-d);font-size:13px;text-align:center">Nenhuma habilidade especial neste nível.</p>';
-  document.getElementById('next-level-abilities').innerHTML=nextAbilities.map(a=>`<div class="ability-card"><div class="ability-name">${a.name}</div><div class="ability-desc">${a.desc}</div></div>`).join('')||`<p style="color:var(--parch-d);font-size:13px;text-align:center">Complete combates para ganhar XP e subir de nível!</p>`;
+  const _la=document.getElementById('level-abilities'); if(_la) _la.innerHTML=curAbilities.map(a=>`<div class="ability-card"><div class="ability-name">${a.name}</div><div class="ability-desc">${a.desc}</div></div>`).join('')||'<p style="color:var(--parch-d);font-size:13px;text-align:center">Nenhuma habilidade especial neste nível.</p>';
+  const _nla=document.getElementById('next-level-abilities'); if(_nla) _nla.innerHTML=nextAbilities.map(a=>`<div class="ability-card"><div class="ability-name">${a.name}</div><div class="ability-desc">${a.desc}</div></div>`).join('')||`<p style="color:var(--parch-d);font-size:13px;text-align:center">Complete combates para ganhar XP e subir de nível!</p>`;
 }
 
 function gainXP(amount){
@@ -5810,7 +5757,9 @@ function openMo(id){
   if(id==='mo-char' && hero && hero.cls){
     buildSpellsTab(hero.cls, hero.level||1);
   }
-  document.getElementById(id).classList.add('open');
+  const _moEl = document.getElementById(id);
+  if(!_moEl){ console.warn('Modal not found:', id); return; }
+  _moEl.classList.add('open');
 }
 
 
@@ -5961,42 +5910,20 @@ function showEconomyLog(){
 }
 
 function updateShopContext(){
-  const banner=document.getElementById('shop-context-banner').innerHTML = 
-      `<div style="font-family:var(--font-title);font-size:10px;color:rgba(200,146,42,.7);letter-spacing:.5px">
-        Você tem <b style="color:var(--gold-l)">\${Math.round(hero.gold||0)} PO</b> · 
-        <b style="color:#C0A0FF">\${hero.credits||0} 💎</b>
-        &nbsp;·&nbsp; 1💎 = 10 PO
-      </div>`
-  const packs=['shop-pack1','shop-pack2','shop-pack3'];
-  const mercBtn=document.getElementById('shop-mercador-btn');
-  const atTurnLimit=getTurnsUsedToday()>=(FREE_TURNS_PER_DAY+getBonusTurns());
-  
-  if(inCity){
-    banner.innerHTML='🏙️ <strong>Cidade ou Mercador disponível</strong> — compras liberadas!';
-    banner.style.borderColor='rgba(46,204,113,0.4)';banner.style.color='#60D090';
-    packs.forEach(id=>{
-      const el=document.getElementById(id);
-      if(el){el.style.opacity='1';el.style.filter='none';el.style.pointerEvents='auto';}
-    });
-    if(mercBtn){mercBtn.style.opacity='0.4';mercBtn.style.filter='grayscale(0.8)';}
-  } else if(atTurnLimit){
-    // Limite de turnos: libera compra de diamantes (emergência)
-    banner.innerHTML='⏳ <strong>Limite de turnos</strong> — compre Diamantes para continuar!';
-    banner.style.borderColor='rgba(139,111,208,0.5)';banner.style.color='#C0A0FF';
-    packs.forEach(id=>{
-      const el=document.getElementById(id);
-      if(el){el.style.opacity='1';el.style.filter='none';el.style.pointerEvents='auto';}
-    });
-    if(mercBtn){mercBtn.style.opacity='0.3';mercBtn.style.filter='grayscale(1)';}
-  } else {
-    banner.innerHTML='🌲 <strong>Fora da civilização</strong> — encontre um mercador primeiro';
-    banner.style.borderColor='rgba(200,146,42,0.2)';banner.style.color='var(--gold-d)';
-    packs.forEach(id=>{
-      const el=document.getElementById(id);
-      if(el){el.style.opacity='0.28';el.style.filter='grayscale(0.7)';el.style.pointerEvents='none';}
-    });
-    if(mercBtn){mercBtn.style.opacity='1';mercBtn.style.filter='none';}
+  // Atualiza saldo no cabeçalho da loja
+  const banner = document.getElementById('shop-context-banner');
+  if(banner){
+    banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:rgba(200,146,42,.7);letter-spacing:.5px">
+      Você tem <b style="color:var(--gold-l)">${Math.round(hero.gold||0)} PO</b> ·
+      <b style="color:#C0A0FF">${hero.credits||0} 💎</b>
+      &nbsp;·&nbsp; 1💎 = 10 PO
+    </div>`;
   }
+  // Sempre libera todos os pacotes — diamantes sempre disponíveis
+  ['shop-pack1','shop-pack2','shop-pack3'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){ el.style.opacity='1'; el.style.filter='none'; el.style.pointerEvents='auto'; }
+  });
 }
 function closeMo(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
@@ -6797,12 +6724,12 @@ function toggleDiceTray(){
 
 function openDiceTray(){
   const panel = document.getElementById('dice-tray-panel');
-  const btn   = document.getElementById('dice-tray-btn');
+  const btn   = document.getElementById('dados-fbar-btn');
   if(!panel) return;
   diceTrayOpen = true;
   panel.style.visibility = 'visible';
   panel.style.transform = 'translateX(190px)';
-  btn.classList.add('active');
+  if(btn) btn.classList.add('active');
   btn.style.background='rgba(91,63,160,.5)';
   btn.style.borderColor='rgba(139,111,208,.8)';
   // Reset counts
@@ -6815,7 +6742,7 @@ function openDiceTray(){
 
 function closeDiceTray(){
   const panel = document.getElementById('dice-tray-panel');
-  const btn   = document.getElementById('dice-tray-btn');
+  const btn   = document.getElementById('dados-fbar-btn');
   if(panel){ panel.style.transform='translateX(-190px)'; setTimeout(()=>{if(panel)panel.style.visibility='hidden';},250); }
   if(btn){ btn.classList.remove('active'); btn.style.background=''; btn.style.borderColor=''; }
   diceTrayOpen = false;
