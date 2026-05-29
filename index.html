@@ -2658,7 +2658,7 @@ function startAdventure(){
   hero.questId = QUESTS.indexOf(_startPool[Math.floor(Math.random()*_startPool.length)]);
   const q = QUESTS[hero.questId];
   goTo('s-game');
-  askMaster(`CENA DE ABERTURA — O MUNDO COMUM.
+  askMaster(`CENA DE ABERTURA — INÍCIO TRANQUILO.
 
 Personagem: ${name} | ${race} ${cls} Nível 1 | ${bg} | ${align}
 Missão futura: "${q.title}" (${q.location||''})
@@ -2956,11 +2956,14 @@ function addMsg(type,html){
 
 function typewriterMsg(el,text){
   const bbl=el.querySelector('.bbl');if(!bbl)return;
-  const words=text.split(' ');let i=0;bbl.innerHTML='';
+  // Limita exibição a 1200 chars para performance
+  const display = text.length > 1200 ? text.substring(0,1200)+'...' : text;
+  const words=display.split(' ');let i=0;bbl.innerHTML='';
+  const speed = text.length > 600 ? 15 : 25; // mais rápido para textos longos
   const iv=setInterval(()=>{
-    if(i>=words.length){clearInterval(iv);return;}
+    if(i>=words.length){clearInterval(iv);bbl.innerHTML=formatNarrative(text);return;}
     bbl.innerHTML+=words[i]+' ';i++;
-  },25);
+  },speed);
 }
 
 function extractActions(text){
@@ -3395,13 +3398,23 @@ ${(questData.npcs&&questData.npcs.length)?'NPCs da missão:\n'+questData.npcs.ma
 Arco narrativo: ${questData.jornada||'Jornada do Herói — Partida'}
 
 ━━━ COMO NARRAR ━━━
-Você é um narrador literário de fantasia épica. Escreva como um romancista premiado
+Você é um narrador literário de fantasia. Escreva como um romancista — conciso, imersivo, sensorial.
 
-FORMATAÇÃO — REGRAS ABSOLUTAS:
-▸ NUNCA use markdown: sem **, sem *, sem ##, sem ---, sem listas com -, sem backticks
-▸ NUNCA use asteriscos, underscores, hashtags ou traços como formatação
-▸ Use apenas texto puro com quebras de linha para separar parágrafos
-▸ Diálogo de NPC: escreva como "Nome: (emoção) fala" — sem markdown — não como um chatbot.
+ESTILO NARRATIVO — REGRAS ABSOLUTAS:
+▸ Respostas CURTAS: 3 a 5 parágrafos no máximo. Prefira 2-3. Menos é mais.
+▸ Mostre, não explique: use detalhes sensoriais concretos (cheiro, som, textura, luz)
+▸ Diálogos vivos: NPCs falam com voz própria — "Nome: fala" — revelam personalidade em poucas palavras
+▸ Termine SEMPRE com uma escolha ou tensão aberta — nunca resolva tudo
+▸ NUNCA use markdown: sem **, sem ##, sem ---, sem listas com traço
+▸ Use apenas texto puro. Parágrafos separados por linha em branco.
+
+RITMO E PROGRESSÃO — FUNDAMENTAL:
+▸ INÍCIO (nível 1-2): Mundo cotidiano, paz frágil, personagem comum com potencial. Tom intimista.
+   Adapte ao personagem: Guerreiro → família/mestre/vila | Mago → biblioteca/mentor | Ladino → rua/guilda
+▸ ESCALADA (nível 3-5): Primeira grande ameaça, alianças, segredos surgem. Tom tenso.
+▸ MATURIDADE (nível 6-10): Missões de alto risco, escolhas morais difíceis. Tom épico.
+▸ LENDA (nível 11+): O mundo depende do personagem. Tom grandioso.
+▸ Calibre a intensidade pelo nível atual: ${hero.level||1}. Não pule etapas. — não como um chatbot.
 Sua missão é criar uma experiência inesquecível. Cada resposta deve fazer o jogador querer continuar imediatamente.
 
 ══ ESTRUTURA DE CADA RESPOSTA ══
@@ -3591,7 +3604,9 @@ DADOS DE DANO — COMO FUNCIONA:
 ▸ Dano de magia: jogador rola na bandeja (ex: 2d6 para Queimar Mãos)
 
 DANO E CURA — TAGS OBRIGATÓRIAS:
-▸ [PV:-X] SOMENTE quando o PERSONAGEM DO JOGADOR sofre dano (inimigo acerta o jogador)
+▸ [PV:-X] SOMENTE quando o PERSONAGEM sofre dano CONFIRMADO (inimigo acertou — dado de ataque já resolvido)
+▸ NUNCA use [PV:-X] em descrições narrativas, flashbacks, ou antes do dado ser rolado
+▸ NUNCA use [PV:-X] quando o jogador está atacando — só quando está sendo atacado
 ▸ [PV:+X] quando o personagem é curado
 ▸ NUNCA use [PV:-X] quando o jogador acerta um inimigo — inimigos não têm PV rastreado
 ▸ Calcule o dano COMPLETO antes de narrar (dado de arma + modificador)
@@ -3916,7 +3931,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
     });
     if(!res.ok){
       const err=await res.json().catch(()=>({}));
@@ -3950,7 +3965,11 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       }
       // HP
       const hpDelta=extractHPChange(reply);
-      if(hpDelta!==0){hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));updateVitals();}
+      // ★ Só aplica dano se não foi a mensagem de abertura (turno > 1)
+      if(hpDelta!==0 && (gameHistory.length > 2)){
+        hero.hp=Math.max(0,Math.min(hero.maxHP,hero.hp+hpDelta));
+        updateVitals();
+      }
       // MP — slot de magia usado via [MP:-X] ou na processInventoryChanges
       // ★ Slots de magia: via tag [MP:] OU detecção automática pelo nome da magia
       const mpTag=reply.match(/\[MP:(-\d+)\]/i);
