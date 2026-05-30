@@ -279,8 +279,18 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .mt{font-family:var(--font-title);font-size:15px;color:var(--gold-l);letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;}
 .mc{background:none;border:none;color:var(--gold-d);font-size:22px;cursor:pointer;line-height:1;padding:0;}
 .mo-note{font-size:13px;color:var(--gold-d);text-align:center;}
-.sp-pack{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.sp-pack.featured{border-color:rgba(200,146,42,.45);}
+.sp-pack{background:rgba(10,8,2,.7);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:all .15s;}
+.sp-pack:hover:not([disabled]){background:rgba(200,146,42,.08);border-color:rgba(200,146,42,.4);}
+.sp-pack.featured{border-color:rgba(200,146,42,.5);background:rgba(200,146,42,.06);}
+.sp-pack.locked{opacity:.3;pointer-events:none;filter:grayscale(.7);}
+.sp-nm{font-family:var(--font-title);font-size:13px;color:var(--parch-l);letter-spacing:.3px;}
+.sp-cr{font-size:11px;color:var(--parch-d);margin-top:2px;}
+.sp-pr-sm{font-size:10px;color:rgba(200,180,120,.5);margin-top:2px;}
+.btn-buy{background:linear-gradient(135deg,rgba(200,146,42,.25),rgba(180,120,20,.15));border:1px solid rgba(200,146,42,.5);border-radius:8px;padding:8px 14px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer;letter-spacing:.5px;flex-shrink:0;transition:all .15s;}
+.btn-buy:hover{background:rgba(200,146,42,.35);border-color:rgba(200,146,42,.8);}
+
+.sp-nm{font-family:var(--font-title);font-size:12px;color:var(--gold);}
+.sp-cr{font-size:13px;color:var(--parch-d);}
 .sp-nm{font-family:var(--font-title);font-size:12px;color:var(--gold);}
 .sp-cr{font-size:13px;color:var(--parch-d);}
 .sp-pr{font-size:11px;color:var(--gold-d);}
@@ -992,49 +1002,60 @@ body{font-family:var(--font-narr);color:var(--parch);}
 </div></div>
 
 <!-- MODAL LOJA -->
-<div class="mo" id="mo-shop">
-  <div class="ms" style="padding:16px 14px;gap:0">
-    <!-- Header -->
-    <div class="mt">💎 Diamantes <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
+<div class="mo" id="mo-shop"><div class="ms">
+  <div class="mt">💎 Diamantes &amp; Mercador <button class="mc" onclick="closeMo('mo-shop')">×</button></div>
 
-    <!-- Saldo -->
-    <div id="shop-context-banner" style="font-size:11px;color:var(--gold-d);text-align:center;padding:8px 0 12px;border-bottom:1px solid rgba(200,146,42,.12);margin-bottom:12px">
-      💎 1 Diamante = 10 Peças de Ouro
-    </div>
-
-    <!-- Pack 1 -->
-    <div onclick="buyCredits(1)" id="shop-pack1" style="display:flex;justify-content:space-between;align-items:center;padding:12px 10px;margin-bottom:8px;background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:10px;cursor:pointer">
-      <div>
-        <div style="font-size:13px;color:var(--parch-l);font-weight:600">🎒 Bolsa do Viajante</div>
-        <div style="font-size:11px;color:var(--parch-d);margin-top:2px">15 💎 · 150 PO · 3 sessões</div>
-      </div>
-      <div style="font-family:var(--font-title);font-size:15px;color:var(--gold-l);flex-shrink:0;margin-left:12px">R$&nbsp;4,90</div>
-    </div>
-
-    <!-- Pack 2 -->
-    <div onclick="buyCredits(2)" id="shop-pack2" style="display:flex;justify-content:space-between;align-items:center;padding:12px 10px;margin-bottom:8px;background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:10px;cursor:pointer">
-      <div>
-        <div style="font-size:13px;color:var(--parch-l);font-weight:600">💰 Tesouro do Negociante</div>
-        <div style="font-size:11px;color:var(--parch-d);margin-top:2px">70 💎 · 700 PO · 14 sessões</div>
-      </div>
-      <div style="font-family:var(--font-title);font-size:15px;color:var(--gold-l);flex-shrink:0;margin-left:12px">R$&nbsp;19,90</div>
-    </div>
-
-    <!-- Pack 3 -->
-    <div onclick="buyCredits(3)" id="shop-pack3" style="display:flex;justify-content:space-between;align-items:center;padding:12px 10px;margin-bottom:12px;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.4);border-radius:10px;cursor:pointer">
-      <div>
-        <div style="font-size:13px;color:var(--parch-l);font-weight:600">👑 Cofre do Patrono <span style="font-size:9px;color:#FFD700;background:rgba(200,146,42,.25);border-radius:4px;padding:1px 4px">+50💎</span></div>
-        <div style="font-size:11px;color:var(--parch-d);margin-top:2px">130 💎 · 1300 PO · 26 sessões</div>
-      </div>
-      <div style="font-family:var(--font-title);font-size:15px;color:#FFD700;flex-shrink:0;margin-left:12px">R$&nbsp;34,90</div>
-    </div>
-
-    <!-- Nota -->
-    <div style="font-size:10px;color:rgba(200,180,120,.35);text-align:center">
-      🌟 Destino Favorável: 2💎 &nbsp;·&nbsp; 🎨 Ilustrar Cena: 3💎
-    </div>
+  <!-- Banner de contexto — muda conforme localização -->
+  <div id="shop-context-banner" style="background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);border-radius:8px;padding:8px 12px;text-align:center;margin-bottom:8px">
+    <div style="font-size:11px;color:var(--gold-d)">💎 1 Diamante = 10 Peças de Ouro in-game</div>
   </div>
-</div>
+
+  <!-- Pacote 1 -->
+  <div class="sp-pack" id="shop-pack1" onclick="buyCredits(1)">
+    <div>
+      <div class="sp-nm">Bolsa do Viajante</div>
+      <div class="sp-cr">15 💎 → 150 PO</div>
+      <div class="sp-pr-sm">R$ 4,90</div>
+    </div>
+    <button class="btn-buy" onclick="event.stopPropagation();buyCredits(1)">COMPRAR</button>
+  </div>
+
+  <!-- Pacote 2 -->
+  <div class="sp-pack" id="shop-pack2" onclick="buyCredits(2)">
+    <div>
+      <div class="sp-nm">Tesouro do Negociante</div>
+      <div class="sp-cr">70 💎 → 700 PO</div>
+      <div class="sp-pr-sm">R$ 19,90</div>
+    </div>
+    <button class="btn-buy" onclick="event.stopPropagation();buyCredits(2)">COMPRAR</button>
+  </div>
+
+  <!-- Pacote 3 -->
+  <div class="sp-pack featured" id="shop-pack3" onclick="buyCredits(3)">
+    <div>
+      <div class="sp-nm">★ Cofre do Patrono</div>
+      <div class="sp-cr">130 💎 → 1300 PO</div>
+      <div class="sp-pr-sm">R$ 34,90 · <span style="color:var(--gold-l)">bônus rep</span></div>
+    </div>
+    <button class="btn-buy" onclick="event.stopPropagation();buyCredits(3)">COMPRAR</button>
+  </div>
+
+  <!-- Botões de dev/teste -->
+  <div style="display:flex;gap:6px;margin-top:8px">
+    <button onclick="addTestCredits(50)" style="flex:1;background:rgba(46,160,67,.15);border:1px solid rgba(46,160,67,.3);border-radius:8px;padding:8px 6px;font-size:10px;color:rgba(100,220,100,.7);cursor:pointer;font-family:var(--font-title);letter-spacing:.3px">🧪 +50 💎 (TESTE)</button>
+    <button onclick="showEconomyLog()" style="flex:1;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.25);border-radius:8px;padding:8px 6px;font-size:10px;color:var(--gold-d);cursor:pointer;font-family:var(--font-title);letter-spacing:.3px">📋 Log</button>
+    <button onclick="resetTurnCounter()" style="flex:1;background:rgba(139,111,208,.1);border:1px solid rgba(139,111,208,.25);border-radius:8px;padding:8px 6px;font-size:10px;color:rgba(180,140,255,.7);cursor:pointer;font-family:var(--font-title);letter-spacing:.3px">🔁 Reset Turnos</button>
+  </div>
+
+  <!-- Procurar Mercador (fora de cidade) -->
+  <div id="shop-mercador-btn" style="margin-top:8px;border-top:1px solid rgba(200,146,42,.1);padding-top:8px">
+    <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,180,120,.35);letter-spacing:1px;text-align:center;margin-bottom:6px">🛒 PROCURAR MERCADOR</div>
+    <button onclick="rollFindMerchant()" style="width:100%;background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);border-radius:8px;padding:9px;font-family:var(--font-title);font-size:11px;color:var(--gold-d);cursor:pointer;letter-spacing:.5px">
+      Role Sobrevivência CD <span id="merch-hint">12</span>
+    </button>
+    <div style="font-size:10px;color:rgba(200,180,120,.3);text-align:center;margin-top:4px">Role Sobrevivência para encontrar um mercador por aqui</div>
+  </div>
+</div></div>
 <!-- MODAL DIÁRIO DA AVENTURA -->
 <div class="mo" id="mo-memory"><div class="ms" style="max-height:85vh;overflow-y:auto">
   <div class="mt">📖 Diário de Aventura <button class="mc" onclick="closeMo('mo-memory')">×</button></div>
@@ -2956,13 +2977,12 @@ function addMsg(type,html){
 
 function typewriterMsg(el,text){
   const bbl=el.querySelector('.bbl');if(!bbl)return;
-  // Limita exibição a 1200 chars para performance
-  const display = text.length > 1200 ? text.substring(0,1200)+'...' : text;
-  const words=display.split(' ');let i=0;bbl.innerHTML='';
-  const speed = text.length > 600 ? 15 : 25; // mais rápido para textos longos
+  // text já vem formatado (HTML) — não chamar formatNarrative novamente
+  const words=text.split(' ');let i=0;bbl.innerHTML='';
+  const speed = text.length > 600 ? 12 : 22;
   const iv=setInterval(()=>{
-    if(i>=words.length){clearInterval(iv);bbl.innerHTML=formatNarrative(text);return;}
-    bbl.innerHTML+=words[i]+' ';i++;
+    if(i>=words.length){ clearInterval(iv); bbl.innerHTML=text; return; }
+    bbl.innerHTML+=words[i]+' '; i++;
   },speed);
 }
 
@@ -3017,6 +3037,8 @@ function cleanTextForDisplay(text){
     // Remove backtick code markers
     .replace(/`([^`]+)`/g, '$1')
     .replace(/```[\s\S]*?```/g, '')
+    // Remove literal <br> tags that AI sometimes outputs (should use newlines)
+    .replace(/<br\s*\/?>/gi, '\n')
     // Clean up extra spaces and blank lines left behind
     .replace(/[ \t]{2,}/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
@@ -3035,32 +3057,28 @@ function extractGoldChange(text){
 }
 
 function extractHPChange(text){
-  // Aceita múltiplas tags [PV:-10][PV:+5] etc
   let total = 0;
   const tagRe = /\[PV:([+-]?\d+)\]/gi;
   let m;
   while((m=tagRe.exec(text))!==null){
     const delta = parseInt(m[1]);
-    // ★ Filtro de dano invertido: ignora [PV:-X] se contexto indica JOGADOR atacando
-    // e NÃO indica jogador sendo atingido
     if(delta < 0){
-      // ★ Verifica direção do dano — ignora se o JOGADOR está atacando (não sendo atacado)
-      // Padrões que indicam JOGADOR causando dano (não recebendo)
-      const playerDealing = /(você\s+(?:acerta|golpeia|atinge|fere|causa|inflige)|seu\s+(?:golpe|tiro|ataque|feitiço)\s+acerta|sua\s+(?:flecha|lâmina|espada)\s+(?:acerta|atinge|perfura))/i.test(text);
-      // Padrões que indicam JOGADOR recebendo dano
-      const playerTaking  = /(você\s+(?:sofre|recebe|toma|leva)|(?:goblin|inimigo|criatura|monstro|guarda|bandido|oponente|adversário)\s+(?:acerta|atinge|golpeia|fere)\s+você|o\s+(?:golpe|ataque|tiro)\s+(?:acerta|atinge)\s+você)/i.test(text);
-      // Ignora APENAS se claramente o jogador está atacando E não há evidência de receber dano
-      if(playerDealing && !playerTaking){
-        continue; // dano foi no inimigo, não no jogador
+      // ★ REGRA SIMPLES E CONFIÁVEL:
+      // [PV:-X] só se aplica ao jogador se o INIMIGO está claramente atacando o jogador
+      // Padrões OBRIGATÓRIOS: inimigo + verbo de ataque + você/seu/sua
+      const enemyHitsPlayer = /(?:capanga|goblin|inimigo|criatura|monstro|guarda|bandido|oponente|adversário|soldado|atacante|agressor|vilão|espião|ladrão|assassino|lobo|fera|demônio|esqueleto|zumbi|ogro|troll|dragão|vampiro)\s+(?:te\s+)?(?:acerta|atinge|golpeia|fere|corta|perfura|morde|garras|arremessa)(?:\s+(?:você|seu|sua|te))?/i.test(text);
+      const directDamage   = /(?:você\s+(?:sofre|recebe|toma|leva)|o\s+golpe\s+te\s+acerta|o\s+ataque\s+(?:acerta|atinge)\s+você|te\s+acerta|te\s+atinge)/i.test(text);
+      // Só aplica se há evidência clara de inimigo atacando
+      if(!enemyHitsPlayer && !directDamage){
+        continue; // não é o jogador recebendo dano
       }
     }
     total += delta;
   }
   if(total !== 0) return total;
-  // Fallback narrativo — só aplica quando está claro que é o JOGADOR recebendo
-  // "você sofre X de dano", "você recebe X de dano"
+  // Fallback narrativo — apenas quando inimigo ataca explicitamente
   const dmg  = text.match(/você\s+(?:sofre|recebe|toma|leva)\s+(\d+)\s*(?:pontos?\s+de\s+dano|de\s+dano|dano)/i);
-  const heal = text.match(/(?:recupera|cura|restaura)\s+(\d+)\s*(?:pontos?\s+de\s+vida|de\s+vida)/i);
+  const heal = text.match(/(?:recupera|cura|restaura)\s+(\d+)\s*(?:pontos?\s+de\s+vida|de\s+vida)\b/i);
   if(dmg)  return -parseInt(dmg[1]);
   if(heal) return +parseInt(heal[1]);
   return 0;
@@ -5883,6 +5901,22 @@ function buyCredits(packId){
 
   showToast(`💎 ${pack.gp} PO adicionados! Total: ${Math.round(hero.gold)} PO`);
   logEconomyEvent('purchase', goldGained, -pack.credits, hero.gold-goldGained, hero.gold, pack.name);
+
+  // ★ Se havia paywall ativo, tenta comprar sessão automaticamente
+  const paywall = document.getElementById('paywall-wrap');
+  if(paywall && (hero.credits||0) >= SESSION_COST){
+    // Tem créditos suficientes — usa uma sessão automaticamente
+    hero.credits = (hero.credits||0) - SESSION_COST;
+    addBonusTurns(SESSION_TURNS);
+    updateVitals();
+    paywall.remove();
+    showToast(`🎮 +${SESSION_TURNS} turnos desbloqueados! Continue sua aventura.`);
+    // Desbloqueia todos os controles
+    document.querySelectorAll('[data-turn-blocked]').forEach(el=>{
+      el.style.opacity=''; el.style.pointerEvents=''; el.removeAttribute('data-turn-blocked');
+    });
+    addMemoryEvent(`Sessão Premium: +${SESSION_TURNS} turnos`, 'premium');
+  }
 }
 
 // ★ USAR DIAMANTES para comprar ouro in-game (taxa conversão)
@@ -5929,20 +5963,49 @@ function showEconomyLog(){
 }
 
 function updateShopContext(){
-  // Atualiza saldo no cabeçalho da loja
-  const banner = document.getElementById('shop-context-banner');
+  const banner   = document.getElementById('shop-context-banner');
+  const mercBtn  = document.getElementById('shop-mercador-btn');
+  const packs    = ['shop-pack1','shop-pack2','shop-pack3'];
+  const atLimit  = getTurnsUsedToday() >= (FREE_TURNS_PER_DAY + getBonusTurns());
+
+  // Atualiza saldo
   if(banner){
-    banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:rgba(200,146,42,.7);letter-spacing:.5px">
-      Você tem <b style="color:var(--gold-l)">${Math.round(hero.gold||0)} PO</b> ·
-      <b style="color:#C0A0FF">${hero.credits||0} 💎</b>
-      &nbsp;·&nbsp; 1💎 = 10 PO
-    </div>`;
+    if(inCity){
+      banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:rgba(46,200,80,.8);letter-spacing:.5px;text-align:center">
+        🏙️ <strong>Cidade ou mercador disponível</strong> — compras liberadas!
+      </div>`;
+      banner.style.background='rgba(46,160,67,.1)';
+      banner.style.borderColor='rgba(46,160,67,.35)';
+    } else if(atLimit){
+      banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:#C0A0FF;letter-spacing:.5px;text-align:center">
+        ⏳ <strong>Limite de turnos atingido</strong> — compre Diamantes para continuar!
+      </div>`;
+      banner.style.background='rgba(91,63,160,.12)';
+      banner.style.borderColor='rgba(139,111,208,.4)';
+    } else {
+      banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:.5px;text-align:center">
+        🌲 <strong>Fora da civilização</strong> — encontre um mercador primeiro
+      </div>`;
+      banner.style.background='rgba(200,146,42,.06)';
+      banner.style.borderColor='rgba(200,146,42,.2)';
+    }
   }
-  // Sempre libera todos os pacotes — diamantes sempre disponíveis
-  ['shop-pack1','shop-pack2','shop-pack3'].forEach(id=>{
+
+  // Libera pacotes se cidade ou limite de turnos
+  const canBuy = inCity || atLimit;
+  packs.forEach(id=>{
     const el = document.getElementById(id);
-    if(el){ el.style.opacity='1'; el.style.filter='none'; el.style.pointerEvents='auto'; }
+    if(!el) return;
+    if(canBuy){
+      el.classList.remove('locked');
+      el.style.opacity=''; el.style.pointerEvents='';
+    } else {
+      el.classList.add('locked');
+    }
   });
+
+  // Mostra/esconde botão de procurar mercador
+  if(mercBtn) mercBtn.style.display = inCity ? 'none' : 'block';
 }
 function closeMo(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
@@ -7010,6 +7073,12 @@ document.addEventListener('visibilitychange', function(){
 
 // Salva periodicamente a cada 30 segundos
 setInterval(saveGameState, 30000);
+
+
+function rollFindMerchant(){
+  closeMo('mo-shop');
+  askMaster(`O jogador procura um mercador ou loja na área (Sobrevivência CD ${merchantCD}). Role Sobrevivência para ver se encontra alguém disposto a negociar.`, false, false);
+}
 
 </script>
 
