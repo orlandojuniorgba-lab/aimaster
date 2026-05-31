@@ -4829,12 +4829,29 @@ function showTurnLimitModal(used, limit){
         <button onclick="document.getElementById('paywall-wrap').remove();openMo('mo-shop')" style="background:rgba(200,146,42,.12);border:1px solid rgba(200,146,42,.3);border-radius:12px;padding:12px;font-family:var(--font-title);font-size:12px;color:var(--gold-l);cursor:pointer">
           🛒 Comprar mais Diamantes
         </button>
-        <button onclick="document.getElementById('paywall-wrap').remove()" style="background:none;border:none;font-size:11px;color:rgba(200,180,120,.3);cursor:pointer;padding:4px">
+        <button onclick="dismissPaywall()" style="background:none;border:none;font-size:11px;color:rgba(200,180,120,.3);cursor:pointer;padding:4px">
           Voltar (aguardar meia-noite)
         </button>
       </div>
     </div>`;
   document.body.appendChild(wrap);
+}
+
+function dismissPaywall(){
+  const pw = document.getElementById('paywall-wrap');
+  if(pw) pw.remove();
+  // Mostra barra persistente na parte superior do jogo
+  if(!document.getElementById('continue-session-btn')){
+    const bar = document.createElement('div');
+    bar.id = 'continue-session-btn';
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:500;background:linear-gradient(135deg,rgba(15,10,4,.97),rgba(26,14,2,.97));border-bottom:1px solid rgba(200,146,42,.4);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px';
+    bar.innerHTML = `
+      <div style="font-size:11px;color:rgba(200,180,120,.7)">⏳ Limite atingido · ${hero.credits||0} 💎 disponíveis</div>
+      <button onclick="buySession()" style="background:linear-gradient(135deg,rgba(91,63,160,.5),rgba(139,111,208,.35));border:1px solid rgba(139,111,208,.7);border-radius:8px;padding:7px 14px;font-family:var(--font-title);font-size:11px;color:#C0A0FF;cursor:pointer;white-space:nowrap">
+        💎 ${SESSION_COST} → +${SESSION_TURNS} turnos
+      </button>`;
+    document.body.appendChild(bar);
+  }
 }
 
 function buySession(){
@@ -4854,6 +4871,10 @@ function buySession(){
   showToast(`💎 -${SESSION_COST} Diamantes · +${SESSION_TURNS} turnos desbloqueados!`);
   addMemoryEvent(`Sessão Premium: +${SESSION_TURNS} turnos`, 'premium');
   
+  // Remove barra persistente se existir
+  const contBtn = document.getElementById('continue-session-btn');
+  if(contBtn) contBtn.remove();
+
   // ★ Desbloqueia controles
   document.querySelectorAll('[data-turn-blocked]').forEach(el=>{
     el.style.opacity='';
@@ -5902,14 +5923,18 @@ function buyCredits(packId){
   showToast(`💎 ${pack.gp} PO adicionados! Total: ${Math.round(hero.gold)} PO`);
   logEconomyEvent('purchase', goldGained, -pack.credits, hero.gold-goldGained, hero.gold, pack.name);
 
-  // ★ Se havia paywall ativo, tenta comprar sessão automaticamente
-  const paywall = document.getElementById('paywall-wrap');
-  if(paywall && (hero.credits||0) >= SESSION_COST){
-    // Tem créditos suficientes — usa uma sessão automaticamente
+  // ★ Se atingiu o limite de turnos, tenta comprar sessão automaticamente
+  const atLimit = getTurnsUsedToday() >= (FREE_TURNS_PER_DAY + getBonusTurns());
+  if(atLimit && (hero.credits||0) >= SESSION_COST){
     hero.credits = (hero.credits||0) - SESSION_COST;
     addBonusTurns(SESSION_TURNS);
     updateVitals();
-    paywall.remove();
+    // Remove paywall se ainda existir
+    const paywall = document.getElementById('paywall-wrap');
+    if(paywall) paywall.remove();
+    // Remove botão flutuante de continuar se existir
+    const contBtn = document.getElementById('continue-session-btn');
+    if(contBtn) contBtn.remove();
     showToast(`🎮 +${SESSION_TURNS} turnos desbloqueados! Continue sua aventura.`);
     // Desbloqueia todos os controles
     document.querySelectorAll('[data-turn-blocked]').forEach(el=>{
