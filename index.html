@@ -815,6 +815,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">
       <div class="gold-pill" id="gold-pill-display">🪙 <span id="g-gd">50</span></div>
       <div class="gold-pill" style="background:rgba(100,60,180,0.15);border-color:rgba(100,60,180,0.35);font-size:12px;padding:3px 8px;">💎 <span id="g-credits">0</span></div>
+      <div class="gold-pill" id="turn-pill" style="background:rgba(200,146,42,0.1);border-color:rgba(200,146,42,0.3);font-size:11px;padding:3px 8px;color:rgba(200,180,120,.7)">⏱️ <span id="g-turns">10</span></div>
     </div>
   </div>
   <div class="narr-border"></div>
@@ -2767,6 +2768,18 @@ function updateVitals(){
   if(shXpSub) shXpSub.textContent=`/${xpNext} XP (Nv${lv+1<20?lv+1:20})`;
   if(shXpBar) shXpBar.style.width=xpPct+'%';
   updateXPRing();
+  // Update turn counter display
+  const turnPill = document.getElementById('g-turns');
+  if(turnPill){
+    const used = getTurnsUsedToday();
+    const total = FREE_TURNS_PER_DAY + getBonusTurns();
+    const remaining = Math.max(0, total - used);
+    turnPill.textContent = remaining;
+    const pill = document.getElementById('turn-pill');
+    if(pill) pill.style.borderColor = remaining <= 2 ? 'rgba(200,60,60,.6)' : remaining <= 5 ? 'rgba(200,146,42,.5)' : 'rgba(200,146,42,.3)';
+    if(pill) pill.style.color = remaining <= 2 ? 'rgba(255,100,100,.9)' : 'rgba(200,180,120,.7)';
+  }
+
   // Update rep display in header if exists
   const repEl = document.getElementById('rep-display');
   if(repEl){
@@ -3577,6 +3590,10 @@ NPCs — MEMÓRIA OBRIGATÓRIA:
 ▸ NUNCA contrarie informações de NPCs já estabelecidos na memória
 ▸ NUNCA invente NPCs sem introdução narrativa (diga o nome + aparência + papel)
 ▸ Ao apresentar NPC importante: use tag [NPC:Nome:descrição:relação] para registrar
+▸ Quando NPC muda emocionalmente: [EMOCAO:Nome:estado] ex: [EMOCAO:Aldric:desconfiante]
+▸ Quando jogador faz promessa: [PROMESSA:NomeNPC:o que prometeu]
+▸ Quando algo importante é revelado: [SEGREDO:descrição breve]
+▸ Use esses tags DISCRETAMENTE — o jogador não os vê, só o sistema
 
 REPUTAÇÃO — MECÂNICA AUTOMÁTICA:
 ▸ Use [REP:+X] quando o personagem fizer algo notável no mundo:
@@ -3613,13 +3630,14 @@ REGRA DO DESEJO:
 ▸ O tesouro encontrado deve ser sempre um pouco menos que o item que ele quer comprar
 ▸ Recompensas de missão devem cobrir ~60% do próximo objetivo — nunca tudo
 
-DADOS DE DANO — COMO FUNCIONA:
-▸ Quando o jogador acerta um ataque, o SISTEMA envia o resultado de dano automaticamente
-▸ A mensagem começa com "⚔️ DANO:" — use o valor para narrar o impacto no inimigo
-▸ NUNCA calcule dano por conta própria — aguarde a jogada do jogador
-▸ Magias com salvaguarda: após o [TESTE:] ser resolvido, peça os dados de dano ao jogador
-▸ Dano de arma: jogador rola na bandeja (ex: 1d8+3 para espada longa)
-▸ Dano de magia: jogador rola na bandeja (ex: 2d6 para Queimar Mãos)
+DADOS DE DANO — REGRAS OBRIGATÓRIAS:
+▸ Jogador ACERTOU o ataque? → IMEDIATAMENTE escreva: "Role o dano! [dNúmero de acordo com a arma]"
+▸ Aguarde o sistema enviar "⚔️ DANO: X" antes de narrar o resultado
+▸ Quando receber "⚔️ DANO: X" → narre o impacto em 1-2 linhas CURTAS e sombrias
+▸ NUNCA calcule dano por conta própria — sempre aguarde
+▸ NÃO escreva textos longos após o dano — apenas o impacto visual e o estado do inimigo
+▸ Exemplo correto após dano: "A lâmina abre um corte profundo no ombro do capanga. Ele vacila, mas permanece de pé — ferido, furioso."
+▸ ERRADO: um parágrafo descrevendo toda a batalha antes do próximo turno
 
 DANO E CURA — TAGS OBRIGATÓRIAS:
 ▸ [PV:-X] SOMENTE quando o PERSONAGEM sofre dano CONFIRMADO (inimigo acertou — dado de ataque já resolvido)
@@ -3721,7 +3739,11 @@ COMBATE (PHB Cap.9) — REGRAS CRÍTICAS:
 ATAQUE vs DEFESA — como funciona:
 ▸ O ATACANTE rola: d20 + bônus de ataque vs CA do defensor
 ▸ O DEFENSOR nunca rola dado para se defender de ataques normais — a CA já é a defesa
-▸ NUNCA peça "teste de DES para esquivar" de um ataque — isso não existe no D&D 5e
+▸ NUNCA peça "teste de DES para esquivar" de um ataque — isso NÃO EXISTE no D&D 5e
+▸ NUNCA peça teste de agilidade, esquiva, reflexo, ou similar para ataques
+▸ Inimigo ataca jogador: apenas compare o resultado do ataque com a CA do jogador (${hero.ca||10})
+▸ Se ataque >= CA: jogador foi atingido → use [PV:-X] com o dano do inimigo
+▸ Se ataque < CA: jogador esquivou automaticamente — sem dado necessário
 
 COMO PEDIR ROLAGEM DE ATAQUE ao jogador:
 ▸ Escreva: "Role o dado de ataque!" ou "Role para atacar!" ou [TESTE:str] ou [TESTE:dex]
@@ -3949,7 +3971,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
     });
     if(!res.ok){
       const err=await res.json().catch(()=>({}));
@@ -4377,7 +4399,7 @@ function addOrUpdateNPC(name, desc, relation){
   if(idx >= 0){
     // Atualiza se a nova descrição é melhor (mais longa)
     if(desc && desc.length > (gameMemory.npcs[idx].desc||'').length){
-      gameMemory.npcs[idx].desc = desc;
+      gameMemory.npcs[idx].desc = desc.trim().substring(0,120);
     }
     if(relation && relation !== 'neutro'){
       gameMemory.npcs[idx].relation = relation;
@@ -4392,11 +4414,14 @@ function addOrUpdateNPC(name, desc, relation){
     }
     gameMemory.npcs.push({
       name: name.trim(),
-      desc: (desc||'').trim().substring(0,80),
+      desc: (desc||'').trim().substring(0,120),
       relation: relation||'neutro',
       alive: true,
       firstTurn: gameMemory.turnCount,
       lastSeen: gameMemory.turnCount,
+      promises: [],   // promessas feitas a/por este NPC
+      secrets: [],    // segredos revelados sobre ele
+      emotion: '',    // estado emocional atual
     });
   }
   saveMemory();
@@ -4407,7 +4432,7 @@ function addMemoryEvent(summary, type='evento'){
   if(!summary) return;
   
   gameMemory.events.push({
-    summary: summary.trim().substring(0,120),
+    summary: summary.trim().substring(0,200),
     turn: gameMemory.turnCount,
     session: gameMemory.session,
     type,
@@ -4432,6 +4457,9 @@ function extractEventsFromText(text){
     { re: /\[OURO:\+(\d+)\]/i,            type:'ouro',       fmt: m => `Ganhou ${m[1]} PO` },
     { re: /\[ITEM:\+([^\]:]+)/i,          type:'item',       fmt: m => `Obteve: ${m[1].split(':')[0]}` },
     { re: /\[LOCALIZAÇÃO:([^\]]+)\]/i,   type:'local',      fmt: m => `Chegou em: ${m[1]}` },
+    { re: /\[REP:([+-]?\d+)\]/i,          type:'reputação',  fmt: m => `Reputação: ${m[1]>0?'+':''}${m[1]} pts` },
+    { re: /\[SEGREDO:([^\]]+)\]/i,        type:'segredo',    fmt: m => `Revelação: ${m[1].substring(0,80)}` },
+    { re: /\[PROMESSA:([^:]+):([^\]]+)\]/i, type:'promessa', fmt: m => `Promessa a ${m[1]}: ${m[2].substring(0,60)}` },
   ];
   
   for(const p of eventPatterns){
@@ -4445,6 +4473,30 @@ function extractEventsFromText(text){
     const name = t.replace(/\[ITEM:\+/,'').split(':')[0].trim();
     if(name) addMemoryEvent(`Obteve: ${name}`, 'item');
   });
+
+  // Processa [EMOCAO:NomeNPC:estado]
+  const emocaoMatch = text.match(/\[EMOCAO:([^:]+):([^\]]+)\]/i);
+  if(emocaoMatch){
+    const eObj = gameMemory.npcs.find(n=>n.name.toLowerCase()===emocaoMatch[1].trim().toLowerCase());
+    if(eObj){ eObj.emotion=emocaoMatch[2].trim().substring(0,50); saveMemory(); }
+  }
+
+  // Processa [PROMESSA:NomeNPC:descrição]
+  const promissaMatch = text.match(/\[PROMESSA:([^:]+):([^\]]+)\]/i);
+  if(promissaMatch){
+    const pObj = gameMemory.npcs.find(n=>n.name.toLowerCase()===promissaMatch[1].trim().toLowerCase());
+    if(pObj){ if(!pObj.promises)pObj.promises=[]; pObj.promises.push(promissaMatch[2].trim().substring(0,80)); saveMemory(); }
+  }
+
+  // Processa [REP:+X] — atualiza reputação
+  const repTagMatch = text.match(/\[REP:([+-]?\d+)\]/i);
+  if(repTagMatch){
+    const rd = parseInt(repTagMatch[1]);
+    hero.rep = Math.max(0,(hero.rep||0)+rd);
+    if(rd>0) showToast(`⭐ +${rd} Reputação → ${hero.rep} pts`);
+    else if(rd<0) showToast(`💔 ${rd} Reputação`);
+    updateVitals();
+  }
 
   // Detecta morte de NPC
   const deathMatch = text.match(/([A-ZÁÉÍÓÚ][a-zA-ZÁÉÍÓÚáéíóúâêôãõç]{2,20})\s+(?:morre|foi morto|morreu|caiu|foi derrotado)/i);
@@ -4477,7 +4529,9 @@ function buildMemoryBlock(){
     npcs.forEach(n => {
       const status = n.alive === false ? ' [MORTO]' : '';
       const rel = n.relation && n.relation !== 'neutro' ? ` — ${n.relation}` : '';
-      block += `• ${n.name}${status}: ${n.desc||'personagem da aventura'}${rel}\n`;
+      const emo  = n.emotion ? ` [${n.emotion}]` : '';
+      const prom = n.promises && n.promises.length ? `\n  ↳ Promessa: ${n.promises[n.promises.length-1]}` : '';
+      block += `• ${n.name}${status}${emo}: ${n.desc||'personagem da aventura'}${rel}${prom}\n`;
     });
   }
   
@@ -4990,23 +5044,24 @@ async function generateSceneImage(){
 
 // Gera prompt de imagem otimizado para fantasy D&D
 async function buildImagePrompt(narrativeText){
-  // Extrai elementos visuais da narrativa
   const text = narrativeText.replace(/\[.*?\]/g,'').trim();
-  const charInfo = `${hero.race} ${hero.cls}`;
+  const race = hero.race||'humano';
+  const cls  = hero.cls||'guerreiro';
+  const location = gameMemory.events.slice().reverse().find(e=>e.type==='local')?.summary?.replace('Chegou em:','').trim() || 'floresta medieval';
   
-  // Prompt base de fantasia medieval
-  let prompt = `fantasy RPG illustration, DnD 5e art style, dramatic lighting, detailed medieval fantasy, `;
+  // Extrai elementos-chave da cena (primeiras 300 chars)
+  const sceneCtx = text.substring(0,300).replace(/\n/g,' ').replace(/[\[\]]/g,'');
   
-  // Adiciona contexto do personagem e cena
-  // Pega as primeiras 200 chars da narrativa para extrair cenário
-  const sceneContext = text.substring(0,200).replace(/\n/g,' ');
-  prompt += `${sceneContext}, `;
-  prompt += `${charInfo} adventurer, `;
+  // Prompt cinematográfico focado na CENA, não só no personagem
+  let prompt = `epic fantasy scene, cinematic composition, dramatic lighting, rich colors, `
+             + `highly detailed digital painting, concept art style, `
+             + `${sceneCtx}, `
+             + `${race} ${cls} adventurer in the scene, `
+             + `${location} setting, `
+             + `atmospheric fog, volumetric light, painterly brushwork, `
+             + `no text, no watermark, 16:9 cinematic ratio`;
   
-  // Qualidade e estilo
-  prompt += `oil painting style, fantasy book cover art, high quality, dramatic, epic`;
-  
-  return prompt.substring(0,500); // Limita tamanho do prompt
+  return prompt.substring(0,600);
 }
 
 
@@ -6753,7 +6808,9 @@ function usarDestinoVantagem(){
   const total2 = best + attrMod2 + prof2;
   const ok2 = cd ? total2>=cd : null;
   const rollResult2 = {diceVal:best, modVal:attrMod2+prof2, total:total2, isCrit:best===20, isFail:best===1, ok:ok2, label, attrKey:attr, cd};
-  addRollCard(`🌟 ${label} (vantagem: ${r1}/${r2})`, best, attrMod2+prof2, total2, cd);
+  // Mostra os 2 dados separadamente para o jogador ver
+  addRollCard(`🌟 Dado 1 (descartado)`, r1, attrMod2+prof2, r1+attrMod2+prof2, cd, true);
+  addRollCard(`🌟 ${label} (MELHOR d20)`, best, attrMod2+prof2, total2, cd);
   pendingRollAttr=null; pendingRollCD=null; pendingRollLabel=null; pendingRollCritical=false; pendingRollType='check';
   updateD20ButtonState();
   const outcome = rollResult2.isCrit?'CRÍTICO':rollResult2.isFail?'FALHA CRÍTICA':ok2===true?'SUCESSO':ok2===false?'FALHA':`total ${total2}`;
@@ -7091,6 +7148,17 @@ document.addEventListener('visibilitychange', function(){
             if(narr) narr.appendChild(card);
           }
         });
+        // Pede ao mestre para retomar com contexto
+        const npcsKnown = gameMemory.npcs.filter(n=>n.alive!==false).map(n=>n.name).join(', ');
+        const lastEvent = gameMemory.events.slice(-1)[0]?.summary || '';
+        askMaster(
+          `RETOMADA DE SESSÃO — O jogador voltou após uma pausa.\n` +
+          `NPCs conhecidos: ${npcsKnown||'nenhum ainda'}\n` +
+          `Último evento: ${lastEvent||'início da aventura'}\n` +
+          `Escreva um parágrafo CURTO (2-3 linhas) retomando onde paramos, ` +
+          `como se o jogador acordasse ou voltasse ao momento exato. Não repita tudo — seja conciso.`,
+          false, true
+        );
       }
     }
   }
