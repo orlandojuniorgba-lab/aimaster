@@ -2850,6 +2850,9 @@ function updateVitals(){
   const hpP  = hero.maxHP>0 ? Math.max(0,Math.min(100,Math.round((hero.hp/hero.maxHP)*100))) : 0;
   const _isCasterNow = !NON_CASTERS.has(hero.cls||'');
   const mpP  = _isCasterNow&&hero.maxMP>0 ? Math.max(0,Math.min(100,Math.round((hero.mp/hero.maxMP)*100))) : 0;
+  // Esconde barra MP para não-conjuradores ou level 1 half-caster
+  const _mpRow = document.getElementById('mp-bar-row');
+  if(_mpRow) _mpRow.style.display = (hero.maxMP > 0) ? 'flex' : 'none';
   document.getElementById('bar-hp').style.width=hpP+'%';
   document.getElementById('bar-mp').style.width=mpP+'%';
   // Oculta linha MP para não-conjuradores
@@ -4212,7 +4215,18 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
     }
   }catch(e){
     setThinking(false);
-    const m=addMsg('msg-dm','');typewriterMsg(m,'🌐 Sem conexão. Verifique internet.');
+    console.error('askMaster error:', e);
+    const isLocal = location.protocol === 'file:';
+    let errMsg;
+    if(isLocal){
+      errMsg = '⚠️ Abra pelo link Netlify — não funciona como arquivo local.';
+    } else if(e?.message?.includes('401') || e?.message?.includes('Unauthorized')){
+      errMsg = '🔑 Chave de API inválida. Toque em 🔑 API para reconfigurar.';
+    } else {
+      errMsg = '🌐 Sem conexão. Verifique internet e tente novamente.';
+    }
+    const m=addMsg('msg-dm','');
+    typewriterMsg(m, errMsg);
     gameHistory.pop();
   }
 }
