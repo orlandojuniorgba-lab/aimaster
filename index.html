@@ -682,6 +682,125 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .dtrow{display:flex;align-items:center;gap:6px;padding:4px 2px;border-radius:8px;transition:background .15s;}
 .dtrow:hover{background:rgba(139,111,208,.08);}
 .dtcount{font-family:var(--font-title);font-size:15px;color:var(--gold-l);width:22px;text-align:center;min-width:22px;}
+
+/* ══ AMBIENT BACKGROUNDS ══ */
+.narr { position: relative; }
+.narr::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 1.5s ease, background-image 1.5s ease;
+  z-index: 0;
+}
+.narr > * { position: relative; z-index: 1; }
+
+/* Ambiente floresta */
+.narr.amb-forest::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='400' height='600' fill='%230a1a0a'/%3E%3Cellipse cx='200' cy='600' rx='250' ry='120' fill='%23152010'/%3E%3Cpolygon points='60,400 100,200 140,400' fill='%231a3010'/%3E%3Cpolygon points='100,400 150,150 200,400' fill='%23234018'/%3E%3Cpolygon points='200,400 260,120 320,400' fill='%231a3010'/%3E%3Cpolygon points='260,400 310,180 360,400' fill='%23234018'/%3E%3Cpolygon points='0,400 40,220 80,400' fill='%23152010'/%3E%3Ccircle cx='200' cy='80' r='40' fill='%23c8901a' opacity='0.3'/%3E%3Ccircle cx='200' cy='80' r='20' fill='%23f0c040' opacity='0.4'/%3E%3Crect x='190' y='80' width='2' height='400' fill='%23f0c040' opacity='0.08'/%3E%3C/svg%3E");
+  opacity: 0.12;
+}
+
+/* Ambiente cidade/taverna */
+.narr.amb-city::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='400' height='600' fill='%231a1005'/%3E%3Crect x='20' y='200' width='80' height='300' fill='%23251808'/%3E%3Crect x='120' y='150' width='100' height='350' fill='%231e1406'/%3E%3Crect x='240' y='180' width='70' height='320' fill='%23251808'/%3E%3Crect x='320' y='220' width='60' height='280' fill='%231e1406'/%3E%3Crect x='40' y='240' width='20' height='25' fill='%23c8901a' opacity='0.5'/%3E%3Crect x='150' y='190' width='25' height='30' fill='%23c8901a' opacity='0.6'/%3E%3Crect x='255' y='210' width='20' height='25' fill='%23c8901a' opacity='0.4'/%3E%3Ccircle cx='200' cy='60' r='50' fill='%23c8601a' opacity='0.2'/%3E%3C/svg%3E");
+  opacity: 0.15;
+}
+
+/* Ambiente dungeon/caverna */
+.narr.amb-dungeon::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='400' height='600' fill='%230a0808'/%3E%3Cellipse cx='200' cy='300' rx='180' ry='250' fill='none' stroke='%23302010' stroke-width='40'/%3E%3Cellipse cx='200' cy='300' rx='120' ry='180' fill='none' stroke='%23251808' stroke-width='30'/%3E%3Crect x='180' y='0' width='40' height='600' fill='%23201005' opacity='0.3'/%3E%3Ccircle cx='200' cy='120' r='15' fill='%23c8601a' opacity='0.4'/%3E%3Ccircle cx='200' cy='120' r='8' fill='%23f08020' opacity='0.6'/%3E%3Cellipse cx='200' cy='125' rx='30' ry='15' fill='%23c8601a' opacity='0.1'/%3E%3C/svg%3E");
+  opacity: 0.18;
+}
+
+/* Ambiente combate */
+.narr.amb-combat::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='400' height='600' fill='%23150505'/%3E%3Ccircle cx='200' cy='300' r='200' fill='none' stroke='%23600010' stroke-width='2' opacity='0.4'/%3E%3Ccircle cx='200' cy='300' r='150' fill='none' stroke='%23800015' stroke-width='1' opacity='0.3'/%3E%3Cline x1='0' y1='300' x2='400' y2='300' stroke='%23600010' stroke-width='1' opacity='0.2'/%3E%3Cline x1='200' y1='0' x2='200' y2='600' stroke='%23600010' stroke-width='1' opacity='0.2'/%3E%3Ccircle cx='200' cy='300' r='20' fill='%23c01020' opacity='0.15'/%3E%3C/svg%3E");
+  opacity: 0.2;
+}
+
+/* Ambiente castelo */
+.narr.amb-castle::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='400' height='600' fill='%230a0c12'/%3E%3Crect x='100' y='100' width='200' height='400' fill='%23121820'/%3E%3Crect x='80' y='80' width='30' height='80' fill='%230e1418'/%3E%3Crect x='290' y='80' width='30' height='80' fill='%230e1418'/%3E%3Crect x='170' y='60' width='60' height='80' fill='%230e1418'/%3E%3Crect x='180' y='300' width='40' height='80' fill='%23c8901a' opacity='0.3'/%3E%3Crect x='185' y='305' width='10' height='70' fill='%23f0c040' opacity='0.2'/%3E%3C/svg%3E");
+  opacity: 0.12;
+}
+
+/* ══ MICRO-ANIMATIONS ══ */
+
+/* Crítico — tela treme + brilho dourado */
+@keyframes critShake {
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-4px) rotate(-0.5deg)}
+  40%{transform:translateX(4px) rotate(0.5deg)}
+  60%{transform:translateX(-3px)}
+  80%{transform:translateX(3px)}
+}
+@keyframes critFlash {
+  0%{opacity:0} 30%{opacity:1} 100%{opacity:0}
+}
+.crit-overlay {
+  position:fixed;inset:0;z-index:900;pointer-events:none;
+  background:radial-gradient(ellipse at center, rgba(255,210,50,.18) 0%, rgba(200,146,42,.08) 50%, transparent 70%);
+  animation:critFlash 1.2s ease-out forwards;
+}
+.s-game.crit-shake { animation:critShake .4s ease-out; }
+
+/* Level Up — explosão de luz */
+@keyframes levelUpPulse {
+  0%{transform:scale(0.8);opacity:0}
+  40%{transform:scale(1.15);opacity:1}
+  70%{transform:scale(0.95);opacity:1}
+  100%{transform:scale(1);opacity:0}
+}
+@keyframes levelUpGlow {
+  0%,100%{box-shadow:none}
+  50%{box-shadow:0 0 60px rgba(255,210,50,.4), 0 0 120px rgba(200,146,42,.2)}
+}
+.level-up-overlay {
+  position:fixed;inset:0;z-index:910;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center, rgba(255,215,0,.15) 0%, transparent 60%);
+  animation:critFlash 2s ease-out forwards;
+}
+.level-up-badge {
+  font-family:var(--font-title);font-size:32px;color:#FFD700;
+  text-shadow:0 0 30px rgba(255,215,0,.8), 0 0 60px rgba(255,180,0,.4);
+  animation:levelUpPulse 1.8s ease-out forwards;
+  letter-spacing:2px;text-align:center;
+}
+
+/* Action buttons — slide in */
+@keyframes actionSlideIn {
+  from{transform:translateY(12px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+.act-btn { animation:actionSlideIn .25s ease-out both; }
+.act-btn:nth-child(1){animation-delay:.0s}
+.act-btn:nth-child(2){animation-delay:.06s}
+.act-btn:nth-child(3){animation-delay:.12s}
+.act-btn:nth-child(4){animation-delay:.18s}
+
+/* Roll card — appear */
+@keyframes rollAppear {
+  from{transform:scale(0.85) translateY(8px);opacity:0}
+  to{transform:scale(1) translateY(0);opacity:1}
+}
+.roll-wrap { animation:rollAppear .3s cubic-bezier(0.34,1.56,0.64,1) both; }
+
+/* Thinking bar pulse */
+@keyframes thinkPulse {
+  0%,100%{opacity:.4;width:30%}
+  50%{opacity:1;width:70%}
+}
+.thinking-bar::after {
+  content:'';display:block;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  animation:thinkPulse 1.4s ease-in-out infinite;
+  margin:0 auto;
+}
 </style>
 </head>
 <body>
@@ -815,7 +934,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">
       <div class="gold-pill" id="gold-pill-display">🪙 <span id="g-gd">50</span></div>
       <div class="gold-pill" style="background:rgba(100,60,180,0.15);border-color:rgba(100,60,180,0.35);font-size:12px;padding:3px 8px;">💎 <span id="g-credits">0</span></div>
-      <div class="gold-pill" id="turn-pill" style="background:rgba(200,146,42,0.1);border-color:rgba(200,146,42,0.3);font-size:11px;padding:3px 8px;color:rgba(200,180,120,.7)">⏱️ <span id="g-turns">10</span></div>
+
     </div>
   </div>
   <div class="narr-border"></div>
@@ -2680,6 +2799,8 @@ function startAdventure(){
   hero.questId = QUESTS.indexOf(_startPool[Math.floor(Math.random()*_startPool.length)]);
   const q = QUESTS[hero.questId];
   goTo('s-game');
+  updateVitals();
+  updateAmbientBackground();
   askMaster(`CENA DE ABERTURA — INÍCIO TRANQUILO.
 
 Personagem: ${name} | ${race} ${cls} Nível 1 | ${bg} | ${align}
@@ -2768,18 +2889,6 @@ function updateVitals(){
   if(shXpSub) shXpSub.textContent=`/${xpNext} XP (Nv${lv+1<20?lv+1:20})`;
   if(shXpBar) shXpBar.style.width=xpPct+'%';
   updateXPRing();
-  // Update turn counter display
-  const turnPill = document.getElementById('g-turns');
-  if(turnPill){
-    const used = getTurnsUsedToday();
-    const total = FREE_TURNS_PER_DAY + getBonusTurns();
-    const remaining = Math.max(0, total - used);
-    turnPill.textContent = remaining;
-    const pill = document.getElementById('turn-pill');
-    if(pill) pill.style.borderColor = remaining <= 2 ? 'rgba(200,60,60,.6)' : remaining <= 5 ? 'rgba(200,146,42,.5)' : 'rgba(200,146,42,.3)';
-    if(pill) pill.style.color = remaining <= 2 ? 'rgba(255,100,100,.9)' : 'rgba(200,180,120,.7)';
-  }
-
   // Update rep display in header if exists
   const repEl = document.getElementById('rep-display');
   if(repEl){
@@ -2842,6 +2951,7 @@ function gainXP(amount){
     // Notifica com habilidades ganhas
     const newAbilities=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv===lv).map(a=>a.name).join(', ');
     showToast(`🌟 NÍVEL ${lv}!${newAbilities?' +'+newAbilities:''}`);
+    playLevelUpAnimation(lv); // ★ Animação épica de level up
     // ★ Reputação bônus por subir de nível (reconhecimento no mundo)
     const _repBonus = lv * 5;
     hero.rep = (hero.rep||0) + _repBonus;
@@ -2882,26 +2992,33 @@ function setThinking(v){
 }
 
 // ★ CARD DE DADO detalhado
-function addRollCard(label,diceVal,modVal,total,cd){
+function addRollCard(label,diceVal,modVal,total,cd,grayed=false){
   const narr=document.getElementById('narr');
   const ok=cd!=null?total>=cd:null;
   const isCrit=diceVal===20;
   const isFail=diceVal===1;
   const ms=modVal>=0?`+${modVal}`:String(modVal);
-  // Cor do número total: verde=sucesso/crítico, vermelho=falha/crítica
-  let totalColor='#E8B84B'; // dourado = sem CD
-  if(isCrit) totalColor='#2ECC71';
+  // Detecta se é dado livre (label contém fórmula de dados ex: "1d12", "2d6+1d8")
+  const isFreeDice = /^\d*d\d+/i.test(label) && cd===null && modVal===0;
+  // Cor do número total
+  let totalColor='#E8B84B';
+  if(grayed) totalColor='rgba(180,160,100,.4)';
+  else if(isCrit) totalColor='#2ECC71';
   else if(isFail) totalColor='#E74C3C';
   else if(ok===true) totalColor='#2ECC71';
   else if(ok===false) totalColor='#E74C3C';
-  // Fórmula: "d20(14) +3 = 17 ✓ Sucesso" igual à foto
   const eqSign=`<span style="color:${totalColor};font-weight:700"> = ${total}</span>`;
   let outcomeStr='';
-  if(isCrit) outcomeStr=` <span style="color:#2ECC71">★ Crítico!</span>`;
-  else if(isFail) outcomeStr=` <span style="color:#E74C3C">✗ Falha Crítica</span>`;
-  else if(ok===true) outcomeStr=` <span style="color:#2ECC71">✓ Sucesso</span>`;
-  else if(ok===false) outcomeStr=` <span style="color:#E74C3C">✗ Falha</span>`;
-  const formula=`d20(${diceVal}) ${ms}${eqSign}${outcomeStr}`;
+  if(!grayed){
+    if(isCrit) outcomeStr=` <span style="color:#2ECC71">★ Crítico!</span>`;
+    else if(isFail) outcomeStr=` <span style="color:#E74C3C">✗ Falha Crítica</span>`;
+    else if(ok===true) outcomeStr=` <span style="color:#2ECC71">✓ Sucesso</span>`;
+    else if(ok===false) outcomeStr=` <span style="color:#E74C3C">✗ Falha</span>`;
+  }
+  // Fórmula: livre = "1d12 = 11" | d20 = "d20(14) +3 = 17"
+  const formula = isFreeDice
+    ? `${label}${eqSign}${outcomeStr}`
+    : `d20(${diceVal}) ${ms}${eqSign}${outcomeStr}`;
   const cdLabel=cd!=null?` · CD ${cd}`:'';
   const m=document.createElement('div');m.className='msg roll-wrap';
   m.innerHTML=`<div class="roll-card">
@@ -2912,6 +3029,8 @@ function addRollCard(label,diceVal,modVal,total,cd){
     </div>
   </div>`;
   narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
+  // ★ Animação para crítico
+  if(isCrit && !grayed) setTimeout(playCritAnimation, 150);
 }
 
 // ★ Combate APENAS via tag [COMBATE:Nome] explícita da IA — sem falsos positivos
@@ -2957,6 +3076,8 @@ function addCombatPanel(enemyName,text){
       <div class="combat-text">${text}</div>
     </div>`;
   narr.appendChild(m);m.scrollIntoView({behavior:'smooth',block:'start'});
+  // ★ Animação para crítico
+  if(isCrit && !grayed) setTimeout(playCritAnimation, 150);
 }
 
 // ★ formatNarrative — texto puro, sem injeção de HTML
@@ -3167,6 +3288,15 @@ function updateD20ButtonState(){
   const diceTrayBtn = document.getElementById('dados-fbar-btn');
 
   if(pendingRollAttr){
+    // ── Auto-set d20=1 para o teste ──
+    if(diceTrayCounts[20] === 0){
+      diceTrayCounts[20] = 1;
+      const el = document.getElementById('dtc-20');
+      if(el) el.textContent = '1';
+      const sv = document.getElementById('dtsvg-20');
+      if(sv) sv.classList.add('active');
+      updateDiceTrayHint();
+    }
     // ── Bloqueia botões de ação — free-in fica livre ──
     if(actGrid){ actGrid.style.opacity='0.3'; actGrid.style.pointerEvents='none'; }
     if(freeIn){ freeIn.disabled=false; freeIn.placeholder='Outra decisão ou pergunta em off...'; }
@@ -3244,6 +3374,7 @@ function detectPendingRoll(text){
     'for':'str','des':'dex','con':'con','int':'int','sab':'wis','car':'cha',
     // Iniciativa = DES (PHB p.189)
     'iniciativa':'dex','initiative':'dex','init':'dex',
+    'ataque':'str','attack':'str','acertar':'str',
   };
 
   let foundAttr = null;
@@ -3252,12 +3383,26 @@ function detectPendingRoll(text){
   // Padrão 1: tag explícita [TESTE:atributo:CD] ou [TESTE:atributo]
   const tagMatch = text.match(/\[TESTE:\s*([^:\]]+)(?::(\d+))?(?::([^\]]+))?\]/i);
   if(tagMatch){
-    const key = tagMatch[1].trim().toLowerCase()
+    const rawLabel = tagMatch[1].trim();
+    const key = rawLabel.toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g,''); // remove acentos para comparação
     // Procura com e sem acento
-    foundAttr = ATTR_MAP[tagMatch[1].trim().toLowerCase()] ||
+    foundAttr = ATTR_MAP[rawLabel.toLowerCase()] ||
                 ATTR_MAP[key] || 'str';
     foundCD   = tagMatch[2] ? parseInt(tagMatch[2]) : null;
+
+    // ★ Detecta tipo de rolagem a partir do label da tag
+    const lbl = rawLabel.toLowerCase();
+    if(/iniciativa|initiative|init/.test(lbl)){
+      pendingRollType  = 'initiative';
+      pendingRollLabel = 'Iniciativa';
+      foundCD = null; // iniciativa sem CD
+    } else if(/ataque|attack|acertar/.test(lbl)){
+      pendingRollType  = 'attack';
+    } else if(/salva|save|resist/.test(lbl)){
+      pendingRollType  = 'save';
+    }
+    // default 'check' já está definido globalmente
   }
 
   // Padrão 2: "role [um teste de] X [CD Y]" — várias formas
@@ -3739,11 +3884,11 @@ COMBATE (PHB Cap.9) — REGRAS CRÍTICAS:
 ATAQUE vs DEFESA — como funciona:
 ▸ O ATACANTE rola: d20 + bônus de ataque vs CA do defensor
 ▸ O DEFENSOR nunca rola dado para se defender de ataques normais — a CA já é a defesa
-▸ NUNCA peça "teste de DES para esquivar" de um ataque — isso NÃO EXISTE no D&D 5e
-▸ NUNCA peça teste de agilidade, esquiva, reflexo, ou similar para ataques
-▸ Inimigo ataca jogador: apenas compare o resultado do ataque com a CA do jogador (${hero.ca||10})
-▸ Se ataque >= CA: jogador foi atingido → use [PV:-X] com o dano do inimigo
-▸ Se ataque < CA: jogador esquivou automaticamente — sem dado necessário
+▸ NUNCA NUNCA NUNCA peça "role para esquivar" — isso NÃO EXISTE no D&D 5e
+▸ Inimigo ataca: compare ataque com CA ${hero.ca||10} do personagem — ponto final
+▸ Se ataque >= CA ${hero.ca||10}: atingido → [PV:-X] imediatamente
+▸ Se ataque < CA ${hero.ca||10}: errou automaticamente → sem dado do jogador
+▸ O jogador NUNCA rola dado quando está sendo atacado — só quando ataca
 
 COMO PEDIR ROLAGEM DE ATAQUE ao jogador:
 ▸ Escreva: "Role o dado de ataque!" ou "Role para atacar!" ou [TESTE:str] ou [TESTE:dex]
@@ -4062,6 +4207,8 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // (inCombat persists until explicitly ended)
       updateContextUI();
       updateD20ButtonState();
+      updateVitals();
+      updateAmbientBackground(); // ★ Atualiza ambiente visual
       // Limpa tags do texto
       const cleanText=cleanTextForDisplay(reply);
       const formatted=formatNarrative(cleanText);
@@ -5780,9 +5927,20 @@ async function rollD20Modal(){
     cha:['atuacao','enganacao','intimidacao','persuasao']};
   const _lbl=(pendingRollLabel||attrLabels[attr]||'').toLowerCase()
     .normalize('NFD').replace(/[̀-ͯ]/g,'');
-  const _hasProfSave=_saves.includes(attr);
-  const _hasProfSkill=(_primSkills[attr]||[]).some(s=>_lbl.includes(s)||s.includes(_lbl));
-  const _profBonus=(_hasProfSave||_hasProfSkill)?_pb:0;
+  const _rollType = pendingRollType || 'check';
+  let _isProficient = false;
+  if(_rollType==='attack'){
+    _isProficient = true; // sempre prof com armas
+  } else if(_rollType==='initiative'){
+    _isProficient = false; // DES puro, sem prof
+  } else if(_rollType==='save'){
+    _isProficient = _saves.includes(attr);
+  } else {
+    const _hasProfSave  = _saves.includes(attr);
+    const _hasProfSkill = (_primSkills[attr]||[]).some(s=>_lbl.includes(s)||s.includes(_lbl));
+    _isProficient = _hasProfSave || _hasProfSkill;
+  }
+  const _profBonus = _isProficient ? _pb : 0;
   const m=attrM+_profBonus;
   const total=dr+m;
   const cd=pendingRollCD;
@@ -6048,24 +6206,29 @@ function updateShopContext(){
   const packs    = ['shop-pack1','shop-pack2','shop-pack3'];
   const atLimit  = getTurnsUsedToday() >= (FREE_TURNS_PER_DAY + getBonusTurns());
 
-  // Atualiza saldo
+  // Atualiza saldo + turnos usados
+  const _used = getTurnsUsedToday();
+  const _total = FREE_TURNS_PER_DAY + getBonusTurns();
+  const _remaining = Math.max(0, _total - _used);
+  const _turnInfo = `<div style="font-size:10px;color:rgba(200,180,120,.5);text-align:center;margin-top:4px">⏱️ ${_used} de ${_total} turnos usados hoje · ${_remaining} restantes</div>`;
+
   if(banner){
     if(inCity){
       banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:rgba(46,200,80,.8);letter-spacing:.5px;text-align:center">
         🏙️ <strong>Cidade ou mercador disponível</strong> — compras liberadas!
-      </div>`;
+      </div>${_turnInfo}`;
       banner.style.background='rgba(46,160,67,.1)';
       banner.style.borderColor='rgba(46,160,67,.35)';
     } else if(atLimit){
       banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:#C0A0FF;letter-spacing:.5px;text-align:center">
         ⏳ <strong>Limite de turnos atingido</strong> — compre Diamantes para continuar!
-      </div>`;
+      </div>${_turnInfo}`;
       banner.style.background='rgba(91,63,160,.12)';
       banner.style.borderColor='rgba(139,111,208,.4)';
     } else {
       banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:.5px;text-align:center">
         🌲 <strong>Fora da civilização</strong> — encontre um mercador primeiro
-      </div>`;
+      </div>${_turnInfo}`;
       banner.style.background='rgba(200,146,42,.06)';
       banner.style.borderColor='rgba(200,146,42,.2)';
     }
@@ -6941,7 +7104,7 @@ function adjustDice(sides, delta){
   const isPendingD20 = !!pendingRollAttr;
   // Block: d20 more than 1 when test pending without vantagem
   if(sides === 20 && isPendingD20 && delta > 0 && diceTrayCounts[20] >= 1){
-    showToast('🎲 Testes usam 1d20. Use 🌟 Destino para vantagem.');
+    showToast('🎲 d20 já selecionado! Para rolar com vantagem use 🌟 Destino.');
     return;
   }
   diceTrayCounts[sides] = Math.max(0, Math.min(9, diceTrayCounts[sides] + delta));
@@ -7171,6 +7334,62 @@ setInterval(saveGameState, 30000);
 function rollFindMerchant(){
   closeMo('mo-shop');
   askMaster(`O jogador procura um mercador ou loja na área (Sobrevivência CD ${merchantCD}). Role Sobrevivência para ver se encontra alguém disposto a negociar.`, false, false);
+}
+
+
+// ══ AMBIENT BACKGROUND SYSTEM ══
+function updateAmbientBackground(){
+  const narr = document.getElementById('narr');
+  if(!narr) return;
+  // Remove all ambient classes
+  narr.classList.remove('amb-forest','amb-city','amb-dungeon','amb-combat','amb-castle');
+  if(inCombat){
+    narr.classList.add('amb-combat');
+    return;
+  }
+  // Detect from last narrative or gameMemory
+  const lastEvent = (gameMemory.events||[]).slice().reverse().find(e=>e.type==='local');
+  const loc = (lastEvent?.summary||'').toLowerCase();
+  const recentText = gameHistory.slice(-2).map(m=>m.content||'').join(' ').toLowerCase();
+  const checkText = loc + ' ' + recentText;
+  if(/castelo|fortaleza|palácio|torre|cidadela/i.test(checkText)){
+    narr.classList.add('amb-castle');
+  } else if(/cidade|vilarejo|taverna|mercado|aldeia|estalagem|porto/i.test(checkText)){
+    narr.classList.add('amb-city');
+  } else if(/dungeon|calabouço|caverna|mina|cripta|tumba|catacumba|labirinto/i.test(checkText)){
+    narr.classList.add('amb-dungeon');
+  } else {
+    narr.classList.add('amb-forest'); // default wilderness
+  }
+}
+
+
+// ══ MICRO-ANIMATIONS FUNCTIONS ══
+function playCritAnimation(){
+  // Tela treme
+  const sg = document.getElementById('s-game');
+  if(sg){ sg.classList.add('crit-shake'); setTimeout(()=>sg.classList.remove('crit-shake'),400); }
+  // Flash dourado
+  const ov = document.createElement('div');
+  ov.className = 'crit-overlay';
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.remove(), 1200);
+}
+
+function playLevelUpAnimation(newLevel){
+  const ov = document.createElement('div');
+  ov.className = 'level-up-overlay';
+  ov.innerHTML = `<div class='level-up-badge'>⭐ NÍVEL ${newLevel} ⭐<br><span style='font-size:16px;opacity:.8;display:block;margin-top:8px'>Você ficou mais forte</span></div>`;
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.remove(), 2200);
+}
+
+function playPurchaseAnimation(){
+  const ov = document.createElement('div');
+  ov.className = 'crit-overlay';
+  ov.style.background = 'radial-gradient(ellipse at center, rgba(100,200,255,.12) 0%, transparent 70%)';
+  document.body.appendChild(ov);
+  setTimeout(()=>ov.remove(), 800);
 }
 
 </script>
