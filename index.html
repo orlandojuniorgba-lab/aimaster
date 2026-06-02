@@ -2578,6 +2578,7 @@ let inCombat=false, inCity=false; // currentEnemy declared separately // estados
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
 let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null, pendingRollCritical=false, pendingRollType='check'; // teste pendente
+let pendingDamageRoll=false; // aguardando rolagem de dano
 let currentEnemy=null; // inimigo atual em combate
 
 // Partículas
@@ -3282,6 +3283,23 @@ function updateActionButtons(actions){
 
 
 // ══ D20 BUTTON — só libera quando mestre pede teste ══
+function updateActionButtonsState(){
+  // Bloqueia ações quando aguardando qualquer rolagem
+  const actGrid = document.getElementById('act-grid');
+  const freeIn  = document.getElementById('free-in');
+  if(pendingDamageRoll){
+    if(actGrid){ actGrid.style.opacity='0.3'; actGrid.style.pointerEvents='none'; }
+    if(freeIn){ freeIn.placeholder='Role o dano na bandeja! ⚔️'; }
+    const btn = document.getElementById('dados-fbar-btn');
+    if(btn){ btn.classList.add('pending'); btn.title='⚔️ Role o dano!'; }
+  } else if(!pendingRollAttr){
+    if(actGrid){ actGrid.style.opacity=''; actGrid.style.pointerEvents=''; }
+    if(freeIn){ freeIn.placeholder='Outra decisão...'; }
+    const btn = document.getElementById('dados-fbar-btn');
+    if(btn){ btn.classList.remove('pending'); btn.title='Bandeja de Dados'; }
+  }
+}
+
 function updateD20ButtonState(){
   const actGrid  = document.getElementById('act-grid');
   const freeIn   = document.getElementById('free-in');
@@ -3730,10 +3748,13 @@ DESTINO FAVORÁVEL (botão 🌟):
 ▸ Ao receber "DESTINO FAVORÁVEL — Vantagem": dois d20 foram rolados, use o maior
 ▸ Ao receber "DESTINO FAVORÁVEL — Relançou": ignore a rolagem anterior, use a nova
 
-AGUARDAR RESULTADO — REGRA ABSOLUTA:
-▸ NUNCA continue a narrativa na MESMA RESPOSTA em que pede o teste
-▸ NUNCA escreva "se você passar..." ou "na falha..." antes do jogador rolar
-▸ Apenas aguarde — o resultado chegará automaticamente com todos os bônus calculados
+AGUARDAR RESULTADO — REGRA ABSOLUTA INVIOLÁVEL:
+▸ NUNCA continue a narrativa na MESMA RESPOSTA em que pede qualquer teste
+▸ NUNCA escreva "se você passar...", "na falha..." ou o resultado antes do jogador rolar
+▸ EM COMBATE especialmente: após pedir teste de ataque → PARE. Após pedir dano → PARE.
+▸ A próxima mensagem SEMPRE virá do sistema com o resultado — você só retoma após isso
+▸ Se pedir [TESTE:Ataque] → termine a resposta ali. Não escreva mais nada.
+▸ Se pedir dano → escreva "Role o dano! dXX+mod" → termine. Aguarde ⚔️ DANO.
 
 NPCs — MEMÓRIA OBRIGATÓRIA:
 ▸ O bloco MEMÓRIA DA AVENTURA acima lista todos os NPCs e eventos registrados — consulte SEMPRE
@@ -4127,8 +4148,11 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       }
       // Pendente roll
       detectPendingRoll(reply);
-      updateD20ButtonState(); // Acende o botão se teste pendente
-      // Processa mudanças de inventário
+      // Detecta pedido de dano
+      if(!pendingRollAttr && /role o dano|role.*d\d|d\d+.*de dano/i.test(reply)){
+        pendingDamageRoll = true;
+        updateActionButtonsState();
+      }tário
       processInventoryChanges(reply);
       // ★ Processa memória — extrai NPCs e eventos
       processMemory(reply);
@@ -7180,14 +7204,12 @@ async function rollDiceTray(){
   // ★ Se em combate: envia resultado de dano ao mestre
   // Se fora de combate: funciona apenas como calculadora (sem chamar o mestre)
   if(inCombat){
-    // Detecta contexto do dano pelo tipo/quantidade de dados
-    const hasD6  = diceTrayCounts[6]  > 0;
-    const hasD8  = diceTrayCounts[8]  > 0;
-    const hasD10 = diceTrayCounts[10] > 0;
     const multiDice = results.length > 1 || results[0]?.count > 1;
     const likelySpell = multiDice && !diceTrayCounts[12] && !diceTrayCounts[20];
     const dmgType = likelySpell ? 'dano de magia' : 'dano de arma';
-    askMaster(`⚔️ DANO: Jogador rolou ${formula}${bonusTxt} = **${grandTotal}** de ${dmgType}. Aplique ${grandTotal} de dano ao inimigo e narre o resultado — descreva o impacto visualmente.`, false);
+    pendingDamageRoll = false; // ★ Libera controles
+    updateActionButtonsState();
+    askMaster(`⚔️ DANO: Jogador rolou ${formula}${bonusTxt} = **${grandTotal}** de ${dmgType}. Aplique ${grandTotal} de dano ao inimigo e narre o impacto em 1-2 linhas.`, false);
   }
   // Fora de combate: calculadora silenciosa
 }
