@@ -4302,7 +4302,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // Reroll controlado pelo Mestre via [TESTE:attr:CD:crítico]
       // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
       const testeMatch=reply.match(/\[TESTE:([^:]+):?(\d+)?\]/i);
-      if(_testeTagMatch){
+      if(testeMatch){
         const attrName=testeMatch[1].trim().toLowerCase();
         const attrMap2={'força':'str','destreza':'dex','constituição':'con','inteligência':'int','sabedoria':'wis','carisma':'cha','percepção':'wis','furtividade':'dex','atletismo':'str','intimidação':'cha','persuasão':'cha','enganação':'cha','arcanismo':'int','história':'int','natureza':'int','religião':'int','medicina':'wis','sobrevivência':'wis','percepção de animais':'wis'};
         pendingRollAttr=attrMap2[attrName]||'str';
