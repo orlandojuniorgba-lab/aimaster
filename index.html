@@ -749,6 +749,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .cf-next-btn{background:linear-gradient(135deg,rgba(200,146,42,.25),rgba(180,120,20,.15));border:1px solid rgba(200,146,42,.5);border-radius:10px;padding:11px;font-family:var(--font-title);font-size:13px;color:var(--gold-l);cursor:pointer;letter-spacing:.5px;transition:all .2s;width:100%}
 .cf-next-btn:disabled{opacity:.35;pointer-events:none}
 .cf-back-btn{background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:11px 16px;font-family:var(--font-title);font-size:12px;color:rgba(200,180,120,.5);cursor:pointer}
+.start-btn{background:linear-gradient(135deg,rgba(200,146,42,.35),rgba(160,100,20,.25));border:1.5px solid rgba(200,146,42,.7);border-radius:12px;padding:14px;font-family:var(--font-title);font-size:14px;color:var(--gold-l);cursor:pointer;letter-spacing:1px;transition:all .2s;width:100%;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 </style>
 </head>
 <body>
@@ -2607,18 +2608,54 @@ function mod(v){return Math.floor((v-10)/2);}
 function modStr(v){let m=mod(v);return(m>=0?'+':'')+m;}
 
 async function rollStatsAnimated(){
+  // Map: internal key → label
+  const LABELS = {str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'};
   for(let k of ['str','dex','con','int','wis','cha']){
-    const sb=document.getElementById('sb-'+k);
-    sb.classList.add('rolling');
-    document.getElementById('s-'+k).textContent='?';
+    // Old screen IDs (backward compat)
+    const sb = document.getElementById('sb-'+k);
+    if(sb) sb.classList.add('rolling');
+    const sEl = document.getElementById('s-'+k);
+    if(sEl) sEl.textContent='?';
+    // New creation screen IDs
+    const apEl = document.getElementById('ap-'+k);
+    if(apEl) apEl.textContent='...';
+
     await new Promise(r=>setTimeout(r,80));
     const v=roll4d6drop();stats[k]=v;baseStats[k]=v;
-    document.getElementById('s-'+k).textContent=v;
-    document.getElementById('m-'+k).textContent=modStr(v);
-    sb.classList.remove('rolling');
+
+    // Update old screen
+    if(sEl) sEl.textContent=v;
+    const mEl = document.getElementById('m-'+k);
+    if(mEl) mEl.textContent=modStr(v);
+    if(sb) sb.classList.remove('rolling');
+    // Update new creation screen
+    if(apEl) apEl.textContent=v;
+
     await new Promise(r=>setTimeout(r,60));
   }
   showToast('🎲 Atributos rolados!');
+  // Update new creation screen ap-* cells
+  const ATTR_MAP_KEYS = {str:'str',dex:'dex',con:'con',int:'int',wis:'wis',cha:'cha'};
+  for(const k of Object.keys(ATTR_MAP_KEYS)){
+    const apEl = document.getElementById('ap-'+k);
+    if(apEl && stats[k]) apEl.textContent = stats[k];
+  }
+  // Show char preview card
+  const previewCard = document.getElementById('char-preview-card');
+  if(previewCard){
+    const raceEl = document.getElementById('inp-race');
+    const clsEl  = document.getElementById('inp-class');
+    const race   = raceEl ? raceEl.value : '';
+    const cls    = clsEl  ? clsEl.value  : '';
+    const raceDt = RACE_DATA.find(r=>r.id===race)||{icon:'🧝',id:race};
+    const clsDt  = CLASS_DATA.find(c=>c.id===cls)||{icon:'⚔️',id:cls};
+    if(race && cls){
+      previewCard.innerHTML = `<strong style="font-family:var(--font-title);color:var(--gold-l)">${clsDt.icon} ${race} ${cls}</strong><br>
+        <span style="font-size:10px;opacity:.6">FOR ${stats.str||'?'} · DES ${stats.dex||'?'} · CON ${stats.con||'?'} · INT ${stats.int||'?'} · SAB ${stats.wis||'?'} · CAR ${stats.cha||'?'}</span>`;
+      previewCard.classList.add('show');
+    }
+  }
+  try{ updatePreview(); }catch(e){}
 }
 
 function updatePreview(){
@@ -2780,6 +2817,12 @@ function startAdventure(){
   }catch(e){}
 
   // ★ Zera COMPLETAMENTE o estado de magias para novo personagem
+  // ★ Preserve creation flow choices before clearing
+  const _savedCantrips  = [..._cfSelectedCantrips];
+  const _savedSpells    = [..._cfSelectedSpells];
+  const _savedStyle     = _cfSelectedStyle;
+  const _savedPatron    = _cfSelectedPatron;
+
   heroKnownCantrips=[];
   heroKnownSpells=[];
   learnedSpells=[];
@@ -2787,13 +2830,20 @@ function startAdventure(){
   spellMgrEditing=false;
   cantripSwapPending=false;
   heroCombatStyle=null;
+  heroWarlockPatron=null;
+
+  // ★ Restore creation flow choices
+  if(_savedCantrips.length)  heroKnownCantrips = [..._savedCantrips];
+  if(_savedSpells.length)    heroKnownSpells   = [..._savedSpells];
+  if(_savedStyle)            heroCombatStyle   = _savedStyle;
+  if(_savedPatron){          heroWarlockPatron = _savedPatron; }
   // Limpa dados salvos no localStorage do personagem anterior
   try{
     localStorage.removeItem('aimaster_spells');
     localStorage.removeItem('aimaster_spellbook');
   }catch(e){}
   cantripSwapPending=false;
-  heroCombatStyle=null;
+  // heroCombatStyle already set from creation flow — don't null it again
   initInventory(cls); // recalcCA() é chamado dentro
   updateVitals();
   updateXPModal();
@@ -2806,10 +2856,13 @@ function startAdventure(){
   hero.questId = QUESTS.indexOf(_startPool[Math.floor(Math.random()*_startPool.length)]);
   const q = QUESTS[hero.questId];
   goTo('s-game');
+  updateCharSheet();
   updateVitals(); // ★ Atualiza contador de turnos ao iniciar
   askMaster(`CENA DE ABERTURA — INÍCIO TRANQUILO.
 
 Personagem: ${name} | ${race} ${cls} Nível 1 | ${bg} | ${align}
+Atributos: FOR ${stats.str||10} | DES ${stats.dex||10} | CON ${stats.con||10} | INT ${stats.int||10} | SAB ${stats.wis||10} | CAR ${stats.cha||10}
+${heroCombatStyle?'Estilo de Combate: '+heroCombatStyle:''}${heroWarlockPatron?'\nPatrono: '+({'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'}[heroWarlockPatron]||heroWarlockPatron):''}${heroKnownCantrips.length?'\nTruques conhecidos: '+heroKnownCantrips.join(', '):''}${heroKnownSpells.length?'\nMagias de nível 1: '+heroKnownSpells.join(', '):''}
 Missão futura: "${q.title}" (${q.location||''})
 NPCs que aparecerão: ${(q.npcs||[]).slice(0,2).join(' | ')}
 
@@ -2895,6 +2948,10 @@ function updateVitals(){
   if(shXpSub) shXpSub.textContent=`/${xpNext} XP (Nv${lv+1<20?lv+1:20})`;
   if(shXpBar) shXpBar.style.width=xpPct+'%';
   updateXPRing();
+  // Atualiza ficha se estiver aberta
+  if(document.getElementById('mo-char')?.classList.contains('open')){
+    try{ updateCharSheet(); }catch(e){}
+  }
   // Update rep display in header if exists
   const repEl = document.getElementById('rep-display');
   if(repEl){
@@ -3557,7 +3614,7 @@ function buildSystemPrompt(){
   return `Você é o Mestre de Dungeons do AiMaster — sistema D&D 5e SRD, solo, em português brasileiro.
 
 ━━━ PERSONAGEM ━━━
-Nome: ${hero.name} | Raça: ${hero.race} | Classe: ${hero.cls} Nível ${hero.level||1} | Alinhamento: ${hero.align||'N'}${heroCombatStyle?' | Estilo de Combate: '+heroCombatStyle:''}
+Nome: ${hero.name} | Raça: ${hero.race} | Classe: ${hero.cls} Nível ${hero.level||1} | Alinhamento: ${hero.align||'N'}${heroCombatStyle?' | Estilo de Combate: '+heroCombatStyle:''}${heroWarlockPatron?' | Patrono: '+({'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'}[heroWarlockPatron]||heroWarlockPatron):''}
 Antecedente: ${hero.bg} | Alinhamento: ${hero.align}
 PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | XP: ${hero.xp||0} | Ouro: ${Math.round(hero.gold||0)} PO${currentEnemy?' | Inimigo atual: '+currentEnemy:''}
 Combate: ${combatStats}
@@ -3705,20 +3762,41 @@ PROFICIÊNCIA DOS PERSONAGENS (calculada automaticamente pelo sistema):
 ▸ O campo "Combate" do personagem já mostra os bônus de ataque calculados
 ▸ NUNCA calcule proficiência manualmente — use os valores do bloco PERSONAGEM
 
-QUANDO PEDIR TESTE (regra de ouro D&D 5e):
-▸ SÓ peça teste quando: (1) resultado é incerto E (2) falha tem consequência narrativa real
-▸ NUNCA peça teste para: ações triviais, coisas que o personagem faria automaticamente,
-  tarefas sem risco, perguntas de conhecimento básico para a classe/antecedente
-▸ EXEMPLOS que NÃO precisam de teste:
-  - Guerreiro escalando uma escada normal → sem teste
-  - Mago reconhecendo símbolo arcano básico → sem teste
-  - Personagem caminhando numa rua → sem teste
-▸ EXEMPLOS que PRECISAM de teste:
-  - Escalar penhasco molhado sob pressão → FOR Atletismo CD 12
-  - Detectar emboscada em floresta densa → SAB Percepção CD 15
-  - Persuadir guarda suspeito → CAR Persuasão CD 13
-▸ A ação do JOGADOR deve provocar o teste — não o Mestre inventar obstáculos
-▸ Testes de atributo puro (FOR, DES etc) SÓ quando nenhuma perícia se aplica
+QUANDO PEDIR TESTE — REGRA DE OURO DO D&D 5e:
+▸ Sempre que o jogador tenta algo com resultado INCERTO, peça o teste ANTES de narrar o resultado
+▸ Isso é o coração do D&D: jogador age → Mestre pede teste → aguarda resultado → narra consequência
+
+MAPEAMENTO OBRIGATÓRIO — AÇÃO DO JOGADOR → TESTE:
+▸ Examinar, procurar, notar → SAB Percepção [TESTE:per:CD]
+▸ Investigar, deduzir, estudar pista → INT Investigação [TESTE:int:CD]
+▸ Persuadir, convencer NPC → CAR Persuasão [TESTE:cha:CD]
+▸ Intimidar, ameaçar → CAR Intimidação [TESTE:cha:CD]
+▸ Enganar, mentir → CAR Enganação [TESTE:cha:CD]
+▸ Escalar, saltar, forçar → FOR Atletismo [TESTE:str:CD]
+▸ Equilibrar, acrobacias → DES Acrobacia [TESTE:dex:CD]
+▸ Esconder-se, mover em silêncio → DES Furtividade [TESTE:dex:CD]
+▸ Rastrear, sobreviver no campo → SAB Sobrevivência [TESTE:wis:CD]
+▸ Curar ferido, identificar doença → SAB Medicina [TESTE:wis:CD]
+▸ Intuição sobre NPC → SAB Intuição [TESTE:wis:CD]
+▸ Reconhecer magia, itens arcanos → INT Arcanismo [TESTE:int:CD]
+▸ Prestidigitação, bater carteira → DES Prestidigitação [TESTE:dex:CD]
+
+COMO FAZER NA PRÁTICA — EXEMPLO CORRETO:
+Jogador escolhe "Examinar os arredores":
+  → Mestre narra: "Você para, aguça os sentidos..."
+  → "Role Percepção! [TESTE:per:14]"  ← PARA aqui. Não narra o resultado.
+  → Jogador rola → sistema envia resultado
+  → Mestre narra o que encontrou (sucesso) ou não encontrou (falha)
+
+EXEMPLO ERRADO:
+  → Mestre: "Você examina e encontra pegadas no chão."  ← deu resultado sem teste!
+
+CDs RECOMENDADAS:
+  Fácil=8 | Médio=12 | Difícil=15 | Muito difícil=18 | Quase impossível=22
+
+SÓ DISPENSE o teste quando:
+  - Ação é trivial para a classe/antecedente do personagem
+  - Falha não teria consequência narrativa
 
 TESTES — REGRAS CRÍTICAS (LEIA COM ATENÇÃO):
 
@@ -3751,10 +3829,19 @@ DESTINO FAVORÁVEL (botão 🌟):
 ▸ Ao receber "DESTINO FAVORÁVEL — Vantagem": dois d20 foram rolados, use o maior
 ▸ Ao receber "DESTINO FAVORÁVEL — Relançou": ignore a rolagem anterior, use a nova
 
-AGUARDAR RESULTADO — REGRA ABSOLUTA:
-▸ NUNCA continue a narrativa na MESMA RESPOSTA em que pede o teste
+AGUARDAR RESULTADO — REGRA ABSOLUTA INVIOLÁVEL:
+▸ NUNCA continue a narrativa na MESMA RESPOSTA em que pede teste de perícia ou ataque
 ▸ NUNCA escreva "se você passar..." ou "na falha..." antes do jogador rolar
-▸ Apenas aguarde — o resultado chegará automaticamente com todos os bônus calculados
+▸ NUNCA antecipe o resultado da ação — nem positivo nem negativo
+▸ A resposta TERMINA no pedido do teste. Ponto.
+
+EXEMPLOS DO QUE É PROIBIDO:
+❌ "Role Percepção CD 14. [TESTE:per:14] Você nota pegadas no chão..." ← continua!
+❌ "Role Persuasão. [TESTE:cha:12] O guarda parece hesitar..." ← antecipou resultado!
+❌ "Se passar na Percepção, você verá a armadilha. [TESTE:per:15]" ← revelou antes!
+
+CORRETO:
+✅ "Você se aproxima com cautela, aguçando os sentidos. [TESTE:per:14]" ← PARA aqui.
 
 NPCs — MEMÓRIA OBRIGATÓRIA:
 ▸ O bloco MEMÓRIA DA AVENTURA acima lista todos os NPCs e eventos registrados — consulte SEMPRE
@@ -4215,7 +4302,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // Reroll controlado pelo Mestre via [TESTE:attr:CD:crítico]
       // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
       const testeMatch=reply.match(/\[TESTE:([^:]+):?(\d+)?\]/i);
-      if(testeMatch){
+      if(_testeTagMatch){
         const attrName=testeMatch[1].trim().toLowerCase();
         const attrMap2={'força':'str','destreza':'dex','constituição':'con','inteligência':'int','sabedoria':'wis','carisma':'cha','percepção':'wis','furtividade':'dex','atletismo':'str','intimidação':'cha','persuasão':'cha','enganação':'cha','arcanismo':'int','história':'int','natureza':'int','religião':'int','medicina':'wis','sobrevivência':'wis','percepção de animais':'wis'};
         pendingRollAttr=attrMap2[attrName]||'str';
@@ -4240,11 +4327,22 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // Limpa tags do texto
       // ★ Trunca texto se mestre pediu dano mas continuou narrando
       let replyToShow = reply;
-      const dmgRequestMatch = reply.match(/(role o dano[^\n]*(?:d\d+[^\n]*)?)/i);
+
+      // ★ Trunca após pedido de TESTE (não narra resultado antes do jogador rolar)
+      const _testeTagMatch = reply.match(/\[TESTE:[^\]]+\]/i);
+      if(_testeTagMatch){
+        const cutIdx = reply.indexOf(_testeTagMatch[0]) + testeMatch[0].length;
+        // Mantém só até o fim da linha do pedido de teste
+        const nextPara = reply.indexOf('\n\n', cutIdx);
+        replyToShow = nextPara > 0
+          ? reply.substring(0, nextPara).trim()
+          : reply.substring(0, cutIdx + 80).trim();
+      }
+
+      // ★ Trunca após pedido de DANO (não antecipa resultado)
+      const dmgRequestMatch = !_testeTagMatch && reply.match(/(role o dano[^\n]*(?:d\d+[^\n]*)?)/i);
       if(dmgRequestMatch){
-        // Corta tudo após o pedido de dano + 1 linha
         const cutIdx = reply.indexOf(dmgRequestMatch[0]) + dmgRequestMatch[0].length;
-        // Pega só até o fim da linha do pedido de dano
         const nextNewline = reply.indexOf('\n\n', cutIdx);
         replyToShow = nextNewline > 0 ? reply.substring(0, nextNewline).trim() : reply.substring(0, cutIdx + 60).trim();
       }
@@ -4276,7 +4374,20 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
     }
   }catch(e){
     setThinking(false);
-    const m=addMsg('msg-dm','');typewriterMsg(m,'🌐 Sem conexão. Verifique internet.');
+    console.error('[AiMaster] askMaster error:', e?.message||e);
+    const isLocal = typeof location !== 'undefined' && location.protocol === 'file:';
+    let _errMsg;
+    if(isLocal){
+      _errMsg = '⚠️ Abra pelo link Netlify — não funciona como arquivo local.';
+    } else if(e?.message?.includes('401') || e?.message?.includes('Unauthorized')){
+      _errMsg = '🔑 Chave de API inválida. Toque em 🔑 API para reconfigurar.';
+    } else if(e?.message?.includes('Failed to fetch') || e?.message?.includes('NetworkError') || e?.message?.includes('Load failed')){
+      _errMsg = '🌐 Sem conexão. Verifique internet e tente novamente.';
+    } else {
+      _errMsg = '🌐 Erro de conexão: ' + (e?.message?.substring(0,60)||'desconhecido');
+    }
+    const m=addMsg('msg-dm','');
+    typewriterMsg(m, _errMsg);
     gameHistory.pop();
   }
 }
@@ -6090,6 +6201,7 @@ function openMo(id){
   if(id==='mo-shop')updateShopContext();
   // ★ Ao abrir a ficha, rebuilda a aba de magias se tiver personagem
   if(id==='mo-char' && hero && hero.cls){
+    updateCharSheet();
     buildSpellsTab(hero.cls, hero.level||1);
   }
   const _moEl = document.getElementById(id);
@@ -7496,7 +7608,7 @@ function cfSelectClass(id){
   const info = document.getElementById('cf-class-info');
   if(info&&cls){ info.textContent=cls.desc; info.classList.add('show'); }
   const btn = document.getElementById('cf-next-2');
-  if(btn) btn.disabled=false;
+  if(btn){ btn.disabled=false; btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
   const sel = document.getElementById('inp-class');
   if(sel){ sel.innerHTML=`<option>${id}</option>`; }
 }
@@ -7507,7 +7619,8 @@ function cfNext(fromPane){
   if(fromPane===2 && !_cfSelectedClass){ showToast('Escolha uma classe!'); return; }
 
   // Determine which panes to skip
-  const hasCombatStyle = COMBAT_STYLES_BY_CLASS[_cfSelectedClass]?.length > 0;
+  // Only Guerreiro gets combat style at level 1 in creation (Paladino/Ranger get it at lv2)
+  const hasCombatStyle = _cfSelectedClass === 'Guerreiro';
   const isWarlock = _cfSelectedClass === 'Bruxo';
   const hasMagic = SPELL_CASTERS_CREATION.includes(_cfSelectedClass);
 
@@ -7535,7 +7648,8 @@ function cfNext(fromPane){
 }
 
 function cfBack(fromPane){
-  const hasCombatStyle = COMBAT_STYLES_BY_CLASS[_cfSelectedClass]?.length > 0;
+  // Only Guerreiro gets combat style at level 1 in creation (Paladino/Ranger get it at lv2)
+  const hasCombatStyle = _cfSelectedClass === 'Guerreiro';
   const isWarlock = _cfSelectedClass==='Bruxo';
   const hasMagic = SPELL_CASTERS_CREATION.includes(_cfSelectedClass);
   let prevPane;
@@ -7570,7 +7684,7 @@ function cfShowPane(n){
     pane.style.display='';
   }
   const active=document.getElementById('cf-pane-'+n);
-  if(active){ active.classList.add('active'); }
+  if(active){ active.classList.add('active'); active.style.display='flex'; }
 
   // Build cards on first show
   if(n===1) buildRaceCards();
@@ -7629,10 +7743,9 @@ function buildSpellPane(){
   const content=document.getElementById('cf-pane-4-content');
   if(!content) return;
 
-  // Get available spells for this class
-  const allSpells = ALL_SPELLS.filter(s=>s.classes&&s.classes.includes(cls));
-  const cantrips  = allSpells.filter(s=>s.level===0).slice(0,12);
-  const spells1   = allSpells.filter(s=>s.level===1).slice(0,16);
+  // Get spells using existing data structures
+  const cantrips = (CANTRIPS_BY_CLASS[cls]||[]).slice(0,12).map(n=>({id:n,name:n}));
+  const spells1  = ((SPELLS_BY_CLASS[cls]||{})[1]||[]).slice(0,16).map(n=>({id:n,name:n}));
 
   // How many to pick
   const cantripNeeds = {Mago:3,Clérigo:3,Bardo:2,Druida:2,Feiticeiro:4,Bruxo:2}[cls]||2;
@@ -7685,12 +7798,83 @@ function buildFinalPane(){
   if(rSel&&_cfSelectedRace) rSel.innerHTML=`<option>${_cfSelectedRace}</option>`;
   if(cSel&&_cfSelectedClass) cSel.innerHTML=`<option>${_cfSelectedClass}</option>`;
   // Apply combat style if chosen
-  if(_cfSelectedStyle) _selectedStyle=_cfSelectedStyle;
+  if(_cfSelectedStyle) heroCombatStyle=_cfSelectedStyle;
   // Apply cantrips and spells
   if(_cfSelectedCantrips.length) heroKnownCantrips=[..._cfSelectedCantrips];
   if(_cfSelectedSpells.length) heroKnownSpells=[..._cfSelectedSpells];
-  // Update preview
-  updatePreview();
+  // Update preview safely
+  try{ updatePreview(); }catch(e){ console.warn('preview:', e.message); }
+}
+
+
+function updateCharSheet(){
+  if(!hero || !hero.cls) return;
+
+  // Banner
+  const portrait = document.getElementById('sh-portrait-icon');
+  if(portrait) portrait.textContent = (typeof classAv !== 'undefined' ? classAv[hero.cls] : '') || '⚔️';
+
+  const nm = document.getElementById('sh-nm');
+  if(nm) nm.textContent = hero.name || 'Herói';
+
+  const cl = document.getElementById('sh-cl');
+  if(cl) cl.textContent = `${hero.race||''} ${hero.cls||''} · ${hero.bg||''}`;
+
+  const align = document.getElementById('sh-align');
+  if(align){
+    const alignMap = {LB:'Leal e Bom',NB:'Neutro e Bom',CB:'Caótico e Bom',
+      LN:'Leal e Neutro',N:'Neutro',CN:'Caótico e Neutro',
+      LM:'Leal e Mau',NM:'Neutro e Mau',CM:'Caótico e Mau'};
+    align.textContent = alignMap[hero.align] || hero.align || '—';
+  }
+
+  const lvl = document.getElementById('sh-level-num');
+  if(lvl) lvl.textContent = hero.level || 1;
+
+  // Combat bar
+  const ca = document.getElementById('sh-ca');
+  if(ca) ca.textContent = hero.ca || 10;
+
+  const spd = document.getElementById('sh-speed');
+  if(spd){
+    const raceSpeed = typeof RACE_SPEED !== 'undefined' ? (RACE_SPEED[hero.race] || 9) : 9;
+    spd.textContent = raceSpeed + 'm';
+  }
+
+  const pb = typeof PROF_BONUS !== 'undefined' ? (PROF_BONUS[Math.min(hero.level||1,20)]||2) : 2;
+  const profEl = document.getElementById('sh-prof');
+  if(profEl) profEl.textContent = (pb >= 0 ? '+' : '') + pb;
+
+  // Attack bonus = proficiency + primary stat mod
+  const atkEl = document.getElementById('sh-atk');
+  if(atkEl && typeof stats !== 'undefined'){
+    const strMod = Math.floor(((stats.str||10)-10)/2);
+    const dexMod = Math.floor(((stats.dex||10)-10)/2);
+    const priMod = ['Ladino','Ranger'].includes(hero.cls) ? dexMod : strMod;
+    const atkBonus = pb + priMod;
+    atkEl.textContent = (atkBonus >= 0 ? '+' : '') + atkBonus;
+  }
+
+  // Estilo de combate (se tiver)
+  const profileBonuses = document.getElementById('sh-profile-bonuses');
+  if(profileBonuses){
+    let bonusTxt = '';
+    if(heroCombatStyle){
+      const styleMap = {'archery':'Arqueiria (+2 ataque à dist.)','defense':'Defesa (+1 CA)','dueling':'Duelo (+2 dano)','great':'Armas Grandes','protection':'Proteção (reação)','twf':'Duas Armas','blind':'Combate às Cegas'};
+      bonusTxt += `<span class="pp-bonus">⚔️ ${styleMap[heroCombatStyle]||heroCombatStyle}</span>`;
+    }
+    if(heroWarlockPatron){
+      const patronMap = {'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'};
+      bonusTxt += `<span class="pp-bonus">🕯️ Patrono: ${patronMap[heroWarlockPatron]||heroWarlockPatron}</span>`;
+    }
+    if(heroKnownCantrips && heroKnownCantrips.length){
+      bonusTxt += `<span class="pp-bonus">✨ Truques: ${heroKnownCantrips.slice(0,3).join(', ')}${heroKnownCantrips.length>3?'...':''}</span>`;
+    }
+    if(bonusTxt) profileBonuses.innerHTML = bonusTxt;
+  }
+
+  // Skills
+  buildSkillsTab(hero.cls, hero.race, hero.level||1);
 }
 
 </script>
