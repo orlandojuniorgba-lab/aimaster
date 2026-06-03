@@ -682,6 +682,73 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .dtrow{display:flex;align-items:center;gap:6px;padding:4px 2px;border-radius:8px;transition:background .15s;}
 .dtrow:hover{background:rgba(139,111,208,.08);}
 .dtcount{font-family:var(--font-title);font-size:15px;color:var(--gold-l);width:22px;text-align:center;min-width:22px;}
+
+/* ══ CREATION FLOW ══ */
+.char-flow-body{padding:12px 14px 80px;display:flex;flex-direction:column;gap:0;overflow-y:auto;height:100%}
+.cf-stepper{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:18px;padding-top:4px}
+.cf-step{width:28px;height:28px;border-radius:50%;background:rgba(200,146,42,.1);border:1.5px solid rgba(200,146,42,.25);display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:11px;color:rgba(200,180,120,.4);transition:all .3s;flex-shrink:0}
+.cf-step.active{background:rgba(200,146,42,.25);border-color:var(--gold);color:var(--gold-l)}
+.cf-step.done{background:rgba(46,160,67,.2);border-color:rgba(46,160,67,.5);color:rgba(100,220,100,.8)}
+.cf-step-line{flex:1;height:1px;background:rgba(200,146,42,.15);max-width:30px}
+.cf-pane{display:none;flex-direction:column;gap:10px;animation:cfSlideIn .25s ease-out}
+.cf-pane.active{display:flex}
+@keyframes cfSlideIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+.cf-pane-title{font-family:var(--font-title);font-size:13px;color:rgba(200,180,120,.6);letter-spacing:1px;text-align:center;padding-bottom:4px;border-bottom:1px solid rgba(200,146,42,.1)}
+
+/* Race cards */
+.race-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rc{background:rgba(10,8,2,.8);border:1.5px solid rgba(200,146,42,.18);border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.rc:active{transform:scale(.96)}
+.rc.sel{border-color:var(--gold);background:rgba(200,146,42,.1);box-shadow:0 0 10px rgba(200,146,42,.15)}
+.rc .rc-icon{font-size:24px;display:block;margin-bottom:4px}
+.rc .rc-name{font-family:var(--font-title);font-size:11px;color:var(--parch-d);letter-spacing:.3px}
+.rc .rc-bonus{font-size:9px;color:rgba(200,146,42,.5);margin-top:2px}
+
+/* Class cards */
+.class-card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.cc{background:rgba(10,8,2,.8);border:1.5px solid rgba(200,146,42,.18);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .2s}
+.cc:active{transform:scale(.97)}
+.cc.sel{border-color:var(--gold);background:rgba(200,146,42,.1)}
+.cc .cc-icon{width:36px;height:36px;border-radius:8px;background:rgba(200,146,42,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cc .cc-name{font-family:var(--font-title);font-size:12px;color:var(--parch-l);letter-spacing:.3px}
+.cc .cc-desc{font-size:10px;color:rgba(200,180,120,.4);margin-top:2px;line-height:1.3}
+
+/* Info boxes */
+.cf-race-info,.cf-class-info{background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.15);border-radius:8px;padding:10px 12px;font-size:11px;color:rgba(200,180,120,.7);line-height:1.6;display:none}
+.cf-race-info.show,.cf-class-info.show{display:block}
+
+/* Style/patron cards */
+.style-card-grid,.patron-card-grid{display:flex;flex-direction:column;gap:7px}
+.sc,.pc{background:rgba(10,8,2,.8);border:1.5px solid rgba(200,146,42,.18);border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .2s;display:flex;align-items:flex-start;gap:10px}
+.sc.sel,.pc.sel{border-color:var(--gold);background:rgba(200,146,42,.1)}
+.sc .sc-icon,.pc .pc-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.sc .sc-info,.pc .pc-info{flex:1}
+.sc .sc-name,.pc .pc-name{font-family:var(--font-title);font-size:12px;color:var(--parch-l);letter-spacing:.3px}
+.sc .sc-desc,.pc .pc-desc{font-size:10px;color:rgba(200,180,120,.45);margin-top:3px;line-height:1.4}
+
+/* Spell selection */
+.spell-select-grid{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto}
+.sp-sel-card{background:rgba(10,8,2,.8);border:1.5px solid rgba(200,146,42,.18);border-radius:8px;padding:8px 10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px}
+.sp-sel-card.sel{border-color:var(--gold);background:rgba(200,146,42,.08)}
+.sp-sel-card.locked{opacity:.35;pointer-events:none}
+.sp-sel-icon{font-size:16px;flex-shrink:0}
+.sp-sel-info .sp-sel-name{font-family:var(--font-title);font-size:11px;color:var(--parch-l)}
+.sp-sel-info .sp-sel-desc{font-size:10px;color:rgba(200,180,120,.4);margin-top:1px}
+
+/* Attr preview */
+.attr-preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ap-cell{background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.12);border-radius:8px;padding:6px;text-align:center}
+.ap-lbl{font-size:9px;color:rgba(200,180,120,.4);letter-spacing:.5px;display:block;margin-bottom:2px}
+.ap-val{font-family:var(--font-title);font-size:18px;color:var(--gold-l)}
+
+/* Char preview card */
+.char-preview-card{background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.15);border-radius:10px;padding:10px;text-align:center;font-size:11px;color:rgba(200,180,120,.6);margin-top:6px;display:none}
+.char-preview-card.show{display:block}
+
+/* Buttons */
+.cf-next-btn{background:linear-gradient(135deg,rgba(200,146,42,.25),rgba(180,120,20,.15));border:1px solid rgba(200,146,42,.5);border-radius:10px;padding:11px;font-family:var(--font-title);font-size:13px;color:var(--gold-l);cursor:pointer;letter-spacing:.5px;transition:all .2s;width:100%}
+.cf-next-btn:disabled{opacity:.35;pointer-events:none}
+.cf-back-btn{background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:11px 16px;font-family:var(--font-title);font-size:12px;color:rgba(200,180,120,.5);cursor:pointer}
 </style>
 </head>
 <body>
@@ -717,63 +784,120 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <div class="t-sub">Motor D&amp;D 5e · IA Narrador</div>
   <div class="t-divider"></div>
   <p class="t-desc">Raça, classe e antecedente moldam cada evento, teste e diálogo. O dado decide o destino.</p>
-  <button class="btn-start" onclick="baseStats={};stats={};goTo('s-char')">CRIAR PERSONAGEM</button>
+  <button class="btn-start" onclick="baseStats={};stats={};goTo('s-char');setTimeout(initCreationFlow,50)">CRIAR PERSONAGEM</button>
   <div class="ver-tag">MVP v0.8 · PWA · Motor Vivo</div>
 </div>
 
 <!-- CRIAÇÃO DE PERSONAGEM -->
 <div id="s-char" class="screen">
   <div class="screen-hdr"><div class="sec-hdr">⚔ &nbsp;Forja do Herói</div></div>
-  <div class="screen-body">
-    <div class="char-grid">
-      <div class="cf full"><label>Nome do Herói</label><input type="text" id="inp-name" placeholder="Seu nome na história..." autocomplete="off"/></div>
-      <div class="cf"><label>Raça</label>
-        <select id="inp-race" onchange="updatePreview()">
-          <option>Humano</option><option>Elfo</option><option>Meio-Elfo</option><option>Anão</option>
-          <option>Halfling</option><option>Gnomo</option><option>Meio-Orc</option><option>Tiefling</option><option>Draconato</option>
-        </select></div>
-      <div class="cf"><label>Classe</label>
-        <select id="inp-class" onchange="updatePreview()">
-          <option>Guerreiro</option><option>Mago</option><option>Ladino</option><option>Clérigo</option>
-          <option>Bardo</option><option>Paladino</option><option>Druida</option><option>Ranger</option>
-          <option>Bárbaro</option><option>Feiticeiro</option>
-        </select></div>
-      <div class="cf"><label>Antecedente</label>
-        <select id="inp-bg" onchange="updatePreview()">
-          <option>Forasteiro</option><option>Nobre</option><option>Sábio</option><option>Criminoso</option>
-          <option>Herói do Povo</option><option>Soldado</option>
-        </select></div>
-      <div class="cf"><label>Alinhamento</label>
-        <select id="inp-align">
-          <option>Leal e Bom</option><option>Neutro e Bom</option><option>Caótico e Bom</option>
-          <option>Leal e Neutro</option><option>Neutro e Neutro</option><option>Caótico e Neutro</option>
-          <option>Leal e Mau</option><option>Neutro e Mau</option><option>Caótico e Mau</option>
-        </select></div>
+  <div class="screen-body char-flow-body">
+
+    <!-- Stepper visual -->
+    <div class="cf-stepper" id="cf-stepper">
+      <div class="cf-step active" id="step-dot-1">1</div>
+      <div class="cf-step-line"></div>
+      <div class="cf-step" id="step-dot-2">2</div>
+      <div class="cf-step-line"></div>
+      <div class="cf-step" id="step-dot-3">3</div>
+      <div class="cf-step-line"></div>
+      <div class="cf-step" id="step-dot-4">4</div>
+      <div class="cf-step-line"></div>
+      <div class="cf-step" id="step-dot-5">5</div>
     </div>
-    <div id="profile-preview">
-      <div class="pp-header">
-        <div class="pp-avatar" id="pp-av">⚔️</div>
-        <div><div class="pp-name" id="pp-name">Guerreiro Humano</div><div class="pp-arch" id="pp-arch">Forasteiro das estradas</div></div>
+
+    <!-- PASSO 1: RAÇA -->
+    <div class="cf-pane active" id="cf-pane-1">
+      <div class="cf-pane-title">Escolha sua Raça</div>
+      <div class="race-card-grid" id="race-card-grid"></div>
+      <div class="cf-race-info" id="cf-race-info"></div>
+      <button class="cf-next-btn" onclick="cfNext(1)" id="cf-next-1" disabled>Próximo →</button>
+    </div>
+
+    <!-- PASSO 2: CLASSE -->
+    <div class="cf-pane" id="cf-pane-2">
+      <div class="cf-pane-title">Escolha sua Classe</div>
+      <div class="class-card-grid" id="class-card-grid"></div>
+      <div class="cf-class-info" id="cf-class-info"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="cf-back-btn" onclick="cfBack(2)">← Voltar</button>
+        <button class="cf-next-btn" onclick="cfNext(2)" id="cf-next-2" disabled style="flex:1">Próximo →</button>
       </div>
-      <div class="pp-tags" id="pp-tags"></div>
-      <div class="pp-bonuses" id="pp-bonuses"></div>
     </div>
-    <div class="sec-hdr">🎲 &nbsp;Atributos</div>
-    <div class="stats-row">
-      <div class="sb" id="sb-str"><div class="sn">FOR</div><div class="sv" id="s-str">—</div><div class="sm" id="m-str">+0</div></div>
-      <div class="sb" id="sb-dex"><div class="sn">DES</div><div class="sv" id="s-dex">—</div><div class="sm" id="m-dex">+0</div></div>
-      <div class="sb" id="sb-con"><div class="sn">CON</div><div class="sv" id="s-con">—</div><div class="sm" id="m-con">+0</div></div>
-      <div class="sb" id="sb-int"><div class="sn">INT</div><div class="sv" id="s-int">—</div><div class="sm" id="m-int">+0</div></div>
-      <div class="sb" id="sb-wis"><div class="sn">SAB</div><div class="sv" id="s-wis">—</div><div class="sm" id="m-wis">+0</div></div>
-      <div class="sb" id="sb-cha"><div class="sn">CAR</div><div class="sv" id="s-cha">—</div><div class="sm" id="m-cha">+0</div></div>
+
+    <!-- PASSO 3: ESTILO / PATRONO (condicional) -->
+    <div class="cf-pane" id="cf-pane-3">
+      <div class="cf-pane-title" id="cf-pane-3-title">Estilo de Combate</div>
+      <div id="cf-pane-3-content"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="cf-back-btn" onclick="cfBack(3)">← Voltar</button>
+        <button class="cf-next-btn" onclick="cfNext(3)" id="cf-next-3" style="flex:1">Próximo →</button>
+      </div>
     </div>
-    <button class="btn-roll" onclick="rollStatsAnimated()">🎲 &nbsp;ROLAR (4d6 · mín. 11)</button>
-    <button class="btn-primary" onclick="startAdventure()">INICIAR AVENTURA →</button>
-    <button class="btn-secondary" onclick="openMo('mo-api')" style="margin-top:-4px">🔑 &nbsp;Configurar Chave de API</button>
+
+    <!-- PASSO 4: MAGIAS (condicional) -->
+    <div class="cf-pane" id="cf-pane-4">
+      <div class="cf-pane-title" id="cf-pane-4-title">Escolha suas Magias</div>
+      <div id="cf-pane-4-content"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="cf-back-btn" onclick="cfBack(4)">← Voltar</button>
+        <button class="cf-next-btn" onclick="cfNext(4)" id="cf-next-4" style="flex:1">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- PASSO 5: FINALIZAR -->
+    <div class="cf-pane" id="cf-pane-5">
+      <div class="cf-pane-title">Finalize seu Herói</div>
+      <div class="cf">
+        <label>Nome do Herói</label>
+        <input type="text" id="inp-name" placeholder="Seu nome na história..." autocomplete="off"/>
+      </div>
+      <div class="cf">
+        <label>Antecedente</label>
+        <select id="inp-bg" onchange="updatePreview()">
+          <option>Forasteiro</option><option>Soldado</option><option>Criminoso</option>
+          <option>Nobre</option><option>Sábio</option><option>Herói do Povo</option>
+          <option>Artífice</option><option>Marinheiro</option><option>Eremita</option>
+        </select>
+      </div>
+      <div class="cf">
+        <label>Alinhamento</label>
+        <select id="inp-align" onchange="updatePreview()">
+          <option value="LB">Leal e Bom</option><option value="NB">Neutro e Bom</option>
+          <option value="CB">Caótico e Bom</option><option value="LN">Leal e Neutro</option>
+          <option value="N">Neutro</option><option value="CN">Caótico e Neutro</option>
+          <option value="LM">Leal e Mau</option><option value="NM">Neutro e Mau</option>
+          <option value="CM">Caótico e Mau</option>
+        </select>
+      </div>
+      <!-- Hidden fields kept for compatibility -->
+      <select id="inp-race" style="display:none"></select>
+      <select id="inp-class" style="display:none"></select>
+      <!-- Preview -->
+      <div class="char-preview-card" id="char-preview-card"></div>
+      <!-- Stats -->
+      <div style="margin-top:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:rgba(200,180,120,.5);letter-spacing:.5px">ATRIBUTOS</span>
+          <button onclick="rollStatsAnimated()" style="background:rgba(200,146,42,.15);border:1px solid rgba(200,146,42,.3);border-radius:8px;padding:5px 12px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">🎲 ROLAR</button>
+        </div>
+        <div class="attr-preview-grid" id="attr-preview-grid">
+          <div class="ap-cell"><span class="ap-lbl">FOR</span><span class="ap-val" id="ap-str">—</span></div>
+          <div class="ap-cell"><span class="ap-lbl">DES</span><span class="ap-val" id="ap-dex">—</span></div>
+          <div class="ap-cell"><span class="ap-lbl">CON</span><span class="ap-val" id="ap-con">—</span></div>
+          <div class="ap-cell"><span class="ap-lbl">INT</span><span class="ap-val" id="ap-int">—</span></div>
+          <div class="ap-cell"><span class="ap-lbl">SAB</span><span class="ap-val" id="ap-wis">—</span></div>
+          <div class="ap-cell"><span class="ap-lbl">CAR</span><span class="ap-val" id="ap-cha">—</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="cf-back-btn" onclick="cfBack(5)">← Voltar</button>
+        <button class="start-btn" onclick="startAdventure()" style="flex:1">⚔ INICIAR AVENTURA</button>
+      </div>
+    </div>
+
   </div>
 </div>
-
-<!-- JOGO -->
 <div id="s-game" class="screen">
   <div class="thinking-bar" id="thinking-bar"></div>
   <div class="hdr-scene">
@@ -2432,7 +2556,7 @@ const RACE_SPEED={
   'Meio-Orc':9,     // PHB p.41: 9m
   'Tiefling':9,     // PHB p.43: 9m
 };
-const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨'};
+const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨',Bruxo:'🕯️'};
 // Dado de vida por classe (PHB) — PV no 1° = dado máximo + mod CON
 const classHP={
   'Bárbaro':12,   // d12 (PHB p.47)
@@ -2458,7 +2582,8 @@ let hero={xp:0,level:1,credits:0}, stats={}, baseStats={}, thinking=false;
 let inCombat=false, inCity=false; // currentEnemy declared separately // estados de contexto
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
-let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null, pendingRollCritical=false, pendingRollType='check'; // teste pendente
+let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null, pendingRollCritical=false, pendingRollType='check';
+let pendingActionAfterPaywall=null; // ação salva quando paywall interrompe // teste pendente
 let currentEnemy=null; // inimigo atual em combate
 
 // Partículas
@@ -2471,6 +2596,7 @@ let currentEnemy=null; // inimigo atual em combate
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if(id==='s-char') setTimeout(initCreationFlow, 50);
   // Footer só aparece na tela de jogo
   const footer = document.querySelector('.footer-bar');
   if(footer) footer.style.display = (id==='s-game') ? 'flex' : 'none';
@@ -3003,8 +3129,15 @@ function extractActions(text){
   const raw = m[1];
   // Separa por | ou por quebra de linha
   const parts = raw.split(/\||\\n|\n/)
-    .map(a=>a.trim())
-    .filter(a=>a.length>1 && a.length<100);
+    .map(a=>{
+      let s = a.trim();
+      // Fix camelCase without spaces: "PerguntarOque" → "Perguntar Oque"
+      s = s.replace(/([a-záéíóúàèìòùâêîôûãõç])([A-ZÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÇ])/g, '$1 $2');
+      // Fix accented camelCase joins
+      s = s.replace(/([a-z])([A-Z])/g, '$1 $2');
+      return s.trim();
+    })
+    .filter(a=>a.length>1 && a.length<120);
   return parts.length>0 ? parts.slice(0,4) : null;
 }
 
@@ -3483,9 +3616,27 @@ Sua missão é criar uma experiência inesquecível. Cada resposta deve fazer o 
 
 4. GANCHO OBRIGATÓRIO — termine SEMPRE com tensão não resolvida ou pergunta que exige decisão imediata.
 
+   COMO TERMINAR BEM (fora de combate):
+   ✅ NPC revela algo parcialmente: "Ela começa a explicar, mas para abruptamente ao ouvir passos próximos."
+   ✅ Situação ambígua: "A porta está entreaberta. Dentro, algo se move."  
+   ✅ Escolha pendente: "O mercador espera sua resposta. Sua mão toca o bolso discretamente."
+   ✅ Novo elemento: "Você está prestes a sair quando nota — o símbolo na parede. Aquele símbolo."
+   
+   ERROS FATAIS — NUNCA FAÇA ISSO:
+   ❌ "Você decide seguir pela floresta e chega ao acampamento." — resolveu sem o jogador decidir
+   ❌ "A conversa termina bem. Mira confia em você agora." — resolveu a tensão completamente  
+   ❌ "Você dorme e acorda revigorado." — pulou o momento de decisão
+   ❌ Descrever o RESULTADO de uma ação antes do jogador escolhê-la
+
 5. [AÇÕES:] — 4 opções curtas e distintas, fora do texto narrativo.
 
 ══ LIBERDADE CRIATIVA — REGRAS QUE TORNAM A HISTÓRIA INESQUECÍVEL ══
+
+▸ AGÊNCIA DO JOGADOR — REGRA INVIOLÁVEL
+  O jogador decide TUDO que seu personagem faz.
+  Você narra o MUNDO — nunca narra o personagem agindo por conta própria.
+  ERRADO: "Você avança corajosamente e ataca." — você decidiu pelo jogador
+  CERTO: "O inimigo recua. Ele está ao alcance. O que você faz?"
 
 ▸ NPCs TÊM AGENDA PRÓPRIA
   Cada NPC quer algo que pode conflitar com o jogador. O informante protege o irmão.
@@ -3651,13 +3802,12 @@ REGRA DO DESEJO:
 ▸ Recompensas de missão devem cobrir ~60% do próximo objetivo — nunca tudo
 
 DADOS DE DANO — REGRAS OBRIGATÓRIAS:
-▸ Jogador ACERTOU o ataque? → IMEDIATAMENTE escreva: "Role o dano! [dNúmero de acordo com a arma]"
-▸ Aguarde o sistema enviar "⚔️ DANO: X" antes de narrar o resultado
-▸ Quando receber "⚔️ DANO: X" → narre o impacto em 1-2 linhas CURTAS e sombrias
-▸ NUNCA calcule dano por conta própria — sempre aguarde
-▸ NÃO escreva textos longos após o dano — apenas o impacto visual e o estado do inimigo
-▸ Exemplo correto após dano: "A lâmina abre um corte profundo no ombro do capanga. Ele vacila, mas permanece de pé — ferido, furioso."
-▸ ERRADO: um parágrafo descrevendo toda a batalha antes do próximo turno
+▸ Jogador ACERTOU o ataque? → escreva APENAS: "Role o dano! dXX+mod" e PARE COMPLETAMENTE
+▸ NADA MAIS após o pedido de dano — nenhuma frase, nenhuma cena antecipada, nenhum "enquanto você rola..."
+▸ ERRADO: "Role o dano! [d8+3] — enquanto você rola, a cena se desdobra..." ← PROIBIDO
+▸ CERTO:  "Role o dano! d8+3" ← FIM DA RESPOSTA
+▸ Quando receber "⚔️ DANO: X" → ENTÃO narre o impacto em 1-2 linhas
+▸ NUNCA calcule ou antecipe o dano — a narrativa do impacto só existe após receber o valor real
 
 DANO E CURA — TAGS OBRIGATÓRIAS:
 ▸ [PV:-X] SOMENTE quando o PERSONAGEM sofre dano CONFIRMADO (inimigo acertou — dado de ataque já resolvido)
@@ -3976,7 +4126,11 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
 
   // ★ Verifica limite de turnos (Sessão Premium) — ignora em modo OOC
   if(!oocMode && !skipTurn && typeof checkTurnLimit==='function'){
-    if(!checkTurnLimit()) return; // mostra paywall
+    if(!checkTurnLimit()){
+      // ★ Salva a ação para reenviar após pagamento
+      pendingActionAfterPaywall = userMsg;
+      return;
+    }
   }
   setThinking(true);
   gameHistory.push({role:'user',content:acao});
@@ -4084,7 +4238,17 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       updateD20ButtonState();
       updateVitals(); // ★ Atualiza contador de turnos após cada resposta
       // Limpa tags do texto
-      const cleanText=cleanTextForDisplay(reply);
+      // ★ Trunca texto se mestre pediu dano mas continuou narrando
+      let replyToShow = reply;
+      const dmgRequestMatch = reply.match(/(role o dano[^\n]*(?:d\d+[^\n]*)?)/i);
+      if(dmgRequestMatch){
+        // Corta tudo após o pedido de dano + 1 linha
+        const cutIdx = reply.indexOf(dmgRequestMatch[0]) + dmgRequestMatch[0].length;
+        // Pega só até o fim da linha do pedido de dano
+        const nextNewline = reply.indexOf('\n\n', cutIdx);
+        replyToShow = nextNewline > 0 ? reply.substring(0, nextNewline).trim() : reply.substring(0, cutIdx + 60).trim();
+      }
+      const cleanText=cleanTextForDisplay(replyToShow);
       const formatted=formatNarrative(cleanText);
       // Exibe
       if(enemyName){
@@ -4325,6 +4489,15 @@ let gameMemory = {
 const MEMORY_KEY = 'aimaster_memory';
 const MAX_EVENTS = 15;
 const MAX_NPCS = 20;
+
+
+const WARLOCK_PATRONS = [
+  {id:'archfiend', name:'O Arquidemônio', icon:'🔥', desc:'Senhor dos Nove Infernos. Poder em troca de serviço.', bonus:'Magias de fogo e destruição'},
+  {id:'great_old_one', name:'O Grande Antigo', icon:'🌌', desc:'Entidade cósmica além da compreensão mortal.', bonus:'Telepatia e leitura de mentes'},
+  {id:'archfey', name:'A Arquifada', icon:'🌙', desc:'Ser encantador e imprevisível do Reino Feérico.', bonus:'Magias de charme e ilusão'},
+  {id:'celestial', name:'O Celestial', icon:'☀️', desc:'Ser de luz pura de algum plano superior.', bonus:'Magias de cura e luz sagrada'},
+];
+let heroWarlockPatron = null;
 
 // ★ Carrega memória do localStorage
 function loadMemory(){
@@ -4945,7 +5118,7 @@ function buySession(){
   
   showToast(`💎 -${SESSION_COST} Diamantes · +${SESSION_TURNS} turnos desbloqueados!`);
   addMemoryEvent(`Sessão Premium: +${SESSION_TURNS} turnos`, 'premium');
-  
+
   // Remove barra persistente se existir
   const contBtn = document.getElementById('continue-session-btn');
   if(contBtn) contBtn.remove();
@@ -4956,6 +5129,13 @@ function buySession(){
     el.style.pointerEvents='';
     el.removeAttribute('data-turn-blocked');
   });
+
+  // ★ Reenvia a ação que foi interrompida pelo paywall
+  if(pendingActionAfterPaywall){
+    const action = pendingActionAfterPaywall;
+    pendingActionAfterPaywall = null;
+    setTimeout(()=>askMaster(action), 400);
+  }
 }
 
 
@@ -6026,18 +6206,21 @@ function buyCredits(packId){
     hero.credits = (hero.credits||0) - SESSION_COST;
     addBonusTurns(SESSION_TURNS);
     updateVitals();
-    // Remove paywall se ainda existir
     const paywall = document.getElementById('paywall-wrap');
     if(paywall) paywall.remove();
-    // Remove botão flutuante de continuar se existir
     const contBtn = document.getElementById('continue-session-btn');
     if(contBtn) contBtn.remove();
-    showToast(`🎮 +${SESSION_TURNS} turnos desbloqueados! Continue sua aventura.`);
-    // Desbloqueia todos os controles
+    showToast(`🎮 +${SESSION_TURNS} turnos desbloqueados! Continuando...`);
     document.querySelectorAll('[data-turn-blocked]').forEach(el=>{
       el.style.opacity=''; el.style.pointerEvents=''; el.removeAttribute('data-turn-blocked');
     });
     addMemoryEvent(`Sessão Premium: +${SESSION_TURNS} turnos`, 'premium');
+    // ★ Reenvia ação interrompida
+    if(pendingActionAfterPaywall){
+      const action = pendingActionAfterPaywall;
+      pendingActionAfterPaywall = null;
+      setTimeout(()=>askMaster(action), 400);
+    }
   }
 }
 
@@ -7167,6 +7350,7 @@ function loadGameState(){
     preparedSpells    = state.preparedSpells    || [];
     usedSpellSlots    = state.usedSpellSlots    || [0,0,0,0,0,0,0,0,0];
     heroCombatStyle   = state.heroCombatStyle   || null;
+    heroWarlockPatron = state.heroWarlockPatron || null;
     cantripSwapPending = state.cantripSwapPending || false;
     if(state.gameMemory) Object.assign(gameMemory, state.gameMemory);
     return true;
@@ -7218,6 +7402,295 @@ setInterval(saveGameState, 30000);
 function rollFindMerchant(){
   closeMo('mo-shop');
   askMaster(`O jogador procura um mercador ou loja na área (Sobrevivência CD ${merchantCD}). Role Sobrevivência para ver se encontra alguém disposto a negociar.`, false, false);
+}
+
+
+// ══ CREATION FLOW SYSTEM ══
+const RACE_DATA = [
+  {id:'Humano',   icon:'🧑', bonus:'+1 a todos', info:'Versáteis e ambiciosos. Bônus em todos os atributos e talento extra.'},
+  {id:'Elfo',     icon:'🧝', bonus:'+2 DES, +1 INT', info:'Graciosos e perspicazes. Imunes ao sono mágico e visão no escuro.'},
+  {id:'Meio-Elfo',icon:'🌟', bonus:'+2 CAR, +1×2', info:'O melhor de dois mundos. Bônus em dois atributos à escolha.'},
+  {id:'Anão',     icon:'⚒️', bonus:'+2 CON', info:'Resistentes e determinados. Resistência a venenos e proficiência com ferramentas.'},
+  {id:'Halfling', icon:'🌿', bonus:'+2 DES', info:'Sortudos e ágeis. Podem rerrolar 1s naturais — Sortudo.'},
+  {id:'Gnomo',    icon:'🔮', bonus:'+2 INT', info:'Inventivos e curiosos. Vantagem em resistência a magia.'},
+  {id:'Meio-Orc', icon:'💪', bonus:'+2 FOR, +1 CON', info:'Ferozes e resistentes. Ao chegar a 0 PV ficam com 1 PV uma vez por descanso.'},
+  {id:'Tiefling', icon:'😈', bonus:'+2 CAR, +1 INT', info:'Descendentes infernais. Resistência a fogo e magias inatas de trevas.'},
+  {id:'Draconato',icon:'🐉', bonus:'+2 FOR, +1 CAR', info:'Herança dracônica. Sopro de dragão e resistência ao tipo do sopro.'},
+];
+
+const CLASS_DATA = [
+  {id:'Guerreiro', icon:'⚔️', desc:'Mestre em armas e armaduras de todos os tipos.'},
+  {id:'Mago',      icon:'🔥', desc:'Estudioso do arcano, domina feitiços poderosos.'},
+  {id:'Ladino',    icon:'🗡️', desc:'Especialista em furtividade e ataque cirúrgico.'},
+  {id:'Clérigo',   icon:'✝️', desc:'Servidor divino com poderes de cura e luz.'},
+  {id:'Bardo',     icon:'🎵', desc:'Artista versátil que usa magia e palavras.'},
+  {id:'Paladino',  icon:'🛡️', desc:'Guerreiro sagrado de um ideal ou divindade.'},
+  {id:'Druida',    icon:'🌿', desc:'Guardião da natureza com magia primordial.'},
+  {id:'Ranger',    icon:'🏹', desc:'Rastreador habilidoso, à vontade no mundo selvagem.'},
+  {id:'Bárbaro',   icon:'💢', desc:'Guerreiro feroz movido pela fúria interior.'},
+  {id:'Feiticeiro',icon:'✨', desc:'Magia fluindo no sangue por herança dracônica.'},
+  {id:'Bruxo',     icon:'🕯️', desc:'Poder concedido por um patrono sobrenatural misterioso.'},
+];
+
+// Which classes get spell selection in creation
+const SPELL_CASTERS_CREATION = ['Mago','Clérigo','Bardo','Druida','Feiticeiro','Bruxo'];
+
+let _cfSelectedRace = null;
+let _cfSelectedClass = null;
+let _cfSelectedStyle = null;
+let _cfSelectedPatron = null;
+let _cfSelectedSpells = [];
+let _cfSelectedCantrips = [];
+let _cfCurrentPane = 1;
+let _cfTotalPanes = 5;
+
+function initCreationFlow(){
+  _cfSelectedRace=null;_cfSelectedClass=null;_cfSelectedStyle=null;
+  _cfSelectedPatron=null;_cfSelectedSpells=[];_cfSelectedCantrips=[];
+  _cfCurrentPane=1;
+  buildRaceCards();
+  cfShowPane(1);
+}
+
+function buildRaceCards(){
+  const grid = document.getElementById('race-card-grid');
+  if(!grid) return;
+  grid.innerHTML = RACE_DATA.map(r=>`
+    <div class="rc${_cfSelectedRace===r.id?' sel':''}" onclick="cfSelectRace('${r.id}')">
+      <span class="rc-icon">${r.icon}</span>
+      <div class="rc-name">${r.id}</div>
+      <div class="rc-bonus">${r.bonus}</div>
+    </div>`).join('');
+}
+
+function cfSelectRace(id){
+  _cfSelectedRace = id;
+  buildRaceCards();
+  const race = RACE_DATA.find(r=>r.id===id);
+  const info = document.getElementById('cf-race-info');
+  if(info && race){ info.textContent=race.info; info.classList.add('show'); }
+  const btn = document.getElementById('cf-next-1');
+  if(btn) btn.disabled=false;
+  // Set hidden inp-race
+  const sel = document.getElementById('inp-race');
+  if(sel){ sel.innerHTML=`<option>${id}</option>`; }
+}
+
+function buildClassCards(){
+  const grid = document.getElementById('class-card-grid');
+  if(!grid) return;
+  grid.innerHTML = CLASS_DATA.map(c=>`
+    <div class="cc${_cfSelectedClass===c.id?' sel':''}" onclick="cfSelectClass('${c.id}')">
+      <div class="cc-icon">${c.icon}</div>
+      <div class="cc-info">
+        <div class="cc-name">${c.id}</div>
+        <div class="cc-desc">${c.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+function cfSelectClass(id){
+  _cfSelectedClass=id;_cfSelectedStyle=null;_cfSelectedPatron=null;
+  buildClassCards();
+  const cls = CLASS_DATA.find(c=>c.id===id);
+  const info = document.getElementById('cf-class-info');
+  if(info&&cls){ info.textContent=cls.desc; info.classList.add('show'); }
+  const btn = document.getElementById('cf-next-2');
+  if(btn) btn.disabled=false;
+  const sel = document.getElementById('inp-class');
+  if(sel){ sel.innerHTML=`<option>${id}</option>`; }
+}
+
+function cfNext(fromPane){
+  // Validate current pane
+  if(fromPane===1 && !_cfSelectedRace){ showToast('Escolha uma raça!'); return; }
+  if(fromPane===2 && !_cfSelectedClass){ showToast('Escolha uma classe!'); return; }
+
+  // Determine which panes to skip
+  const hasCombatStyle = COMBAT_STYLES_BY_CLASS[_cfSelectedClass]?.length > 0;
+  const isWarlock = _cfSelectedClass === 'Bruxo';
+  const hasMagic = SPELL_CASTERS_CREATION.includes(_cfSelectedClass);
+
+  let nextPane;
+  if(fromPane===1) nextPane=2;
+  else if(fromPane===2){
+    if(hasCombatStyle || isWarlock) nextPane=3;
+    else if(hasMagic) nextPane=4;
+    else nextPane=5;
+  }
+  else if(fromPane===3) nextPane = hasMagic ? 4 : 5;
+  else if(fromPane===4) nextPane=5;
+
+  // Build pane 3 content if needed
+  if(nextPane===3){
+    if(isWarlock) buildPatronPane();
+    else buildStylePane();
+  }
+  // Build pane 4 content if needed
+  if(nextPane===4) buildSpellPane();
+  // Build pane 5 content
+  if(nextPane===5) buildFinalPane();
+
+  cfShowPane(nextPane);
+}
+
+function cfBack(fromPane){
+  const hasCombatStyle = COMBAT_STYLES_BY_CLASS[_cfSelectedClass]?.length > 0;
+  const isWarlock = _cfSelectedClass==='Bruxo';
+  const hasMagic = SPELL_CASTERS_CREATION.includes(_cfSelectedClass);
+  let prevPane;
+  if(fromPane===2) prevPane=1;
+  else if(fromPane===3) prevPane=2;
+  else if(fromPane===4){
+    prevPane = (hasCombatStyle||isWarlock) ? 3 : 2;
+  }
+  else if(fromPane===5){
+    if(hasMagic) prevPane=4;
+    else if(hasCombatStyle||isWarlock) prevPane=3;
+    else prevPane=2;
+  }
+  cfShowPane(prevPane);
+}
+
+function cfShowPane(n){
+  _cfCurrentPane=n;
+  // Update dots
+  for(let i=1;i<=5;i++){
+    const dot=document.getElementById('step-dot-'+i);
+    if(!dot) continue;
+    dot.classList.remove('active','done');
+    if(i<n) dot.classList.add('done');
+    else if(i===n) dot.classList.add('active');
+  }
+  // Show/hide panes
+  for(let i=1;i<=5;i++){
+    const pane=document.getElementById('cf-pane-'+i);
+    if(!pane) continue;
+    pane.classList.remove('active');
+    pane.style.display='';
+  }
+  const active=document.getElementById('cf-pane-'+n);
+  if(active){ active.classList.add('active'); }
+
+  // Build cards on first show
+  if(n===1) buildRaceCards();
+  if(n===2) buildClassCards();
+}
+
+function buildStylePane(){
+  const styles = COMBAT_STYLES_BY_CLASS[_cfSelectedClass]||[];
+  const title=document.getElementById('cf-pane-3-title');
+  if(title) title.textContent='Estilo de Combate';
+  const content=document.getElementById('cf-pane-3-content');
+  if(!content) return;
+  content.innerHTML=`<div class="style-card-grid">${
+    styles.map(s=>`
+      <div class="sc${_cfSelectedStyle===s.id?' sel':''}" onclick="cfSelectStyle('${s.id}')">
+        <div class="sc-icon">⚔️</div>
+        <div class="sc-info">
+          <div class="sc-name">${s.name}</div>
+          <div class="sc-desc">${s.desc}</div>
+        </div>
+      </div>`).join('')
+  }</div>`;
+}
+
+function cfSelectStyle(id){
+  _cfSelectedStyle=id;
+  buildStylePane();
+}
+
+function buildPatronPane(){
+  const title=document.getElementById('cf-pane-3-title');
+  if(title) title.textContent='Escolha seu Patrono';
+  const content=document.getElementById('cf-pane-3-content');
+  if(!content) return;
+  content.innerHTML=`<div class="patron-card-grid">${
+    WARLOCK_PATRONS.map(p=>`
+      <div class="pc${_cfSelectedPatron===p.id?' sel':''}" onclick="cfSelectPatron('${p.id}')">
+        <div class="pc-icon">${p.icon}</div>
+        <div class="pc-info">
+          <div class="pc-name">${p.name}</div>
+          <div class="pc-desc">${p.desc}<br><span style="color:rgba(200,146,42,.6)">${p.bonus}</span></div>
+        </div>
+      </div>`).join('')
+  }</div>`;
+}
+
+function cfSelectPatron(id){
+  _cfSelectedPatron=id;
+  heroWarlockPatron=id;
+  buildPatronPane();
+}
+
+function buildSpellPane(){
+  const cls=_cfSelectedClass;
+  const title=document.getElementById('cf-pane-4-title');
+  const content=document.getElementById('cf-pane-4-content');
+  if(!content) return;
+
+  // Get available spells for this class
+  const allSpells = ALL_SPELLS.filter(s=>s.classes&&s.classes.includes(cls));
+  const cantrips  = allSpells.filter(s=>s.level===0).slice(0,12);
+  const spells1   = allSpells.filter(s=>s.level===1).slice(0,16);
+
+  // How many to pick
+  const cantripNeeds = {Mago:3,Clérigo:3,Bardo:2,Druida:2,Feiticeiro:4,Bruxo:2}[cls]||2;
+  const spellNeeds   = {Mago:6,Clérigo:0,Bardo:4,Druida:0,Feiticeiro:4,Bruxo:2}[cls]||2;
+
+  let html=``;
+  if(cantrips.length && cantripNeeds>0){
+    html+=`<div style="font-size:10px;color:rgba(200,146,42,.5);letter-spacing:.5px;margin-bottom:6px">TRUQUES — escolha ${cantripNeeds}</div>`;
+    html+=`<div class="spell-select-grid" id="cantrip-sel-grid">${
+      cantrips.map(s=>`<div class="sp-sel-card${_cfSelectedCantrips.includes(s.id)?' sel':''}" onclick="cfToggleCantrip('${s.id}',${cantripNeeds})">
+        <span class="sp-sel-icon">✨</span>
+        <div class="sp-sel-info"><div class="sp-sel-name">${s.name}</div><div class="sp-sel-desc">${(s.desc||'').substring(0,60)}</div></div>
+      </div>`).join('')
+    }</div>`;
+  }
+  if(spells1.length && spellNeeds>0){
+    html+=`<div style="font-size:10px;color:rgba(200,146,42,.5);letter-spacing:.5px;margin:10px 0 6px">MAGIAS NÍVEL 1 — escolha ${spellNeeds}</div>`;
+    html+=`<div class="spell-select-grid" id="spell1-sel-grid">${
+      spells1.map(s=>`<div class="sp-sel-card${_cfSelectedSpells.includes(s.id)?' sel':''}" onclick="cfToggleSpell('${s.id}',${spellNeeds})">
+        <span class="sp-sel-icon">🔮</span>
+        <div class="sp-sel-info"><div class="sp-sel-name">${s.name}</div><div class="sp-sel-desc">${(s.desc||'').substring(0,60)}</div></div>
+      </div>`).join('')
+    }</div>`;
+  }
+  if(!html) html=`<div style="color:rgba(200,180,120,.5);font-size:12px;text-align:center;padding:20px">Esta classe prepara magias livremente.<br>Você escolherá em aventura.</div>`;
+  if(title) title.textContent='Escolha suas Magias';
+  content.innerHTML=html;
+}
+
+function cfToggleCantrip(id, max){
+  const idx=_cfSelectedCantrips.indexOf(id);
+  if(idx>=0){ _cfSelectedCantrips.splice(idx,1); }
+  else if(_cfSelectedCantrips.length<max){ _cfSelectedCantrips.push(id); }
+  else{ showToast('Máximo de '+max+' truques'); return; }
+  buildSpellPane();
+}
+
+function cfToggleSpell(id, max){
+  const idx=_cfSelectedSpells.indexOf(id);
+  if(idx>=0){ _cfSelectedSpells.splice(idx,1); }
+  else if(_cfSelectedSpells.length<max){ _cfSelectedSpells.push(id); }
+  else{ showToast('Máximo de '+max+' magias'); return; }
+  buildSpellPane();
+}
+
+function buildFinalPane(){
+  // Set hidden selects from flow choices
+  const rSel=document.getElementById('inp-race');
+  const cSel=document.getElementById('inp-class');
+  if(rSel&&_cfSelectedRace) rSel.innerHTML=`<option>${_cfSelectedRace}</option>`;
+  if(cSel&&_cfSelectedClass) cSel.innerHTML=`<option>${_cfSelectedClass}</option>`;
+  // Apply combat style if chosen
+  if(_cfSelectedStyle) _selectedStyle=_cfSelectedStyle;
+  // Apply cantrips and spells
+  if(_cfSelectedCantrips.length) heroKnownCantrips=[..._cfSelectedCantrips];
+  if(_cfSelectedSpells.length) heroKnownSpells=[..._cfSelectedSpells];
+  // Update preview
+  updatePreview();
 }
 
 </script>
