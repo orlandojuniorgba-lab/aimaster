@@ -794,7 +794,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <div class="screen-hdr"><div class="sec-hdr">⚔ &nbsp;Forja do Herói</div></div>
   <div class="screen-body char-flow-body">
 
-    <!-- Stepper visual -->
+    <!-- Stepper -->
     <div class="cf-stepper" id="cf-stepper">
       <div class="cf-step active" id="step-dot-1">1</div>
       <div class="cf-step-line"></div>
@@ -815,47 +815,16 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <button class="cf-next-btn" onclick="cfNext(1)" id="cf-next-1" disabled>Próximo →</button>
     </div>
 
-    <!-- PASSO 2: CLASSE -->
+    <!-- PASSO 2: NOME + ATRIBUTOS -->
     <div class="cf-pane" id="cf-pane-2">
-      <div class="cf-pane-title">Escolha sua Classe</div>
-      <div class="class-card-grid" id="class-card-grid"></div>
-      <div class="cf-class-info" id="cf-class-info"></div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button class="cf-back-btn" onclick="cfBack(2)">← Voltar</button>
-        <button class="cf-next-btn" onclick="cfNext(2)" id="cf-next-2" disabled style="flex:1">Próximo →</button>
-      </div>
-    </div>
-
-    <!-- PASSO 3: ESTILO / PATRONO (condicional) -->
-    <div class="cf-pane" id="cf-pane-3">
-      <div class="cf-pane-title" id="cf-pane-3-title">Estilo de Combate</div>
-      <div id="cf-pane-3-content"></div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button class="cf-back-btn" onclick="cfBack(3)">← Voltar</button>
-        <button class="cf-next-btn" onclick="cfNext(3)" id="cf-next-3" style="flex:1">Próximo →</button>
-      </div>
-    </div>
-
-    <!-- PASSO 4: MAGIAS (condicional) -->
-    <div class="cf-pane" id="cf-pane-4">
-      <div class="cf-pane-title" id="cf-pane-4-title">Escolha suas Magias</div>
-      <div id="cf-pane-4-content"></div>
-      <div style="display:flex;gap:8px;margin-top:12px">
-        <button class="cf-back-btn" onclick="cfBack(4)">← Voltar</button>
-        <button class="cf-next-btn" onclick="cfNext(4)" id="cf-next-4" style="flex:1">Próximo →</button>
-      </div>
-    </div>
-
-    <!-- PASSO 5: FINALIZAR -->
-    <div class="cf-pane" id="cf-pane-5">
-      <div class="cf-pane-title">Finalize seu Herói</div>
+      <div class="cf-pane-title">Seu Herói</div>
       <div class="cf">
         <label>Nome do Herói</label>
         <input type="text" id="inp-name" placeholder="Seu nome na história..." autocomplete="off"/>
       </div>
       <div class="cf">
         <label>Antecedente</label>
-        <select id="inp-bg" onchange="updatePreview()">
+        <select id="inp-bg">
           <option>Forasteiro</option><option>Soldado</option><option>Criminoso</option>
           <option>Nobre</option><option>Sábio</option><option>Herói do Povo</option>
           <option>Artífice</option><option>Marinheiro</option><option>Eremita</option>
@@ -863,7 +832,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
       </div>
       <div class="cf">
         <label>Alinhamento</label>
-        <select id="inp-align" onchange="updatePreview()">
+        <select id="inp-align">
           <option value="LB">Leal e Bom</option><option value="NB">Neutro e Bom</option>
           <option value="CB">Caótico e Bom</option><option value="LN">Leal e Neutro</option>
           <option value="N">Neutro</option><option value="CN">Caótico e Neutro</option>
@@ -871,16 +840,11 @@ body{font-family:var(--font-narr);color:var(--parch);}
           <option value="CM">Caótico e Mau</option>
         </select>
       </div>
-      <!-- Hidden fields kept for compatibility -->
-      <select id="inp-race" style="display:none"></select>
-      <select id="inp-class" style="display:none"></select>
-      <!-- Preview -->
-      <div class="char-preview-card" id="char-preview-card"></div>
-      <!-- Stats -->
-      <div style="margin-top:10px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+      <!-- Atributos -->
+      <div style="margin-top:4px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
           <span style="font-size:11px;color:rgba(200,180,120,.5);letter-spacing:.5px">ATRIBUTOS</span>
-          <button onclick="rollStatsAnimated()" style="background:rgba(200,146,42,.15);border:1px solid rgba(200,146,42,.3);border-radius:8px;padding:5px 12px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">🎲 ROLAR</button>
+          <button onclick="rollStatsAnimated()" style="background:rgba(200,146,42,.15);border:1px solid rgba(200,146,42,.3);border-radius:8px;padding:6px 14px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer">🎲 ROLAR</button>
         </div>
         <div class="attr-preview-grid" id="attr-preview-grid">
           <div class="ap-cell"><span class="ap-lbl">FOR</span><span class="ap-val" id="ap-str">—</span></div>
@@ -890,12 +854,50 @@ body{font-family:var(--font-narr);color:var(--parch);}
           <div class="ap-cell"><span class="ap-lbl">SAB</span><span class="ap-val" id="ap-wis">—</span></div>
           <div class="ap-cell"><span class="ap-lbl">CAR</span><span class="ap-val" id="ap-cha">—</span></div>
         </div>
+        <div id="pane2-stats-hint" style="font-size:10px;color:rgba(200,146,42,.4);text-align:center;margin-top:6px">Role os dados para continuar</div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:14px">
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="cf-back-btn" onclick="cfBack(2)">← Voltar</button>
+        <button class="cf-next-btn" onclick="cfNext(2)" id="cf-next-2" disabled style="flex:1">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- PASSO 3: CLASSE -->
+    <div class="cf-pane" id="cf-pane-3">
+      <div class="cf-pane-title">Escolha sua Classe</div>
+      <div class="class-card-grid" id="class-card-grid"></div>
+      <div class="cf-class-info" id="cf-class-info"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="cf-back-btn" onclick="cfBack(3)">← Voltar</button>
+        <button class="cf-next-btn" onclick="cfNext(3)" id="cf-next-3" disabled style="flex:1">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- PASSO 4: ESTILO / PATRONO (condicional) -->
+    <div class="cf-pane" id="cf-pane-4">
+      <div class="cf-pane-title" id="cf-pane-4-title">Estilo de Combate</div>
+      <div id="cf-pane-4-content"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="cf-back-btn" onclick="cfBack(4)">← Voltar</button>
+        <button class="cf-next-btn" onclick="cfNext(4)" id="cf-next-4" style="flex:1">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- PASSO 5: MAGIAS (condicional) -->
+    <div class="cf-pane" id="cf-pane-5">
+      <div class="cf-pane-title" id="cf-pane-5-title">Escolha suas Magias</div>
+      <div id="cf-pane-5-content"></div>
+      <!-- Preview -->
+      <div class="char-preview-card" id="char-preview-card"></div>
+      <div style="display:flex;gap:8px;margin-top:12px">
         <button class="cf-back-btn" onclick="cfBack(5)">← Voltar</button>
         <button class="start-btn" onclick="startAdventure()" style="flex:1">⚔ INICIAR AVENTURA</button>
       </div>
     </div>
+
+    <!-- Hidden selects for compatibility -->
+    <select id="inp-race" style="display:none"></select>
+    <select id="inp-class" style="display:none"></select>
 
   </div>
 </div>
@@ -2641,6 +2643,12 @@ async function rollStatsAnimated(){
     if(apEl && stats[k]) apEl.textContent = stats[k];
   }
   // Show char preview card
+  // Enable pane 2 next button after rolling
+  const next2 = document.getElementById('cf-next-2');
+  if(next2){ next2.disabled=false; next2.style.opacity='1'; next2.style.pointerEvents='auto'; }
+  const hint = document.getElementById('pane2-stats-hint');
+  if(hint) hint.style.display='none';
+
   const previewCard = document.getElementById('char-preview-card');
   if(previewCard){
     const raceEl = document.getElementById('inp-race');
@@ -7607,62 +7615,53 @@ function cfSelectClass(id){
   const cls = CLASS_DATA.find(c=>c.id===id);
   const info = document.getElementById('cf-class-info');
   if(info&&cls){ info.textContent=cls.desc; info.classList.add('show'); }
-  const btn = document.getElementById('cf-next-2');
+  const btn = document.getElementById('cf-next-3');
   if(btn){ btn.disabled=false; btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
   const sel = document.getElementById('inp-class');
   if(sel){ sel.innerHTML=`<option>${id}</option>`; }
 }
 
 function cfNext(fromPane){
-  // Validate current pane
   if(fromPane===1 && !_cfSelectedRace){ showToast('Escolha uma raça!'); return; }
-  if(fromPane===2 && !_cfSelectedClass){ showToast('Escolha uma classe!'); return; }
+  if(fromPane===2 && !Object.keys(baseStats||{}).length){ showToast('Role os dados primeiro!'); return; }
+  if(fromPane===3 && !_cfSelectedClass){ showToast('Escolha uma classe!'); return; }
 
-  // Determine which panes to skip
-  // Only Guerreiro gets combat style at level 1 in creation (Paladino/Ranger get it at lv2)
   const hasCombatStyle = _cfSelectedClass === 'Guerreiro';
-  const isWarlock = _cfSelectedClass === 'Bruxo';
-  const hasMagic = SPELL_CASTERS_CREATION.includes(_cfSelectedClass);
+  const isWarlock      = _cfSelectedClass === 'Bruxo';
+  const hasMagic       = SPELL_CASTERS_CREATION.includes(_cfSelectedClass||'');
 
   let nextPane;
   if(fromPane===1) nextPane=2;
-  else if(fromPane===2){
-    if(hasCombatStyle || isWarlock) nextPane=3;
-    else if(hasMagic) nextPane=4;
-    else nextPane=5;
+  else if(fromPane===2) nextPane=3;
+  else if(fromPane===3){
+    if(hasCombatStyle||isWarlock) nextPane=4;
+    else if(hasMagic) nextPane=5;
+    else{ buildFinalPreview(); startAdventure(); return; }
   }
-  else if(fromPane===3) nextPane = hasMagic ? 4 : 5;
-  else if(fromPane===4) nextPane=5;
-
-  // Build pane 3 content if needed
-  if(nextPane===3){
-    if(isWarlock) buildPatronPane();
-    else buildStylePane();
+  else if(fromPane===4){
+    if(hasMagic) nextPane=5;
+    else{ buildFinalPreview(); startAdventure(); return; }
   }
-  // Build pane 4 content if needed
-  if(nextPane===4) buildSpellPane();
-  // Build pane 5 content
-  if(nextPane===5) buildFinalPane();
+  else if(fromPane===5){ buildFinalPreview(); startAdventure(); return; }
 
+  if(nextPane===3) buildClassCards();
+  if(nextPane===4){
+    if(isWarlock) buildPatronPane4();
+    else buildStylePane4();
+  }
+  if(nextPane===5) buildSpellPane5();
   cfShowPane(nextPane);
 }
 
 function cfBack(fromPane){
-  // Only Guerreiro gets combat style at level 1 in creation (Paladino/Ranger get it at lv2)
-  const hasCombatStyle = _cfSelectedClass === 'Guerreiro';
-  const isWarlock = _cfSelectedClass==='Bruxo';
-  const hasMagic = SPELL_CASTERS_CREATION.includes(_cfSelectedClass);
+  const hasCombatStyle = _cfSelectedClass==='Guerreiro';
+  const isWarlock      = _cfSelectedClass==='Bruxo';
+  const hasMagic       = SPELL_CASTERS_CREATION.includes(_cfSelectedClass||'');
   let prevPane;
   if(fromPane===2) prevPane=1;
   else if(fromPane===3) prevPane=2;
-  else if(fromPane===4){
-    prevPane = (hasCombatStyle||isWarlock) ? 3 : 2;
-  }
-  else if(fromPane===5){
-    if(hasMagic) prevPane=4;
-    else if(hasCombatStyle||isWarlock) prevPane=3;
-    else prevPane=2;
-  }
+  else if(fromPane===4) prevPane=3;
+  else if(fromPane===5) prevPane=(hasCombatStyle||isWarlock)?4:3;
   cfShowPane(prevPane);
 }
 
@@ -7691,11 +7690,11 @@ function cfShowPane(n){
   if(n===2) buildClassCards();
 }
 
-function buildStylePane(){
+function buildStylePane4(){
   const styles = COMBAT_STYLES_BY_CLASS[_cfSelectedClass]||[];
-  const title=document.getElementById('cf-pane-3-title');
+  const title=document.getElementById('cf-pane-5-title');
   if(title) title.textContent='Estilo de Combate';
-  const content=document.getElementById('cf-pane-3-content');
+  const content=document.getElementById('cf-pane-5-content');
   if(!content) return;
   content.innerHTML=`<div class="style-card-grid">${
     styles.map(s=>`
@@ -7714,10 +7713,10 @@ function cfSelectStyle(id){
   buildStylePane();
 }
 
-function buildPatronPane(){
-  const title=document.getElementById('cf-pane-3-title');
+function buildPatronPane4(){
+  const title=document.getElementById('cf-pane-5-title');
   if(title) title.textContent='Escolha seu Patrono';
-  const content=document.getElementById('cf-pane-3-content');
+  const content=document.getElementById('cf-pane-5-content');
   if(!content) return;
   content.innerHTML=`<div class="patron-card-grid">${
     WARLOCK_PATRONS.map(p=>`
@@ -7737,10 +7736,10 @@ function cfSelectPatron(id){
   buildPatronPane();
 }
 
-function buildSpellPane(){
+function buildSpellPane5(){
   const cls=_cfSelectedClass;
-  const title=document.getElementById('cf-pane-4-title');
-  const content=document.getElementById('cf-pane-4-content');
+  const title=document.getElementById('cf-pane-5-title');
+  const content=document.getElementById('cf-pane-5-content');
   if(!content) return;
 
   // Get spells using existing data structures
@@ -7789,6 +7788,18 @@ function cfToggleSpell(id, max){
   else if(_cfSelectedSpells.length<max){ _cfSelectedSpells.push(id); }
   else{ showToast('Máximo de '+max+' magias'); return; }
   buildSpellPane();
+}
+
+function buildFinalPreview(){
+  // Set hidden selects from flow choices
+  const rSel=document.getElementById('inp-race');
+  const cSel=document.getElementById('inp-class');
+  if(rSel&&_cfSelectedRace) rSel.innerHTML=`<option>${_cfSelectedRace}</option>`;
+  if(cSel&&_cfSelectedClass) cSel.innerHTML=`<option>${_cfSelectedClass}</option>`;
+  if(_cfSelectedStyle) heroCombatStyle=_cfSelectedStyle;
+  if(_cfSelectedCantrips.length) heroKnownCantrips=[..._cfSelectedCantrips];
+  if(_cfSelectedSpells.length) heroKnownSpells=[..._cfSelectedSpells];
+  if(_cfSelectedPatron){ heroWarlockPatron=_cfSelectedPatron; }
 }
 
 function buildFinalPane(){
