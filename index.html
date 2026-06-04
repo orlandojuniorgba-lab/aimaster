@@ -1,4 +1,4 @@
-<div id="sh-attrs-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0"></div><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
@@ -1412,7 +1412,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
     </div>
     <!-- Atributos com barra proporcional -->
     <div class="sec-hdr" style="margin-bottom:6px">ATRIBUTOS</div>
-    <div id="sh-stats"></div>
+    <div id="sh-attrs-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0"></div>
     <!-- Combat bar -->
     <div class="sh-combat-bar">
       <div class="sh-cb"><div class="sh-cb-ic">🛡️</div><div class="sh-cb-val" id="sh-ca">—</div><div class="sh-cb-lbl">CA</div></div>
@@ -3482,33 +3482,65 @@ function getActionIconData(action){
 }
 
 function updateActionButtons(actions){
-  if(!actions||!actions.length)return;
-  const grid=document.getElementById('act-grid');
-  // Recria os 4 botões dinamicamente
+  if(!actions||!actions.length) return;
+  const grid = document.getElementById('act-grid');
+  if(!grid) return;
   grid.innerHTML='';
-  const D20_SVG=`<svg viewBox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/><line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="2" y1="13" x2="38" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="38" y1="13" x2="2" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text></svg>`;
+
+  const D20_SVG=`<svg viewBox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/><text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text></svg>`;
+
   actions.slice(0,4).forEach((action,i)=>{
-    // ★ Detecta se é uma sugestão de teste ("Rolar X CD Y")
-    const isTestAction = /percepção|investigação|atletismo|furtividade|persuasão|intimidação|enganação|arcanismo|sobrevivência|intuição|medicina/i.test(action);
-    // ★ Ícone contextual por tipo de ação
-    const _hl = (hintTxt||'').toLowerCase();
-    const _al = action.toLowerCase();
-    let _ico='⚔️', _ibg='rgba(180,40,30,.3)', _ibd='rgba(200,60,50,.5)', _urg=false;
-    if(/magia|feitiço|truque|conjur|arcano|lançar/i.test(_hl+_al)){_ico='✨';_ibg='rgba(100,50,180,.3)';_ibd='rgba(140,90,220,.5)';}
-    else if(/diplomacia|negociar|persuadir|falar|conversar|perguntar/i.test(_hl+_al)){_ico='🗣️';_ibg='rgba(30,80,160,.3)';_ibd='rgba(60,120,200,.5)';}
-    else if(/movimento|fugir|correr|escapar|avançar|recuar|pular|escalar/i.test(_hl+_al)){_ico='🏃';_ibg='rgba(30,100,50,.3)';_ibd='rgba(50,150,80,.5)';}
-    else if(/investigar|examinar|procurar|explorar|inspecionar/i.test(_hl+_al)){_ico='🔍';_ibg='rgba(80,60,20,.3)';_ibd='rgba(160,120,40,.5)';}
-    else if(/urgente|imediato|agora|antes que|rápido/i.test(_al)){_ico='⚡';_ibg='rgba(180,80,0,.35)';_ibd='rgba(220,120,20,.7)';_urg=true;}
-    const _urgStyle=_urg?'animation:pulse .9s infinite;':'';
-    const circleContent=`<div style="background:${_ibg};border:1.5px solid ${_ibd};border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;${_urgStyle}">${_ico}</div>`;
-    btn.className=btnClass;
-    // Urgente tem sublabel diferente
-    const subLabel = isUrgent ? `<span class="a-hint" style="color:rgba(220,120,20,.8)">⚠️ ${hintTxt}</span>` : `<span class="a-hint">${hintTxt}</span>`;
-    btn.innerHTML=`${circleContent}<div class="a-text"><span class="a-title">${action}</span>${subLabel}</div><span class="a-arrow">›</span>`;
-    btn.onclick=()=>doAct(action);
+    const btn = document.createElement('button');
+    btn.className = 'act-btn';
+
+    const al = action.toLowerCase();
+
+    // ── Hint label por tipo ──
+    let hintTxt = 'AÇÃO';
+    if(/percepção|notar|ver|ouvir|sentir/i.test(al))          hintTxt='PERCEPÇÃO';
+    else if(/investigar|examinar|procurar|analisar|inspecionar/i.test(al)) hintTxt='INVESTIGAÇÃO';
+    else if(/persuadir|convencer|negociar|diplomacia/i.test(al)) hintTxt='DIPLOMACIA';
+    else if(/intimidar|ameaçar/i.test(al))                     hintTxt='INTIMIDAÇÃO';
+    else if(/enganar|mentir|disfarçar/i.test(al))              hintTxt='ENGANAÇÃO';
+    else if(/furtiv|esconder|sigilo|silêncio/i.test(al))       hintTxt='FURTIVIDADE';
+    else if(/escalar|saltar|atletismo|força/i.test(al))        hintTxt='ATLETISMO';
+    else if(/rastrear|sobreviver|trilha|floresta/i.test(al))   hintTxt='SOBREVIVÊNCIA';
+    else if(/magia|feitiço|truque|arcano|conjur|lançar/i.test(al)) hintTxt='MAGIA';
+    else if(/atacar|golpe|combate|espada|arco|lutar/i.test(al)) hintTxt='COMBATE';
+    else if(/fugir|correr|escapar|recuar|mover|avançar/i.test(al)) hintTxt='MOVIMENTO';
+    else if(/falar|conversar|perguntar|chamar/i.test(al))       hintTxt='AÇÃO';
+
+    // ── Ícone contextual ──
+    let ico='⚔️', ibg='rgba(180,40,30,.25)', ibd='rgba(200,60,50,.4)', urgStyle='';
+    if(hintTxt==='MAGIA')       {ico='✨';ibg='rgba(100,50,180,.25)';ibd='rgba(140,90,220,.4)';}
+    else if(hintTxt==='DIPLOMACIA'||hintTxt==='INTIMIDAÇÃO'||hintTxt==='ENGANAÇÃO')
+                                {ico='🗣️';ibg='rgba(30,80,160,.25)';ibd='rgba(60,120,200,.4)';}
+    else if(hintTxt==='MOVIMENTO'){ico='🏃';ibg='rgba(30,100,50,.25)';ibd='rgba(50,150,80,.4)';}
+    else if(hintTxt==='INVESTIGAÇÃO'){ico='🔍';ibg='rgba(100,80,20,.25)';ibd='rgba(160,120,40,.4)';}
+    else if(hintTxt==='PERCEPÇÃO'){ico='👁️';ibg='rgba(60,60,100,.25)';ibd='rgba(100,100,160,.4)';}
+    else if(hintTxt==='FURTIVIDADE'){ico='🌑';ibg='rgba(20,20,40,.4)';ibd='rgba(80,80,120,.4)';}
+    else if(hintTxt==='ATLETISMO'||hintTxt==='SOBREVIVÊNCIA')
+                                {ico='💪';ibg='rgba(100,60,20,.25)';ibd='rgba(160,100,40,.4)';}
+    // Urgente?
+    if(/urgente|imediato|rápido|antes que/i.test(al)){
+      ico='⚡';ibg='rgba(180,80,0,.35)';ibd='rgba(220,120,20,.7)';
+      urgStyle='animation:pulse .9s infinite;'; hintTxt='⚠️ URGENTE';
+    }
+
+    btn.innerHTML=`
+      <div style="background:${ibg};border:1.5px solid ${ibd};border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;${urgStyle}">${ico}</div>
+      <div class="a-text">
+        <span class="a-title">${action}</span>
+        <span class="a-hint">${hintTxt}</span>
+      </div>
+      <span class="a-arrow">›</span>`;
+    btn.onclick = ()=>doAct(action);
+    btn.style.animation = `actionSlideIn .25s ease-out ${i*0.06}s both`;
     grid.appendChild(btn);
   });
-  document.getElementById('acts-lbl').textContent='— ESCOLHA SUA AÇÃO —';
+
+  const lbl = document.getElementById('acts-lbl');
+  if(lbl) lbl.textContent='— ESCOLHA SUA AÇÃO —';
 }
 
 
