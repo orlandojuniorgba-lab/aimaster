@@ -109,7 +109,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .forest-svg{position:absolute;bottom:0;left:0;width:100%;height:28px;}
 
 /* ★ XP Ring + Portrait */
-.char-strip{display:flex;align-items:center;gap:11px;padding:9px 14px 10px;background:linear-gradient(180deg,var(--bg3),rgba(26,18,8,.95));border-top:1px solid var(--border);border-bottom:1px solid rgba(200,146,42,.1);flex-shrink:0;}
+/* overridden by redesign */
 .xp-portrait-wrap{position:relative;width:50px;height:50px;flex-shrink:0;cursor:pointer;}
 .xp-ring{position:absolute;inset:0;}
 .portrait{position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg4);}
@@ -750,6 +750,208 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .cf-next-btn:disabled{opacity:.35;pointer-events:none}
 .cf-back-btn{background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:11px 16px;font-family:var(--font-title);font-size:12px;color:rgba(200,180,120,.5);cursor:pointer}
 .start-btn{background:linear-gradient(135deg,rgba(200,146,42,.35),rgba(160,100,20,.25));border:1.5px solid rgba(200,146,42,.7);border-radius:12px;padding:14px;font-family:var(--font-title);font-size:14px;color:var(--gold-l);cursor:pointer;letter-spacing:1px;transition:all .2s;width:100%;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+
+/* ══ HEADER REDESIGN PRO ══ */
+.char-strip{
+  display:flex;align-items:center;gap:11px;
+  padding:10px 14px 8px;
+  background:linear-gradient(180deg,#0f0a03 0%,#0a0804 100%);
+  position:relative;
+}
+.char-strip::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(200,146,42,.5) 25%,rgba(240,210,80,.95) 50%,rgba(200,146,42,.5) 75%,transparent 100%);
+}
+
+/* Avatar com moldura dourada ornamentada */
+.xp-portrait-wrap{position:relative;flex-shrink:0;width:56px;height:56px;}
+.xp-ring{position:absolute;inset:0;width:56px;height:56px;}
+.portrait{
+  position:absolute;inset:6px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#2a1a08,#0f0804);
+  border:2px solid rgba(200,146,42,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;cursor:pointer;
+}
+.xp-label{
+  position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#8a5010,#c8922a);
+  color:#fff8e8;font-size:8px;font-weight:700;
+  border-radius:8px;padding:1px 6px;white-space:nowrap;
+  border:1px solid rgba(240,210,80,.4);
+  font-family:var(--font-title);letter-spacing:.3px;
+}
+
+/* Info do personagem */
+.char-info{flex:1;min-width:0;}
+.c-name{
+  font-family:var(--font-title);font-size:14px;font-weight:700;
+  color:#f0d080;line-height:1.2;letter-spacing:.3px;
+  text-shadow:0 1px 3px rgba(0,0,0,.8);
+}
+.c-meta{font-size:10px;color:#a07040;margin-top:1px;font-family:var(--font-title);letter-spacing:.3px;}
+
+/* Barras com profundidade visual */
+.bars{margin-top:5px;display:flex;flex-direction:column;gap:4px;}
+.bar-row{display:flex;align-items:center;gap:5px;}
+.bar-lbl{
+  font-size:9px;font-weight:700;width:16px;
+  font-family:var(--font-title);letter-spacing:.3px;
+}
+.bar-lbl.hp-lbl{color:#e05040;}
+.bar-lbl.mp-lbl{color:#5070d0;}
+.bar-track{
+  flex:1;height:9px;
+  background:rgba(0,0,0,.7);
+  border-radius:5px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+}
+.bar-fill{height:100%;border-radius:4px;transition:width .7s;position:relative;}
+.bar-fill::after{
+  content:'';position:absolute;top:1px;left:3px;right:3px;height:3px;
+  background:rgba(255,255,255,.18);border-radius:3px;
+}
+.bar-fill.hp{background:linear-gradient(90deg,#8a1010,#d03030,#e85050);}
+.bar-fill.mp{background:linear-gradient(90deg,#101050,#2030a0,#4060d0);}
+.bar-val{
+  font-size:9px;font-weight:700;width:26px;text-align:right;
+  font-family:var(--font-title);
+}
+
+/* Stats row */
+.mini-stats{
+  display:flex;gap:0;margin-top:5px;
+  background:rgba(0,0,0,.4);border-radius:5px;
+  border:1px solid rgba(200,146,42,.12);overflow:hidden;
+}
+.mstat{
+  flex:1;text-align:center;padding:3px 2px;
+  font-size:10px;font-weight:700;color:#d4c060;
+  font-family:var(--font-title);letter-spacing:.3px;
+  border-right:1px solid rgba(200,146,42,.1);
+}
+.mstat:last-child{border-right:none;}
+
+/* Pills de recursos */
+.gold-pill{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(200,146,42,.12);
+  border:1px solid rgba(200,146,42,.35);
+  border-radius:20px;padding:4px 9px;
+  font-family:var(--font-title);font-size:12px;color:#f0d060;
+  font-weight:700;letter-spacing:.3px;
+}
+
+/* XP bar ao final do header */
+.hdr-xp-bar{
+  height:3px;
+  background:linear-gradient(90deg,transparent,rgba(200,146,42,.5),rgba(240,210,80,.8),rgba(200,146,42,.5),transparent);
+  transition:width .5s;
+}
+
+/* ══ PARCHMENT — FICHA E FORJA ══ */
+.ms{background:#d4b882!important;}
+.parch-modal .ms{
+  background:#d4b882!important;
+  border:none!important;
+}
+#mo-char .ms{
+  background:linear-gradient(160deg,#dcc490 0%,#c8a870 40%,#d4b882 100%)!important;
+  color:#2a1408!important;
+}
+#mo-char .mt{
+  background:#3a2010!important;
+  color:#f0d080!important;
+  font-family:var(--font-title)!important;
+  letter-spacing:.5px!important;
+  border-radius:0!important;
+  border-bottom:2px solid #c8922a!important;
+  padding:12px 16px!important;
+}
+#mo-char .mt::before{
+  content:'';display:block;height:2px;
+  background:linear-gradient(90deg,transparent,#c8922a,transparent);
+  margin-bottom:8px;
+}
+#mo-char .mc{background:rgba(200,146,42,.2)!important;color:#3a2010!important;border:1px solid rgba(58,32,16,.3)!important;}
+#mo-char .sheet-tabs{background:rgba(0,0,0,.12)!important;border-bottom:2px solid #8a6030!important;}
+#mo-char .stab{color:#7a5020!important;font-family:var(--font-title)!important;letter-spacing:.3px!important;}
+#mo-char .stab.active{color:#3a1808!important;border-bottom-color:#8a5010!important;background:rgba(200,146,42,.15)!important;}
+#mo-char .sh-hero-banner{background:rgba(0,0,0,.08)!important;border-bottom:1px solid #a07840!important;}
+#mo-char .sh-attr-cell{background:rgba(200,168,100,.4)!important;border:1.5px solid #8a6030!important;border-radius:4px!important;}
+#mo-char .sh-attr-val{color:#2a1008!important;}
+#mo-char .sh-attr-mod{color:#5a3010!important;}
+#mo-char .sh-attr-name{color:#7a5030!important;}
+#mo-char .sh-combat-cell{background:rgba(200,168,100,.3)!important;border:1.5px solid #8a6030!important;}
+#mo-char .sh-combat-val{color:#2a1008!important;}
+#mo-char .sh-combat-label{color:#7a5030!important;}
+#mo-char .sh-portrait-icon{
+  background:linear-gradient(135deg,#5a3010,#3a1808)!important;
+  border:2px solid #c8922a!important;color:#f0d080!important;
+}
+#mo-char .sheet-page{background:transparent!important;}
+
+/* Forja do herói — pergaminho */
+#s-char .screen-hdr{
+  background:linear-gradient(180deg,#3a2010,#2a1808)!important;
+  border-bottom:2px solid #c8922a!important;
+}
+#s-char .sec-hdr{color:#f0d080!important;font-family:var(--font-title)!important;letter-spacing:1px!important;}
+#s-char .screen-body{background:linear-gradient(160deg,#dcc490,#c8a870)!important;}
+#s-char .cf-pane-title{
+  color:#3a1808!important;font-family:var(--font-title)!important;
+  border-bottom:2px solid #8a6030!important;
+  letter-spacing:.5px!important;
+}
+#s-char .rc{background:rgba(200,168,100,.5)!important;border-color:#8a6030!important;}
+#s-char .rc.sel{background:rgba(138,80,16,.2)!important;border-color:#c8922a!important;}
+#s-char .rc .rc-name{color:#3a1808!important;}
+#s-char .rc .rc-bonus{color:#6a4010!important;}
+#s-char .cc{background:rgba(200,168,100,.5)!important;border-color:#8a6030!important;}
+#s-char .cc.sel{background:rgba(138,80,16,.2)!important;border-color:#c8922a!important;}
+#s-char .cc .cc-name{color:#3a1808!important;}
+#s-char .cc .cc-desc{color:#6a4010!important;}
+#s-char .cc .cc-icon{background:rgba(0,0,0,.15)!important;border:1px solid rgba(0,0,0,.2)!important;}
+#s-char .cf-next-btn{
+  background:linear-gradient(135deg,#3a2010,#5a3010)!important;
+  border:2px solid #c8922a!important;color:#f0d080!important;
+}
+#s-char .cf-back-btn{background:rgba(0,0,0,.15)!important;border-color:#8a6030!important;color:#5a3010!important;}
+#s-char .cf, #s-char label{color:#3a1808!important;}
+#s-char input, #s-char select{
+  background:rgba(255,240,200,.6)!important;
+  border:1.5px solid #8a6030!important;
+  color:#2a1008!important;border-radius:4px!important;
+}
+#s-char .sc{background:rgba(200,168,100,.5)!important;border-color:#8a6030!important;}
+#s-char .sc.sel{background:rgba(138,80,16,.2)!important;border-color:#c8922a!important;}
+#s-char .sc .sc-name{color:#3a1808!important;}
+#s-char .sc .sc-desc{color:#6a4010!important;}
+#s-char .pc{background:rgba(200,168,100,.5)!important;border-color:#8a6030!important;}
+#s-char .pc.sel{background:rgba(138,80,16,.2)!important;border-color:#c8922a!important;}
+#s-char .pc .pc-name{color:#3a1808!important;}
+#s-char .pc .pc-desc{color:#6a4010!important;}
+#s-char .sp-sel-card{background:rgba(200,168,100,.5)!important;border-color:#8a6030!important;}
+#s-char .sp-sel-card.sel{background:rgba(138,80,16,.2)!important;border-color:#c8922a!important;}
+#s-char .sp-sel-name{color:#3a1808!important;}
+#s-char .sp-sel-desc{color:#6a4010!important;}
+#s-char .ap-cell{background:rgba(200,168,100,.4)!important;border-color:#8a6030!important;}
+#s-char .ap-lbl{color:#7a5030!important;}
+#s-char .ap-val{color:#2a1008!important;}
+#s-char .start-btn{
+  background:linear-gradient(135deg,#3a2010,#5a3010)!important;
+  border:2px solid #c8922a!important;color:#f0d080!important;
+  font-family:var(--font-title)!important;letter-spacing:.5px!important;
+}
+#s-char .cf-pane-title::after{
+  content:'';display:block;height:1px;margin-top:6px;
+  background:linear-gradient(90deg,transparent,#8a6030,transparent);
+}
+#s-char .cf-race-info, #s-char .cf-class-info{
+  background:rgba(0,0,0,.08)!important;border:1px solid #8a6030!important;
+  color:#3a1808!important;border-radius:4px!important;
+}
+
 </style>
 </head>
 <body>
@@ -929,8 +1131,8 @@ body{font-family:var(--font-narr);color:var(--parch);}
       <div class="c-name" id="g-nm">Herói</div>
       <div class="c-meta" id="g-mt">Nível 1</div>
       <div class="bars">
-        <div class="bar-row"><span class="bar-lbl">PV</span><div class="bar-track"><div class="bar-fill hp" id="bar-hp" style="width:100%"></div></div><span class="bar-val" id="g-hp-txt">10/10</span></div>
-        <div class="bar-row"><span class="bar-lbl">MP</span><div class="bar-track"><div class="bar-fill mp" id="bar-mp" style="width:100%"></div></div><span class="bar-val" id="g-mp-txt">2/2</span></div>
+        <div class="bar-row"><span class="bar-lbl hp-lbl">PV</span><div class="bar-track"><div class="bar-fill hp" id="bar-hp" style="width:100%"></div></div><span class="bar-val" id="g-hp-txt">10/10</span></div>
+        <div class="bar-row"><span class="bar-lbl mp-lbl">MP</span><div class="bar-track"><div class="bar-fill mp" id="bar-mp" style="width:100%"></div></div><span class="bar-val" id="g-mp-txt">2/2</span></div>
       </div>
       <div class="mini-stats">
         <span class="mstat">CA <span id="f-ca">—</span></span>
@@ -945,6 +1147,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
     </div>
   </div>
+  <div class="hdr-xp-bar" id="hdr-xp-bar" style="width:0%"></div>
   <div class="narr-border"></div>
 
   <div class="narr" id="narr"></div>
@@ -2961,6 +3164,17 @@ function updateVitals(){
   if(shXpSub) shXpSub.textContent=`/${xpNext} XP (Nv${lv+1<20?lv+1:20})`;
   if(shXpBar) shXpBar.style.width=xpPct+'%';
   updateXPRing();
+  // Atualiza XP bar no header
+  const hdrXp = document.getElementById('hdr-xp-bar');
+  if(hdrXp && hero && hero.xp !== undefined){
+    const lv = hero.level||1;
+    const xpCur = hero.xp||0;
+    const xpNext = (typeof XP_TABLE !== 'undefined' ? XP_TABLE[lv] : 300)||300;
+    const xpPrev = lv>1&&typeof XP_TABLE!=='undefined' ? XP_TABLE[lv-1]||0 : 0;
+    const pct = xpNext>xpPrev ? Math.min(100,Math.round(((xpCur-xpPrev)/(xpNext-xpPrev))*100)) : 100;
+    hdrXp.style.width = pct+'%';
+  }
+
   // Atualiza ficha se estiver aberta
   if(document.getElementById('mo-char')?.classList.contains('open')){
     try{ updateCharSheet(); }catch(e){}
