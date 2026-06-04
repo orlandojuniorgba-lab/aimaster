@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<div id="sh-attrs-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0"></div><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
@@ -850,6 +850,30 @@ body{font-family:var(--font-narr);color:var(--parch);}
 }
 
 
+
+/* ══ FICHA VISUAL REDESIGN ══ */
+.sh-attr-cell{
+  background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.18);
+  border-radius:8px;padding:8px 4px;text-align:center;
+}
+.sh-attr-prime{
+  background:rgba(200,146,42,.14)!important;
+  border-color:rgba(200,146,42,.5)!important;
+  box-shadow:0 0 8px rgba(200,146,42,.12);
+}
+.sh-attr-val{font-size:20px;font-weight:700;color:var(--gold-l);line-height:1}
+.sh-attr-prime .sh-attr-val{color:#f0d060}
+.sh-attr-mod{font-size:12px;color:var(--gold);font-weight:600}
+.sh-attr-name{font-size:8px;color:rgba(200,180,120,.4);letter-spacing:.5px;margin-top:2px}
+.sh-attr-save{font-size:8px;color:rgba(200,180,120,.25);margin-top:1px}
+.sh-ach{
+  background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);
+  border-radius:20px;padding:3px 9px;font-size:10px;color:rgba(200,180,120,.7);
+  font-family:var(--font-title);letter-spacing:.2px;
+}
+/* Action button pulse for urgent */
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,120,20,.4)}50%{box-shadow:0 0 0 4px rgba(220,120,20,0)}}
+
 </style>
 </head>
 <body>
@@ -1344,17 +1368,27 @@ body{font-family:var(--font-narr);color:var(--parch);}
   <div class="sheet-page active" id="tab-stats">
     <!-- Hero banner -->
     <div class="sh-hero-banner">
-      <div class="sh-portrait" id="sh-portrait-icon">🧙</div>
-      <div class="sh-hero-info">
-        <div class="sh-hero-name" id="sh-nm">—</div>
-        <div class="sh-hero-meta" id="sh-cl">—</div>
-        <div class="sh-hero-align" id="sh-align">—</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <div class="sh-portrait-icon" id="sh-portrait-icon" style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(200,146,42,.2),rgba(180,100,20,.1));border:2px solid rgba(200,146,42,.5);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">⚔️</div>
+      <div style="flex:1;min-width:0">
+        <div class="sh-nm" id="sh-nm" style="font-family:var(--font-title);font-size:16px;color:var(--gold-l);font-weight:700">Herói</div>
+        <div class="sh-cl" id="sh-cl" style="font-size:11px;color:rgba(200,180,120,.5);margin-top:2px">—</div>
+        <div id="sh-rep" style="font-size:11px;color:rgba(200,146,42,.6);margin-top:3px"></div>
       </div>
-      <div class="sh-level-badge">
-        <div class="sh-level-num" id="sh-level-num">1</div>
-        <div class="sh-level-lbl">NÍVEL</div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-title);font-size:10px;color:rgba(200,180,120,.4);letter-spacing:.5px">NÍVEL</div>
+        <div id="sh-level-num" style="font-size:24px;font-weight:700;color:var(--gold-l);line-height:1">1</div>
       </div>
     </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span style="font-size:10px;color:rgba(200,180,120,.4);width:20px">XP</span>
+      <div style="flex:1;height:6px;background:rgba(200,146,42,.1);border-radius:3px;overflow:hidden;border:1px solid rgba(200,146,42,.15)">
+        <div id="sh-xp-bar" style="height:100%;background:linear-gradient(90deg,#c8922a,#f0d060);border-radius:3px;width:0%;transition:width .5s"></div>
+      </div>
+      <span id="sh-xp-val" style="font-size:10px;color:rgba(200,180,120,.4);white-space:nowrap">0/300</span>
+    </div>
+    <div id="sh-align" style="font-size:10px;color:rgba(200,180,120,.3);text-align:center"></div>
+  </div>
     <!-- 3 resource cards -->
     <div class="sh-resources">
       <div class="sh-res-card sh-res-hp">
@@ -1390,6 +1424,8 @@ body{font-family:var(--font-narr);color:var(--parch);}
     <div class="sec-hdr" style="margin-top:10px;margin-bottom:6px">PERFIL ATIVO</div>
     <div id="sh-profile-tags" class="pp-tags"></div>
     <div id="sh-profile-bonuses" class="pp-bonuses" style="margin-top:6px"></div>
+    <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,180,120,.35);letter-spacing:.8px;margin-top:10px;margin-bottom:5px">CONQUISTAS</div>
+    <div id="sh-achievements" style="display:flex;flex-wrap:wrap;gap:5px"></div>
   </div>
     <!-- Inventário -->
   <div class="sheet-page" id="tab-inv">
@@ -2343,56 +2379,63 @@ function buildPreparedSpellsChunk(){
 const QUESTS=[
 
   // ══════════════════════════════════════════════════
-  // TIER 1 — A PARTIDA (Níveis 1-4) — Mundo Comum, Chamado à Aventura
-  // Escala: local, pessoal, comunidade pequena
+  // TIER 1 — PRIMEIROS PASSOS (Níveis 1-3)
+  // Criaturas locais, dungeons simples, perigos físicos
+  // SEM política — apenas aventura e sobrevivência
   // ══════════════════════════════════════════════════
 
   {
-    title:"A Sombra sobre Millhaven",
-    tier:1, minLevel:1, maxLevel:4,
-    hook:"Millhaven era uma aldeia tranquila até três semanas atrás. Crianças desaparecem à noite, deixando apenas pegadas na lama que somem na beira da floresta. O ancião Gareth oferece tudo que tem — 50 peças de ouro e uma espada herdada do avô. O medo nos olhos dos aldeões é real.",
-    location:"Aldeia de Millhaven / Floresta do Véu",
-    npcs:["Gareth — ancião da aldeia, 70 anos, voz trêmula mas olhar firme","Mira — mãe desesperada, filha sumiu há 5 dias","Sylas — ferreiro desconfiado, sabe mais do que fala"],
-    hooks_secundarios:["Trilha de pegadas leva a uma mina abandonada","Marcas estranhas nas árvores — linguagem goblin antiga","Uma criança escapou e está escondida no celeiro"],
-    rewards:"50 po + Espada Longa +1 (herdada) + 150 XP",
-    jornada:"MUNDO COMUM → CHAMADO: A aldeia é o lar do herói. As crianças são a crise que força a ação."
+    title:"O Covil dos Goblins",
+    tier:1, minLevel:1, maxLevel:3,
+    hook:"Goblins têm atacado as fazendas ao redor da aldeia de Millhaven à noite. Animais desaparecem, celeiros pegam fogo. O ancião da aldeia oferece 50 PO para quem encontrar e limpar o covil nas colinas próximas.",
+    location:"colinas",
+    npcs:["Ancião Brek (contratante)","Goblin Líder Skrix"],
+    encounters:["patrulha goblin (3 goblins)","armadilha de buraco","covil com 8 goblins e líder goblin"],
+    reward:"50 PO + itens roubados das fazendas",
+    lore:"No covil há um símbolo estranho gravado — alguém está coordenando os ataques."
   },
-
   {
-    title:"As Ruínas do Priorado Caído",
-    tier:1, minLevel:1, maxLevel:4,
-    hook:"Um monge foragido chega à cidade com ferimentos graves e uma mensagem: 'O Priorado de São Aldric foi massacrado. Algo saiu da cripta.' O Bispo Henric contrata aventureiros para investigar — e recuperar o Livro dos Ritos antes que caia em mãos erradas.",
-    location:"Priorado de São Aldric / Cripta Antiga",
-    npcs:["Irmão Tomás — o monge sobrevivente, traumatizado","Bispo Henric — homem político, tem agenda própria","Voz nas Sombras — entidade na cripta, corrompeu os mortos"],
-    hooks_secundarios:["Os mortos-vivos reconhecem alguns aventureiros — sinal perturbador","Diário de um monge revela segredo do bispo","Porta selada com símbolo que nenhum clérigo consegue abrir"],
-    rewards:"80 po + Símbolo Sagrado Abençoado + 200 XP",
-    jornada:"CHAMADO → MENTOR: O bispo é o mentor — mas guarda segredos. A cripta é a Travessia do Limiar inicial."
+    title:"A Cripta da Colina dos Corvos",
+    tier:1, minLevel:1, maxLevel:3,
+    hook:"Mortos-vivos foram vistos saindo de uma cripta antiga na Colina dos Corvos. Um viajante desapareceu investigando. O pároco local pede que alguém sele a cripta e descubra o que perturbou os mortos.",
+    location:"cripta",
+    npcs:["Padre Oswin (contratante)","Espectro do Cavaleiro Perdido"],
+    encounters:["2 esqueletos na entrada","câmara com 4 zumbis","câmara final com espectro"],
+    reward:"30 PO + amuleto sagrado do pároco",
+    lore:"O cavaleiro morreu protegendo algo que não deve ser encontrado."
   },
-
   {
-    title:"O Contrabando do Porto Cinza",
-    tier:1, minLevel:1, maxLevel:4,
-    hook:"O porto de Greyhaven está sufocado. A Guilda dos Contrabandistas cobra pedágio de todos os pescadores — pague ou perca o barco. Um velho pescador chamado Davin encontrou um símbolo gravado num caixote: o selo de uma guilda proibida há 40 anos. Ele precisa de ajuda antes que o silencie.",
-    location:"Porto de Greyhaven / Docas Velhas / Armazém 7",
-    npcs:["Davin — pescador idoso, teimoso, conhece cada viela do porto","Capitã Sela — líder da guilda, crueldade calculada","Timon — informante assustado, quer sair mas não consegue"],
-    hooks_secundarios:["Os caixotes contêm algo além de contrabando — algo vivo","A Capitã trabalha para alguém maior na cidade","Documento comprometedor escondido no fundo de um barril"],
-    rewards:"60 po + Passagem de barco gratuita + Informação valiosa + 180 XP",
-    jornada:"TESTES E ALIADOS: Primeira experiência com facções, moral cinza, escolhas com consequências."
+    title:"Bandidos na Estrada Real",
+    tier:1, minLevel:1, maxLevel:3,
+    hook:"A estrada entre Millhaven e Porto Cinza está bloqueada por um bando de bandidos. Mercadores pagam 40 PO para escoltar uma carroça de suprimentos. No caminho, é inevitável o confronto.",
+    location:"estrada",
+    npcs:["Mercador Torin (contratante)","Líder Bandido Vasco"],
+    encounters:["emboscada de 4 bandidos","acampamento com 6 bandidos e líder","prisioneiro resgatável"],
+    reward:"40 PO + gratidão do mercador + item do acampamento",
+    lore:"Os bandidos falam de um 'patrão' que os contratou para bloquear essa rota especificamente."
   },
-
   {
-    title:"O Herdeiro Perdido de Thornwall",
+    title:"A Mina dos Kobolds",
     tier:1, minLevel:2, maxLevel:4,
-    hook:"Lord Edric de Thornwall morreu sem herdeiros — ou assim pensavam. Uma carta anônima revela que o filho bastardo do lorde vive disfarçado em algum lugar da cidade. A família rival Ashford quer encontrá-lo primeiro... para eliminá-lo. Uma velha serva com medo nos olhos procura aventureiros discretos.",
-    location:"Cidade de Thornwall / Mansão Ashford / Bairro dos Pobres",
-    npcs:["Velha Marta — serva leal de 30 anos, sabe a verdade","Cael — o herdeiro, cresceu na rua, não sabe da origem","Lord Vane Ashford — ambicioso, contratou assassinos","Tharic — detetive a soldo de Ashford, competente e perigoso"],
-    hooks_secundarios:["O herdeiro tem uma marca de nascença — mas outro homem também tem","Mansão Ashford guarda documentos forjados","Marta foi seguida até os aventureiros"],
-    rewards:"100 po + Favor da Casa Thornwall + 250 XP",
-    jornada:"INICIAÇÃO: Política, identidade, escolha entre poder e justiça."
+    hook:"Kobolds tomaram uma mina de prata abandonada e começaram a atacar mineiros próximos. O prefeito oferece 80 PO para retomar a mina. Dizem que os kobolds encontraram algo lá dentro.",
+    location:"mina",
+    npcs:["Prefeito Harlan (contratante)","Xamã Kobold Vrisk"],
+    encounters:["sentinelas kobold (4)","armadilhas na mina","câmara do tesouro com xamã e guardas"],
+    reward:"80 PO + parte do minério encontrado",
+    lore:"Os kobolds adoram um ovo de dragão encontrado nas profundezas da mina."
+  },
+  {
+    title:"A Floresta Amaldiçoada",
+    tier:1, minLevel:1, maxLevel:3,
+    hook:"Animais da floresta de Siannodel ficaram agressivos e estão atacando a aldeia. Um druida idoso diz que algo corrompeu o coração da floresta. Pede que aventureiros encontrem e destruam a fonte da corrupção.",
+    location:"floresta",
+    npcs:["Druida Elara (guia)","Lobo Corrompido Alfa","Espírito da Floresta"],
+    encounters:["lobos corrompidos (3)","árvore animada hostil","claro com altar corrompido"],
+    reward:"Bênção druídica + 60 PO em ervas raras",
+    lore:"O altar corrompido tem o mesmo símbolo que aparece em outros lugares da região."
   },
 
-  // ══════════════════════════════════════════════════
-  // TIER 2 — A INICIAÇÃO (Níveis 5-10) — Travessia do Limiar, Testes
+// TIER 2 — A INICIAÇÃO (Níveis 5-10) — Travessia do Limiar, Testes
   // Escala: regional, facções, ameaças maiores
   // ══════════════════════════════════════════════════
 
@@ -2982,7 +3025,7 @@ NPCs que aparecerão: ${(q.npcs||[]).slice(0,2).join(' | ')}
 
 ESCREVA A CENA DE ABERTURA seguindo este modelo exato de narrativa de nível 1:
 
-MODELO DE REFERÊNCIA:
+MODELO DE REFERÊNCIA (adapte à classe — NUNCA use este texto literalmente):
 ---
 O sol da manhã filtra pelas frestas da janela de madeira, pintando listras de luz no chão batido da cabana. O cheiro de mingau de aveia com mel já toma conta do ar, cortado pela voz grave e serena de sua avó.
 
@@ -3446,24 +3489,22 @@ function updateActionButtons(actions){
   const D20_SVG=`<svg viewBox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/><line x1="20" y1="2" x2="20" y2="38" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="2" y1="13" x2="38" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><line x1="38" y1="13" x2="2" y2="27" stroke="rgba(200,146,42,.3)" stroke-width="1"/><text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text></svg>`;
   actions.slice(0,4).forEach((action,i)=>{
     // ★ Detecta se é uma sugestão de teste ("Rolar X CD Y")
-    const isTestAction=/^rolar\s+\w+/i.test(action.trim());
-    const data=getActionIconData(action);
-    const btn=document.createElement('button');
-    btn.id='ab'+(i+1);
-    
-    let circleContent, hintTxt, btnClass;
-    if(isTestAction){
-      // Ação de teste — destaque especial com d20
-      circleContent=D20_SVG;
-      hintTxt='TESTE D20';
-      btnClass='act-btn suggested test-action';
-    } else {
-      circleContent=data.isD20?D20_SVG:data.icon;
-      hintTxt=data.hint;
-      btnClass='act-btn suggested';
-    }
+    const isTestAction = /percepção|investigação|atletismo|furtividade|persuasão|intimidação|enganação|arcanismo|sobrevivência|intuição|medicina/i.test(action);
+    // ★ Ícone contextual por tipo de ação
+    const _hl = (hintTxt||'').toLowerCase();
+    const _al = action.toLowerCase();
+    let _ico='⚔️', _ibg='rgba(180,40,30,.3)', _ibd='rgba(200,60,50,.5)', _urg=false;
+    if(/magia|feitiço|truque|conjur|arcano|lançar/i.test(_hl+_al)){_ico='✨';_ibg='rgba(100,50,180,.3)';_ibd='rgba(140,90,220,.5)';}
+    else if(/diplomacia|negociar|persuadir|falar|conversar|perguntar/i.test(_hl+_al)){_ico='🗣️';_ibg='rgba(30,80,160,.3)';_ibd='rgba(60,120,200,.5)';}
+    else if(/movimento|fugir|correr|escapar|avançar|recuar|pular|escalar/i.test(_hl+_al)){_ico='🏃';_ibg='rgba(30,100,50,.3)';_ibd='rgba(50,150,80,.5)';}
+    else if(/investigar|examinar|procurar|explorar|inspecionar/i.test(_hl+_al)){_ico='🔍';_ibg='rgba(80,60,20,.3)';_ibd='rgba(160,120,40,.5)';}
+    else if(/urgente|imediato|agora|antes que|rápido/i.test(_al)){_ico='⚡';_ibg='rgba(180,80,0,.35)';_ibd='rgba(220,120,20,.7)';_urg=true;}
+    const _urgStyle=_urg?'animation:pulse .9s infinite;':'';
+    const circleContent=`<div style="background:${_ibg};border:1.5px solid ${_ibd};border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;${_urgStyle}">${_ico}</div>`;
     btn.className=btnClass;
-    btn.innerHTML=`<div class="a-circle ${isTestAction?'a-circle-test':''}">${circleContent}</div><div class="a-text"><span class="a-title">${action}</span><span class="a-hint">${hintTxt}</span></div><span class="a-arrow">›</span>`;
+    // Urgente tem sublabel diferente
+    const subLabel = isUrgent ? `<span class="a-hint" style="color:rgba(220,120,20,.8)">⚠️ ${hintTxt}</span>` : `<span class="a-hint">${hintTxt}</span>`;
+    btn.innerHTML=`${circleContent}<div class="a-text"><span class="a-title">${action}</span>${subLabel}</div><span class="a-arrow">›</span>`;
     btn.onclick=()=>doAct(action);
     grid.appendChild(btn);
   });
@@ -3767,20 +3808,56 @@ Arco narrativo: ${questData.jornada||'Jornada do Herói — Partida'}
 Você é um narrador literário de fantasia. Escreva como um romancista — conciso, imersivo, sensorial.
 
 ESTILO NARRATIVO — REGRAS ABSOLUTAS:
-▸ Respostas: 3 a 4 parágrafos. SEMPRE complete a cena atual antes de parar — nunca corte no meio de uma ação ou diálogo.
+▸ TAMANHO ADAPTATIVO — combine o comprimento ao contexto:
+  • Ação simples, resposta curta do NPC, resultado de teste → 1-2 parágrafos
+  • Cena nova, chegada a local, encontro importante → 2-3 parágrafos
+  • Abertura de aventura, boss, momento épico → 3-4 parágrafos
+  • NUNCA escreva mais do que o contexto exige. Ação curta = resposta curta.
 ▸ Mostre, não explique: use detalhes sensoriais concretos (cheiro, som, textura, luz)
 ▸ Diálogos vivos: NPCs falam com voz própria — "Nome: fala" — revelam personalidade em poucas palavras
 ▸ Termine SEMPRE com uma escolha ou tensão aberta — nunca resolva tudo
 ▸ NUNCA use markdown: sem **, sem ##, sem ---, sem listas com traço
 ▸ Use apenas texto puro. Parágrafos separados por linha em branco.
 
-RITMO E PROGRESSÃO — FUNDAMENTAL:
-▸ INÍCIO (nível 1-2): Mundo cotidiano, paz frágil, personagem comum com potencial. Tom intimista.
-   Adapte ao personagem: Guerreiro → família/mestre/vila | Mago → biblioteca/mentor | Ladino → rua/guilda
-▸ ESCALADA (nível 3-5): Primeira grande ameaça, alianças, segredos surgem. Tom tenso.
-▸ MATURIDADE (nível 6-10): Missões de alto risco, escolhas morais difíceis. Tom épico.
-▸ LENDA (nível 11+): O mundo depende do personagem. Tom grandioso.
-▸ Calibre a intensidade pelo nível atual: ${hero.level||1}. Não pule etapas. — não como um chatbot.
+RITMO E PROGRESSÃO D&D 5e — REGRA FUNDAMENTAL:
+O personagem está no nível ${hero.level||1}. Respeite RIGOROSAMENTE a fase abaixo.
+
+NÍVEL 1-2 — HERÓI LOCAL (fase atual se nível ≤ 2):
+▸ MUNDO FÍSICO E PERIGOSO: a natureza, criaturas e bandidos são a ameaça real
+▸ Encontros típicos: goblins explorando arredores, lobos famintos, bandidos de estrada,
+  kobolds em ruína próxima, ratos gigantes em adega, esqueletos em cemitério antigo
+▸ Missões: escortar carroça, limpar praga de criaturas, investigar desaparecimentos locais,
+  explorar caverna próxima, recuperar item roubado por goblins
+▸ SEM política, SEM conspirações, SEM vilões poderosos — o personagem é desconhecido
+▸ Tom: aventura de bairro, mundo parece grande e perigoso, cada goblin é uma ameaça real
+▸ Indício da trama maior: UMA pista sutil (símbolo estranho, rumor distante) — nada mais
+
+NÍVEL 3-4 — AVENTUREIRO REGIONAL:
+▸ Ameaças maiores: orcs organizados, cultistas, mortos-vivos em masmorra, gnolls
+▸ Primeira missão de masmorra real, primeiro chefe de dungeon
+▸ Um NPC importante começa a revelar algo sobre uma ameaça maior
+▸ Política existe mas é pano de fundo — o foco é ação e exploração
+
+NÍVEL 5-7 — HERÓI CONHECIDO:
+▸ Criaturas poderosas: ogros, trolls, harpias, vampiros menores, dragões jovens
+▸ A trama principal começa a ganhar forma concreta
+▸ Intrigas políticas têm peso agora porque o personagem tem influência
+
+NÍVEL 8+ — CAMPEÃO E LENDA:
+▸ Vilão principal identificado, dungeons épicos, escolhas que mudam o mundo
+▸ Política, deuses, planos de existência — tudo tem escala épica
+
+CRIATURAS POR NÍVEL (use ativamente, não apenas como obstáculo):
+Nv1-2: goblin, kobold, rato gigante, esqueleto, zumbi, lobo, bandido humano, orco simples
+Nv3-4: orc guerreiro, bugbear, hobgoblin, ghoul, harpia, gnoll, ogro jovem
+Nv5-6: troll, vampiro menor, dragão jovem, gigante de pedra, líder de culto
+Nv7+:  dragão adulto, lich, demônio, anjo corrompido, titã
+
+NÍVEL DE DESAFIO CORRETO:
+▸ Encontros padrão: CR = nível do personagem ÷ 2 (desafiador mas vencível)
+▸ Encontro de chefe: CR = nível do personagem (difícil, precisa de estratégia)
+▸ Se o jogador BUSCAR perigo: pode encontrar CR maior — consequências reais
+▸ NUNCA jogue CR impossível sem aviso narrativo claro ("você sente que isso é perigoso demais") — não como um chatbot.
 Sua missão é criar uma experiência inesquecível. Cada resposta deve fazer o jogador querer continuar imediatamente.
 
 ══ ESTRUTURA DE CADA RESPOSTA ══
@@ -3890,6 +3967,12 @@ PROFICIÊNCIA DOS PERSONAGENS (calculada automaticamente pelo sistema):
 QUANDO PEDIR TESTE — REGRA DE OURO DO D&D 5e:
 ▸ Sempre que o jogador tenta algo com resultado INCERTO, peça o teste ANTES de narrar o resultado
 ▸ Isso é o coração do D&D: jogador age → Mestre pede teste → aguarda resultado → narra consequência
+
+TESTES SÃO OBRIGATÓRIOS — use-os frequentemente, não raramente:
+▸ Decisão livre do jogador que envolve habilidade → SEMPRE peça teste
+▸ Em exploração: percepção, investigação, sobrevivência naturalmente
+▸ Em combate não só ataque — atletismo para saltar, furtividade para flanquear
+▸ NPCs reagem diferente conforme resultado: sucesso = vantagem, falha = complicação
 
 MAPEAMENTO OBRIGATÓRIO — AÇÃO DO JOGADOR → TESTE:
 ▸ Examinar, procurar, notar → SAB Percepção [TESTE:per:CD]
@@ -7936,73 +8019,99 @@ function buildFinalPane(){
 
 
 function updateCharSheet(){
-  if(!hero || !hero.cls) return;
+  if(!hero||!hero.cls) return;
 
-  // Banner
-  const portrait = document.getElementById('sh-portrait-icon');
-  if(portrait) portrait.textContent = (typeof classAv !== 'undefined' ? classAv[hero.cls] : '') || '⚔️';
+  // ── Banner ──
+  const portrait=document.getElementById('sh-portrait-icon');
+  if(portrait) portrait.textContent=(typeof classAv!=='undefined'?classAv[hero.cls]:'')||'⚔️';
 
-  const nm = document.getElementById('sh-nm');
-  if(nm) nm.textContent = hero.name || 'Herói';
+  const nm=document.getElementById('sh-nm');
+  if(nm) nm.textContent=hero.name||'Herói';
 
-  const cl = document.getElementById('sh-cl');
-  if(cl) cl.textContent = `${hero.race||''} ${hero.cls||''} · ${hero.bg||''}`;
+  const cl=document.getElementById('sh-cl');
+  if(cl) cl.textContent=`${hero.race||''} · ${hero.cls||''} · ${hero.bg||''}`;
 
-  const align = document.getElementById('sh-align');
+  const align=document.getElementById('sh-align');
   if(align){
-    const alignMap = {LB:'Leal e Bom',NB:'Neutro e Bom',CB:'Caótico e Bom',
-      LN:'Leal e Neutro',N:'Neutro',CN:'Caótico e Neutro',
-      LM:'Leal e Mau',NM:'Neutro e Mau',CM:'Caótico e Mau'};
-    align.textContent = alignMap[hero.align] || hero.align || '—';
+    const aM={LB:'Leal e Bom',NB:'Neutro e Bom',CB:'Caótico e Bom',LN:'Leal e Neutro',N:'Neutro',CN:'Caótico e Neutro',LM:'Leal e Mau',NM:'Neutro e Mau',CM:'Caótico e Mau'};
+    align.textContent=aM[hero.align]||hero.align||'—';
   }
 
-  const lvl = document.getElementById('sh-level-num');
-  if(lvl) lvl.textContent = hero.level || 1;
+  const lvl=document.getElementById('sh-level-num');
+  if(lvl) lvl.textContent=hero.level||1;
 
-  // Combat bar
-  const ca = document.getElementById('sh-ca');
-  if(ca) ca.textContent = hero.ca || 10;
+  const xpV=document.getElementById('sh-xp-val');
+  const xpB=document.getElementById('sh-xp-bar');
+  if(xpV){const cur=hero.xp||0;const nxt=(typeof XP_TABLE!=='undefined'?XP_TABLE[hero.level||1]:300)||300;xpV.textContent=`${cur}/${nxt}`;}
+  if(xpB){const cur=hero.xp||0;const nxt=(typeof XP_TABLE!=='undefined'?XP_TABLE[hero.level||1]:300)||300;const prv=hero.level>1&&typeof XP_TABLE!=='undefined'?XP_TABLE[(hero.level||1)-1]||0:0;const pct=nxt>prv?Math.min(100,Math.round(((cur-prv)/(nxt-prv))*100)):100;xpB.style.width=pct+'%';}
 
-  const spd = document.getElementById('sh-speed');
-  if(spd){
-    const raceSpeed = typeof RACE_SPEED !== 'undefined' ? (RACE_SPEED[hero.race] || 9) : 9;
-    spd.textContent = raceSpeed + 'm';
+  const rep=hero.rep||0;
+  const repE=document.getElementById('sh-rep');
+  if(repE){const tiers=[{min:0,name:'Viajante'},{min:50,name:'Aventureiro'},{min:150,name:'Herói'},{min:300,name:'Campeão'},{min:500,name:'Lendário'}];const tier=tiers.slice().reverse().find(t=>rep>=t.min)||tiers[0];repE.textContent=`⭐ ${tier.name} · ${rep} pts`;}
+
+  // ── Atributos grid visual ──
+  const statsGrid=document.getElementById('sh-attrs-grid');
+  if(statsGrid&&typeof stats!=='undefined'){
+    const ATTR_LABELS={str:'FORÇA',dex:'DESTREZA',con:'CONST.',int:'INTELIG.',wis:'SABEDORIA',cha:'CARISMA'};
+    const primAttr={Guerreiro:'str',Paladino:'str',Bárbaro:'str',Ladino:'dex',Ranger:'dex',Mago:'int',Feiticeiro:'cha',Bruxo:'cha',Clérigo:'wis',Druida:'wis',Bardo:'cha'}[hero.cls]||'str';
+    const pb=typeof PROF_BONUS!=='undefined'?(PROF_BONUS[Math.min(hero.level||1,20)]||2):2;
+    const svs=typeof CLASS_SAVES!=='undefined'?(CLASS_SAVES[hero.cls]||[]):[];
+    statsGrid.innerHTML=['str','dex','con','int','wis','cha'].map(k=>{
+      const v=stats[k]||10;
+      const m=Math.floor((v-10)/2);
+      const sv=svs.includes(k)?m+pb:m;
+      const isPrime=k===primAttr;
+      const mStr=(m>=0?'+':'')+m;
+      const svStr=(sv>=0?'+':'')+sv;
+      return `<div class="sh-attr-cell${isPrime?' sh-attr-prime':''}">
+        <div class="sh-attr-val">${v}</div>
+        <div class="sh-attr-mod">${mStr}</div>
+        <div class="sh-attr-name">${ATTR_LABELS[k]}</div>
+        <div class="sh-attr-save">Salv ${svStr}</div>
+      </div>`;
+    }).join('');
   }
 
-  const pb = typeof PROF_BONUS !== 'undefined' ? (PROF_BONUS[Math.min(hero.level||1,20)]||2) : 2;
-  const profEl = document.getElementById('sh-prof');
-  if(profEl) profEl.textContent = (pb >= 0 ? '+' : '') + pb;
-
-  // Attack bonus = proficiency + primary stat mod
-  const atkEl = document.getElementById('sh-atk');
-  if(atkEl && typeof stats !== 'undefined'){
-    const strMod = Math.floor(((stats.str||10)-10)/2);
-    const dexMod = Math.floor(((stats.dex||10)-10)/2);
-    const priMod = ['Ladino','Ranger'].includes(hero.cls) ? dexMod : strMod;
-    const atkBonus = pb + priMod;
-    atkEl.textContent = (atkBonus >= 0 ? '+' : '') + atkBonus;
+  // ── Combat stats ──
+  const ca=document.getElementById('sh-ca');if(ca)ca.textContent=hero.ca||10;
+  const spd=document.getElementById('sh-speed');
+  if(spd){const rS={Anão:'7,5m'};spd.textContent=rS[hero.race]||'9m';}
+  const pb2=typeof PROF_BONUS!=='undefined'?(PROF_BONUS[Math.min(hero.level||1,20)]||2):2;
+  const profE=document.getElementById('sh-prof');if(profE)profE.textContent=(pb2>=0?'+':'')+pb2;
+  const atkE=document.getElementById('sh-atk');
+  if(atkE&&typeof stats!=='undefined'){
+    const sM=Math.floor(((stats.str||10)-10)/2);
+    const dM=Math.floor(((stats.dex||10)-10)/2);
+    const pM=['Ladino','Ranger'].includes(hero.cls)?dM:sM;
+    const atk=pb2+pM;atkE.textContent=(atk>=0?'+':'')+atk;
   }
 
-  // Estilo de combate (se tiver)
-  const profileBonuses = document.getElementById('sh-profile-bonuses');
-  if(profileBonuses){
-    let bonusTxt = '';
-    if(heroCombatStyle){
-      const styleMap = {'archery':'Arqueiria (+2 ataque à dist.)','defense':'Defesa (+1 CA)','dueling':'Duelo (+2 dano)','great':'Armas Grandes','protection':'Proteção (reação)','twf':'Duas Armas','blind':'Combate às Cegas'};
-      bonusTxt += `<span class="pp-bonus">⚔️ ${styleMap[heroCombatStyle]||heroCombatStyle}</span>`;
-    }
-    if(heroWarlockPatron){
-      const patronMap = {'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'};
-      bonusTxt += `<span class="pp-bonus">🕯️ Patrono: ${patronMap[heroWarlockPatron]||heroWarlockPatron}</span>`;
-    }
-    if(heroKnownCantrips && heroKnownCantrips.length){
-      bonusTxt += `<span class="pp-bonus">✨ Truques: ${heroKnownCantrips.slice(0,3).join(', ')}${heroKnownCantrips.length>3?'...':''}</span>`;
-    }
-    if(bonusTxt) profileBonuses.innerHTML = bonusTxt;
+  // ── Conquistas ──
+  const achWrap=document.getElementById('sh-achievements');
+  if(achWrap){
+    const achs=[];
+    if(hero.level>=2) achs.push('⭐ Nível '+hero.level);
+    if((hero.gold||0)>=100) achs.push('🪙 100 PO ganhos');
+    if((hero.rep||0)>=50) achs.push('🏅 Aventureiro');
+    if(inCombat||(hero.rep||0)>0) achs.push('⚔️ Primeira Batalha');
+    if(heroCombatStyle) achs.push('🛡️ '+heroCombatStyle);
+    if(heroWarlockPatron) achs.push('🕯️ Pacto');
+    achWrap.innerHTML=achs.length
+      ? achs.map(a=>`<span class="sh-ach">${a}</span>`).join('')
+      : '<span class="sh-ach" style="opacity:.4">Nenhuma conquista ainda</span>';
   }
 
-  // Skills
-  buildSkillsTab(hero.cls, hero.race, hero.level||1);
+  // ── Habilidades/estilo ──
+  const bonusesEl=document.getElementById('sh-profile-bonuses');
+  if(bonusesEl){
+    let btxt='';
+    if(heroCombatStyle){const sM={'archery':'Arqueiria +2 atq dist','defense':'Defesa +1 CA','dueling':'Duelo +2 dano','great':'Armas Grandes','protection':'Proteção','twf':'Duas Armas','blind':'Combate às Cegas'};btxt+=`<span class="pp-bonus">⚔️ ${sM[heroCombatStyle]||heroCombatStyle}</span>`;}
+    if(heroWarlockPatron){const pM={'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'};btxt+=`<span class="pp-bonus">🕯️ ${pM[heroWarlockPatron]||heroWarlockPatron}</span>`;}
+    if(heroKnownCantrips&&heroKnownCantrips.length)btxt+=`<span class="pp-bonus">✨ ${heroKnownCantrips.slice(0,2).join(', ')}</span>`;
+    if(btxt) bonusesEl.innerHTML=btxt;
+  }
+
+  buildSkillsTab(hero.cls,hero.race,hero.level||1);
 }
 
 </script>
