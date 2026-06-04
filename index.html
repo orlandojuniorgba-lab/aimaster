@@ -2825,11 +2825,11 @@ function startAdventure(){
   }catch(e){}
 
   // ★ Zera COMPLETAMENTE o estado de magias para novo personagem
-  // ★ Preserve creation flow choices before clearing
-  const _savedCantrips  = [..._cfSelectedCantrips];
-  const _savedSpells    = [..._cfSelectedSpells];
-  const _savedStyle     = _cfSelectedStyle;
-  const _savedPatron    = _cfSelectedPatron;
+  // ★ Save creation flow choices before clearing
+  const _savedCantrips = [...(_cfSelectedCantrips||[])];
+  const _savedSpells   = [...(_cfSelectedSpells||[])];
+  const _savedStyle    = _cfSelectedStyle||null;
+  const _savedPatron   = _cfSelectedPatron||null;
 
   heroKnownCantrips=[];
   heroKnownSpells=[];
@@ -2852,6 +2852,11 @@ function startAdventure(){
   }catch(e){}
   cantripSwapPending=false;
   // heroCombatStyle already set from creation flow — don't null it again
+  // ★ Restore creation choices
+  if(_savedCantrips.length)  heroKnownCantrips = [..._savedCantrips];
+  if(_savedSpells.length)    heroKnownSpells   = [..._savedSpells];
+  if(_savedStyle)            heroCombatStyle   = _savedStyle;
+  if(_savedPatron)           heroWarlockPatron = _savedPatron;
   initInventory(cls); // recalcCA() é chamado dentro
   updateVitals();
   updateXPModal();
@@ -7615,6 +7620,7 @@ function cfSelectClass(id){
   const cls = CLASS_DATA.find(c=>c.id===id);
   const info = document.getElementById('cf-class-info');
   if(info&&cls){ info.textContent=cls.desc; info.classList.add('show'); }
+  // Enable next button on pane 3
   const btn = document.getElementById('cf-next-3');
   if(btn){ btn.disabled=false; btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
   const sel = document.getElementById('inp-class');
