@@ -3767,7 +3767,7 @@ Arco narrativo: ${questData.jornada||'Jornada do Herói — Partida'}
 Você é um narrador literário de fantasia. Escreva como um romancista — conciso, imersivo, sensorial.
 
 ESTILO NARRATIVO — REGRAS ABSOLUTAS:
-▸ Respostas CURTAS: 3 a 5 parágrafos no máximo. Prefira 2-3. Menos é mais.
+▸ Respostas: 3 a 4 parágrafos. SEMPRE complete a cena atual antes de parar — nunca corte no meio de uma ação ou diálogo.
 ▸ Mostre, não explique: use detalhes sensoriais concretos (cheiro, som, textura, luz)
 ▸ Diálogos vivos: NPCs falam com voz própria — "Nome: fala" — revelam personalidade em poucas palavras
 ▸ Termine SEMPRE com uma escolha ou tensão aberta — nunca resolva tudo
@@ -4357,7 +4357,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1100,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
     });
     if(!res.ok){
       const err=await res.json().catch(()=>({}));
@@ -4456,12 +4456,11 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // ★ Trunca após pedido de TESTE (não narra resultado antes do jogador rolar)
       const _testeTagMatch = reply.match(/\[TESTE:[^\]]+\]/i);
       if(_testeTagMatch){
-        const cutIdx = reply.indexOf(_testeTagMatch[0]) + testeMatch[0].length;
-        // Mantém só até o fim da linha do pedido de teste
-        const nextPara = reply.indexOf('\n\n', cutIdx);
-        replyToShow = nextPara > 0
-          ? reply.substring(0, nextPara).trim()
-          : reply.substring(0, cutIdx + 80).trim();
+        const _cutIdx = reply.indexOf(_testeTagMatch[0]) + _testeTagMatch[0].length;
+        const _nextPara = reply.indexOf('\n\n', _cutIdx);
+        replyToShow = _nextPara > 0
+          ? reply.substring(0, _nextPara).trim()
+          : reply.substring(0, _cutIdx + 80).trim();
       }
 
       // ★ Trunca após pedido de DANO (não antecipa resultado)
