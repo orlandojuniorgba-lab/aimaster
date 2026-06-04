@@ -7698,9 +7698,9 @@ function cfShowPane(n){
 
 function buildStylePane4(){
   const styles = COMBAT_STYLES_BY_CLASS[_cfSelectedClass]||[];
-  const title=document.getElementById('cf-pane-5-title');
+  const title=document.getElementById('cf-pane-4-title');
   if(title) title.textContent='Estilo de Combate';
-  const content=document.getElementById('cf-pane-5-content');
+  const content=document.getElementById('cf-pane-4-content');
   if(!content) return;
   content.innerHTML=`<div class="style-card-grid">${
     styles.map(s=>`
@@ -7716,13 +7716,13 @@ function buildStylePane4(){
 
 function cfSelectStyle(id){
   _cfSelectedStyle=id;
-  buildStylePane();
+  buildStylePane4();
 }
 
 function buildPatronPane4(){
-  const title=document.getElementById('cf-pane-5-title');
+  const title=document.getElementById('cf-pane-4-title');
   if(title) title.textContent='Escolha seu Patrono';
-  const content=document.getElementById('cf-pane-5-content');
+  const content=document.getElementById('cf-pane-4-content');
   if(!content) return;
   content.innerHTML=`<div class="patron-card-grid">${
     WARLOCK_PATRONS.map(p=>`
@@ -7739,7 +7739,7 @@ function buildPatronPane4(){
 function cfSelectPatron(id){
   _cfSelectedPatron=id;
   heroWarlockPatron=id;
-  buildPatronPane();
+  buildPatronPane4();
 }
 
 function buildSpellPane5(){
@@ -7785,7 +7785,7 @@ function cfToggleCantrip(id, max){
   if(idx>=0){ _cfSelectedCantrips.splice(idx,1); }
   else if(_cfSelectedCantrips.length<max){ _cfSelectedCantrips.push(id); }
   else{ showToast('Máximo de '+max+' truques'); return; }
-  buildSpellPane();
+  buildSpellPane5();
 }
 
 function cfToggleSpell(id, max){
@@ -7793,7 +7793,7 @@ function cfToggleSpell(id, max){
   if(idx>=0){ _cfSelectedSpells.splice(idx,1); }
   else if(_cfSelectedSpells.length<max){ _cfSelectedSpells.push(id); }
   else{ showToast('Máximo de '+max+' magias'); return; }
-  buildSpellPane();
+  buildSpellPane5();
 }
 
 function buildFinalPreview(){
