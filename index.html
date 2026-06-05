@@ -30,7 +30,7 @@ html,body{height:100%;overflow:hidden;background:#0F0A04;}
 }
 #app{width:100%;max-width:430px;height:100vh;margin:0 auto;background:var(--bg2);position:relative;overflow:hidden;display:flex;flex-direction:column;}
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
-.screen.active{display:flex;}
+.screen.active{display:flex;flex:1;min-height:0;}
 #s-game{padding-bottom:58px;}
 body{font-family:var(--font-narr);color:var(--parch);}
 
@@ -7962,6 +7962,34 @@ function loadGameState(){
   } catch(e){ console.warn('loadGameState error', e); return false; }
 }
 
+// Startup: check if saved game exists and route correctly  
+(function initApp(){
+  try {
+    const raw = localStorage.getItem('aimaster_state');
+    if(!raw) return;
+    const state = JSON.parse(raw);
+    if(Date.now() - (state.savedAt||0) > 2*60*60*1000) return;
+    if(!state.hero || !state.hero.name) return;
+    // Restore and go to game screen
+    if(loadGameState()){
+      updateVitals();
+      renderInventory();
+      // Rebuild narrative
+      const narr = document.getElementById('narr');
+      if(narr && gameHistory.length > 0){
+        gameHistory.forEach(msg => {
+          if(msg.role === 'assistant' && msg.content){
+            const m = addMsg('msg-dm','');
+            const bbl = m.querySelector('.bbl');
+            if(bbl) bbl.innerHTML = formatNarrative(cleanTextForDisplay(msg.content));
+          }
+        });
+      }
+      goTo('s-game');
+    }
+  } catch(e){ console.warn('initApp error', e); }
+})();
+
 // Salva ao minimizar/fechar e restaura ao voltar
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
@@ -7974,16 +8002,18 @@ document.addEventListener('visibilitychange', function(){
       if(loadGameState()){
         updateVitals();
         renderInventory();
+        goTo('s-game');
         // Reconstrói mensagens do histórico no narr
-        gameHistory.forEach(msg => {
-          if(msg.role === 'assistant' && msg.content){
-            const card = document.createElement('div');
-            card.className = 'bbl bbl-m';
-            card.innerHTML = formatNarrative(cleanTextForDisplay(msg.content));
-            const narr = document.getElementById('narr');
-            if(narr) narr.appendChild(card);
-          }
-        });
+        const narr = document.getElementById('narr');
+        if(narr && narr.children.length === 0){
+          gameHistory.forEach(msg => {
+            if(msg.role === 'assistant' && msg.content){
+              const m = addMsg('msg-dm','');
+              const bbl = m.querySelector('.bbl');
+              if(bbl) bbl.innerHTML = formatNarrative(cleanTextForDisplay(msg.content));
+            }
+          });
+        }
         // Pede ao mestre para retomar com contexto
         const npcsKnown = gameMemory.npcs.filter(n=>n.alive!==false).map(n=>n.name).join(', ');
         const lastEvent = gameMemory.events.slice(-1)[0]?.summary || '';
