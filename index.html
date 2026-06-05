@@ -30,7 +30,7 @@ html,body{height:100%;overflow:hidden;background:#0F0A04;}
 }
 #app{width:100%;max-width:430px;height:100vh;margin:0 auto;background:var(--bg2);position:relative;overflow:hidden;display:flex;flex-direction:column;}
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
-.screen.active{display:flex;flex:1;min-height:0;}
+.screen.active{display:flex;}
 #s-game{padding-bottom:58px;}
 body{font-family:var(--font-narr);color:var(--parch);}
 
@@ -115,7 +115,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .xp-portrait-wrap{position:relative;width:50px;height:50px;flex-shrink:0;cursor:pointer;}
 .xp-ring{position:absolute;inset:0;}
 .portrait{position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg4);}
-.xp-label{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gold-l);font-family:var(--font-title);white-space:nowrap;letter-spacing:.5px;font-weight:600;text-shadow:0 0 6px rgba(200,146,42,0.4);}
+.xp-label{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gold-l);font-family:var(--font-title);white-space:nowrap;letter-spacing:.5px;font-weight:600;text-shadow:0 0 6px rgba(200,146,42,0.4);}
 .char-info{flex:1;min-width:0;}
 .c-name{font-family:var(--font-title);font-size:13px;font-weight:600;color:var(--gold-l);line-height:1.15;}
 .c-meta{font-size:10px;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-title);margin-bottom:4px;opacity:0.9;}
@@ -135,7 +135,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .narr-border{height:1px;flex-shrink:0;background:linear-gradient(90deg,transparent,var(--gold-d),rgba(200,146,42,.5),var(--gold-d),transparent);}
 
 /* ══ NARRATIVA ══ */
-.narr{flex:1;min-height:0;overflow-y:auto;padding:12px 14px 80px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;}
+.narr{flex:1;overflow-y:auto;padding:12px 14px 80px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;}
 .narr::-webkit-scrollbar{width:3px;}
 .narr::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
 .msg{animation:fadein .35s ease;max-width:100%;}
@@ -222,27 +222,20 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .actions-wrap{background:linear-gradient(180deg,rgba(26,18,8,.98),var(--bg3));border-top:1px solid var(--border);padding:8px 12px 6px;flex-shrink:0;}
 .acts-lbl{font-family:var(--font-title);font-size:9px;color:var(--gold-dim);letter-spacing:2px;text-align:center;margin-bottom:6px;}
 .act-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
-/* ══ ACT BTN — DISCO ELYSIUM STYLE ══ */
 .act-btn{
-  display:flex;align-items:flex-start;gap:0;
-  background:transparent;border:none;border-bottom:1px solid rgba(200,146,42,.1);
-  padding:13px 2px;width:100%;text-align:left;cursor:pointer;
-  transition:padding-left .18s ease;
+  background:linear-gradient(135deg,rgba(22,14,4,.95),rgba(38,26,10,.9));
+  border:1px solid var(--gold-dim);
+  border-left:3px solid var(--gold-d);
+  border-radius:10px;
+  padding:9px 12px;
+  cursor:pointer;
+  text-align:left;
+  color:var(--parch);
+  display:flex;align-items:center;gap:12px;
+  transition:all .18s;
+  position:relative;overflow:hidden;
+  width:100%;
 }
-.act-btn:last-child{border-bottom:none;padding-bottom:0}
-.act-btn:active{padding-left:6px;background:rgba(200,146,42,.04);}
-.a-title{
-  display:block;font-family:'Lato',sans-serif;
-  font-size:15px;font-weight:400;
-  color:rgba(240,221,176,.9);
-  line-height:1.38;letter-spacing:.01em;
-}
-.a-hint{
-  display:block;font-size:10px;font-weight:700;
-  letter-spacing:.6px;margin-top:4px;
-  text-transform:uppercase;
-}
-.a-arrow{display:none;}
 .act-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(200,146,42,.06),transparent);opacity:0;transition:opacity .2s;}
 .act-btn:hover{border-left-color:var(--gold-l);transform:translateX(2px);box-shadow:-2px 0 12px rgba(200,146,42,.15);}
 .act-btn:hover::before{opacity:1;}
@@ -766,7 +759,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
   padding:10px 14px 8px;
   background:linear-gradient(180deg,#0f0a03 0%,#0a0804 100%);
   position:relative;
-overflow:visible;}
+}
 .char-strip::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent 0%,rgba(200,146,42,.5) 25%,rgba(240,210,80,.95) 50%,rgba(200,146,42,.5) 75%,transparent 100%);
@@ -1023,92 +1016,6 @@ div.msg-dm div.bbl,
   line-height: 1.4 !important;
 }
 
-
-/* ══ NARR SCROLL FIX ══ */
-.narr > * { position:relative; z-index:1; }
-.narr { position:relative; }
-.narr::before { pointer-events:none !important; }
-.narr.amb-forest::before,.narr.amb-city::before,
-.narr.amb-dungeon::before,.narr.amb-combat::before,
-.narr.amb-castle::before { pointer-events:none !important; }
-
-
-#s-game{display:flex;flex-direction:column;height:100%;}
-
-
-/* ══ CHARACTER SHEET — STATUS TAB REDESIGN ══ */
-.sh-banner{padding:14px 16px 12px;border-bottom:1px solid rgba(200,146,42,.1)}
-.sh-banner-top{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-.sh-portrait-icon{
-  width:56px;height:56px;border-radius:50%;
-  background:linear-gradient(135deg,rgba(200,146,42,.18),rgba(180,100,20,.1));
-  border:2px solid rgba(200,146,42,.45);
-  display:flex;align-items:center;justify-content:center;
-  font-size:26px;flex-shrink:0;position:relative;cursor:pointer;
-}
-.sh-lv-badge{
-  position:absolute;bottom:-4px;right:-4px;
-  background:#c8922a;color:#0f0c07;
-  font-size:9px;font-weight:700;
-  border-radius:10px;padding:1px 5px;
-  font-family:var(--font-title);letter-spacing:.3px;
-  border:1.5px solid #0f0c07;
-}
-.sh-hero-info{flex:1;min-width:0}
-.sh-nm{font-family:var(--font-title);font-size:17px;font-weight:700;color:#f0ddb0;letter-spacing:.3px}
-.sh-cl{font-size:11px;color:rgba(200,180,120,.5);margin-top:2px}
-.sh-rep{font-size:10px;color:rgba(200,146,42,.65);margin-top:4px}
-.sh-align-badge{font-size:10px;color:rgba(200,180,120,.3);text-align:right;font-family:var(--font-title);letter-spacing:.2px}
-.sh-xp-row{display:flex;align-items:center;gap:8px}
-.sh-xp-lbl{font-size:10px;color:rgba(200,180,120,.35);width:22px;font-family:var(--font-title);letter-spacing:.3px}
-.sh-xp-track{flex:1;height:5px;background:rgba(200,146,42,.1);border-radius:3px;overflow:hidden;border:1px solid rgba(200,146,42,.12)}
-.sh-xp-fill{height:100%;background:linear-gradient(90deg,#c8922a,#f0d060);border-radius:3px;transition:width .5s}
-.sh-xp-val{font-size:10px;color:rgba(200,180,120,.35);white-space:nowrap}
-
-/* Vitals */
-.sh-vitals{padding:10px 16px;border-bottom:1px solid rgba(200,146,42,.08);display:flex;flex-direction:column;gap:6px}
-.sh-vital-row{display:flex;align-items:center;gap:8px}
-.sh-vital-lbl{font-size:10px;font-weight:700;width:20px;font-family:var(--font-title)}
-.sh-lbl-hp{color:#d03030}
-.sh-lbl-mp{color:#4060c0}
-.sh-vital-track{flex:1;height:9px;background:rgba(0,0,0,.5);border-radius:5px;overflow:hidden;border:1px solid rgba(255,255,255,.04)}
-.sh-vital-fill{height:100%;border-radius:4px;position:relative}
-.sh-vital-fill::after{content:'';position:absolute;top:1px;left:3px;right:3px;height:3px;background:rgba(255,255,255,.15);border-radius:2px}
-.sh-fill-hp{background:linear-gradient(90deg,#8a1010,#d03030)}
-.sh-fill-mp{background:linear-gradient(90deg,#101050,#4060c0)}
-.sh-vital-val{font-size:10px;font-weight:700;width:34px;text-align:right;font-family:var(--font-title)}
-.sh-val-hp{color:#d03030}
-.sh-val-mp{color:#4060c0}
-
-/* Combat stats row */
-.sh-combat{display:flex;border-bottom:1px solid rgba(200,146,42,.08)}
-.sh-cstat{flex:1;text-align:center;padding:10px 4px;border-right:1px solid rgba(200,146,42,.06)}
-.sh-cstat:last-child{border-right:none}
-.sh-cv{font-size:16px;font-weight:700;color:#f0ddb0;font-family:var(--font-title);line-height:1}
-.sh-cl2{font-size:9px;color:rgba(200,180,120,.35);margin-top:3px;letter-spacing:.5px}
-
-/* Attrs grid */
-.sh-attrs-section{padding:12px 16px;border-bottom:1px solid rgba(200,146,42,.08)}
-.sh-section-lbl{font-size:9px;color:rgba(200,180,120,.3);letter-spacing:.8px;margin-bottom:8px;text-transform:uppercase}
-.sh-attrs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.sh-attr-cell{background:rgba(200,146,42,.05);border:1px solid rgba(200,146,42,.12);border-radius:8px;padding:8px 4px;text-align:center}
-.sh-attr-prime{background:rgba(200,146,42,.12)!important;border-color:rgba(200,146,42,.38)!important}
-.sh-attr-val{font-size:20px;font-weight:700;color:#c8922a;line-height:1;font-family:var(--font-title)}
-.sh-attr-prime .sh-attr-val{color:#f0d060}
-.sh-attr-mod{font-size:11px;color:rgba(200,146,42,.7);font-weight:600}
-.sh-attr-name{font-size:8px;color:rgba(200,180,120,.35);letter-spacing:.5px;margin-top:2px;text-transform:uppercase}
-.sh-attr-save{font-size:8px;color:rgba(200,180,120,.2);margin-top:1px}
-
-/* Bonus section */
-.sh-bonus-section{padding:8px 16px;border-bottom:1px solid rgba(200,146,42,.06)}
-.pp-bonuses{display:flex;flex-wrap:wrap;gap:5px}
-.pp-bonus{background:rgba(200,146,42,.08);border:1px solid rgba(200,146,42,.2);border-radius:20px;padding:3px 10px;font-size:10px;color:rgba(200,180,120,.65);font-family:var(--font-title);letter-spacing:.2px;display:inline-block}
-
-/* Achievements */
-.sh-achs-section{padding:12px 16px}
-.sh-achs-row{display:flex;flex-wrap:wrap;gap:5px}
-.sh-ach{background:rgba(200,146,42,.07);border:1px solid rgba(200,146,42,.18);border-radius:20px;padding:3px 10px;font-size:10px;color:rgba(200,180,120,.65);font-family:var(--font-title);letter-spacing:.2px}
-
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1275,7 +1182,7 @@ div.msg-dm div.bbl,
   </div>
   <!-- Char strip com XP ring -->
   <div class="char-strip">
-    <div class="xp-portrait-wrap" onclick="openMo('mo-char')" title="Ficha do Herói">
+    <div class="xp-portrait-wrap" onclick="openMo('mo-xp')">
       <svg class="xp-ring" viewBox="0 0 50 50">
         <circle cx="25" cy="25" r="22" fill="none" stroke="rgba(200,146,42,.15)" stroke-width="3"/>
         <circle id="xp-ring-circle" cx="25" cy="25" r="22" fill="none" stroke="url(#xpgrad)" stroke-width="3"
@@ -1604,65 +1511,67 @@ div.msg-dm div.bbl,
   </div>
   <!-- Status -->
   <div class="sheet-page active" id="tab-stats">
-
-  <!-- ── BANNER ── -->
-  <div class="sh-banner">
-    <div class="sh-banner-top">
-      <div class="sh-portrait-icon" id="sh-portrait-icon">⚔️<span class="sh-lv-badge" id="sh-level-num">1</span></div>
-      <div class="sh-hero-info">
-        <div class="sh-nm" id="sh-nm">Herói</div>
-        <div class="sh-cl" id="sh-cl">—</div>
-        <div id="sh-rep" class="sh-rep"></div>
+    <!-- Hero banner -->
+    <div class="sh-hero-banner">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <div class="sh-portrait-icon" id="sh-portrait-icon" style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,rgba(200,146,42,.2),rgba(180,100,20,.1));border:2px solid rgba(200,146,42,.5);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">⚔️</div>
+      <div style="flex:1;min-width:0">
+        <div class="sh-nm" id="sh-nm" style="font-family:var(--font-title);font-size:16px;color:var(--gold-l);font-weight:700">Herói</div>
+        <div class="sh-cl" id="sh-cl" style="font-size:11px;color:rgba(200,180,120,.5);margin-top:2px">—</div>
+        <div id="sh-rep" style="font-size:11px;color:rgba(200,146,42,.6);margin-top:3px"></div>
       </div>
-      <div id="sh-align" class="sh-align-badge"></div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-title);font-size:10px;color:rgba(200,180,120,.4);letter-spacing:.5px">NÍVEL</div>
+        <div id="sh-level-num" style="font-size:24px;font-weight:700;color:var(--gold-l);line-height:1">1</div>
+      </div>
     </div>
-    <div class="sh-xp-row">
-      <span class="sh-xp-lbl">XP</span>
-      <div class="sh-xp-track"><div id="sh-xp-bar" class="sh-xp-fill" style="width:0%"></div></div>
-      <span id="sh-xp-val" class="sh-xp-val">0/300</span>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span style="font-size:10px;color:rgba(200,180,120,.4);width:20px">XP</span>
+      <div style="flex:1;height:6px;background:rgba(200,146,42,.1);border-radius:3px;overflow:hidden;border:1px solid rgba(200,146,42,.15)">
+        <div id="sh-xp-bar" style="height:100%;background:linear-gradient(90deg,#c8922a,#f0d060);border-radius:3px;width:0%;transition:width .5s"></div>
+      </div>
+      <span id="sh-xp-val" style="font-size:10px;color:rgba(200,180,120,.4);white-space:nowrap">0/300</span>
     </div>
+    <div id="sh-align" style="font-size:10px;color:rgba(200,180,120,.3);text-align:center"></div>
   </div>
-
-  <!-- ── PV / MP ── -->
-  <div class="sh-vitals">
-    <div class="sh-vital-row">
-      <span class="sh-vital-lbl sh-lbl-hp">PV</span>
-      <div class="sh-vital-track"><div id="sh-hp-bar" class="sh-vital-fill sh-fill-hp" style="width:100%"></div></div>
-      <span id="sh-hp-val" class="sh-vital-val sh-val-hp">—</span>
+    <!-- 3 resource cards -->
+    <div class="sh-resources">
+      <div class="sh-res-card sh-res-hp">
+        <div class="sh-res-icon">❤️</div>
+        <div class="sh-res-val" id="sh-hp-val">—</div>
+        <div class="sh-res-sub" id="sh-hp-sub">/— PV</div>
+        <div class="sh-res-bar"><div class="sh-res-fill" id="sh-hp-bar" style="width:100%"></div></div>
+      </div>
+      <div class="sh-res-card sh-res-mp">
+        <div class="sh-res-icon">✨</div>
+        <div class="sh-res-val" id="sh-mp-val">—</div>
+        <div class="sh-res-sub" id="sh-mp-sub">/— SLOTS</div>
+        <div class="sh-res-bar"><div class="sh-res-fill" id="sh-mp-bar" style="width:100%"></div></div>
+      </div>
+      <div class="sh-res-card sh-res-xp">
+        <div class="sh-res-icon">⭐</div>
+        <div class="sh-res-val" id="sh-xp-val">0</div>
+        <div class="sh-res-sub" id="sh-xp-sub">/300 XP</div>
+        <div class="sh-res-bar"><div class="sh-res-fill" id="sh-xp-bar" style="width:0%"></div></div>
+      </div>
     </div>
-    <div class="sh-vital-row" id="mp-bar-row">
-      <span class="sh-vital-lbl sh-lbl-mp">MP</span>
-      <div class="sh-vital-track"><div id="sh-mp-bar" class="sh-vital-fill sh-fill-mp" style="width:100%"></div></div>
-      <span id="sh-mp-val" class="sh-vital-val sh-val-mp">—</span>
+    <!-- Atributos com barra proporcional -->
+    <div class="sec-hdr" style="margin-bottom:6px">ATRIBUTOS</div>
+    <div id="sh-attrs-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0"></div>
+    <!-- Combat bar -->
+    <div class="sh-combat-bar">
+      <div class="sh-cb"><div class="sh-cb-ic">🛡️</div><div class="sh-cb-val" id="sh-ca">—</div><div class="sh-cb-lbl">CA</div></div>
+      <div class="sh-cb"><div class="sh-cb-ic">👟</div><div class="sh-cb-val" id="sh-speed">9m</div><div class="sh-cb-lbl">DESL.</div></div>
+      <div class="sh-cb"><div class="sh-cb-ic">🎯</div><div class="sh-cb-val" id="sh-prof">+2</div><div class="sh-cb-lbl">PROF.</div></div>
+      <div class="sh-cb"><div class="sh-cb-ic">⚔️</div><div class="sh-cb-val" id="sh-atk">+2</div><div class="sh-cb-lbl">ATAQUE</div></div>
     </div>
+    <!-- Perfil ativo -->
+    <div class="sec-hdr" style="margin-top:10px;margin-bottom:6px">PERFIL ATIVO</div>
+    <div id="sh-profile-tags" class="pp-tags"></div>
+    <div id="sh-profile-bonuses" class="pp-bonuses" style="margin-top:6px"></div>
+    <div style="font-family:var(--font-title);font-size:9px;color:rgba(200,180,120,.35);letter-spacing:.8px;margin-top:10px;margin-bottom:5px">CONQUISTAS</div>
+    <div id="sh-achievements" style="display:flex;flex-wrap:wrap;gap:5px"></div>
   </div>
-
-  <!-- ── COMBAT STATS ── -->
-  <div class="sh-combat">
-    <div class="sh-cstat"><div class="sh-cv" id="sh-ca">—</div><div class="sh-cl2">CA</div></div>
-    <div class="sh-cstat"><div class="sh-cv" id="sh-speed">9m</div><div class="sh-cl2">DESL.</div></div>
-    <div class="sh-cstat"><div class="sh-cv" id="sh-prof">+2</div><div class="sh-cl2">PROF.</div></div>
-    <div class="sh-cstat"><div class="sh-cv" id="sh-atk">+2</div><div class="sh-cl2">ATAQUE</div></div>
-  </div>
-
-  <!-- ── ATRIBUTOS ── -->
-  <div class="sh-attrs-section">
-    <div class="sh-section-lbl">Atributos</div>
-    <div id="sh-attrs-grid" class="sh-attrs-grid"></div>
-  </div>
-
-  <!-- ── BÔNUS / ESTILO ── -->
-  <div class="sh-bonus-section" id="sh-bonus-section">
-    <div class="pp-bonus" id="sh-profile-bonuses" class="pp-bonuses" style="margin-top:6px"></div>
-  </div>
-
-  <!-- ── CONQUISTAS ── -->
-  <div class="sh-achs-section">
-    <div class="sh-section-lbl">Conquistas</div>
-    <div id="sh-achievements" class="sh-achs-row"></div>
-  </div>
-
-</div>
     <!-- Inventário -->
   <div class="sheet-page" id="tab-inv">
     <!-- Barra de carga -->
@@ -3751,47 +3660,63 @@ function getActionIconData(action){
 
 function updateActionButtons(actions){
   if(!actions||!actions.length) return;
-  const grid=document.getElementById('act-grid');
+  const grid = document.getElementById('act-grid');
   if(!grid) return;
   grid.innerHTML='';
 
+  const D20_SVG=`<svg viewBox="0 0 40 40" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,13 38,27 20,38 2,27 2,13" fill="rgba(200,146,42,.15)" stroke="#C8922A" stroke-width="1.8" stroke-linejoin="round"/><text x="20" y="24" text-anchor="middle" fill="#E8B84B" font-size="11" font-family="Cinzel,serif" font-weight="700">20</text></svg>`;
+
   actions.slice(0,4).forEach((action,i)=>{
-    const btn=document.createElement('button');
-    btn.className='act-btn';
-    btn.style.animation=`actionSlideIn .2s ease-out ${i*0.06}s both`;
+    const btn = document.createElement('button');
+    btn.className = 'act-btn';
 
-    const al=action.toLowerCase();
+    const al = action.toLowerCase();
 
-    // Detect type for hint label only
-    let hint='AÇÃO', hcolor='rgba(200,146,42,.4)';
-    if(/magia|feitiço|truque|arcano|conjur|lançar|invocar/i.test(al)){
-      hint='MAGIA'; hcolor='rgba(160,100,240,.65)';
-    } else if(/combate|atacar|golpe|lutar|defender|arco|espada/i.test(al)){
-      hint='COMBATE'; hcolor='rgba(200,60,50,.65)';
-    } else if(/caminhar|ir para|partir|voltar|seguir|fugir|correr|escapar|avançar|recuar|mover/i.test(al)){
-      hint='MOVIMENTO'; hcolor='rgba(60,160,90,.65)';
-    } else if(/investigar|examinar|procurar|explorar|observar|verificar|checar/i.test(al)){
-      hint='INVESTIGAÇÃO'; hcolor='rgba(180,140,50,.65)';
-    } else if(/falar|conversar|perguntar|negociar|persuadir|chamar|aguardar|responder|questionar|propor/i.test(al)){
-      hint='DIPLOMACIA'; hcolor='rgba(80,130,210,.65)';
-    } else if(/intimidar|ameaçar/i.test(al)){
-      hint='INTIMIDAÇÃO'; hcolor='rgba(200,80,40,.65)';
-    } else if(/curar|poção|medicina|bandagem/i.test(al)){
-      hint='CURA'; hcolor='rgba(50,180,100,.65)';
-    } else if(/urgente|imediato|rápido|antes que/i.test(al)){
-      hint='⚠ URGENTE'; hcolor='rgba(230,130,20,.9)';
+    // ── Hint label por tipo ──
+    let hintTxt = 'AÇÃO';
+    if(/percepção|notar|ver|ouvir|sentir/i.test(al))          hintTxt='PERCEPÇÃO';
+    else if(/investigar|examinar|procurar|analisar|inspecionar/i.test(al)) hintTxt='INVESTIGAÇÃO';
+    else if(/persuadir|convencer|negociar|diplomacia/i.test(al)) hintTxt='DIPLOMACIA';
+    else if(/intimidar|ameaçar/i.test(al))                     hintTxt='INTIMIDAÇÃO';
+    else if(/enganar|mentir|disfarçar/i.test(al))              hintTxt='ENGANAÇÃO';
+    else if(/furtiv|esconder|sigilo|silêncio/i.test(al))       hintTxt='FURTIVIDADE';
+    else if(/escalar|saltar|atletismo|força/i.test(al))        hintTxt='ATLETISMO';
+    else if(/rastrear|sobreviver|trilha|floresta/i.test(al))   hintTxt='SOBREVIVÊNCIA';
+    else if(/magia|feitiço|truque|arcano|conjur|lançar/i.test(al)) hintTxt='MAGIA';
+    else if(/atacar|golpe|combate|espada|arco|lutar/i.test(al)) hintTxt='COMBATE';
+    else if(/fugir|correr|escapar|recuar|mover|avançar/i.test(al)) hintTxt='MOVIMENTO';
+    else if(/falar|conversar|perguntar|chamar/i.test(al))       hintTxt='AÇÃO';
+
+    // ── Ícone contextual ──
+    let ico='⚔️', ibg='rgba(180,40,30,.25)', ibd='rgba(200,60,50,.4)', urgStyle='';
+    if(hintTxt==='MAGIA')       {ico='✨';ibg='rgba(100,50,180,.25)';ibd='rgba(140,90,220,.4)';}
+    else if(hintTxt==='DIPLOMACIA'||hintTxt==='INTIMIDAÇÃO'||hintTxt==='ENGANAÇÃO')
+                                {ico='🗣️';ibg='rgba(30,80,160,.25)';ibd='rgba(60,120,200,.4)';}
+    else if(hintTxt==='MOVIMENTO'){ico='🏃';ibg='rgba(30,100,50,.25)';ibd='rgba(50,150,80,.4)';}
+    else if(hintTxt==='INVESTIGAÇÃO'){ico='🔍';ibg='rgba(100,80,20,.25)';ibd='rgba(160,120,40,.4)';}
+    else if(hintTxt==='PERCEPÇÃO'){ico='👁️';ibg='rgba(60,60,100,.25)';ibd='rgba(100,100,160,.4)';}
+    else if(hintTxt==='FURTIVIDADE'){ico='🌑';ibg='rgba(20,20,40,.4)';ibd='rgba(80,80,120,.4)';}
+    else if(hintTxt==='ATLETISMO'||hintTxt==='SOBREVIVÊNCIA')
+                                {ico='💪';ibg='rgba(100,60,20,.25)';ibd='rgba(160,100,40,.4)';}
+    // Urgente?
+    if(/urgente|imediato|rápido|antes que/i.test(al)){
+      ico='⚡';ibg='rgba(180,80,0,.35)';ibd='rgba(220,120,20,.7)';
+      urgStyle='animation:pulse .9s infinite;'; hintTxt='⚠️ URGENTE';
     }
 
     btn.innerHTML=`
-      <div class="a-text" style="flex:1">
+      <div style="background:${ibg};border:1.5px solid ${ibd};border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;${urgStyle}">${ico}</div>
+      <div class="a-text">
         <span class="a-title">${action}</span>
-        <span class="a-hint" style="color:${hcolor}">${hint}</span>
-      </div>`;
-    btn.onclick=()=>doAct(action);
+        <span class="a-hint">${hintTxt}</span>
+      </div>
+      <span class="a-arrow">›</span>`;
+    btn.onclick = ()=>doAct(action);
+    btn.style.animation = `actionSlideIn .25s ease-out ${i*0.06}s both`;
     grid.appendChild(btn);
   });
 
-  const lbl=document.getElementById('acts-lbl');
+  const lbl = document.getElementById('acts-lbl');
   if(lbl) lbl.textContent='— ESCOLHA SUA AÇÃO —';
 }
 
@@ -7962,34 +7887,6 @@ function loadGameState(){
   } catch(e){ console.warn('loadGameState error', e); return false; }
 }
 
-// Startup: check if saved game exists and route correctly  
-(function initApp(){
-  try {
-    const raw = localStorage.getItem('aimaster_state');
-    if(!raw) return;
-    const state = JSON.parse(raw);
-    if(Date.now() - (state.savedAt||0) > 2*60*60*1000) return;
-    if(!state.hero || !state.hero.name) return;
-    // Restore and go to game screen
-    if(loadGameState()){
-      updateVitals();
-      renderInventory();
-      // Rebuild narrative
-      const narr = document.getElementById('narr');
-      if(narr && gameHistory.length > 0){
-        gameHistory.forEach(msg => {
-          if(msg.role === 'assistant' && msg.content){
-            const m = addMsg('msg-dm','');
-            const bbl = m.querySelector('.bbl');
-            if(bbl) bbl.innerHTML = formatNarrative(cleanTextForDisplay(msg.content));
-          }
-        });
-      }
-      goTo('s-game');
-    }
-  } catch(e){ console.warn('initApp error', e); }
-})();
-
 // Salva ao minimizar/fechar e restaura ao voltar
 document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
@@ -8002,18 +7899,16 @@ document.addEventListener('visibilitychange', function(){
       if(loadGameState()){
         updateVitals();
         renderInventory();
-        goTo('s-game');
         // Reconstrói mensagens do histórico no narr
-        const narr = document.getElementById('narr');
-        if(narr && narr.children.length === 0){
-          gameHistory.forEach(msg => {
-            if(msg.role === 'assistant' && msg.content){
-              const m = addMsg('msg-dm','');
-              const bbl = m.querySelector('.bbl');
-              if(bbl) bbl.innerHTML = formatNarrative(cleanTextForDisplay(msg.content));
-            }
-          });
-        }
+        gameHistory.forEach(msg => {
+          if(msg.role === 'assistant' && msg.content){
+            const card = document.createElement('div');
+            card.className = 'bbl bbl-m';
+            card.innerHTML = formatNarrative(cleanTextForDisplay(msg.content));
+            const narr = document.getElementById('narr');
+            if(narr) narr.appendChild(card);
+          }
+        });
         // Pede ao mestre para retomar com contexto
         const npcsKnown = gameMemory.npcs.filter(n=>n.alive!==false).map(n=>n.name).join(', ');
         const lastEvent = gameMemory.events.slice(-1)[0]?.summary || '';
@@ -8337,12 +8232,9 @@ function buildFinalPane(){
 function updateCharSheet(){
   if(!hero||!hero.cls) return;
 
+  // ── Banner ──
   const portrait=document.getElementById('sh-portrait-icon');
-  if(portrait){
-    const ico=(typeof classAv!=='undefined'?classAv[hero.cls]:'')||'⚔️';
-    const lvBadge=`<span class="sh-lv-badge" id="sh-level-num">${hero.level||1}</span>`;
-    portrait.innerHTML=ico+lvBadge;
-  }
+  if(portrait) portrait.textContent=(typeof classAv!=='undefined'?classAv[hero.cls]:'')||'⚔️';
 
   const nm=document.getElementById('sh-nm');
   if(nm) nm.textContent=hero.name||'Herói';
@@ -8350,102 +8242,84 @@ function updateCharSheet(){
   const cl=document.getElementById('sh-cl');
   if(cl) cl.textContent=`${hero.race||''} · ${hero.cls||''} · ${hero.bg||''}`;
 
-  const repEl=document.getElementById('sh-rep');
-  if(repEl){
-    const rep=hero.rep||0;
-    const tiers=[{min:0,name:'Viajante'},{min:50,name:'Aventureiro'},{min:150,name:'Herói'},{min:300,name:'Campeão'},{min:500,name:'Lendário'}];
-    const tier=tiers.slice().reverse().find(t=>rep>=t.min)||tiers[0];
-    repEl.textContent=`★ ${tier.name} · ${rep} pts`;
-  }
-
-  const alignEl=document.getElementById('sh-align');
-  if(alignEl){
+  const align=document.getElementById('sh-align');
+  if(align){
     const aM={LB:'Leal e Bom',NB:'Neutro e Bom',CB:'Caótico e Bom',LN:'Leal e Neutro',N:'Neutro',CN:'Caótico e Neutro',LM:'Leal e Mau',NM:'Neutro e Mau',CM:'Caótico e Mau'};
-    alignEl.textContent=aM[hero.align]||hero.align||'';
+    align.textContent=aM[hero.align]||hero.align||'—';
   }
 
-  // XP bar
-  const xpBar=document.getElementById('sh-xp-bar');
-  const xpVal=document.getElementById('sh-xp-val');
-  if(xpBar||xpVal){
-    const cur=hero.xp||0;
-    const nxt=(typeof XP_TABLE!=='undefined'?XP_TABLE[hero.level||1]:300)||300;
-    const prv=hero.level>1&&typeof XP_TABLE!=='undefined'?XP_TABLE[(hero.level||1)-1]||0:0;
-    const pct=nxt>prv?Math.min(100,Math.round(((cur-prv)/(nxt-prv))*100)):100;
-    if(xpBar) xpBar.style.width=pct+'%';
-    if(xpVal) xpVal.textContent=`${cur} / ${nxt}`;
+  const lvl=document.getElementById('sh-level-num');
+  if(lvl) lvl.textContent=hero.level||1;
+
+  const xpV=document.getElementById('sh-xp-val');
+  const xpB=document.getElementById('sh-xp-bar');
+  if(xpV){const cur=hero.xp||0;const nxt=(typeof XP_TABLE!=='undefined'?XP_TABLE[hero.level||1]:300)||300;xpV.textContent=`${cur}/${nxt}`;}
+  if(xpB){const cur=hero.xp||0;const nxt=(typeof XP_TABLE!=='undefined'?XP_TABLE[hero.level||1]:300)||300;const prv=hero.level>1&&typeof XP_TABLE!=='undefined'?XP_TABLE[(hero.level||1)-1]||0:0;const pct=nxt>prv?Math.min(100,Math.round(((cur-prv)/(nxt-prv))*100)):100;xpB.style.width=pct+'%';}
+
+  const rep=hero.rep||0;
+  const repE=document.getElementById('sh-rep');
+  if(repE){const tiers=[{min:0,name:'Viajante'},{min:50,name:'Aventureiro'},{min:150,name:'Herói'},{min:300,name:'Campeão'},{min:500,name:'Lendário'}];const tier=tiers.slice().reverse().find(t=>rep>=t.min)||tiers[0];repE.textContent=`⭐ ${tier.name} · ${rep} pts`;}
+
+  // ── Atributos grid visual ──
+  const statsGrid=document.getElementById('sh-attrs-grid');
+  if(statsGrid&&typeof stats!=='undefined'){
+    const ATTR_LABELS={str:'FORÇA',dex:'DESTREZA',con:'CONST.',int:'INTELIG.',wis:'SABEDORIA',cha:'CARISMA'};
+    const primAttr={Guerreiro:'str',Paladino:'str',Bárbaro:'str',Ladino:'dex',Ranger:'dex',Mago:'int',Feiticeiro:'cha',Bruxo:'cha',Clérigo:'wis',Druida:'wis',Bardo:'cha'}[hero.cls]||'str';
+    const pb=typeof PROF_BONUS!=='undefined'?(PROF_BONUS[Math.min(hero.level||1,20)]||2):2;
+    const svs=typeof CLASS_SAVES!=='undefined'?(CLASS_SAVES[hero.cls]||[]):[];
+    statsGrid.innerHTML=['str','dex','con','int','wis','cha'].map(k=>{
+      const v=stats[k]||10;
+      const m=Math.floor((v-10)/2);
+      const sv=svs.includes(k)?m+pb:m;
+      const isPrime=k===primAttr;
+      const mStr=(m>=0?'+':'')+m;
+      const svStr=(sv>=0?'+':'')+sv;
+      return `<div class="sh-attr-cell${isPrime?' sh-attr-prime':''}">
+        <div class="sh-attr-val">${v}</div>
+        <div class="sh-attr-mod">${mStr}</div>
+        <div class="sh-attr-name">${ATTR_LABELS[k]}</div>
+        <div class="sh-attr-save">Salv ${svStr}</div>
+      </div>`;
+    }).join('');
   }
 
-  // PV/MP bars
-  const hpBar=document.getElementById('sh-hp-bar');
-  const hpVal=document.getElementById('sh-hp-val');
-  if(hpBar&&hero.maxHP){hpBar.style.width=Math.min(100,Math.round((hero.hp/hero.maxHP)*100))+'%';}
-  if(hpVal) hpVal.textContent=`${hero.hp||0}/${hero.maxHP||0}`;
-  const mpRow=document.getElementById('mp-bar-row');
-  if(mpRow) mpRow.style.display=(hero.maxMP||0)>0?'flex':'none';
-  const mpBar=document.getElementById('sh-mp-bar');
-  const mpVal=document.getElementById('sh-mp-val');
-  if(mpBar&&hero.maxMP){mpBar.style.width=Math.min(100,Math.round(((hero.mp||0)/hero.maxMP)*100))+'%';}
-  if(mpVal) mpVal.textContent=`${hero.mp||0}/${hero.maxMP||0}`;
-
-  // Combat stats
+  // ── Combat stats ──
   const ca=document.getElementById('sh-ca');if(ca)ca.textContent=hero.ca||10;
   const spd=document.getElementById('sh-speed');
   if(spd){const rS={Anão:'7,5m'};spd.textContent=rS[hero.race]||'9m';}
-  const pb=typeof PROF_BONUS!=='undefined'?(PROF_BONUS[Math.min(hero.level||1,20)]||2):2;
-  const profE=document.getElementById('sh-prof');
-  if(profE) profE.textContent=(pb>=0?'+':'')+pb;
+  const pb2=typeof PROF_BONUS!=='undefined'?(PROF_BONUS[Math.min(hero.level||1,20)]||2):2;
+  const profE=document.getElementById('sh-prof');if(profE)profE.textContent=(pb2>=0?'+':'')+pb2;
   const atkE=document.getElementById('sh-atk');
   if(atkE&&typeof stats!=='undefined'){
     const sM=Math.floor(((stats.str||10)-10)/2);
     const dM=Math.floor(((stats.dex||10)-10)/2);
     const pM=['Ladino','Ranger'].includes(hero.cls)?dM:sM;
-    const atk=pb+pM;atkE.textContent=(atk>=0?'+':'')+atk;
+    const atk=pb2+pM;atkE.textContent=(atk>=0?'+':'')+atk;
   }
 
-  // Attributes grid
-  const grid=document.getElementById('sh-attrs-grid');
-  if(grid&&typeof stats!=='undefined'){
-    const LABELS={str:'Força',dex:'Destreza',con:'Const.',int:'Intelig.',wis:'Sabedoria',cha:'Carisma'};
-    const prime={Guerreiro:'str',Paladino:'str',Bárbaro:'str',Ladino:'dex',Ranger:'dex',Mago:'int',Feiticeiro:'cha',Bruxo:'cha',Clérigo:'wis',Druida:'wis',Bardo:'cha'}[hero.cls]||'str';
-    const svs=typeof CLASS_SAVES!=='undefined'?(CLASS_SAVES[hero.cls]||[]):[];
-    grid.innerHTML=['str','dex','con','int','wis','cha'].map(k=>{
-      const v=stats[k]||10;
-      const m=Math.floor((v-10)/2);
-      const sv=svs.includes(k)?m+pb:m;
-      return `<div class="sh-attr-cell${k===prime?' sh-attr-prime':''}">
-        <div class="sh-attr-val">${v}</div>
-        <div class="sh-attr-mod">${m>=0?'+':''}${m}</div>
-        <div class="sh-attr-name">${LABELS[k]}</div>
-        <div class="sh-attr-save">Salv ${sv>=0?'+':''}${sv}</div>
-      </div>`;
-    }).join('');
-  }
-
-  // Bonuses
-  const bonusEl=document.getElementById('sh-profile-bonuses');
-  if(bonusEl){
-    let b='';
-    if(heroCombatStyle){const sM={'archery':'Arqueiria +2 atq','defense':'Defesa +1 CA','dueling':'Duelo +2 dano','great':'Armas Grandes','protection':'Proteção','twf':'Duas Armas','blind':'Às Cegas'};b+=`<span class="pp-bonus">⚔ ${sM[heroCombatStyle]||heroCombatStyle}</span>`;}
-    if(heroWarlockPatron){const pM={'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'};b+=`<span class="pp-bonus">🕯 ${pM[heroWarlockPatron]||heroWarlockPatron}</span>`;}
-    if(heroKnownCantrips&&heroKnownCantrips.length)b+=`<span class="pp-bonus">✨ ${heroKnownCantrips.slice(0,2).join(', ')}</span>`;
-    bonusEl.innerHTML=b;
-    bonusEl.closest('.sh-bonus-section').style.display=b?'':'none';
-  }
-
-  // Achievements
+  // ── Conquistas ──
   const achWrap=document.getElementById('sh-achievements');
   if(achWrap){
     const achs=[];
-    if(hero.level>=2) achs.push('★ Nível '+hero.level);
-    if((hero.gold||0)>=100) achs.push('🪙 100 PO');
+    if(hero.level>=2) achs.push('⭐ Nível '+hero.level);
+    if((hero.gold||0)>=100) achs.push('🪙 100 PO ganhos');
     if((hero.rep||0)>=50) achs.push('🏅 Aventureiro');
-    if((hero.rep||0)>0||inCombat) achs.push('⚔ Primeira Batalha');
-    if(heroCombatStyle) achs.push('🛡 '+({archery:'Arqueiria',defense:'Defesa',dueling:'Duelo'}[heroCombatStyle]||heroCombatStyle));
-    if(heroWarlockPatron) achs.push('🕯 Pacto');
+    if(inCombat||(hero.rep||0)>0) achs.push('⚔️ Primeira Batalha');
+    if(heroCombatStyle) achs.push('🛡️ '+heroCombatStyle);
+    if(heroWarlockPatron) achs.push('🕯️ Pacto');
     achWrap.innerHTML=achs.length
-      ?achs.map(a=>`<span class="sh-ach">${a}</span>`).join('')
-      :'<span class="sh-ach" style="opacity:.3">Nenhuma conquista ainda</span>';
+      ? achs.map(a=>`<span class="sh-ach">${a}</span>`).join('')
+      : '<span class="sh-ach" style="opacity:.4">Nenhuma conquista ainda</span>';
+  }
+
+  // ── Habilidades/estilo ──
+  const bonusesEl=document.getElementById('sh-profile-bonuses');
+  if(bonusesEl){
+    let btxt='';
+    if(heroCombatStyle){const sM={'archery':'Arqueiria +2 atq dist','defense':'Defesa +1 CA','dueling':'Duelo +2 dano','great':'Armas Grandes','protection':'Proteção','twf':'Duas Armas','blind':'Combate às Cegas'};btxt+=`<span class="pp-bonus">⚔️ ${sM[heroCombatStyle]||heroCombatStyle}</span>`;}
+    if(heroWarlockPatron){const pM={'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'};btxt+=`<span class="pp-bonus">🕯️ ${pM[heroWarlockPatron]||heroWarlockPatron}</span>`;}
+    if(heroKnownCantrips&&heroKnownCantrips.length)btxt+=`<span class="pp-bonus">✨ ${heroKnownCantrips.slice(0,2).join(', ')}</span>`;
+    if(btxt) bonusesEl.innerHTML=btxt;
   }
 
   buildSkillsTab(hero.cls,hero.race,hero.level||1);
