@@ -874,6 +874,56 @@ body{font-family:var(--font-narr);color:var(--parch);}
 /* Action button pulse for urgent */
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,120,20,.4)}50%{box-shadow:0 0 0 4px rgba(220,120,20,0)}}
 
+
+/* ══ TEXT CONTRAST IMPROVEMENTS ══ */
+.c-meta{color:rgba(200,180,120,.75)!important;}
+.a-hint{color:rgba(200,180,120,.7)!important;font-size:10px!important;}
+.g-turns-lbl,.bar-lbl{font-size:10px!important;font-weight:700!important;}
+.mstat{font-size:11px!important;color:rgba(220,200,140,.85)!important;}
+.msg-dm .bbl{color:rgba(230,210,170,.92)!important;font-size:14px!important;line-height:1.65!important;}
+.msg-pl .bbl{color:rgba(180,220,180,.9)!important;}
+.gold-pill{font-size:13px!important;}
+.stab{font-size:12px!important;}
+.sk-name{font-size:12px!important;}
+.narr-lbl{font-size:11px!important;color:rgba(200,180,120,.6)!important;letter-spacing:.5px!important;}
+.acts-lbl{font-size:10px!important;color:rgba(200,180,120,.45)!important;}
+.a-title{font-size:13px!important;color:rgba(230,210,160,.95)!important;}
+.thinking-bar{font-size:11px!important;color:rgba(200,180,120,.7)!important;}
+
+
+/* ══ ENEMY ICON — D&D STYLE (no emoji) ══ */
+.enemy-icon{
+  width:48px;height:48px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;border:2px solid rgba(200,60,50,.5);
+  position:relative;overflow:hidden;font-size:22px;
+  background:rgba(60,10,10,.7);
+}
+.enemy-type-label{
+  font-size:9px;letter-spacing:1px;font-weight:700;
+  color:rgba(200,60,50,.8);font-family:var(--font-title);
+  text-transform:uppercase;margin-bottom:2px;
+}
+.enemy-beast{background:rgba(40,60,20,.8)!important;border-color:rgba(80,140,40,.6)!important;}
+.enemy-beast::before{content:'🐺';position:absolute;font-size:26px;opacity:.7;}
+.enemy-dragon{background:rgba(80,20,10,.8)!important;border-color:rgba(200,80,20,.6)!important;}
+.enemy-dragon::before{content:'🐉';position:absolute;font-size:26px;opacity:.7;}
+.enemy-goblin{background:rgba(20,50,20,.8)!important;border-color:rgba(50,120,50,.6)!important;}
+.enemy-goblin::before{content:'⚒';position:absolute;font-size:22px;opacity:.7;color:rgba(100,200,100,.8);}
+.enemy-undead{background:rgba(20,20,40,.8)!important;border-color:rgba(80,80,160,.6)!important;}
+.enemy-undead::before{content:'☠';position:absolute;font-size:22px;opacity:.7;color:rgba(150,150,220,.9);}
+.enemy-fiend{background:rgba(80,10,10,.8)!important;border-color:rgba(200,20,20,.6)!important;}
+.enemy-fiend::before{content:'⛧';position:absolute;font-size:22px;opacity:.8;color:rgba(220,60,60,.9);}
+.enemy-brute{background:rgba(60,30,10,.8)!important;border-color:rgba(160,80,20,.6)!important;}
+.enemy-brute::before{content:'🪨';position:absolute;font-size:22px;opacity:.7;}
+.enemy-humanoid{background:rgba(40,30,20,.8)!important;border-color:rgba(120,80,30,.6)!important;}
+.enemy-humanoid::before{content:'⚔';position:absolute;font-size:22px;opacity:.8;color:rgba(200,160,80,.9);}
+.enemy-caster{background:rgba(20,10,50,.8)!important;border-color:rgba(100,50,180,.6)!important;}
+.enemy-caster::before{content:'✦';position:absolute;font-size:24px;opacity:.8;color:rgba(160,100,240,.9);}
+.enemy-default{background:rgba(40,30,20,.8)!important;border-color:rgba(120,80,30,.6)!important;}
+.enemy-default::before{content:'⚔';position:absolute;font-size:22px;opacity:.8;color:rgba(200,160,80,.9);}
+.enemy-icon svg{position:relative;z-index:1;opacity:0;}
+
 </style>
 </head>
 <body>
@@ -2730,6 +2780,7 @@ let inCombat=false, inCity=false; // currentEnemy declared separately // estados
 let merchantCD=12, gameHistory=[];
 let d20SelectedAttr='str';
 let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null, pendingRollCritical=false, pendingRollType='check';
+let pendingDamageRoll=false;
 let pendingActionAfterPaywall=null; // ação salva quando paywall interrompe // teste pendente
 let currentEnemy=null; // inimigo atual em combate
 
@@ -3269,16 +3320,34 @@ function detectCombat(text){
 
 // ★ Ícone por inimigo
 function enemyIcon(name){
-  const n=name.toLowerCase();
-  if(n.includes('lobo')||n.includes('worg'))return'🐺';
-  if(n.includes('dragão'))return'🐉';
-  if(n.includes('goblin'))return'👺';
-  if(n.includes('esqueleto')||n.includes('zumbi'))return'💀';
-  if(n.includes('vampiro'))return'🧛';
-  if(n.includes('demônio')||n.includes('diabo'))return'😈';
-  if(n.includes('ogro')||n.includes('troll'))return'👹';
-  if(n.includes('bruxa'))return'🧙';
-  return'⚔️';
+  // Returns a CSS class for the enemy type — styled via CSS, not emoji
+  const n=(name||'').toLowerCase();
+  if(/lobo|worg|cão|animal/.test(n))         return'enemy-beast';
+  if(/dragão|wyrm/.test(n))                   return'enemy-dragon';
+  if(/goblin|kobold/.test(n))                 return'enemy-goblin';
+  if(/esqueleto|zumbi|morto/.test(n))         return'enemy-undead';
+  if(/vampiro|espectro|fantasma|banshee/.test(n)) return'enemy-undead';
+  if(/demônio|diabo|cambion/.test(n))         return'enemy-fiend';
+  if(/orc|ogro|troll|bugbear|gnoll/.test(n))  return'enemy-brute';
+  if(/bandid|mercenário|guarda/.test(n))       return'enemy-humanoid';
+  if(/mago|feiticeiro|cultista/.test(n))       return'enemy-caster';
+  return'enemy-default';
+}
+
+function enemyLabel(name){
+  const n=(name||'').toLowerCase();
+  if(/lobo|worg|cão/.test(n))    return'FERA';
+  if(/dragão/.test(n))            return'DRAGÃO';
+  if(/goblin/.test(n))            return'GOBLIN';
+  if(/kobold/.test(n))            return'KOBOLD';
+  if(/esqueleto/.test(n))         return'ESQUELETO';
+  if(/zumbi/.test(n))             return'ZUMBI';
+  if(/vampiro/.test(n))           return'VAMPIRO';
+  if(/orc/.test(n))               return'ORC';
+  if(/ogro/.test(n))              return'OGRO';
+  if(/bandid/.test(n))            return'BANDIDO';
+  if(/demônio/.test(n))           return'DEMÔNIO';
+  return'INIMIGO';
 }
 
 // ★ Painel de combate
@@ -3289,13 +3358,15 @@ function addCombatPanel(enemyName,text){
   const m=document.createElement('div');m.className='msg';
   m.innerHTML=`
     <div class="combat-panel">
-      <div class="enemy-bg-emoji">${icon}</div>
-      <div class="combat-header">
-        <div class="combat-badge">ENCONTRO ATIVO</div>
+        <div class="combat-header">
+        <div class="combat-badge">⚔ COMBATE</div>
       </div>
       <div class="enemy-section">
-        <div class="enemy-icon">${icon}</div>
+        <div class="enemy-icon ${icon}">
+          <svg viewBox="0 0 40 40" width="28" height="28"><use href="#ico-${icon}"/></svg>
+        </div>
         <div class="enemy-info">
+          <div class="enemy-type-label">${enemyLabel(enemyName)}</div>
           <div class="enemy-name">${enemyName}</div>
           <div class="enemy-type">Inimigo Hostil · CR ½</div>
           <div class="enemy-hp-bar"><div class="enemy-hp-fill" style="width:100%"></div></div>
@@ -3814,7 +3885,8 @@ function buildSystemPrompt(){
 ━━━ PERSONAGEM ━━━
 Nome: ${hero.name} | Raça: ${hero.race} | Classe: ${hero.cls} Nível ${hero.level||1} | Alinhamento: ${hero.align||'N'}${heroCombatStyle?' | Estilo de Combate: '+heroCombatStyle:''}${heroWarlockPatron?' | Patrono: '+({'archfiend':'O Arquidemônio','great_old_one':'O Grande Antigo','archfey':'A Arquifada','celestial':'O Celestial'}[heroWarlockPatron]||heroWarlockPatron):''}
 Antecedente: ${hero.bg} | Alinhamento: ${hero.align}
-PV: ${hero.hp}/${hero.maxHP} | CA: ${hero.ca} | XP: ${hero.xp||0} | Ouro: ${Math.round(hero.gold||0)} PO${currentEnemy?' | Inimigo atual: '+currentEnemy:''}
+PV: ${hero.hp}/${hero.maxHP} | MP: ${hero.mp||0}/${hero.maxMP||0} | CA: ${hero.ca} | XP: ${hero.xp||0} | Ouro: ${Math.round(hero.gold||0)} PO
+Estado: ${inCombat?'EM COMBATE contra '+currentEnemy:'Fora de combate'} | Turno: ${inCombat?combatTurn||1:'—'}
 Combate: ${combatStats}
 Atributos: ${atrs}
 Itens equipados: ${equippedItems}
@@ -3840,11 +3912,13 @@ Arco narrativo: ${questData.jornada||'Jornada do Herói — Partida'}
 Você é um narrador literário de fantasia. Escreva como um romancista — conciso, imersivo, sensorial.
 
 ESTILO NARRATIVO — REGRAS ABSOLUTAS:
-▸ TAMANHO ADAPTATIVO — combine o comprimento ao contexto:
-  • Ação simples, resposta curta do NPC, resultado de teste → 1-2 parágrafos
-  • Cena nova, chegada a local, encontro importante → 2-3 parágrafos
-  • Abertura de aventura, boss, momento épico → 3-4 parágrafos
-  • NUNCA escreva mais do que o contexto exige. Ação curta = resposta curta.
+▸ TAMANHO ADAPTATIVO — regra de ouro:
+  • Resultado de teste, ação simples, resposta de NPC → 1-2 frases
+  • Transição, movimento, exploração → 1 parágrafo  
+  • Cena nova, encontro importante, diálogo rico → 2 parágrafos
+  • Abertura, boss, momento épico → 3 parágrafos MAX
+  NUNCA continue além do contexto exigido. Se a ação é curta, a resposta é curta.
+  PROIBIDO: terminar no meio de frase ou deixar ação sem conclusão.
 ▸ Mostre, não explique: use detalhes sensoriais concretos (cheiro, som, textura, luz)
 ▸ Diálogos vivos: NPCs falam com voz própria — "Nome: fala" — revelam personalidade em poucas palavras
 ▸ Termine SEMPRE com uma escolha ou tensão aberta — nunca resolva tudo
@@ -4235,58 +4309,43 @@ COMBATE (PHB Cap.9) — REGRAS CRÍTICAS:
 
 ATAQUE vs DEFESA — como funciona:
 ▸ O ATACANTE rola: d20 + bônus de ataque vs CA do defensor
-▸ O DEFENSOR nunca rola dado para se defender de ataques normais — a CA já é a defesa
+▸ O DEFENSOR nunca rola dado — CA é fixo, não há esquiva ativa
 ▸ NUNCA NUNCA NUNCA peça "role para esquivar" — isso NÃO EXISTE no D&D 5e
-▸ Inimigo ataca: compare ataque com CA ${hero.ca||10} do personagem — ponto final
-▸ Se ataque >= CA ${hero.ca||10}: atingido → [PV:-X] imediatamente
-▸ Se ataque < CA ${hero.ca||10}: errou automaticamente → sem dado do jogador
-▸ O jogador NUNCA rola dado quando está sendo atacado — só quando ataca
+▸ Defensor nunca rola dado quando está sendo atacado — só quando ataca
 
 COMO PEDIR ROLAGEM DE ATAQUE ao jogador:
-▸ Escreva: "Role o dado de ataque!" ou "Role para atacar!" ou [TESTE:str] ou [TESTE:dex]
-▸ O sistema detecta 'ataque' e aplica: d20 + mod + proficiência automaticamente
-▸ NÃO coloque CD no ataque — o resultado será comparado com a CA do inimigo
+▸ Escreva: "Role o ataque!" + [TESTE:str] ou [TESTE:dex]
+▸ O sistema detecta 'ataque' e aplica: d20 + mod correto + proficiência
 
-SALVAGUARDAS (saves):
-▸ [TESTE:des:15] para "DEX CD 15 para metade do dano" — o sistema aplica proficiência de save
-▸ Salvaguardas NÃO adicionam proficiência (a menos que a classe tenha save naquele atributo)
+CONDUÇÃO POR RODADA — NARRATIVA CURTA E TÁTICA:
+▸ CADA RODADA = máximo 3-4 frases TOTAL
+  1. Resultado da ação do jogador (1 frase)
+  2. Ação(ões) dos inimigos (1 frase por inimigo)
+  3. Situação atual do campo de batalha (1 frase)
+  4. [AÇÕES:] com opções táticas para o jogador
 
-QUANDO USAR [TESTE:] em combate:
-✅ Magia com salvaguarda: "DEX CD 15 para metade do dano de Bola de Fogo"
-✅ Armadilha: "DEX CD 14 para saltar o alçapão"
-✅ Efeito de área: "CON CD 12 para resistir ao veneno"
-✅ Agarrar/Empurrar: FOR (atletismo) vs FOR/DES do alvo
-❌ NUNCA: "DEX CD X para esquivar do golpe de espada" — isso quebra as regras
+▸ AO INICIAR COMBATE:
+  [COMBATE:NomeInimigo] + [TESTE:Iniciativa]
+  Após resultado: declare ordem de iniciativa brevemente
 
-AÇÕES DE COMBATE:
-- Atacar: rola d20 + mod atributo (FOR/DES) + prof vs CA → dano: dado+mod
-- Esquivar (ação): inimigos têm desvantagem nos ataques, você tem vantagem em saves DEX
-- Desengajar (ação): move sem provocar ataque de oportunidade
-- Correr (ação): deslocamento×2
-- Conjurar: magia com tempo de conjuração de 1 ação
+▸ RASTREAMENTO DE HP DOS INIMIGOS — OBRIGATÓRIO:
+  Após cada dano: "NomeInimigo: ferido / seriamente ferido / quase morto / derrotado"
+  Use [PV:-X] SOMENTE quando o PERSONAGEM sofre dano confirmado
 
-INICIATIVA:
-▸ Ao iniciar combate: inclua [COMBATE:NomeInimigo] E peça iniciativa em seguida
-▸ Use EXATAMENTE: [TESTE:Iniciativa] — o sistema detecta e aplica mod de DES automaticamente
-▸ Iniciativa = d20 + mod(DES), sem proficiência (PHB p.189)
-▸ Quando receber "Jogador rolou Iniciativa: d20(X) +Y = Z" → SEMPRE continue narrando:
-  • Se Z alto: jogador age primeiro — descreva sua chance de agir
-  • Se Z baixo: inimigo age primeiro — descreva o ataque surpresa do inimigo
-▸ NUNCA ignore o resultado de iniciativa — é a ordem do combate
+▸ DANO DOS INIMIGOS (role internamente — não mostre ao jogador):
+  Goblin: d6+1 | Kobold: d4+1 | Bandido: d6+2 | Lobo: 2d4+2
+  Orc: d8+3 | Bugbear: 2d6+2 | Ogro: 2d8+4
+
+▸ CRÍTICO (natural 20): dano duplo + 1 frase dramática + animação automática
+▸ FALHA CRÍTICA (natural 1): algo deu errado na ação do jogador — 1 frase de complicação
 
 FLUXO DE ATAQUE CORRETO:
-1. Descreva o ataque do inimigo
-2. O sistema informa a CA do personagem (${hero.ca})
-3. Role internamente: d20+bônus do inimigo vs CA ${hero.ca}
-4. Se HIT: aplique dano → [PV:-X] → descreva o impacto
-5. Se MISS: descreva o desvio/bloqueio — sem [PV:]
+1. Mestre descreve ação do inimigo
+2. Rola ataque interno vs CA ${hero.ca||10}
+3. Se acertar: [PV:-X] + 1 frase de impacto
+4. Se errar: 1 frase de desvio/bloqueio — sem [PV:]
 
-Iniciativa: d20 + mod DES (ordem decrescente)
-Crítico (nat.20): dobra DADOS de dano (não modificador)
-0 PV → Inconsciente → Testes de Morte: d20 ≥10 sucesso | 3 sucessos = estável | 3 falhas = MORTO, ou qualquer cura
-- Ataque de Oportunidade: reação quando inimigo sai do alcance (1,5m)
-- Cobertura: Meia (+2 CA/DEX) | Três-Quartos (+5 CA/DEX) | Total (imune a ataques)
-
+INICIATIVA: d20 + mod DES (${Math.floor(((stats&&stats.dex?stats.dex:10)-10)/2)>=0?'+':''}${Math.floor(((stats&&stats.dex?stats.dex:10)-10)/2)}) para o personagem
 CONDIÇÕES (PHB Apêndice A):
 - Agarrado: vel=0 | Amedrontado: desvant. ataques/testes vs fonte, não avança para ela
 - Atordoado: incapacitado+falha FOR/DES | Caído: desvant. ataques, inimigos 1,5m com vant.
@@ -6403,6 +6462,19 @@ function saveApiKey(){
   setTimeout(()=>closeMo('mo-api'),2500);
 }
 
+async function testApiConnection(key){
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:5,messages:[{role:'user',content:'oi'}]})
+    });
+    if(r.ok) showToast('✅ IA conectada!');
+    else if(r.status===401) showToast('❌ Chave inválida');
+    else showToast('⚠️ Erro '+r.status);
+  }catch(e){ showToast(location.protocol==='file:'?'⚠️ Use link Netlify!':'🌐 Sem conexão'); }
+}
+
 function updateVitalsAndRep(){
   updateVitals();
   const rep=hero.rep||0;
@@ -7655,6 +7727,7 @@ async function rollDiceTray(){
     const multiDice = results.length > 1 || results[0]?.count > 1;
     const likelySpell = multiDice && !diceTrayCounts[12] && !diceTrayCounts[20];
     const dmgType = likelySpell ? 'dano de magia' : 'dano de arma';
+    pendingDamageRoll = false;
     askMaster(`⚔️ DANO: Jogador rolou ${formula}${bonusTxt} = **${grandTotal}** de ${dmgType}. Aplique ${grandTotal} de dano ao inimigo e narre o resultado — descreva o impacto visualmente.`, false);
   }
   // Fora de combate: calculadora silenciosa
@@ -8144,6 +8217,19 @@ function updateCharSheet(){
   }
 
   buildSkillsTab(hero.cls,hero.race,hero.level||1);
+}
+
+
+function updateAmbientBackground(){
+  const narr=document.getElementById('narr');
+  if(!narr) return;
+  narr.classList.remove('amb-forest','amb-city','amb-dungeon','amb-combat','amb-castle');
+  if(inCombat){ narr.classList.add('amb-combat'); return; }
+  const recentText=gameHistory.slice(-2).map(m=>m.content||'').join(' ').toLowerCase();
+  if(/castelo|fortaleza|palácio|torre|cidadela/i.test(recentText)) narr.classList.add('amb-castle');
+  else if(/cidade|vilarejo|taverna|mercado|aldeia|estalagem/i.test(recentText)) narr.classList.add('amb-city');
+  else if(/dungeon|calabouço|caverna|mina|cripta|tumba|catacumba/i.test(recentText)) narr.classList.add('amb-dungeon');
+  else narr.classList.add('amb-forest');
 }
 
 </script>
