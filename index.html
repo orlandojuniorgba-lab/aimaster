@@ -151,10 +151,10 @@ body{font-family:var(--font-narr);color:var(--parch);}
   border-radius:0 12px 12px 12px;
   padding:14px 16px;
   font-family:var(--font-narr);
-  font-size:17px;
+  font-size: 18px;
   font-weight:400;
-  color:var(--parch);
-  line-height:1.85;
+  color: #f0ddb0;
+  line-height: 1.80;
   box-shadow:0 0 20px rgba(200,146,42,.06),inset 0 0 30px rgba(200,146,42,.02);
   letter-spacing:.01em;
 }
@@ -882,7 +882,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .a-hint{color:rgba(200,180,120,.7)!important;font-size:10px!important;}
 .g-turns-lbl,.bar-lbl{font-size:10px!important;font-weight:700!important;}
 .mstat{font-size:11px!important;color:rgba(220,200,140,.85)!important;}
-.msg-dm .bbl{color:rgba(230,210,170,.92)!important;font-size:14px!important;line-height:1.65!important;}
+
 .msg-pl .bbl{color:rgba(180,220,180,.9)!important;}
 .gold-pill{font-size:13px!important;}
 .stab{font-size:12px!important;}
@@ -932,14 +932,7 @@ body, .act-btn, .free-in, .bbl, input, select, textarea {
   font-family: var(--font-body, 'Lato', -apple-system, sans-serif) !important;
 }
 /* Narrative text — Lato 400, generous line height */
-.msg-dm .bbl {
-  font-family: 'Lato', sans-serif !important;
-  font-size: 18px !important;
-  line-height: 1.80 !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.01em !important;
-  color: #f0ddb0 !important;
-}
+
 /* NPC dialogue — italic Lato for distinction */
 .msg-dm .bbl em, .msg-dm .bbl i {
   font-style: italic !important;
@@ -984,6 +977,27 @@ body, .act-btn, .free-in, .bbl, input, select, textarea {
 .thinking-bar {
   font-family: 'Lato', sans-serif !important;
   font-size: 12px !important;
+}
+
+.msg-dm .bbl {
+  font-family: 'Lato', sans-serif !important;
+  font-size: 18px !important;
+  line-height: 1.80 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.01em !important;
+  color: #f0ddb0 !important;
+}
+
+/* ★ DEFINITIVE NARRATIVE FONT — DO NOT OVERRIDE */
+div.msg.msg-dm div.bbl,
+div.msg-dm div.bbl,
+.msg-dm .bbl {
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 18px !important;
+  line-height: 1.80 !important;
+  color: #f0ddb0 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.01em !important;
 }
 
 </style>
