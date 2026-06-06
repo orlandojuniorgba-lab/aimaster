@@ -749,6 +749,43 @@ div.msg-dm div.bbl,
 }
 .a-arrow{display:none;}
 
+
+/* ══ CORE LAYOUT — SCREEN SYSTEM ══ */
+#app{
+  width:100%;max-width:430px;height:100vh;
+  margin:0 auto;
+  background:var(--bg2);
+  position:relative;
+  overflow:hidden;
+}
+.screen{
+  display:none;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  flex-direction:column;
+  overflow:hidden;
+  background:var(--bg2);
+}
+.screen.active{
+  display:flex;
+}
+
+
+/* ══ NARR SCROLL ══ */
+#s-game{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+.narr{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
