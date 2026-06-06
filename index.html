@@ -7690,10 +7690,11 @@ document.addEventListener('visibilitychange', function(){
   if(document.visibilityState === 'hidden'){
     saveGameState();
   } else if(document.visibilityState === 'visible'){
-    // Restaura se havia estado salvo e o jogo estava rodando
+    // Só restaura se o jogo JÁ estava ativo (s-game é a tela atual)
+    const isInGame = document.getElementById('s-game')?.classList.contains('active');
+    if(!isInGame) return; // Não estava no jogo — não restaurar
     const narr = document.getElementById('narr');
     if(narr && narr.children.length === 0 && hero && hero.name && hero.cls){
-      // Tela vazia mas tinha herói — tenta restaurar histórico
       if(loadGameState()){
         updateVitals();
         renderInventory();
