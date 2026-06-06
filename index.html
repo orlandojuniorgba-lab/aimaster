@@ -3717,6 +3717,14 @@ Combate: ${combatStats}
 Atributos: ${atrs}
 Itens equipados: ${equippedItems}
 Magias: ${spellList}
+
+REGRA ABSOLUTA DE MAGIA — NUNCA VIOLE:
+▸ Se "Magias: nenhuma" → o personagem NÃO pode conjurar. Nunca ofereça opções mágicas.
+▸ Guerreiro, Bárbaro, Ladino → NUNCA têm magia em nenhum nível (exceto subclasses especiais).
+▸ Ranger e Paladino → SEM magia no nível 1. Ganham feitiços apenas no nível 2.
+▸ Só ofereça opções de "lançar magia" se a lista de Magias acima contiver feitiços reais.
+▸ Truques (uso ilimitado) são diferentes de feitiços (gastam slot) — mas AMBOS exigem classe conjuradora.
+▸ Nunca invente magias que o personagem não possui.
 Habilidades de classe: ${classAbilsNow}
 Reputação: ${hero.rep||0} pts · ${['Viajante','Aventureiro','Herói','Campeão','Lendário'].reduce((t,n,i)=>(hero.rep||0)>=[0,50,150,300,500][i]?n:t,'Viajante')}
 Traços/Bônus: ${allTags} | ${allBonuses}
@@ -3887,6 +3895,14 @@ PROFICIÊNCIA DOS PERSONAGENS (calculada automaticamente pelo sistema):
 QUANDO PEDIR TESTE — REGRA DE OURO DO D&D 5e:
 ▸ Sempre que o jogador tenta algo com resultado INCERTO, peça o teste ANTES de narrar o resultado
 ▸ Isso é o coração do D&D: jogador age → Mestre pede teste → aguarda resultado → narra consequência
+
+TESTES SÃO OBRIGATÓRIOS — use-os frequentemente, não raramente:
+▸ Qualquer decisão livre do jogador que envolva habilidade → SEMPRE peça teste
+▸ Em exploração: percepção, investigação, sobrevivência surgem naturalmente
+▸ Em combate: não só ataque — atletismo para saltar obstáculos, furtividade para flanquear
+▸ NPCs reagem diferente conforme resultado: sucesso = vantagem, falha = complicação inesperada
+▸ NUNCA narre o resultado antes do jogador rolar — a tensão é o jogo
+▸ Após pedir teste, PARE e aguarde o resultado antes de continuar a narrativa
 
 MAPEAMENTO OBRIGATÓRIO — AÇÃO DO JOGADOR → TESTE:
 ▸ Examinar, procurar, notar → SAB Percepção [TESTE:per:CD]
@@ -4169,6 +4185,47 @@ Crítico (nat.20): dobra DADOS de dano (não modificador)
 - Ataque de Oportunidade: reação quando inimigo sai do alcance (1,5m)
 - Cobertura: Meia (+2 CA/DEX) | Três-Quartos (+5 CA/DEX) | Total (imune a ataques)
 
+COMBATE TÁTICO — ESTRUTURA OBRIGATÓRIA POR RODADA:
+
+REGRA DE OURO: Uma rodada = máximo 3-4 frases. O jogador DECIDE a cada turno.
+▸ PROIBIDO: narrar múltiplas rodadas seguidas sem parar para o jogador agir.
+▸ PROIBIDO: resolver o combate inteiro como cinematografia — é um JOGO, não um filme.
+▸ OBRIGATÓRIO: após ação do inimigo → PARE → apresente [AÇÕES:] → aguarde o jogador.
+
+INÍCIO DE COMBATE — sempre nesta ordem:
+1. [COMBATE:NomeInimigo] — ativa o painel de combate
+2. [TESTE:Iniciativa] — determina quem age primeiro
+3. Após resultado: declare "Você age PRIMEIRO" ou "O inimigo age PRIMEIRO"
+4. Descreva o campo de batalha em 1 frase (posições, ambiente, perigos)
+
+TURNO DO JOGADOR:
+▸ Pare e apresente [AÇÕES:] com 4 opções táticas concretas:
+  Ex: [AÇÕES: Atacar com espada | Lançar Mísseis Mágicos | Recuar e beber poção | Tentar derrubar o inimigo]
+▸ ESPERE a escolha antes de narrar qualquer resultado
+
+TURNO DO INIMIGO (após ação do jogador):
+▸ Role internamente: d20 + bônus vs CA ${hero.ca||10}
+▸ Se HIT (≥ CA): "[PV:-X]" + 1 frase de impacto
+▸ Se MISS (< CA): 1 frase de desvio — SEM [PV:]
+▸ Dano por tipo (role internamente, não mostre):
+  Goblin: d6+1 | Kobold: d4+1 | Bandido: d6+2 | Orc: d8+3
+  Lobo: 2d4+2 | Bugbear: 2d6+2 | Esqueleto: d6+2
+
+HP DOS INIMIGOS — rastreie e informe o estado:
+▸ Após receber dano: "o goblin está INTACTO / FERIDO / SERIAMENTE FERIDO / QUASE MORTO"
+▸ Ao morrer: 1 frase dramática + [FIM_COMBATE] + [XP:N] + [OURO:+N]
+
+FALHA COM CONSEQUÊNCIA — regra de ouro do RPG:
+▸ Falhou num teste? NÃO bloqueie — crie uma complicação:
+  Falhou em furtividade → "Um galho quebra sob seu pé. O guarda se vira."
+  Falhou em atletismo → "Você escala metade mas escorrega — fazendo barulho."
+  Falhou em persuasão → "O comerciante fica desconfiado e chama o guarda."
+▸ Falha ≠ parar. Falha = virada inesperada que avança o jogo de forma diferente.
+
+POSICIONAMENTO TÁTICO — mencione brevemente a cada rodada:
+▸ "Você está CERCADO / tem TERRENO ALTO / está ATRÁS DE COBERTURA"
+▸ Terreno alto = vantagem no ataque | Coberto = +2 CA | Cercado = desvantagem
+
 CONDIÇÕES (PHB Apêndice A):
 - Agarrado: vel=0 | Amedrontado: desvant. ataques/testes vs fonte, não avança para ela
 - Atordoado: incapacitado+falha FOR/DES | Caído: desvant. ataques, inimigos 1,5m com vant.
@@ -4337,7 +4394,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
   if(!oocMode && !skipTurn && typeof checkTurnLimit==='function'){
     if(!checkTurnLimit()){
       // ★ Salva a ação para reenviar após pagamento
-      pendingActionAfterPaywall = userMsg;
+      pendingActionAfterPaywall = acao;
       return;
     }
   }
