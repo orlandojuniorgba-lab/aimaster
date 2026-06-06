@@ -26,7 +26,17 @@ html,body{height:100%;overflow:hidden;background:#0F0A04;}
   --font-narr:'Inter',system-ui,sans-serif;
   --font-title:'Cinzel',serif;
 }
-#app{width:100%;max-width:430px;height:100vh;margin:0 auto;background:var(--bg2);position:relative;overflow:hidden;display:flex;flex-direction:column;}
+#app{
+  width:100%;max-width:430px;height:100vh;
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+  /* Real background image */
+  background-image: url('./fundo.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
 .screen.active{display:flex;}
 #s-game{padding-bottom:58px;}
@@ -793,6 +803,64 @@ div.msg-dm div.bbl,
 
 
 .scene-title{display:block;font-family:var(--font-title);font-size:14px;font-weight:600;color:rgba(200,146,42,.85);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(200,146,42,.2);}
+
+
+/* ── FUNDO OVERLAY ── */
+#s-game::before, #s-char::before, #s-title::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(8,5,2,.5) 0%,
+    rgba(5,3,1,.3) 25%,
+    rgba(5,3,1,.35) 75%,
+    rgba(8,5,2,.65) 100%);
+}
+#s-game > *, #s-char > *, #s-title > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ── NARR over fundo.jpg ── */
+.narr {
+  background: rgba(8,5,2,.78) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border: 1px solid rgba(180,120,20,.22) !important;
+}
+.msg-dm .bbl {
+  background: rgba(10,7,3,.82) !important;
+  border: 1px solid rgba(180,120,20,.15) !important;
+  border-left: 2px solid rgba(180,120,20,.35) !important;
+}
+
+
+/* ── ACT-BTN over fundo.jpg ── */
+.act-btn {
+  background: linear-gradient(180deg,rgba(28,18,6,.88) 0%,rgba(14,9,3,.93) 100%) !important;
+  border: 1px solid rgba(200,146,42,.3) !important;
+  outline: 1px solid rgba(0,0,0,.6) !important;
+  outline-offset: -2px !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,.55),inset 0 1px 0 rgba(200,146,42,.08) !important;
+}
+.act-btn:active {
+  transform: translateY(1px) !important;
+  border-color: rgba(200,146,42,.55) !important;
+}
+.acts-area, #act-grid {
+  background: transparent !important;
+}
+
+
+/* ── FOOTER over fundo.jpg ── */
+.footer-bar {
+  background: linear-gradient(180deg,rgba(14,9,3,.96),rgba(6,4,1,.99)) !important;
+  border-top: 1px solid rgba(140,95,15,.4) !important;
+}
 
 </style>
 </head>
@@ -3896,27 +3964,33 @@ QUANDO PEDIR TESTE — REGRA DE OURO DO D&D 5e:
 ▸ Sempre que o jogador tenta algo com resultado INCERTO, peça o teste ANTES de narrar o resultado
 ▸ Isso é o coração do D&D: jogador age → Mestre pede teste → aguarda resultado → narra consequência
 
-TESTES SÃO OBRIGATÓRIOS — use-os frequentemente, não raramente:
-▸ Qualquer decisão livre do jogador que envolva habilidade → SEMPRE peça teste
-▸ Em exploração: percepção, investigação, sobrevivência surgem naturalmente
-▸ Em combate: não só ataque — atletismo para saltar obstáculos, furtividade para flanquear
-▸ NPCs reagem diferente conforme resultado: sucesso = vantagem, falha = complicação inesperada
-▸ NUNCA narre o resultado antes do jogador rolar — a tensão é o jogo
-▸ Após pedir teste, PARE e aguarde o resultado antes de continuar a narrativa
+REGRA NÚMERO 1 — TESTES DE PERÍCIA:
+Quando o jogador tenta qualquer ação com risco ou habilidade, VOCÊ DEVE pedir teste.
+NÃO narre o resultado. Peça o teste. PARE. Aguarde.
 
-MAPEAMENTO OBRIGATÓRIO — AÇÃO DO JOGADOR → TESTE:
-▸ Examinar, procurar, notar → SAB Percepção [TESTE:per:CD]
-▸ Investigar, deduzir, estudar pista → INT Investigação [TESTE:int:CD]
-▸ Persuadir, convencer NPC → CAR Persuasão [TESTE:cha:CD]
-▸ Intimidar, ameaçar → CAR Intimidação [TESTE:cha:CD]
-▸ Enganar, mentir → CAR Enganação [TESTE:cha:CD]
-▸ Escalar, saltar, forçar → FOR Atletismo [TESTE:str:CD]
-▸ Equilibrar, acrobacias → DES Acrobacia [TESTE:dex:CD]
-▸ Esconder-se, mover em silêncio → DES Furtividade [TESTE:dex:CD]
-▸ Rastrear, sobreviver no campo → SAB Sobrevivência [TESTE:wis:CD]
-▸ Curar ferido, identificar doença → SAB Medicina [TESTE:wis:CD]
-▸ Intuição sobre NPC → SAB Intuição [TESTE:wis:CD]
-▸ Reconhecer magia, itens arcanos → INT Arcanismo [TESTE:int:CD]
+PALAVRAS QUE OBRIGAM TESTE IMEDIATO:
+"furtiv*" / "silencio*" / "escond*" / "sair sem ser visto" → [TESTE:dex:CD] Furtividade
+"perceb*" / "notar*" / "ver se*" / "olhar ao redor" → [TESTE:wis:CD] Percepção  
+"investigar*" / "examinar*" / "procurar*" / "checar*" → [TESTE:int:CD] Investigação
+"convencer*" / "persuadir*" / "negociar*" → [TESTE:cha:CD] Persuasão
+"intimidar*" / "ameaçar*" → [TESTE:cha:CD] Intimidação
+"escalar*" / "saltar*" / "forçar*" / "arrombar*" → [TESTE:str:CD] Atletismo
+"enganar*" / "mentir*" / "disfarçar*" → [TESTE:cha:CD] Enganação
+"rastrear*" / "seguir rastro*" → [TESTE:wis:CD] Sobrevivência
+"curar*" / "tratar ferimento*" → [TESTE:wis:CD] Medicina
+
+CD SUGERIDO POR DIFICULDADE:
+Fácil=10 | Médio=13 | Difícil=16 | Muito difícil=20
+
+FORMATO CORRETO — SEMPRE ASSIM:
+"[descrição curta de 1-2 frases da tentativa do personagem]
+[TESTE:dex:13]"
+← PARE AQUI. Não escreva mais nada. Aguarde o resultado.
+
+FORMATO ERRADO — NUNCA FAÇA ISTO:
+❌ "Você tenta sair furtivamente. Consegue passar pelo guarda sem ser notado." ← narrou sem teste
+❌ "Role Furtividade. [TESTE:dex:13] Você desliza pela sombra e sai." ← narrou depois do teste
+❌ "Se passar no teste, você sai. Se falhar, o guarda te vê." ← antecipou resultado
 ▸ Prestidigitação, bater carteira → DES Prestidigitação [TESTE:dex:CD]
 
 COMO FAZER NA PRÁTICA — EXEMPLO CORRETO:
