@@ -1109,6 +1109,17 @@ div.msg-dm div.bbl,
 .sh-achs-row{display:flex;flex-wrap:wrap;gap:5px}
 .sh-ach{background:rgba(200,146,42,.07);border:1px solid rgba(200,146,42,.18);border-radius:20px;padding:3px 10px;font-size:10px;color:rgba(200,180,120,.65);font-family:var(--font-title);letter-spacing:.2px}
 
+
+.btn-continue{
+  background:rgba(200,146,42,.08);
+  border:1px solid rgba(200,146,42,.3);
+  color:rgba(200,180,120,.7);
+  padding:10px 40px;
+  font-family:var(--font-title);font-size:12px;
+  letter-spacing:1.5px;border-radius:6px;cursor:pointer;
+  margin-top:6px;display:block;width:100%;
+}
+
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1147,7 +1158,8 @@ div.msg-dm div.bbl,
   <div class="t-sub">Motor D&amp;D 5e · IA Narrador</div>
   <div class="t-divider"></div>
   <p class="t-desc">Raça, classe e antecedente moldam cada evento, teste e diálogo. O dado decide o destino.</p>
-  <button class="btn-start" onclick="baseStats={};stats={};goTo('s-char');setTimeout(initCreationFlow,50)">CRIAR PERSONAGEM</button>
+  <button class="btn-start" id="btn-new-char" onclick="baseStats={};stats={};localStorage.removeItem('aimaster_state');goTo('s-char');setTimeout(initCreationFlow,50)">CRIAR PERSONAGEM</button>
+  <button class="btn-continue" id="btn-continue" style="display:none" onclick="initAppFromTitle()">▶ CONTINUAR JOGO</button>
   <div class="ver-tag">MVP v0.8 · PWA · Motor Vivo</div>
 </div>
 
@@ -7990,7 +8002,42 @@ function loadGameState(){
       goTo('s-game');
     }
   } catch(e){ console.warn('initApp error', e); }
+  // Show "Continue" button if valid saved state exists (but don't auto-navigate)
+  try {
+    const raw2 = localStorage.getItem('aimaster_state');
+    if(raw2){
+      const st2 = JSON.parse(raw2);
+      if(st2.hero && st2.hero.cls && st2.gameHistory && st2.gameHistory.length >= 2
+         && (Date.now()-(st2.savedAt||0)) < 2*60*60*1000){
+        const contBtn = document.getElementById('btn-continue');
+        if(contBtn){
+          contBtn.style.display='block';
+          contBtn.textContent=`▶ CONTINUAR — ${st2.hero.name||'Herói'} (${st2.hero.cls||''} Nv${st2.hero.level||1})`;
+        }
+      }
+    }
+  } catch(e){}
 })();
+
+function initAppFromTitle(){
+  try {
+    if(loadGameState()){
+      updateVitals();
+      renderInventory();
+      const narr=document.getElementById('narr');
+      if(narr && gameHistory.length>0){
+        gameHistory.forEach(msg=>{
+          if(msg.role==='assistant'&&msg.content){
+            const m=addMsg('msg-dm','');
+            const bbl=m.querySelector('.bbl');
+            if(bbl)bbl.innerHTML=formatNarrative(cleanTextForDisplay(msg.content));
+          }
+        });
+      }
+      goTo('s-game');
+    }
+  } catch(e){ showToast('Erro ao carregar jogo'); }
+}
 
 // Salva ao minimizar/fechar e restaura ao voltar
 document.addEventListener('visibilitychange', function(){
