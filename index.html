@@ -1271,6 +1271,214 @@ div.msg-dm div.bbl,
   .act-btn{min-height:66px!important;padding:12px 12px!important;}
   .footer-bar{height:64px!important;}
 }
+
+
+/* =========================================================
+   AiMaster v3.5 — Correção Mobile: Narrativa Maior
+   Objetivo: corrigir posições, reduzir UI comprimida e dar
+   prioridade real para a caixa narrativa em telas pequenas.
+   Somente CSS, sem mexer no motor do jogo.
+   ========================================================= */
+#s-game{
+  padding-bottom:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  overflow:hidden!important;
+}
+
+/* Remove faixa decorativa superior que consumia espaço precioso no mobile */
+#s-game .hdr-scene{
+  display:none!important;
+}
+
+/* Header compacto: mantém informações, mas devolve espaço para a narrativa */
+#s-game .char-strip{
+  flex:0 0 auto!important;
+  min-height:70px!important;
+  margin:6px 8px 4px!important;
+  padding:7px 9px!important;
+  border-radius:16px!important;
+}
+#s-game .xp-portrait-wrap{width:44px!important;height:44px!important;}
+#s-game .portrait{inset:5px!important;font-size:16px!important;}
+#s-game .xp-label{font-size:8px!important;bottom:-13px!important;}
+#s-game .c-name{font-size:12px!important;}
+#s-game .c-meta{font-size:9px!important;margin-bottom:3px!important;}
+#s-game .bar-track{height:5px!important;}
+#s-game .bar-row{gap:5px!important;}
+#s-game .bar-val{font-size:9px!important;min-width:28px!important;}
+#s-game .mini-stats{gap:5px!important;margin-top:3px!important;flex-wrap:wrap!important;}
+#s-game .mstat{font-size:8.5px!important;padding:2px 4px!important;border-radius:6px!important;}
+#s-game .gold-pill{font-size:11px!important;padding:3px 7px!important;}
+
+/* A narrativa vira o espaço dominante da tela */
+#s-game .narr{
+  flex:1 1 auto!important;
+  min-height:260px!important;
+  margin:6px 8px 6px!important;
+  padding:16px 15px 28px!important;
+  border-radius:20px!important;
+  gap:12px!important;
+  overflow-y:auto!important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(217,169,68,.12), transparent 35%),
+    linear-gradient(180deg, rgba(12,8,5,.82), rgba(3,3,3,.62))!important;
+}
+#s-game .narr::before{
+  position:sticky!important;
+  top:-16px!important;
+  margin:-16px -15px 12px!important;
+  padding:8px 0 6px!important;
+  font-size:8.5px!important;
+  letter-spacing:2.4px!important;
+}
+#s-game .narr::after{display:none!important;}
+#s-game .msg-dm .bbl,
+#s-game .narr .bbl{
+  font-size:17px!important;
+  line-height:1.78!important;
+  padding:12px 12px!important;
+  background:rgba(0,0,0,.12)!important;
+}
+#s-game .msg-dm .lbl{font-size:9px!important;margin-bottom:5px!important;}
+
+/* Área de escolhas controlada: não pode esmagar a narrativa */
+#s-game .actions-wrap{
+  flex:0 0 auto!important;
+  max-height:245px!important;
+  overflow-y:auto!important;
+  margin:0 8px 132px!important;
+  padding:9px 10px 10px!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(10,7,4,.58),rgba(3,3,3,.80))!important;
+  border:1px solid rgba(217,169,68,.16)!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+}
+#s-game .actions-wrap::-webkit-scrollbar{width:3px;}
+#s-game .actions-wrap::-webkit-scrollbar-thumb{background:rgba(217,169,68,.35);border-radius:99px;}
+#s-game .acts-lbl{
+  font-size:8.5px!important;
+  letter-spacing:2px!important;
+  margin-bottom:8px!important;
+}
+#s-game .act-grid{
+  gap:8px!important;
+  padding:0!important;
+  margin-bottom:9px!important;
+}
+#s-game .act-btn{
+  min-height:54px!important;
+  padding:10px 12px!important;
+  border-radius:15px!important;
+}
+#s-game .a-circle{
+  width:32px!important;
+  height:32px!important;
+  font-size:15px!important;
+}
+#s-game .a-title{font-size:14px!important;line-height:1.25!important;}
+#s-game .a-type,
+#s-game .a-hint{font-size:8px!important;letter-spacing:1px!important;margin-top:4px!important;}
+
+/* Cena imersiva compacta para caber melhor sem perder destaque */
+#s-game .immersive-scene-card,
+#s-game #scene-btn-wrap.v33-scene-card{
+  margin-top:8px!important;
+  padding:10px 11px!important;
+  border-radius:16px!important;
+}
+#s-game .immersive-orb{width:34px!important;height:34px!important;font-size:16px!important;}
+#s-game .immersive-title{font-size:10px!important;letter-spacing:1px!important;}
+#s-game .immersive-desc{font-size:10.5px!important;line-height:1.25!important;}
+#s-game .immersive-btn,
+#s-game .v33-scene-btn{font-size:9px!important;padding:8px 9px!important;border-radius:11px!important;}
+
+/* Ação livre fixa acima do footer: corrige sobreposição e dá destaque */
+#s-game .ooc-toggle-row{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:70px!important;
+  transform:translateX(-50%)!important;
+  width:min(402px, calc(100vw - 28px))!important;
+  max-width:402px!important;
+  margin:0!important;
+  padding:8px!important;
+  border-radius:18px!important;
+  z-index:90!important;
+  background:linear-gradient(180deg,rgba(20,13,6,.94),rgba(4,3,2,.98))!important;
+  border:1px solid rgba(217,169,68,.30)!important;
+  box-shadow:0 -8px 24px rgba(0,0,0,.50),0 0 18px rgba(217,169,68,.09)!important;
+  align-items:stretch!important;
+}
+#s-game .ooc-toggle-row::before{
+  content:'AÇÃO LIVRE'!important;
+  position:absolute!important;
+  top:-10px!important;
+  left:18px!important;
+  transform:none!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  letter-spacing:1.8px!important;
+  color:rgba(217,169,68,.80)!important;
+  background:rgba(7,5,3,.98)!important;
+  padding:0 8px!important;
+  border-radius:999px!important;
+}
+#s-game .ooc-toggle{min-width:58px!important;border-radius:14px!important;}
+#s-game .ooc-icon{font-size:14px!important;}
+#s-game .ooc-label{font-size:8px!important;letter-spacing:.8px!important;}
+#s-game .free-in{
+  min-height:42px!important;
+  max-height:92px!important;
+  font-size:14px!important;
+  line-height:1.35!important;
+  padding:11px 12px!important;
+  border-radius:14px!important;
+}
+#s-game .free-send{
+  min-width:48px!important;
+  font-size:18px!important;
+  border-radius:14px!important;
+}
+
+/* Footer menor e sem invadir a ação livre */
+#s-game .footer-bar{
+  height:56px!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:7px!important;
+  transform:translateX(-50%)!important;
+  width:min(414px, calc(100vw - 16px))!important;
+  margin:0!important;
+  border-radius:18px!important;
+  z-index:85!important;
+  padding:0 5px!important;
+}
+#s-game .fbar-btn{min-width:0!important;padding:4px 5px!important;gap:1px!important;}
+#s-game .fbar-btn svg{width:19px!important;height:19px!important;}
+#s-game .fbar-btn span{font-size:8px!important;letter-spacing:.3px!important;}
+
+/* Ajustes extras para aparelhos baixos */
+@media(max-height:740px){
+  #s-game .char-strip{min-height:64px!important;padding-top:6px!important;padding-bottom:6px!important;}
+  #s-game .xp-portrait-wrap{width:40px!important;height:40px!important;}
+  #s-game .narr{min-height:285px!important;margin-top:5px!important;}
+  #s-game .actions-wrap{max-height:210px!important;margin-bottom:126px!important;}
+  #s-game .act-btn{min-height:50px!important;padding:9px 11px!important;}
+  #s-game .footer-bar{height:52px!important;}
+  #s-game .ooc-toggle-row{bottom:64px!important;}
+}
+
+@media(max-width:370px){
+  #s-game .narr{min-height:250px!important;padding-left:13px!important;padding-right:13px!important;}
+  #s-game .msg-dm .bbl,#s-game .narr .bbl{font-size:16px!important;line-height:1.72!important;}
+  #s-game .actions-wrap{max-height:205px!important;}
+  #s-game .act-btn{min-height:48px!important;}
+  #s-game .a-title{font-size:13px!important;}
+  #s-game .immersive-desc{display:none!important;}
+}
 </style>
 </head>
 <body>
@@ -1312,7 +1520,7 @@ div.msg-dm div.bbl,
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v3.1</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v3.5</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
