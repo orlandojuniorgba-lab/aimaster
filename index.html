@@ -1690,7 +1690,7 @@ body:not(:has(#s-game.active)) .actions-wrap{
 
 
 <style id="aimaster-v39-layout-stability-fix">
-/* AIMASTER v3.9 — Estabilidade visual mobile
+/* AIMASTER v3.9 — Estabilidade visual mobile (base anterior)
    Corrige conflito dos hotfixes anteriores: HUD sempre visível,
    narrativa com scroll próprio, escolhas sem scrollbar própria,
    Home limpa. Não altera motor/JS. */
@@ -1877,6 +1877,328 @@ body:not(:has(#s-game.active)) .footer-bar{
 }
 </style>
 
+
+
+<style id="aimaster-v40-premium-system">
+/* AIMASTER v4.0 — Sistema Visual Premium Organizado
+   Camada final de estabilidade visual. Mantém o motor/JS intacto.
+   Objetivo: aproximar a sensação da prévia premium sem quebrar o gameplay. */
+
+:root{
+  --v4-gold:#d9a944;
+  --v4-gold-soft:rgba(217,169,68,.34);
+  --v4-gold-dim:rgba(217,169,68,.16);
+  --v4-ink:#050403;
+  --v4-panel:rgba(9,7,4,.82);
+  --v4-panel-2:rgba(18,12,6,.72);
+  --v4-text:#f4dfb0;
+  --v4-muted:rgba(244,223,176,.66);
+  --v4-purple:#b79cff;
+}
+
+/* Base mobile: nada de controles do jogo fora da tela de jogo */
+body:not(:has(#s-game.active)) .char-strip,
+body:not(:has(#s-game.active)) .actions-wrap,
+body:not(:has(#s-game.active)) .ooc-toggle-row,
+body:not(:has(#s-game.active)) .footer-bar,
+body:not(:has(#s-game.active)) #scene-btn-wrap{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Fundo mais próximo do mockup premium */
+#s-game.active{
+  display:flex!important;
+  flex-direction:column!important;
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow:hidden!important;
+  padding:0 0 118px!important;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(217,169,68,.13),transparent 31%),
+    radial-gradient(circle at 82% 30%,rgba(217,98,68,.06),transparent 26%),
+    linear-gradient(180deg,rgba(2,2,2,.55),rgba(0,0,0,.92)),
+    url('fundo.jpg') center/cover no-repeat!important;
+  box-sizing:border-box!important;
+}
+#s-game.active::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.50),transparent 18%,transparent 82%,rgba(0,0,0,.50)),
+    radial-gradient(circle at 50% 45%,transparent 0,rgba(0,0,0,.42) 74%);
+  z-index:0;
+}
+#s-game.active>*{position:relative;z-index:1;}
+
+/* HUD definitivo: compacto, legível e sempre visível */
+#s-game .char-strip{
+  display:flex!important;
+  align-items:center!important;
+  gap:9px!important;
+  flex:0 0 auto!important;
+  min-height:74px!important;
+  margin:6px 10px 5px!important;
+  padding:8px 10px!important;
+  border-radius:18px!important;
+  overflow:visible!important;
+  background:
+    linear-gradient(180deg,rgba(22,15,7,.94),rgba(6,5,3,.97)),
+    radial-gradient(circle at 20% 0%,rgba(217,169,68,.15),transparent 32%)!important;
+  border:1px solid rgba(217,169,68,.28)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.54),inset 0 1px 0 rgba(255,255,255,.045),0 0 0 1px rgba(0,0,0,.55)!important;
+}
+#s-game .xp-portrait-wrap{
+  width:52px!important;height:52px!important;flex:0 0 52px!important;
+  filter:drop-shadow(0 0 10px rgba(217,169,68,.20))!important;
+}
+#s-game .portrait{inset:5px!important;box-shadow:inset 0 0 18px rgba(0,0,0,.55)!important;}
+#s-game .xp-label{bottom:-14px!important;font-size:8px!important;color:var(--v4-gold)!important;}
+#s-game .c-name{font-family:var(--font-title)!important;font-size:13px!important;color:#f5d37c!important;letter-spacing:.4px!important;}
+#s-game .c-meta{font-family:var(--font-title)!important;font-size:8.4px!important;letter-spacing:.9px!important;color:rgba(244,223,176,.66)!important;}
+#s-game .bar-track{
+  height:6px!important;
+  background:rgba(0,0,0,.64)!important;
+  border:1px solid rgba(217,169,68,.18)!important;
+  box-shadow:inset 0 1px 5px rgba(0,0,0,.95)!important;
+}
+#s-game .bar-fill{box-shadow:inset 0 1px 0 rgba(255,255,255,.34),0 0 9px currentColor!important;}
+#s-game .bar-val{font-size:9px!important;color:rgba(244,223,176,.78)!important;min-width:31px!important;}
+#s-game .mini-stats{gap:4px!important;margin-top:4px!important;}
+#s-game .mstat{font-size:8px!important;border-color:rgba(217,169,68,.26)!important;background:rgba(0,0,0,.35)!important;color:#e8c779!important;}
+#s-game .gold-pill{border-radius:999px!important;background:rgba(0,0,0,.42)!important;border:1px solid rgba(217,169,68,.26)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;}
+
+/* Narrativa: grimório central com scroll próprio */
+#s-game .narr{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  margin:7px 13px 8px!important;
+  padding:24px 20px 30px!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(217,169,68,.16),transparent 35%),
+    linear-gradient(180deg,rgba(18,12,6,.78),rgba(2,2,2,.71))!important;
+  border:1px solid rgba(217,169,68,.24)!important;
+  box-shadow:
+    0 22px 48px rgba(0,0,0,.56),
+    inset 0 0 45px rgba(217,169,68,.045),
+    inset 0 1px 0 rgba(255,255,255,.04)!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(217,169,68,.48) transparent!important;
+}
+#s-game .narr::-webkit-scrollbar{width:4px!important;display:block!important;}
+#s-game .narr::-webkit-scrollbar-thumb{background:rgba(217,169,68,.48)!important;border-radius:999px!important;}
+#s-game .narr::before{
+  content:'✦ NARRATIVA ✦'!important;
+  position:sticky!important;
+  top:-24px!important;
+  z-index:3!important;
+  display:block!important;
+  margin:-24px -20px 18px!important;
+  padding:12px 0 10px!important;
+  text-align:center!important;
+  font-family:var(--font-title)!important;
+  font-size:10px!important;
+  letter-spacing:3.2px!important;
+  color:rgba(217,169,68,.72)!important;
+  background:linear-gradient(180deg,rgba(9,6,3,.98),rgba(9,6,3,.78),transparent)!important;
+  border-bottom:1px solid rgba(217,169,68,.10)!important;
+}
+#s-game .msg-dm .bbl,#s-game .narr .bbl{
+  max-width:100%!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  color:var(--v4-text)!important;
+  font-size:17px!important;
+  line-height:1.84!important;
+  padding:0!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.65)!important;
+}
+#s-game .msg-dm strong,#s-game .narr strong,
+#s-game .msg-dm b,#s-game .narr b{color:#e8bf65!important;letter-spacing:.5px!important;}
+
+/* O card roxo de cena fica dentro da narrativa e vira o CTA oficial */
+#s-game .immersive-scene-card{display:none!important;}
+#s-game #scene-btn-wrap.v33-scene-card{
+  display:block!important;
+  margin:20px 0 0!important;
+  padding:0!important;
+  border-radius:20px!important;
+}
+#s-game .v33-scene-card-inner{
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  min-height:78px!important;
+  padding:14px!important;
+  border-radius:20px!important;
+  background:
+    radial-gradient(circle at 18% 35%,rgba(183,156,255,.25),transparent 32%),
+    linear-gradient(135deg,rgba(55,34,109,.62),rgba(13,9,19,.90))!important;
+  border:1px solid rgba(207,184,255,.38)!important;
+  box-shadow:0 18px 38px rgba(0,0,0,.48),0 0 26px rgba(132,88,255,.16),inset 0 1px 0 rgba(255,255,255,.065)!important;
+}
+#s-game .v33-scene-ico{width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important;background:rgba(183,156,255,.10)!important;border:1px solid rgba(207,184,255,.28)!important;display:flex!important;align-items:center!important;justify-content:center!important;}
+#s-game .v33-scene-title{font-family:var(--font-title)!important;font-size:12px!important;letter-spacing:1.7px!important;color:#efe7ff!important;}
+#s-game .v33-scene-sub{font-size:11px!important;line-height:1.38!important;color:rgba(244,223,176,.75)!important;}
+#s-game .v33-scene-btn{font-family:var(--font-title)!important;font-size:9.5px!important;letter-spacing:.8px!important;color:#fff7ff!important;border:1px solid rgba(226,207,255,.55)!important;border-radius:13px!important;padding:9px 10px!important;background:linear-gradient(135deg,rgba(183,156,255,.32),rgba(217,169,68,.12))!important;box-shadow:0 0 16px rgba(183,156,255,.17)!important;}
+
+/* Ações: cards mais limpos, sem scroll interno */
+#s-game .actions-wrap{
+  flex:0 0 auto!important;
+  display:block!important;
+  overflow:visible!important;
+  max-height:none!important;
+  margin:0 13px 8px!important;
+  padding:10px 10px 11px!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,rgba(16,10,5,.74),rgba(3,3,2,.86))!important;
+  border:1px solid rgba(217,169,68,.20)!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+#s-game .actions-wrap::before{
+  content:'— ESCOLHA SUA AÇÃO —'!important;
+  display:block!important;
+  margin:-2px 0 9px!important;
+  text-align:center!important;
+  font-family:var(--font-title)!important;
+  font-size:9px!important;
+  letter-spacing:2.2px!important;
+  color:rgba(217,169,68,.60)!important;
+}
+#s-game .act-grid{display:flex!important;flex-direction:column!important;gap:8px!important;overflow:visible!important;max-height:none!important;margin:0!important;padding:0!important;}
+#s-game .act-btn{
+  min-height:49px!important;
+  padding:10px 12px!important;
+  border-radius:16px!important;
+  background:linear-gradient(135deg,rgba(31,21,11,.78),rgba(5,5,4,.88))!important;
+  border:1px solid rgba(217,169,68,.24)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 18px rgba(0,0,0,.34)!important;
+}
+#s-game .act-btn:active{transform:scale(.985)!important;filter:brightness(1.08)!important;}
+#s-game .a-title{font-size:13.8px!important;color:#f5e3c0!important;line-height:1.22!important;}
+#s-game .a-type,#s-game .a-hint{font-size:7.8px!important;letter-spacing:1px!important;margin-top:4px!important;font-family:var(--font-title)!important;}
+
+/* Ação livre: fixa, mas com aparência de componente nobre */
+#s-game .ooc-toggle-row{
+  position:fixed!important;
+  left:12px!important;right:12px!important;bottom:61px!important;
+  z-index:95!important;
+  display:flex!important;align-items:center!important;gap:8px!important;
+  width:auto!important;max-width:none!important;transform:none!important;margin:0!important;
+  padding:8px!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,rgba(22,14,6,.97),rgba(5,4,3,.98))!important;
+  border:1px solid rgba(217,169,68,.34)!important;
+  box-shadow:0 -10px 28px rgba(0,0,0,.54),0 0 22px rgba(217,169,68,.12),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+#s-game .ooc-toggle{min-width:56px!important;height:46px!important;border-radius:15px!important;border:1px solid rgba(217,169,68,.28)!important;background:rgba(0,0,0,.32)!important;}
+#s-game .free-in{
+  min-height:44px!important;max-height:88px!important;
+  border-radius:15px!important;
+  padding:11px 12px!important;
+  font-size:13.6px!important;line-height:1.34!important;
+  color:#f4dfb0!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.44),rgba(12,8,4,.72))!important;
+  border:1px solid rgba(217,169,68,.22)!important;
+  box-shadow:inset 0 1px 8px rgba(0,0,0,.55)!important;
+}
+#s-game .free-in::placeholder{color:rgba(217,169,68,.38)!important;}
+#s-game .free-in:focus{border-color:rgba(217,169,68,.68)!important;box-shadow:0 0 0 2px rgba(217,169,68,.11),0 0 22px rgba(217,169,68,.14),inset 0 1px 8px rgba(0,0,0,.55)!important;}
+#s-game .free-send{min-width:50px!important;height:46px!important;border-radius:15px!important;background:linear-gradient(180deg,rgba(217,169,68,.58),rgba(94,62,18,.90))!important;border:1px solid rgba(245,210,110,.48)!important;box-shadow:0 0 18px rgba(217,169,68,.18)!important;}
+
+/* Footer definitivo: compacto e premium */
+#s-game .footer-bar{
+  position:fixed!important;
+  left:8px!important;right:8px!important;bottom:6px!important;
+  width:auto!important;max-width:none!important;height:53px!important;
+  z-index:94!important;
+  display:flex!important;align-items:center!important;justify-content:space-around!important;
+  margin:0!important;padding:0 4px!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,rgba(14,9,4,.96),rgba(3,3,2,.99))!important;
+  border:1px solid rgba(217,169,68,.23)!important;
+  box-shadow:0 -10px 28px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+#s-game .footer-bar button,#s-game .footer-bar .nav-btn{height:100%!important;border-radius:16px!important;}
+#s-game .fbi{filter:drop-shadow(0 0 5px rgba(217,169,68,.22))!important;}
+#s-game .fbl{font-family:var(--font-title)!important;font-size:8px!important;letter-spacing:.5px!important;color:rgba(244,223,176,.70)!important;}
+
+/* Modais: ficha/inventário/diário começam a seguir o mesmo sistema visual */
+.mo .ms{
+  background:linear-gradient(180deg,rgba(18,12,6,.97),rgba(4,4,3,.98))!important;
+  border:1px solid rgba(217,169,68,.28)!important;
+  border-radius:22px!important;
+  box-shadow:0 26px 70px rgba(0,0,0,.70),0 0 34px rgba(217,169,68,.10)!important;
+}
+.mo .mt{
+  font-family:var(--font-title)!important;
+  color:#f0c86a!important;
+  letter-spacing:1.2px!important;
+  border-bottom:1px solid rgba(217,169,68,.16)!important;
+}
+.stab,.inv-filter,.tab-btn{
+  border-radius:14px!important;
+  border:1px solid rgba(217,169,68,.18)!important;
+  background:rgba(0,0,0,.25)!important;
+}
+.stab.active,.inv-filter.active,.tab-btn.active{
+  background:linear-gradient(180deg,rgba(217,169,68,.24),rgba(69,45,12,.42))!important;
+  border-color:rgba(217,169,68,.42)!important;
+  box-shadow:0 0 16px rgba(217,169,68,.12)!important;
+}
+.inv-item,.item-card,.stat-card,.spell-card,.quest-card{
+  border-radius:16px!important;
+  border:1px solid rgba(217,169,68,.20)!important;
+  background:linear-gradient(180deg,rgba(25,17,8,.72),rgba(4,4,3,.82))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035),0 8px 18px rgba(0,0,0,.24)!important;
+}
+
+/* Modo combate: alteração de clima, sem bagunçar layout */
+#s-game.v33-combat-mode.active{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(160,32,24,.22),transparent 34%),
+    linear-gradient(180deg,rgba(4,0,0,.35),rgba(0,0,0,.94)),
+    url('fundo.jpg') center/cover no-repeat!important;
+}
+#s-game.v33-combat-mode .char-strip,
+#s-game.v33-combat-mode .actions-wrap{
+  border-color:rgba(220,70,45,.32)!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.55),0 0 24px rgba(180,40,30,.12)!important;
+}
+
+@media(max-height:740px){
+  #s-game.active{padding-bottom:112px!important;}
+  #s-game .char-strip{min-height:68px!important;margin-top:4px!important;margin-bottom:4px!important;}
+  #s-game .xp-portrait-wrap{width:46px!important;height:46px!important;flex-basis:46px!important;}
+  #s-game .narr{margin-top:5px!important;padding:21px 18px 26px!important;}
+  #s-game .actions-wrap{padding-top:8px!important;padding-bottom:9px!important;}
+  #s-game .act-btn{min-height:46px!important;padding:8px 11px!important;}
+  #s-game .ooc-toggle-row{bottom:58px!important;}
+  #s-game .footer-bar{height:50px!important;}
+}
+@media(max-height:670px){
+  #s-game .char-strip{min-height:64px!important;}
+  #s-game .narr{padding-top:19px!important;padding-bottom:22px!important;}
+  #s-game .act-btn{min-height:43px!important;}
+  #s-game .a-title{font-size:13px!important;}
+}
+@media(max-width:370px){
+  #s-game .char-strip{margin-left:8px!important;margin-right:8px!important;gap:7px!important;}
+  #s-game .narr,#s-game .actions-wrap{margin-left:10px!important;margin-right:10px!important;}
+  #s-game .ooc-toggle-row{left:10px!important;right:10px!important;}
+  #s-game .footer-bar{left:6px!important;right:6px!important;}
+  #s-game .v33-scene-sub{font-size:10.5px!important;}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
@@ -1917,7 +2239,7 @@ body:not(:has(#s-game.active)) .footer-bar{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v3.7</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.0</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
