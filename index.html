@@ -1585,6 +1585,109 @@ body:has(#s-game.active) .footer-bar{
 }
 </style>
 
+
+
+<style id="aimaster-v37-scroll-hotfix">
+/* AIMASTER v3.7 — Hotfix de scroll mobile
+   Objetivo: remover a barra de scroll interna das escolhas e deixar a tela rolar em fluxo único.
+   Também corrige largura/posição da Ação Livre fixa. */
+
+/* A tela do jogo vira o único container rolável */
+#s-game.active{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  padding-bottom:132px!important;
+}
+
+/* A narrativa não deve prender scroll próprio. Ela cresce e a tela rola. */
+#s-game .narr{
+  flex:0 0 auto!important;
+  min-height:310px!important;
+  max-height:none!important;
+  overflow:visible!important;
+  margin:8px 12px 10px!important;
+  padding:22px 20px 26px!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.46), inset 0 0 36px rgba(217,169,68,.045)!important;
+}
+
+/* Remove completamente o scroll interno da área de escolhas */
+#s-game .actions-wrap{
+  flex:0 0 auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  overflow-y:visible!important;
+  margin:0 12px 18px!important;
+  padding:10px 10px 12px!important;
+}
+#s-game .actions-wrap::-webkit-scrollbar,
+#s-game .act-grid::-webkit-scrollbar{
+  display:none!important;
+}
+
+#s-game .act-grid{
+  overflow:visible!important;
+  max-height:none!important;
+  gap:9px!important;
+  margin-bottom:0!important;
+}
+
+#s-game .act-btn{
+  min-height:54px!important;
+  padding:10px 12px!important;
+}
+
+/* Ação livre: posição corrigida, sem herdar transform/larguras antigas */
+#s-game .ooc-toggle-row{
+  position:fixed!important;
+  left:12px!important;
+  right:12px!important;
+  bottom:63px!important;
+  width:auto!important;
+  max-width:none!important;
+  transform:none!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+
+#s-game .footer-bar{
+  position:fixed!important;
+  left:8px!important;
+  right:8px!important;
+  bottom:6px!important;
+  width:auto!important;
+  max-width:none!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+
+/* Mantém a Home limpa */
+body:not(:has(#s-game.active)) .ooc-toggle-row,
+body:not(:has(#s-game.active)) .footer-bar,
+body:not(:has(#s-game.active)) .actions-wrap{
+  display:none!important;
+}
+
+@media(max-height:740px){
+  #s-game.active{padding-bottom:124px!important;}
+  #s-game .narr{min-height:300px!important;margin-top:7px!important;padding:20px 18px 24px!important;}
+  #s-game .actions-wrap{margin-bottom:16px!important;}
+  #s-game .ooc-toggle-row{bottom:59px!important;}
+}
+
+@media(max-height:680px){
+  #s-game .narr{min-height:275px!important;}
+  #s-game .act-btn{min-height:50px!important;}
+}
+
+@media(max-width:370px){
+  #s-game .narr{min-height:285px!important;margin-left:10px!important;margin-right:10px!important;}
+  #s-game .actions-wrap{margin-left:10px!important;margin-right:10px!important;}
+  #s-game .ooc-toggle-row{left:10px!important;right:10px!important;}
+  #s-game .footer-bar{left:6px!important;right:6px!important;}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
@@ -1625,7 +1728,7 @@ body:has(#s-game.active) .footer-bar{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v3.6</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v3.7</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
