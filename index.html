@@ -1092,6 +1092,185 @@ div.msg-dm div.bbl,
 .v33-scene-text{flex:1}.v33-scene-title{font-family:var(--font-title);font-size:12px;letter-spacing:1.3px;color:#dac8ff}.v33-scene-sub{font-size:11px;color:rgba(240,221,176,.70);line-height:1.35;margin-top:3px}.v33-scene-btn{position:relative;border:1px solid rgba(218,200,255,.42);border-radius:13px;padding:9px 11px;background:linear-gradient(135deg,rgba(160,120,255,.28),rgba(200,146,42,.12));font-family:var(--font-title);font-size:10px;color:#efe7ff;letter-spacing:.7px;cursor:pointer;}
 #scene-img-wrap{border-radius:18px!important;border:1px solid rgba(218,200,255,.32)!important;box-shadow:0 16px 36px rgba(0,0,0,.44),0 0 28px rgba(130,90,255,.12)!important;}
 
+
+
+/* =========================================================
+   AiMaster v3.4 — Narrativa Viva / Premium Polish
+   Camada segura: somente visual + microinterações.
+   Mantém IDs, telas, saves, IA, tags e motor do jogo.
+   ========================================================= */
+:root{
+  --v34-gold:#d9a944;
+  --v34-gold-soft:rgba(217,169,68,.42);
+  --v34-amber:rgba(255,170,54,.22);
+  --v34-glass:rgba(7,5,3,.60);
+  --v34-glass-strong:rgba(10,7,4,.78);
+  --v34-line:rgba(217,169,68,.24);
+  --v34-text:#f3dfb4;
+}
+
+#s-game{
+  background:
+    radial-gradient(circle at 50% 20%, rgba(218,147,40,.14), transparent 34%),
+    radial-gradient(circle at 50% 76%, rgba(0,0,0,.18), rgba(0,0,0,.78) 70%),
+    linear-gradient(180deg, rgba(12,8,5,.78), rgba(3,3,3,.96))!important;
+}
+
+/* Header menos técnico e mais nobre */
+.char-strip{
+  min-height:82px!important;
+  padding:9px 12px 9px!important;
+  background:
+    linear-gradient(180deg, rgba(28,18,8,.92), rgba(7,5,3,.94))!important;
+  border-bottom:1px solid rgba(217,169,68,.25)!important;
+  box-shadow:0 14px 28px rgba(0,0,0,.45), inset 0 -1px 0 rgba(255,220,130,.04)!important;
+}
+.char-strip::after{
+  content:'';position:absolute;left:18px;right:18px;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(217,169,68,.62),transparent);
+  pointer-events:none;
+}
+.hpbar,.mpbar,.bar,.xpbar{
+  box-shadow:inset 0 1px 4px rgba(255,255,255,.18), inset 0 -4px 10px rgba(0,0,0,.38), 0 0 12px rgba(0,0,0,.32)!important;
+}
+
+/* Narrativa vira o centro visual */
+.narr{
+  flex:1.35!important;
+  margin:10px 10px 0!important;
+  padding:18px 18px 118px!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(217,169,68,.10), transparent 34%),
+    linear-gradient(180deg, rgba(13,10,6,.78), rgba(4,4,4,.58))!important;
+  border:1px solid rgba(217,169,68,.26)!important;
+  box-shadow:
+    0 18px 46px rgba(0,0,0,.46),
+    inset 0 1px 0 rgba(255,240,180,.06),
+    inset 0 0 42px rgba(217,169,68,.045)!important;
+  backdrop-filter:blur(14px)!important;
+  -webkit-backdrop-filter:blur(14px)!important;
+  position:relative;
+}
+.narr::before{
+  content:'✦ NARRATIVA ✦';
+  position:sticky;top:-18px;z-index:4;display:block;text-align:center;
+  margin:-18px -18px 12px;padding:9px 0 7px;
+  font-family:var(--font-title);font-size:9px;letter-spacing:3px;color:rgba(217,169,68,.70);
+  background:linear-gradient(180deg,rgba(9,6,3,.92),rgba(9,6,3,.42));
+  border-bottom:1px solid rgba(217,169,68,.15);
+  backdrop-filter:blur(10px);
+}
+.narr::after{
+  content:'';position:sticky;bottom:-118px;display:block;height:42px;margin:8px -18px -118px;
+  background:linear-gradient(180deg,transparent,rgba(4,4,4,.78));pointer-events:none;
+}
+.msg-dm .bbl,.narr .bbl{
+  font-size:18px!important;line-height:1.86!important;color:var(--v34-text)!important;
+  background:rgba(0,0,0,.10)!important;border:0!important;box-shadow:none!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.45);
+}
+.msg-pl .bbl{
+  font-size:16px!important;line-height:1.72!important;border-radius:16px!important;
+}
+
+/* Área de ações com mais presença */
+.acts-area,#acts-area{
+  padding:10px 14px 0!important;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.18));
+}
+.act-grid{
+  gap:11px!important;
+  margin-bottom:12px!important;
+}
+.act-btn{
+  min-height:72px!important;
+  border-radius:18px!important;
+  padding:14px 14px!important;
+  background:
+    radial-gradient(circle at 0% 50%, rgba(217,169,68,.13), transparent 28%),
+    linear-gradient(135deg, rgba(20,14,8,.86), rgba(4,4,4,.72))!important;
+  border:1px solid rgba(217,169,68,.28)!important;
+  box-shadow:0 9px 24px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,235,175,.05)!important;
+  transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease!important;
+}
+.act-btn:active{transform:scale(.985)!important;box-shadow:0 4px 12px rgba(0,0,0,.42), inset 0 0 20px rgba(217,169,68,.06)!important;}
+.a-title{font-size:16px!important;line-height:1.35!important;color:#f4dfb3!important;}
+.a-type{font-size:9px!important;letter-spacing:1.2px!important;margin-top:6px!important;}
+
+/* Ação livre como diferencial principal */
+.free-row{
+  margin:12px 0 6px!important;
+  padding:8px!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(22,15,7,.82),rgba(6,5,4,.92))!important;
+  border:1px solid rgba(217,169,68,.28)!important;
+  box-shadow:0 10px 25px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,225,160,.05)!important;
+  align-items:stretch!important;
+}
+.free-row::before{
+  content:'AÇÃO LIVRE';
+  position:absolute;transform:translate(10px,-22px);
+  font-family:var(--font-title);font-size:8px;letter-spacing:2px;color:rgba(217,169,68,.75);
+  background:rgba(9,6,3,.94);padding:0 8px;
+}
+.free-in{
+  min-height:44px!important;max-height:130px!important;resize:none!important;
+  border-radius:14px!important;padding:13px 14px!important;
+  background:rgba(0,0,0,.35)!important;
+  border:1px solid rgba(217,169,68,.22)!important;
+  font-size:16px!important;line-height:1.45!important;
+}
+.free-in:focus{
+  border-color:rgba(255,205,93,.72)!important;
+  box-shadow:0 0 0 2px rgba(217,169,68,.13),0 0 24px rgba(217,169,68,.20),inset 0 0 24px rgba(0,0,0,.38)!important;
+}
+.free-send{
+  min-width:54px!important;border-radius:15px!important;font-size:20px!important;
+  background:linear-gradient(180deg,rgba(237,185,73,.62),rgba(108,67,16,.88))!important;
+  border:1px solid rgba(255,216,125,.46)!important;
+  box-shadow:0 0 18px rgba(217,169,68,.18), inset 0 1px 0 rgba(255,240,190,.10)!important;
+}
+
+/* Cena imersiva mais “momento especial” */
+.v32-scene-card,.immersive-card,.scene-card{
+  border-radius:22px!important;
+  border:1px solid rgba(217,169,68,.34)!important;
+  background:
+    radial-gradient(circle at 0 50%, rgba(255,205,75,.16), transparent 32%),
+    linear-gradient(135deg, rgba(26,18,8,.86), rgba(6,5,4,.82))!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.46), inset 0 1px 0 rgba(255,235,170,.05)!important;
+}
+
+/* Footer refinado */
+.footer-bar{
+  height:66px!important;
+  background:linear-gradient(180deg,rgba(13,9,5,.86),rgba(3,3,3,.97))!important;
+  border-top:1px solid rgba(217,169,68,.28)!important;
+  box-shadow:0 -14px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,230,150,.04)!important;
+}
+.footer-bar button,.footer-bar .nav-btn{
+  transition:transform .14s ease, filter .14s ease!important;
+}
+.footer-bar button:active,.footer-bar .nav-btn:active{transform:translateY(1px) scale(.96)!important;}
+
+/* Combate com presença maior */
+#s-game.v33-combat-mode .narr{
+  border-color:rgba(255,93,65,.34)!important;
+  box-shadow:0 18px 46px rgba(0,0,0,.50),0 0 24px rgba(160,0,0,.12),inset 0 0 42px rgba(255,60,40,.05)!important;
+}
+#v33-combat-hud{
+  border-radius:20px!important;margin:10px 10px 0!important;
+  box-shadow:0 16px 36px rgba(0,0,0,.50),0 0 26px rgba(180,0,0,.18)!important;
+}
+
+@media(max-width:430px){
+  .char-strip{min-height:76px!important;padding-left:10px!important;padding-right:10px!important;}
+  .narr{margin:8px 9px 0!important;padding:16px 15px 108px!important;border-radius:20px!important;}
+  .msg-dm .bbl,.narr .bbl{font-size:17px!important;line-height:1.80!important;}
+  .act-btn{min-height:66px!important;padding:12px 12px!important;}
+  .footer-bar{height:64px!important;}
+}
 </style>
 </head>
 <body>
@@ -8679,5 +8858,24 @@ function updateCharSheet(){
 })();
 </script>
 
+
+<script>
+/* AiMaster v3.4 — microinteração segura do campo Ação Livre */
+(function(){
+  function autosizeFreeAction(){
+    var el=document.getElementById('free-in');
+    if(!el) return;
+    el.style.height='auto';
+    el.style.height=Math.min(el.scrollHeight,130)+'px';
+  }
+  document.addEventListener('input',function(e){
+    if(e.target && e.target.id==='free-in') autosizeFreeAction();
+  });
+  document.addEventListener('focusin',function(e){
+    if(e.target && e.target.id==='free-in') setTimeout(autosizeFreeAction,30);
+  });
+  window.addEventListener('load',autosizeFreeAction);
+})();
+</script>
 </body>
 </html>
