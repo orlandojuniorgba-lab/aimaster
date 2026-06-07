@@ -9295,3 +9295,110 @@ function updateCharSheet(){
 </script>
 </body>
 </html>
+<style id="aimaster-v38-narrative-scroll-fix">
+/* AIMASTER v3.8 — Ajuste solicitado
+   Mantém scroll interno apenas na caixa narrativa do Mestre.
+   A tela do jogo não vira fluxo único; as ações ficam estáveis abaixo da narrativa. */
+
+#s-game.active{
+  overflow:hidden!important;
+  overflow-y:hidden!important;
+  padding-bottom:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+
+#s-game .char-strip{
+  flex:0 0 auto!important;
+}
+
+/* A caixa narrativa volta a ser a área principal com scroll próprio */
+#s-game .narr{
+  flex:1 1 auto!important;
+  min-height:315px!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  margin:8px 12px 8px!important;
+  padding:22px 20px 26px!important;
+  border-radius:18px!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.46), inset 0 0 36px rgba(217,169,68,.045)!important;
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(217,169,68,.42) transparent!important;
+}
+#s-game .narr::-webkit-scrollbar{width:4px!important;display:block!important;}
+#s-game .narr::-webkit-scrollbar-thumb{background:rgba(217,169,68,.42)!important;border-radius:99px!important;}
+#s-game .narr::-webkit-scrollbar-track{background:transparent!important;}
+
+/* Ações abaixo da narrativa, sem barra própria */
+#s-game .actions-wrap{
+  flex:0 0 auto!important;
+  max-height:none!important;
+  overflow:visible!important;
+  overflow-y:visible!important;
+  margin:0 12px 124px!important;
+  padding:10px 10px 12px!important;
+}
+#s-game .actions-wrap::-webkit-scrollbar,
+#s-game .act-grid::-webkit-scrollbar{display:none!important;}
+
+#s-game .act-grid{
+  overflow:visible!important;
+  max-height:none!important;
+  gap:9px!important;
+}
+
+/* Ação livre e menu permanecem fixos embaixo */
+#s-game .ooc-toggle-row{
+  position:fixed!important;
+  left:12px!important;
+  right:12px!important;
+  bottom:63px!important;
+  width:auto!important;
+  max-width:none!important;
+  transform:none!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  z-index:95!important;
+}
+#s-game .footer-bar{
+  position:fixed!important;
+  left:8px!important;
+  right:8px!important;
+  bottom:6px!important;
+  width:auto!important;
+  max-width:none!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+  z-index:94!important;
+}
+
+/* Home e criação continuam limpas */
+body:not(:has(#s-game.active)) .ooc-toggle-row,
+body:not(:has(#s-game.active)) .footer-bar,
+body:not(:has(#s-game.active)) .actions-wrap{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+@media(max-height:740px){
+  #s-game .narr{min-height:300px!important;margin-top:7px!important;padding:20px 18px 24px!important;}
+  #s-game .actions-wrap{margin-bottom:118px!important;}
+  #s-game .ooc-toggle-row{bottom:59px!important;}
+}
+
+@media(max-height:680px){
+  #s-game .narr{min-height:275px!important;}
+  #s-game .act-btn{min-height:50px!important;}
+  #s-game .actions-wrap{margin-bottom:112px!important;}
+}
+
+@media(max-width:370px){
+  #s-game .narr{min-height:285px!important;margin-left:10px!important;margin-right:10px!important;}
+  #s-game .actions-wrap{margin-left:10px!important;margin-right:10px!important;}
+  #s-game .ooc-toggle-row{left:10px!important;right:10px!important;}
+  #s-game .footer-bar{left:6px!important;right:6px!important;}
+}
+</style>
