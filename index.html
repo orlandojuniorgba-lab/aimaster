@@ -951,6 +951,147 @@ div.msg-dm div.bbl,
 .v3-auth-wide{width:100%;margin-top:8px;}
 .v3-auth-status{font-size:12px;color:rgba(240,221,176,.72);line-height:1.45;margin-top:4px;}
 
+
+
+/* ══ V3.2 — CENA IMERSIVA PREMIUM ══ */
+.immersive-scene-card{
+  margin-top:10px;
+  padding:12px 13px;
+  border-radius:18px;
+  border:1px solid rgba(200,146,42,.25);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(232,184,75,.16), transparent 52%),
+    linear-gradient(135deg, rgba(13,9,5,.92), rgba(24,16,8,.74));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 10px 28px rgba(0,0,0,.34);
+  display:flex;align-items:center;gap:12px;
+}
+.immersive-orb{width:38px;height:38px;border-radius:999px;display:grid;place-items:center;flex-shrink:0;background:rgba(200,146,42,.12);border:1px solid rgba(232,184,75,.32);box-shadow:0 0 18px rgba(200,146,42,.18);font-size:18px;}
+.immersive-copy{flex:1;min-width:0;}
+.immersive-title{font-family:var(--font-title);font-size:12px;letter-spacing:.7px;color:#E8B84B;text-transform:uppercase;}
+.immersive-desc{font-size:12px;line-height:1.35;color:rgba(240,221,176,.72);margin-top:2px;}
+.immersive-btn{border:1px solid rgba(232,184,75,.36);background:linear-gradient(180deg, rgba(200,146,42,.20), rgba(76,44,12,.35));color:#f6df9f;border-radius:12px;padding:9px 10px;font-family:var(--font-title);font-size:10px;letter-spacing:.55px;white-space:nowrap;box-shadow:0 0 18px rgba(200,146,42,.11);}
+.immersive-btn:active{transform:scale(.98)}
+.scene-preview-frame{margin-top:12px;border-radius:18px;overflow:hidden;border:1px solid rgba(200,146,42,.28);background:linear-gradient(145deg, rgba(20,13,7,.95), rgba(6,4,3,.98));box-shadow: inset 0 0 70px rgba(200,146,42,.08), 0 16px 36px rgba(0,0,0,.45);min-height:260px;display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;position:relative;}
+.scene-preview-frame:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center, rgba(232,184,75,.18), transparent 48%), linear-gradient(135deg, transparent, rgba(80,40,120,.12));pointer-events:none;}
+.scene-preview-content{position:relative;z-index:1;max-width:90%;}
+.scene-preview-kicker{font-family:var(--font-title);font-size:11px;color:#E8B84B;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.scene-preview-text{font-size:14px;line-height:1.65;color:#f0ddb0;font-style:italic;}
+.scene-preview-note{margin-top:14px;font-size:11px;color:rgba(240,221,176,.48);line-height:1.45;}
+@media(max-width:380px){.immersive-scene-card{align-items:stretch}.immersive-btn{padding:9px 8px;font-size:9px}.immersive-desc{font-size:11px}}
+
+
+
+/* ═════════════════════════════════════════════════════════════
+   AIMASTER V3.3 — COMBATE CINEMÁTICO + UI VIVA
+   Camada visual segura: não altera IDs críticos nem o motor.
+═════════════════════════════════════════════════════════════ */
+#s-game{
+  background:
+    radial-gradient(circle at 50% 18%, rgba(200,146,42,.18), transparent 34%),
+    linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.72)),
+    url('aimaster-bg-premium.png'),
+    url('fundo.jpg') !important;
+  background-size: cover, cover, cover, cover !important;
+  background-position: center !important;
+}
+#s-game::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(232,184,75,.08), transparent 28%),
+    linear-gradient(90deg, rgba(0,0,0,.72), transparent 22%, transparent 78%, rgba(0,0,0,.72));
+}
+#s-game>*{position:relative;z-index:1;}
+.char-strip{
+  margin:8px 10px 0!important;border-radius:18px!important;
+  background:linear-gradient(145deg,rgba(14,9,5,.86),rgba(4,3,2,.78))!important;
+  border:1px solid rgba(232,184,75,.22)!important;
+  box-shadow:0 14px 36px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,235,170,.05)!important;
+  backdrop-filter:blur(14px)!important;
+}
+.gold-pill,.mstat{
+  background:linear-gradient(135deg,rgba(200,146,42,.14),rgba(0,0,0,.18))!important;
+  border:1px solid rgba(232,184,75,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 4px 14px rgba(0,0,0,.28)!important;
+}
+.narr{
+  margin:8px 10px!important;border-radius:20px!important;
+  background:linear-gradient(180deg,rgba(2,2,2,.50),rgba(8,5,2,.38))!important;
+  border:1px solid rgba(232,184,75,.22)!important;
+  box-shadow:0 18px 38px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,235,170,.05), inset 0 0 40px rgba(200,146,42,.035)!important;
+  backdrop-filter:blur(14px)!important;
+}
+.narr .bbl,.msg-dm .bbl{
+  background:linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.08))!important;
+  border-left:2px solid rgba(200,146,42,.38)!important;
+  box-shadow:none!important;
+}
+.actions-wrap{
+  margin:0 10px 74px!important;border-radius:20px 20px 0 0!important;
+  background:linear-gradient(180deg,rgba(10,7,4,.70),rgba(4,3,2,.92))!important;
+  border:1px solid rgba(232,184,75,.16)!important;border-bottom:0!important;
+  box-shadow:0 -12px 32px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,235,170,.04)!important;
+  backdrop-filter:blur(16px)!important;
+}
+.acts-lbl{color:#e8b84b!important;text-shadow:0 0 12px rgba(200,146,42,.22);}
+.act-btn{
+  border-radius:16px!important;
+  background:linear-gradient(135deg,rgba(20,15,9,.76),rgba(6,5,4,.70))!important;
+  border:1px solid rgba(232,184,75,.20)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05), inset 0 -12px 24px rgba(200,146,42,.035),0 8px 18px rgba(0,0,0,.28)!important;
+}
+.act-btn:active{transform:scale(.985)!important;}
+.a-circle{background:rgba(200,146,42,.12)!important;border-color:rgba(232,184,75,.24)!important;}
+.ooc-toggle-row{
+  position:relative;margin-top:10px!important;padding:10px!important;border-radius:18px!important;
+  background:linear-gradient(135deg,rgba(200,146,42,.10),rgba(0,0,0,.24))!important;
+  border:1px solid rgba(232,184,75,.20)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 24px rgba(0,0,0,.32)!important;
+}
+.ooc-toggle-row::before{
+  content:'AÇÃO LIVRE';position:absolute;top:-8px;left:16px;padding:0 8px;
+  font-family:var(--font-title);font-size:8px;letter-spacing:1.6px;color:rgba(232,184,75,.72);
+  background:#090603;border-radius:999px;
+}
+.free-in{
+  min-height:44px!important;border-radius:14px!important;background:rgba(0,0,0,.36)!important;
+  border:1px solid rgba(232,184,75,.22)!important;color:#f0ddb0!important;
+  box-shadow:inset 0 0 18px rgba(0,0,0,.34)!important;
+}
+.free-in:focus{border-color:rgba(232,184,75,.68)!important;box-shadow:0 0 0 2px rgba(200,146,42,.10),0 0 22px rgba(200,146,42,.16),inset 0 0 18px rgba(0,0,0,.34)!important;}
+.free-send,.ooc-toggle{border-radius:14px!important;box-shadow:0 0 16px rgba(200,146,42,.12)!important;}
+.footer-bar{
+  margin:0 8px 8px!important;left:0!important;right:0!important;bottom:0!important;border-radius:20px!important;
+  background:linear-gradient(180deg,rgba(18,12,6,.92),rgba(3,2,1,.96))!important;
+  border:1px solid rgba(232,184,75,.18)!important;
+  box-shadow:0 -10px 30px rgba(0,0,0,.50),inset 0 1px 0 rgba(255,235,170,.05)!important;
+  backdrop-filter:blur(16px)!important;
+}
+.fbar-btn{border-radius:14px!important;}
+.fbar-btn:hover,.fbar-btn.active{background:rgba(200,146,42,.10)!important;}
+/* HUD Cinemático de Combate */
+#v33-combat-hud{display:none;margin:8px 10px 0;border-radius:18px;padding:12px 14px;overflow:hidden;position:relative;
+  background:linear-gradient(135deg,rgba(80,5,5,.88),rgba(8,4,3,.86));border:1px solid rgba(255,75,64,.36);
+  box-shadow:0 0 34px rgba(180,0,0,.22), inset 0 1px 0 rgba(255,180,160,.06);backdrop-filter:blur(14px);}
+#v33-combat-hud::before{content:'';position:absolute;inset:-40%;background:radial-gradient(circle,rgba(255,50,30,.18),transparent 35%);animation:v33-danger 2.4s ease-in-out infinite;pointer-events:none;}
+@keyframes v33-danger{0%,100%{opacity:.35;transform:scale(.95)}50%{opacity:.85;transform:scale(1.05)}}
+.v33-combat-top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.v33-combat-title{font-family:var(--font-title);font-size:10px;letter-spacing:2.8px;color:#ffb0a8;text-transform:uppercase;}
+.v33-combat-turn{font-family:var(--font-title);font-size:9px;color:rgba(255,220,190,.70);border:1px solid rgba(255,120,100,.22);border-radius:999px;padding:4px 8px;background:rgba(0,0,0,.22)}
+.v33-enemy-name{position:relative;margin-top:7px;font-family:var(--font-title);font-size:18px;color:#ffe1d8;text-shadow:0 0 18px rgba(255,60,40,.38);}
+.v33-enemy-bar{position:relative;height:7px;margin-top:8px;border-radius:999px;background:rgba(0,0,0,.50);border:1px solid rgba(255,100,80,.22);overflow:hidden;}
+.v33-enemy-bar span{display:block;height:100%;width:100%;background:linear-gradient(90deg,#7f0909,#e6483c,#ff9a72);box-shadow:0 0 14px rgba(255,80,55,.48);}
+#s-game.v33-combat-mode::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(circle at 50% 20%,transparent 40%,rgba(100,0,0,.16) 100%);animation:v33-redpulse 2.8s ease-in-out infinite;}
+@keyframes v33-redpulse{0%,100%{opacity:.25}50%{opacity:.65}}
+/* Cena imersiva premium */
+#scene-btn-wrap.v33-scene-card{display:block!important;margin:12px 0 4px!important;padding:0!important;}
+.v33-scene-card-inner{position:relative;overflow:hidden;border-radius:18px;padding:14px;background:linear-gradient(135deg,rgba(75,48,150,.28),rgba(8,5,2,.84));border:1px solid rgba(190,160,255,.30);box-shadow:0 12px 28px rgba(0,0,0,.36), inset 0 1px 0 rgba(255,255,255,.05);}
+.v33-scene-card-inner::before{content:'';position:absolute;inset:-40%;background:radial-gradient(circle,rgba(200,146,42,.14),transparent 34%);animation:v33-scene-glow 4s ease-in-out infinite;}
+@keyframes v33-scene-glow{0%,100%{transform:translateX(-8%);opacity:.35}50%{transform:translateX(8%);opacity:.9}}
+.v33-scene-content{position:relative;display:flex;align-items:center;gap:12px;}
+.v33-scene-icon{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(180,140,255,.12);border:1px solid rgba(200,170,255,.26);font-size:20px;box-shadow:0 0 18px rgba(160,120,255,.16);}
+.v33-scene-text{flex:1}.v33-scene-title{font-family:var(--font-title);font-size:12px;letter-spacing:1.3px;color:#dac8ff}.v33-scene-sub{font-size:11px;color:rgba(240,221,176,.70);line-height:1.35;margin-top:3px}.v33-scene-btn{position:relative;border:1px solid rgba(218,200,255,.42);border-radius:13px;padding:9px 11px;background:linear-gradient(135deg,rgba(160,120,255,.28),rgba(200,146,42,.12));font-family:var(--font-title);font-size:10px;color:#efe7ff;letter-spacing:.7px;cursor:pointer;}
+#scene-img-wrap{border-radius:18px!important;border:1px solid rgba(218,200,255,.32)!important;box-shadow:0 16px 36px rgba(0,0,0,.44),0 0 28px rgba(130,90,255,.12)!important;}
+
 </style>
 </head>
 <body>
@@ -1178,6 +1319,14 @@ div.msg-dm div.bbl,
       <button class="act-btn suggested" id="ab2" onclick="doAct('Seguir em frente')"><div class="a-circle">🚶</div><div class="a-text"><span class="a-title">Seguir em frente</span><span class="a-hint">Movimento</span></div><span class="a-arrow">›</span></button>
       <button class="act-btn suggested" id="ab3" onclick="doAct('Falar com alguém')"><div class="a-circle">💬</div><div class="a-text"><span class="a-title">Falar com alguém</span><span class="a-hint">Diplomacia</span></div><span class="a-arrow">›</span></button>
       <button class="act-btn suggested" id="ab4" onclick="doAct('Investigar o local')"><div class="a-circle">🔍</div><div class="a-text"><span class="a-title">Investigar o local</span><span class="a-hint">Investigação</span></div><span class="a-arrow">›</span></button>
+    </div>
+    <div class="immersive-scene-card" id="immersive-scene-card">
+      <div class="immersive-orb">✨</div>
+      <div class="immersive-copy">
+        <div class="immersive-title">Cena Imersiva</div>
+        <div class="immersive-desc">Transforme o momento atual em uma visão cinematográfica da sua aventura.</div>
+      </div>
+      <button class="immersive-btn" onclick="generateImmersiveScene()">GERAR · 5 💎</button>
     </div>
   <!-- Barra de Dados de Dano -->
     <span id="d20-hint-txt" style="display:none;font-size:10px;color:var(--gold-l);margin-left:4px"></span>
@@ -7787,6 +7936,56 @@ async function rollDiceTray(){
 
 
 // ══ SAVE/RESTORE — persiste estado quando app minimiza ══
+
+// ══ V3.2 — CENA IMERSIVA ══
+const IMMERSIVE_SCENE_COST = 5;
+let lastImmersivePrompt = '';
+
+function getLastNarrativeText(){
+  const narr = document.getElementById('narr');
+  if(!narr) return '';
+  const bubbles = Array.from(narr.querySelectorAll('.msg-dm .bbl'));
+  const last = bubbles.reverse().find(b => (b.innerText||'').trim().length > 20);
+  return last ? last.innerText.trim().slice(0,1200) : '';
+}
+
+function buildImmersivePrompt(){
+  const txt = getLastNarrativeText() || 'Um momento sombrio e heroico de fantasia medieval.';
+  const who = `${hero.name||'Herói'} — ${hero.race||''} ${hero.cls||''} nível ${hero.level||1}`.trim();
+  const loc = (window.currentLocation || hero.location || 'local desconhecido');
+  return `Cena cinematográfica dark fantasy premium para o RPG AiMaster. Personagem: ${who}. Local: ${loc}. Momento narrativo: ${txt}. Estilo: fantasia medieval sombria, iluminação âmbar, composição dramática, atmosfera imersiva, sem textos na imagem, qualidade AAA mobile game.`;
+}
+
+function generateImmersiveScene(){
+  if(!hero) return;
+  const cost = IMMERSIVE_SCENE_COST;
+  hero.credits = Math.round(hero.credits||0);
+  if(hero.credits < cost){
+    addMsg('msg-dm', `<span style="color:#E8B84B">✨ Cena Imersiva</span><br>Você precisa de ${cost} 💎 para transformar este momento em uma visão cinematográfica. Abra a aba Diamantes quando quiser carregar sua bolsa.`);
+    try{ openMo('mo-shop'); }catch(e){}
+    return;
+  }
+  hero.credits -= cost;
+  lastImmersivePrompt = buildImmersivePrompt();
+  updateVitals();
+  saveGameState();
+  const shortScene = (getLastNarrativeText() || 'A aventura ganha forma diante dos seus olhos.').slice(0,520);
+  const body = document.getElementById('scene-preview-body');
+  if(body){
+    body.innerHTML = `<div class="scene-preview-content"><div class="scene-preview-kicker">Cena registrada · ${cost} 💎</div><div class="scene-preview-text">“${shortScene.replace(/</g,'&lt;').replace(/>/g,'&gt;')}”</div><div class="scene-preview-note">Base visual preparada. Na próxima integração, este botão chamará o gerador de imagem e mostrará a arte aqui.</div></div>`;
+  }
+  try{ openMo('mo-scene'); }catch(e){}
+}
+
+function copyScenePrompt(){
+  if(!lastImmersivePrompt) lastImmersivePrompt = buildImmersivePrompt();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(lastImmersivePrompt).then(()=>alert('Prompt da cena copiado.'));
+  }else{
+    alert(lastImmersivePrompt);
+  }
+}
+
 function saveGameState(){
   if(!hero || !hero.name) return; // não salva estado vazio
   try {
@@ -8394,6 +8593,89 @@ function updateCharSheet(){
   };
   document.addEventListener('input',function(e){ if(e.target && e.target.id==='free-in') resizeFreeInput(); });
   document.addEventListener('DOMContentLoaded',resizeFreeInput);
+})();
+</script>
+
+
+
+<script>
+// AIMASTER V3.3 — Combate Cinemático + Cena Imersiva Premium.
+(function(){
+  const SCENE_COST_V33 = (typeof SCENE_COST!=='undefined' ? SCENE_COST : 3);
+  function ensureCombatHud(){
+    let hud=document.getElementById('v33-combat-hud');
+    if(hud) return hud;
+    const strip=document.querySelector('#s-game .char-strip');
+    if(!strip) return null;
+    hud=document.createElement('div');
+    hud.id='v33-combat-hud';
+    hud.innerHTML=`
+      <div class="v33-combat-top">
+        <div class="v33-combat-title">⚔ Combate Cinemático</div>
+        <div class="v33-combat-turn">Turno do jogador</div>
+      </div>
+      <div class="v33-enemy-name" id="v33-enemy-name">Inimigo</div>
+      <div class="v33-enemy-bar"><span></span></div>`;
+    strip.insertAdjacentElement('afterend',hud);
+    return hud;
+  }
+  window.v33RefreshCombatHud=function(){
+    const game=document.getElementById('s-game');
+    const hud=ensureCombatHud();
+    if(!game||!hud) return;
+    const active=!!window.inCombat || (typeof inCombat!=='undefined' && !!inCombat);
+    const enemy=(typeof currentEnemy!=='undefined' && currentEnemy) ? currentEnemy : 'Ameaça desconhecida';
+    hud.style.display=active?'block':'none';
+    game.classList.toggle('v33-combat-mode',active);
+    const name=document.getElementById('v33-enemy-name');
+    if(name) name.textContent=enemy;
+  };
+  const oldUpdateContext=window.updateContextUI;
+  if(typeof oldUpdateContext==='function'){
+    window.updateContextUI=function(){
+      const r=oldUpdateContext.apply(this,arguments);
+      try{ window.v33RefreshCombatHud(); }catch(e){}
+      return r;
+    };
+  }
+  const oldUpdateVitals=window.updateVitals;
+  if(typeof oldUpdateVitals==='function'){
+    window.updateVitals=function(){
+      const r=oldUpdateVitals.apply(this,arguments);
+      try{ window.v33RefreshCombatHud(); }catch(e){}
+      return r;
+    };
+  }
+  const oldShowSceneButton=window.showSceneButton;
+  window.showSceneButton=function(narrativeText){
+    if(typeof lastNarrativeText!=='undefined') lastNarrativeText=narrativeText;
+    if(!narrativeText || narrativeText.length<80) return;
+    const old=document.getElementById('scene-btn-wrap');
+    if(old) old.remove();
+    const narr=document.getElementById('narr');
+    if(!narr) return;
+    const wrap=document.createElement('div');
+    wrap.id='scene-btn-wrap';
+    wrap.className='v33-scene-card';
+    wrap.innerHTML=`
+      <div class="v33-scene-card-inner">
+        <div class="v33-scene-content">
+          <div class="v33-scene-icon">✨</div>
+          <div class="v33-scene-text">
+            <div class="v33-scene-title">Reviver esta Cena</div>
+            <div class="v33-scene-sub">Transforme este momento em uma arte cinematográfica da sua campanha.</div>
+          </div>
+          <button class="v33-scene-btn" onclick="generateSceneImage()">GERAR · ${SCENE_COST_V33} 💎</button>
+        </div>
+      </div>`;
+    narr.appendChild(wrap);
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    ensureCombatHud();
+    window.v33RefreshCombatHud();
+    const free=document.getElementById('free-in');
+    if(free) free.placeholder='Descreva qualquer ação do seu personagem...';
+  });
 })();
 </script>
 
