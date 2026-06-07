@@ -1480,6 +1480,111 @@ div.msg-dm div.bbl,
   #s-game .immersive-desc{display:none!important;}
 }
 </style>
+
+
+<style id="aimaster-v36-hotfix">
+/* AIMASTER v3.6 — Hotfix mobile
+   Corrige: Ação Livre aparecendo na Home e remove o card duplicado de Cena Imersiva.
+   Mantém o card roxo "Reviver esta Cena" como único CTA de imagem. */
+
+/* Home limpa: nenhum controle de gameplay deve aparecer fora da tela do jogo */
+body:has(#s-title.active) .ooc-toggle-row,
+body:has(#s-title.active) .footer-bar,
+body:has(#s-title.active) .actions-wrap,
+body:has(#s-title.active) .immersive-scene-card{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+/* Também impede que os controles fixos apareçam nas telas de criação/login */
+body:not(:has(#s-game.active)) .ooc-toggle-row,
+body:not(:has(#s-game.active)) .footer-bar{
+  display:none!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+
+body:has(#s-game.active) .ooc-toggle-row{
+  display:flex!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+body:has(#s-game.active) .footer-bar{
+  display:flex!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+}
+
+/* Remove o CTA duplicado inferior. Fica apenas o card roxo "Reviver esta Cena" dentro da narrativa. */
+#s-game .immersive-scene-card{
+  display:none!important;
+}
+
+/* Ajuste do espaço após remover o card duplicado */
+#s-game .actions-wrap{
+  padding-bottom:104px!important;
+}
+
+/* A narrativa fica mais confortável e ganha mais altura útil */
+#s-game .narr{
+  min-height:230px!important;
+  max-height:42vh!important;
+  padding:20px 20px 24px!important;
+  margin:8px 12px 8px!important;
+  border-radius:18px!important;
+}
+#s-game .narr .msg,
+#s-game .narr p{
+  font-size:16px!important;
+  line-height:1.72!important;
+}
+
+/* Card roxo mais refinado e mais compacto */
+#s-game #scene-btn-wrap.v33-scene-card{
+  margin:18px 0 0!important;
+}
+#s-game .v33-scene-card-inner{
+  border-radius:18px!important;
+  padding:14px!important;
+  background:
+    radial-gradient(circle at 16% 35%,rgba(180,135,255,.20),transparent 34%),
+    linear-gradient(135deg,rgba(64,42,128,.34),rgba(10,7,14,.88))!important;
+  border:1px solid rgba(196,164,255,.34)!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.42),0 0 24px rgba(120,80,220,.12),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+#s-game .v33-scene-title{
+  color:#eadfff!important;
+  letter-spacing:1.5px!important;
+}
+#s-game .v33-scene-sub{
+  color:rgba(240,221,176,.74)!important;
+}
+#s-game .v33-scene-btn{
+  border-color:rgba(218,200,255,.52)!important;
+  box-shadow:0 0 16px rgba(160,120,255,.14), inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+
+/* Ação livre um pouco mais limpa, sem invadir a Home */
+#s-game .ooc-toggle-row{
+  left:14px!important;
+  right:14px!important;
+  bottom:58px!important;
+  z-index:95!important;
+}
+#s-game .footer-bar{
+  height:54px!important;
+  z-index:94!important;
+}
+
+@media (max-height:720px){
+  #s-game .narr{min-height:210px!important;max-height:39vh!important;padding:18px 18px 20px!important;}
+  #s-game .actions-wrap{padding-bottom:98px!important;}
+  #s-game .ooc-toggle-row{bottom:56px!important;}
+  #s-game .footer-bar{height:52px!important;}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
@@ -1520,7 +1625,7 @@ div.msg-dm div.bbl,
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v3.5</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v3.6</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
