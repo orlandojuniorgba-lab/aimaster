@@ -2239,7 +2239,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.0</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.2</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
@@ -9806,3 +9806,316 @@ function updateCharSheet(){
 </script>
 </body>
 </html>
+
+<!-- AiMaster v4.1 Visual Stability Patch: escolha duplicada + polimento fino -->
+<style id="aimaster-v41-visual-stability">
+/* v4.1 — remove título duplicado e compacta a transição narrativa > ações */
+#s-game .acts-lbl{
+  display:none!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+#s-game .actions-wrap::before{
+  content:'— ESCOLHA SUA AÇÃO —'!important;
+  display:block!important;
+  margin:0 0 8px!important;
+  padding:0 0 7px!important;
+  text-align:center!important;
+  font-family:var(--font-title)!important;
+  font-size:8.5px!important;
+  line-height:1!important;
+  letter-spacing:2.45px!important;
+  color:rgba(217,169,68,.62)!important;
+  border-bottom:1px solid rgba(217,169,68,.10)!important;
+  text-shadow:0 0 12px rgba(217,169,68,.18)!important;
+}
+#s-game .actions-wrap{
+  margin-top:8px!important;
+  padding-top:10px!important;
+  border-radius:19px!important;
+  overflow:visible!important;
+  max-height:none!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(217,169,68,.09),transparent 42%),
+    linear-gradient(180deg,rgba(16,10,5,.68),rgba(3,3,2,.88))!important;
+  box-shadow:0 14px 30px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.035)!important;
+}
+#s-game .act-grid{
+  overflow:visible!important;
+  max-height:none!important;
+  gap:8px!important;
+}
+#s-game .act-btn{
+  min-height:49px!important;
+  border-radius:15px!important;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(217,169,68,.10),transparent 42%),
+    linear-gradient(135deg,rgba(34,23,12,.82),rgba(6,5,4,.92))!important;
+}
+#s-game .act-btn:active{
+  transform:scale(.985)!important;
+  filter:brightness(1.08)!important;
+}
+/* Narrativa preserva scroll próprio e ganha mais acabamento */
+#s-game .narr{
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  scrollbar-width:thin!important;
+  box-shadow:0 18px 45px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.035), inset 0 0 38px rgba(217,169,68,.035)!important;
+}
+#s-game .narr::-webkit-scrollbar{width:4px!important;}
+#s-game .narr::-webkit-scrollbar-thumb{background:rgba(217,169,68,.38)!important;border-radius:999px!important;}
+/* Card roxo permanece como único CTA de cena */
+#s-game .immersive-scene-card{display:none!important;}
+#s-game #scene-btn-wrap.v33-scene-card{display:block!important;}
+/* Evita que componentes de jogo apareçam fora da tela de jogo */
+body:not(:has(#s-game.active)) .ooc-toggle-row,
+body:not(:has(#s-game.active)) .footer-bar,
+body:not(:has(#s-game.active)) .actions-wrap,
+body:not(:has(#s-game.active)) #scene-btn-wrap{
+  display:none!important;
+}
+</style>
+
+
+<!-- AiMaster v4.2 HUD Premium Patch: topo cinematográfico estável -->
+<style id="aimaster-v42-hud-premium">
+/* v4.2 — HUD Premium
+   Base: v4.1 estável enviada pelo Orlando.
+   Foco: topo mais parecido com RPG mobile premium, sem tocar no motor do jogo. */
+
+:root{
+  --hud-gold:#e0b45a;
+  --hud-gold-2:#8e6321;
+  --hud-red:#d34236;
+  --hud-blue:#5f7cff;
+  --hud-purple:#a888ff;
+}
+
+/* HUD com três blocos claros: avatar | vida/mana | moedas */
+#s-game .char-strip{
+  min-height:82px!important;
+  margin:8px 10px 6px!important;
+  padding:10px 11px!important;
+  gap:10px!important;
+  border-radius:22px!important;
+  background:
+    linear-gradient(180deg,rgba(34,23,10,.95),rgba(7,5,3,.98)),
+    radial-gradient(circle at 18% 0%,rgba(224,180,90,.24),transparent 36%)!important;
+  border:1px solid rgba(224,180,90,.38)!important;
+  box-shadow:
+    0 16px 36px rgba(0,0,0,.62),
+    0 0 28px rgba(224,180,90,.10),
+    inset 0 1px 0 rgba(255,255,255,.07),
+    inset 0 -1px 0 rgba(0,0,0,.65)!important;
+}
+#s-game .char-strip::before{
+  content:""!important;
+  position:absolute!important;
+  inset:1px!important;
+  border-radius:21px!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(90deg,rgba(224,180,90,.16),transparent 20%,transparent 80%,rgba(224,180,90,.10)),
+    radial-gradient(circle at 50% 0%,rgba(255,220,140,.10),transparent 50%)!important;
+  opacity:.9!important;
+}
+
+/* Avatar com moldura nobre */
+#s-game .xp-portrait-wrap{
+  width:58px!important;
+  height:58px!important;
+  flex:0 0 58px!important;
+  border-radius:50%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  filter:drop-shadow(0 0 13px rgba(224,180,90,.25))!important;
+}
+#s-game .xp-ring{filter:drop-shadow(0 0 8px rgba(224,180,90,.24))!important;}
+#s-game .portrait{
+  inset:6px!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 50% 34%,rgba(224,180,90,.20),rgba(6,5,3,.95) 64%)!important;
+  border:1px solid rgba(224,180,90,.38)!important;
+  box-shadow:
+    inset 0 0 18px rgba(0,0,0,.72),
+    0 0 14px rgba(224,180,90,.14)!important;
+  font-size:22px!important;
+}
+#s-game .xp-label{
+  bottom:-16px!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  min-width:58px!important;
+  padding:2px 4px!important;
+  border-radius:999px!important;
+  background:rgba(0,0,0,.58)!important;
+  border:1px solid rgba(224,180,90,.18)!important;
+  font-family:var(--font-title)!important;
+  font-size:7.3px!important;
+  line-height:1!important;
+  color:rgba(245,215,145,.85)!important;
+  text-align:center!important;
+}
+
+/* Nome e metadados */
+#s-game .char-info{
+  min-width:0!important;
+  flex:1 1 auto!important;
+  padding-top:1px!important;
+}
+#s-game .c-name{
+  font-size:14px!important;
+  line-height:1.08!important;
+  color:#ffe39a!important;
+  text-shadow:0 0 13px rgba(224,180,90,.20)!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#s-game .c-meta{
+  margin-top:2px!important;
+  font-size:8.2px!important;
+  color:rgba(244,223,176,.64)!important;
+}
+
+/* Barras PV/MP mais grossas e cinematográficas */
+#s-game .bars{
+  margin-top:6px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:5px!important;
+}
+#s-game .bar-row{
+  display:grid!important;
+  grid-template-columns:23px 1fr 36px!important;
+  align-items:center!important;
+  gap:5px!important;
+}
+#s-game .bar-lbl{
+  font-family:var(--font-title)!important;
+  font-size:8.5px!important;
+  letter-spacing:1px!important;
+  color:rgba(244,223,176,.75)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.65)!important;
+}
+#s-game .bar-track{
+  position:relative!important;
+  height:9px!important;
+  border-radius:999px!important;
+  overflow:hidden!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.84),rgba(26,18,9,.72))!important;
+  border:1px solid rgba(224,180,90,.25)!important;
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,.88),
+    0 1px 0 rgba(255,255,255,.035)!important;
+}
+#s-game .bar-track::after{
+  content:""!important;
+  position:absolute!important;
+  inset:1px 2px auto 2px!important;
+  height:3px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.22),rgba(255,255,255,.03))!important;
+  pointer-events:none!important;
+}
+#s-game .bar-fill{
+  height:100%!important;
+  border-radius:999px!important;
+  transition:width .45s ease!important;
+}
+#s-game .bar-fill.hp{
+  background:linear-gradient(90deg,#7f1712,#d34236 55%,#ff7968)!important;
+  box-shadow:0 0 12px rgba(211,66,54,.48),inset 0 1px 0 rgba(255,255,255,.33)!important;
+}
+#s-game .bar-fill.mp{
+  background:linear-gradient(90deg,#28356f,#5f7cff 55%,#9bb0ff)!important;
+  box-shadow:0 0 12px rgba(95,124,255,.45),inset 0 1px 0 rgba(255,255,255,.32)!important;
+}
+#s-game .bar-val{
+  min-width:36px!important;
+  text-align:right!important;
+  font-family:var(--font-title)!important;
+  font-size:8.6px!important;
+  color:#f3d89a!important;
+}
+
+/* Mini stats como pequenos selos */
+#s-game .mini-stats{
+  margin-top:6px!important;
+  display:flex!important;
+  gap:4px!important;
+  overflow:hidden!important;
+}
+#s-game .mstat{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  padding:3px 4px!important;
+  border-radius:8px!important;
+  font-size:7.8px!important;
+  text-align:center!important;
+  background:linear-gradient(180deg,rgba(224,180,90,.10),rgba(0,0,0,.33))!important;
+  border:1px solid rgba(224,180,90,.20)!important;
+  color:rgba(244,223,176,.78)!important;
+}
+
+/* Ouro e diamantes: mais nobre e legível */
+#s-game .char-strip > div:last-child{
+  width:62px!important;
+  flex:0 0 62px!important;
+  gap:6px!important;
+  align-self:stretch!important;
+  justify-content:center!important;
+}
+#s-game .gold-pill{
+  min-height:27px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  padding:4px 6px!important;
+  border-radius:999px!important;
+  font-family:var(--font-title)!important;
+  font-size:10px!important;
+  color:#ffe7a6!important;
+  background:
+    radial-gradient(circle at 30% 10%,rgba(255,231,166,.14),transparent 45%),
+    linear-gradient(180deg,rgba(58,39,13,.72),rgba(4,3,2,.82))!important;
+  border:1px solid rgba(224,180,90,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.065),0 5px 14px rgba(0,0,0,.30)!important;
+  white-space:nowrap!important;
+}
+#s-game .char-strip > div:last-child .gold-pill:last-child{
+  color:#eee5ff!important;
+  background:
+    radial-gradient(circle at 30% 10%,rgba(195,166,255,.20),transparent 48%),
+    linear-gradient(180deg,rgba(63,43,116,.78),rgba(8,5,15,.86))!important;
+  border-color:rgba(195,166,255,.38)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 15px rgba(168,136,255,.13)!important;
+}
+
+/* O HUD melhorado precisa sobrar espaço para narrativa */
+#s-game .narr{
+  margin-top:5px!important;
+}
+
+@media(max-height:740px){
+  #s-game .char-strip{min-height:76px!important;padding:8px 9px!important;}
+  #s-game .xp-portrait-wrap{width:52px!important;height:52px!important;flex-basis:52px!important;}
+  #s-game .portrait{font-size:20px!important;}
+  #s-game .bar-track{height:8px!important;}
+  #s-game .char-strip > div:last-child{width:58px!important;flex-basis:58px!important;}
+}
+@media(max-width:370px){
+  #s-game .char-strip{gap:7px!important;padding-left:8px!important;padding-right:8px!important;}
+  #s-game .xp-portrait-wrap{width:50px!important;height:50px!important;flex-basis:50px!important;}
+  #s-game .bar-row{grid-template-columns:21px 1fr 33px!important;gap:4px!important;}
+  #s-game .bar-val{font-size:8px!important;min-width:33px!important;}
+  #s-game .char-strip > div:last-child{width:54px!important;flex-basis:54px!important;}
+  #s-game .gold-pill{font-size:9px!important;padding-left:4px!important;padding-right:4px!important;}
+}
+</style>
