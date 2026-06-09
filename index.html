@@ -2239,7 +2239,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.3</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.3.1</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
@@ -10239,5 +10239,134 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 @media(max-width:370px){
   #s-game .narr{margin-left:8px!important;margin-right:8px!important;padding-left:15px!important;padding-right:15px!important;}
   #s-game .msg-dm .bbl,#s-game .narr .bbl{font-size:16.2px!important;line-height:1.74!important;}
+}
+</style>
+
+<!-- AiMaster v4.3.1 HUD Stability Patch -->
+<style id="aimaster-v431-hud-stability">
+/* v4.3.1 — Correção de estabilidade do cabeçalho
+   Mantém o visual grimório da v4.3, mas impede a HUD de ficar escondida. */
+
+#s-game.active{
+  padding-top:6px!important;
+  padding-bottom:118px!important;
+  overflow:hidden!important;
+}
+
+#s-game .char-strip{
+  position:relative!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  transform:none!important;
+  flex:0 0 auto!important;
+  display:flex!important;
+  align-items:center!important;
+  min-height:82px!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:6px 10px 6px!important;
+  padding:10px 11px!important;
+  overflow:visible!important;
+  z-index:40!important;
+  box-sizing:border-box!important;
+}
+
+#s-game .char-strip > *{
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
+}
+
+#s-game .xp-portrait-wrap{
+  display:flex!important;
+  width:56px!important;
+  height:56px!important;
+  flex:0 0 56px!important;
+  min-width:56px!important;
+  min-height:56px!important;
+  position:relative!important;
+  overflow:visible!important;
+}
+
+#s-game .char-info{
+  display:block!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  overflow:visible!important;
+}
+
+#s-game .c-name,
+#s-game .c-meta,
+#s-game .bars,
+#s-game .mini-stats{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+#s-game .c-name{display:block!important;}
+#s-game .c-meta{display:block!important;}
+#s-game .bars{flex-direction:column!important;}
+#s-game .bar-row{display:grid!important;}
+#s-game .bar-track{display:block!important;min-width:80px!important;}
+#s-game .bar-fill{display:block!important;}
+#s-game .bar-val{display:block!important;}
+
+#s-game .char-strip > div:last-child{
+  display:flex!important;
+  flex-direction:column!important;
+  width:62px!important;
+  flex:0 0 62px!important;
+  min-width:56px!important;
+  overflow:visible!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+#s-game .gold-pill{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* Remove qualquer faixa/ornamento vazio acima da narrativa que pareça HUD quebrada. */
+#s-game .hdr-scene,
+#s-game .narr-border{
+  display:none!important;
+}
+
+/* A narrativa continua grande, mas sem empurrar o cabeçalho para fora. */
+#s-game .narr{
+  flex:1 1 auto!important;
+  min-height:245px!important;
+  max-height:none!important;
+  margin:6px 10px 8px!important;
+  padding-top:22px!important;
+}
+
+#s-game .actions-wrap,
+#s-game .acts-area{
+  flex:0 0 auto!important;
+}
+
+@media(max-height:740px){
+  #s-game.active{padding-top:4px!important;padding-bottom:112px!important;}
+  #s-game .char-strip{min-height:76px!important;margin-top:4px!important;margin-bottom:5px!important;padding:8px 9px!important;}
+  #s-game .xp-portrait-wrap{width:51px!important;height:51px!important;flex-basis:51px!important;min-width:51px!important;min-height:51px!important;}
+  #s-game .bar-track{height:8px!important;}
+  #s-game .narr{min-height:220px!important;margin-top:5px!important;}
+}
+
+@media(max-height:660px){
+  #s-game .char-strip{min-height:70px!important;}
+  #s-game .xp-portrait-wrap{width:48px!important;height:48px!important;flex-basis:48px!important;min-width:48px!important;min-height:48px!important;}
+  #s-game .c-name{font-size:12.5px!important;}
+  #s-game .c-meta{font-size:7.8px!important;}
+  #s-game .bar-row{grid-template-columns:20px 1fr 31px!important;}
+  #s-game .mini-stats{gap:3px!important;}
+  #s-game .mstat{font-size:7px!important;padding:2px 3px!important;}
+  #s-game .char-strip > div:last-child{width:54px!important;flex-basis:54px!important;}
+  #s-game .gold-pill{font-size:8.8px!important;min-height:23px!important;}
 }
 </style>
