@@ -2239,7 +2239,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.3.1</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.3.2</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
@@ -10368,5 +10368,202 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
   #s-game .mstat{font-size:7px!important;padding:2px 3px!important;}
   #s-game .char-strip > div:last-child{width:54px!important;flex-basis:54px!important;}
   #s-game .gold-pill{font-size:8.8px!important;min-height:23px!important;}
+}
+</style>
+
+
+<!-- AiMaster v4.3.2 Visual Refinement Patch -->
+<style id="aimaster-v432-visual-refinement">
+/* v4.3.2 — HUD compacta + remoção do bloco dourado vazio + narrativa refinada.
+   Base: v4.3.1. Camada final, sem tocar no motor do jogo. */
+
+#s-game.active{
+  padding-top:3px!important;
+  padding-bottom:116px!important;
+}
+
+/* HUD mais compacta e estável */
+#s-game .char-strip{
+  min-height:70px!important;
+  margin:4px 9px 5px!important;
+  padding:7px 9px!important;
+  gap:8px!important;
+  border-radius:18px!important;
+}
+#s-game .char-strip::before{
+  border-radius:17px!important;
+}
+#s-game .xp-portrait-wrap{
+  width:48px!important;
+  height:48px!important;
+  flex:0 0 48px!important;
+  min-width:48px!important;
+  min-height:48px!important;
+}
+#s-game .portrait{
+  inset:5px!important;
+  font-size:19px!important;
+}
+#s-game .xp-label{
+  bottom:-12px!important;
+  min-width:49px!important;
+  font-size:6.8px!important;
+  padding:1px 3px!important;
+}
+#s-game .c-name{
+  font-size:13px!important;
+  line-height:1!important;
+}
+#s-game .c-meta{
+  margin-top:1px!important;
+  font-size:7.6px!important;
+  line-height:1.1!important;
+}
+#s-game .bars{
+  margin-top:4px!important;
+  gap:3px!important;
+}
+#s-game .bar-row{
+  grid-template-columns:19px 1fr 31px!important;
+  gap:4px!important;
+}
+#s-game .bar-lbl{
+  font-size:7.5px!important;
+}
+#s-game .bar-track{
+  height:7px!important;
+  min-width:82px!important;
+}
+#s-game .bar-val{
+  min-width:31px!important;
+  font-size:7.7px!important;
+}
+#s-game .mini-stats{
+  margin-top:4px!important;
+  gap:3px!important;
+}
+#s-game .mstat{
+  font-size:6.9px!important;
+  padding:2px 3px!important;
+  border-radius:7px!important;
+}
+#s-game .char-strip > div:last-child{
+  width:55px!important;
+  flex:0 0 55px!important;
+  min-width:52px!important;
+  gap:4px!important;
+}
+#s-game .gold-pill{
+  min-height:23px!important;
+  padding:3px 5px!important;
+  font-size:8.8px!important;
+}
+
+/* Remove de vez o bloco/faixa dourada vazia acima do texto. */
+#s-game .narr::before{
+  content:'✦ NARRATIVA ✦'!important;
+  position:sticky!important;
+  top:-16px!important;
+  display:block!important;
+  height:auto!important;
+  margin:-16px -16px 14px!important;
+  padding:9px 0 8px!important;
+  text-align:center!important;
+  font-family:var(--font-title)!important;
+  font-size:9px!important;
+  line-height:1!important;
+  letter-spacing:3px!important;
+  color:rgba(224,180,90,.70)!important;
+  background:linear-gradient(180deg,rgba(9,6,3,.96),rgba(9,6,3,.56),transparent)!important;
+  border-bottom:1px solid rgba(224,180,90,.10)!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
+  z-index:3!important;
+}
+#s-game .narr::after{
+  display:none!important;
+  content:none!important;
+}
+#s-game .hdr-scene,
+#s-game .narr-border,
+#s-game .scene-glow,
+#s-game .top-glow{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+/* Grimório com mais texto útil e menos ornamento vazio */
+#s-game .narr{
+  flex:1 1 auto!important;
+  min-height:250px!important;
+  max-height:none!important;
+  margin:5px 10px 7px!important;
+  padding:16px 16px 20px!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(224,180,90,.10),transparent 34%),
+    linear-gradient(180deg,rgba(10,7,4,.77),rgba(3,3,2,.84))!important;
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.54),
+    0 0 26px rgba(224,180,90,.07),
+    inset 0 1px 0 rgba(255,255,255,.045),
+    inset 0 0 28px rgba(0,0,0,.42)!important;
+}
+#s-game .msg-dm .bbl,
+#s-game .narr .bbl{
+  font-size:17px!important;
+  line-height:1.82!important;
+}
+#s-game .msg-dm .bbl p,
+#s-game .narr p{
+  margin:0 0 12px!important;
+}
+
+/* Escolhas ficam próximas da narrativa, sem espaço morto */
+#s-game .actions-wrap,
+#s-game .acts-area{
+  margin-top:5px!important;
+}
+#s-game .actions-wrap::before{
+  margin-bottom:7px!important;
+  padding-bottom:6px!important;
+}
+#s-game .act-grid{
+  gap:7px!important;
+}
+#s-game .act-btn{
+  min-height:45px!important;
+  padding:9px 12px!important;
+}
+
+@media(max-height:740px){
+  #s-game.active{padding-top:2px!important;padding-bottom:112px!important;}
+  #s-game .char-strip{min-height:66px!important;margin-top:3px!important;padding:6px 8px!important;}
+  #s-game .xp-portrait-wrap{width:45px!important;height:45px!important;flex-basis:45px!important;min-width:45px!important;min-height:45px!important;}
+  #s-game .portrait{font-size:18px!important;}
+  #s-game .narr{min-height:226px!important;margin-top:4px!important;padding:15px 15px 18px!important;}
+  #s-game .narr::before{top:-15px!important;margin:-15px -15px 12px!important;padding:8px 0 7px!important;}
+  #s-game .msg-dm .bbl,#s-game .narr .bbl{font-size:16.4px!important;line-height:1.74!important;}
+  #s-game .act-btn{min-height:43px!important;}
+}
+@media(max-height:660px){
+  #s-game .char-strip{min-height:62px!important;}
+  #s-game .xp-portrait-wrap{width:42px!important;height:42px!important;flex-basis:42px!important;min-width:42px!important;min-height:42px!important;}
+  #s-game .c-name{font-size:12px!important;}
+  #s-game .bar-track{height:6px!important;}
+  #s-game .mini-stats{display:none!important;}
+  #s-game .narr{min-height:210px!important;}
+}
+@media(max-width:370px){
+  #s-game .char-strip{gap:6px!important;margin-left:8px!important;margin-right:8px!important;}
+  #s-game .bar-row{grid-template-columns:18px 1fr 29px!important;}
+  #s-game .char-strip > div:last-child{width:50px!important;flex-basis:50px!important;min-width:50px!important;}
+  #s-game .gold-pill{font-size:8px!important;padding-left:3px!important;padding-right:3px!important;}
+  #s-game .narr{margin-left:8px!important;margin-right:8px!important;padding-left:14px!important;padding-right:14px!important;}
+  #s-game .narr::before{margin-left:-14px!important;margin-right:-14px!important;}
 }
 </style>
