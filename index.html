@@ -11042,3 +11042,265 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 <script id="aimaster-v433-version-label">
 try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.4');});}catch(e){}
 </script>
+
+<!-- AiMaster v4.5.3: camada visual final mobile premium. Motor preservado. -->
+<style id="aimaster-v453-premium-mobile">
+:root{
+  --v453-bg:#0f0c07;
+  --v453-gold:#c8922a;
+  --v453-gold-light:#e5bd67;
+  --v453-text:#f0ddb0;
+  --v453-muted:#9aa0a6;
+}
+
+/* Reserva uma zona real para Acao Livre + footer, evitando sobreposicao. */
+#s-game.active{
+  padding:2px 0 126px!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(180deg,rgba(5,4,3,.30),rgba(5,4,3,.82)),
+    url('./fundo.jpg') center top/cover no-repeat!important;
+}
+
+/* HUD sempre presente e com leitura semelhante a um RPG mobile premium. */
+#s-game.active .char-strip{
+  position:sticky!important;
+  top:2px!important;
+  z-index:125!important;
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  flex:0 0 auto!important;
+  min-height:72px!important;
+  margin:3px 8px 5px!important;
+  padding:7px 8px!important;
+  gap:8px!important;
+  border:1px solid rgba(229,189,103,.34)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 16% 0%,rgba(229,189,103,.15),transparent 34%),
+    linear-gradient(180deg,rgba(25,20,13,.97),rgba(6,5,4,.98))!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+#s-game.active .char-strip > *,
+#s-game.active .char-info,
+#s-game.active .bars,
+#s-game.active .bar-row,
+#s-game.active .mini-stats,
+#s-game.active .gold-pill{
+  visibility:visible!important;
+  opacity:1!important;
+}
+#s-game.active .xp-portrait-wrap{
+  display:flex!important;
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  flex:0 0 48px!important;
+}
+#s-game.active .portrait{inset:5px!important;font-size:19px!important;}
+#s-game.active .char-info{display:block!important;min-width:0!important;flex:1 1 auto!important;}
+#s-game.active .c-name{font-size:12.5px!important;color:#ffe3a0!important;}
+#s-game.active .c-meta{font-size:7.7px!important;color:rgba(240,221,176,.64)!important;}
+#s-game.active .bars{display:flex!important;flex-direction:column!important;gap:4px!important;margin-top:4px!important;}
+#s-game.active .bar-row{display:grid!important;grid-template-columns:18px minmax(54px,1fr) 31px!important;gap:4px!important;}
+#s-game.active .bar-track{display:block!important;height:7px!important;min-width:54px!important;}
+#s-game.active .bar-val{display:block!important;min-width:31px!important;font-size:8px!important;}
+#s-game.active .mini-stats{display:flex!important;gap:3px!important;margin-top:4px!important;overflow:hidden!important;}
+#s-game.active .mstat{font-size:7px!important;padding:2px 3px!important;}
+#s-game.active .char-strip > div:last-child{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-self:stretch!important;
+  width:55px!important;
+  min-width:55px!important;
+  flex:0 0 55px!important;
+  gap:5px!important;
+}
+#s-game.active .gold-pill{
+  display:flex!important;
+  min-height:25px!important;
+  padding:3px 5px!important;
+  font-size:9px!important;
+  border-color:rgba(229,189,103,.30)!important;
+}
+#s-game.active .narr-border{display:block!important;height:1px!important;margin:0 20px 3px!important;}
+
+/* Grimorio dominante, flexivel e com scroll proprio. */
+#s-game.active .narr{
+  flex:1 1 auto!important;
+  min-height:150px!important;
+  max-height:none!important;
+  margin:0 9px 6px!important;
+  padding:16px 16px 19px!important;
+  border-radius:20px!important;
+  border:1px solid rgba(229,189,103,.31)!important;
+  overflow-y:auto!important;
+  overscroll-behavior:contain!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(200,146,42,.10),transparent 34%),
+    linear-gradient(180deg,rgba(12,10,7,.89),rgba(3,3,2,.94))!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.045),inset 0 0 28px rgba(0,0,0,.34)!important;
+}
+#s-game.active .narr::before{
+  content:'NARRATIVA'!important;
+  top:-16px!important;
+  margin:-16px -16px 13px!important;
+  padding:8px 0 7px!important;
+  color:rgba(229,189,103,.68)!important;
+  background:linear-gradient(180deg,rgba(10,8,5,.97),rgba(10,8,5,.48),transparent)!important;
+}
+#s-game.active .msg-dm .bbl,
+#s-game.active .narr .bbl{
+  color:var(--v453-text)!important;
+  font-size:16.5px!important;
+  line-height:1.76!important;
+}
+
+/* Acoes continuam cinematograficas, mas ocupam apenas o espaco disponivel. */
+#s-game.active .actions-wrap{
+  flex:0 0 auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0 9px!important;
+  padding:8px!important;
+  overflow:visible!important;
+  overscroll-behavior:auto!important;
+  border-radius:19px!important;
+  scrollbar-width:none!important;
+}
+#s-game.active .actions-wrap::-webkit-scrollbar{display:none!important;}
+#s-game.active .actions-wrap::before{margin-bottom:7px!important;padding-bottom:6px!important;}
+#s-game.active .act-grid{gap:7px!important;margin:0!important;overflow:visible!important;max-height:none!important;}
+#s-game.active .act-btn{min-height:47px!important;padding:8px 10px!important;border-radius:15px!important;}
+#s-game.active .a-title{font-size:13.5px!important;}
+#s-game.active .a-hint,#s-game.active .a-type{font-size:8px!important;margin-top:3px!important;}
+
+/* Acao Livre vira o CTA principal e muda claramente para roxo no modo OFF. */
+body:has(#s-game.active) .ooc-toggle-row{
+  display:flex!important;
+  position:fixed!important;
+  left:max(9px,calc((100vw - 430px)/2 + 9px))!important;
+  right:max(9px,calc((100vw - 430px)/2 + 9px))!important;
+  bottom:57px!important;
+  z-index:130!important;
+  min-height:62px!important;
+  margin:0!important;
+  padding:7px!important;
+  gap:7px!important;
+  border-radius:18px!important;
+  border:1px solid rgba(229,189,103,.38)!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(229,189,103,.12),transparent 48%),
+    linear-gradient(180deg,rgba(27,20,11,.97),rgba(6,5,4,.98))!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.68),0 0 20px rgba(200,146,42,.09),inset 0 1px 0 rgba(255,255,255,.06)!important;
+  backdrop-filter:blur(14px)!important;
+}
+body:has(#s-game.active) .ooc-toggle-row::before{
+  content:'ACAO LIVRE'!important;
+  top:-8px!important;
+  left:15px!important;
+  padding:0 7px!important;
+  font-size:7.5px!important;
+  letter-spacing:1.7px!important;
+  color:rgba(229,189,103,.78)!important;
+  background:#0b0805!important;
+}
+body:has(#s-game.active) .ooc-toggle{
+  width:48px!important;
+  min-width:48px!important;
+  height:48px!important;
+  border-radius:14px!important;
+}
+body:has(#s-game.active) .free-in{
+  min-height:48px!important;
+  max-height:72px!important;
+  padding:9px 11px!important;
+  border-radius:14px!important;
+  border-color:rgba(229,189,103,.25)!important;
+  background:rgba(3,3,2,.58)!important;
+  color:var(--v453-text)!important;
+  font-size:12.5px!important;
+}
+body:has(#s-game.active) .free-in:focus{
+  border-color:rgba(229,189,103,.66)!important;
+  box-shadow:0 0 0 2px rgba(200,146,42,.10),0 0 18px rgba(200,146,42,.10)!important;
+}
+body:has(#s-game.active) .free-send{
+  width:48px!important;
+  min-width:48px!important;
+  height:48px!important;
+  padding:0!important;
+  border-radius:14px!important;
+  color:#1a1105!important;
+  background:linear-gradient(180deg,#e0b45a,#9b681d)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 15px rgba(200,146,42,.20)!important;
+}
+body:has(#s-game.active) .ooc-toggle-row:has(.ooc-toggle.ooc-mode){
+  border-color:rgba(168,136,255,.48)!important;
+  background:linear-gradient(180deg,rgba(37,25,67,.97),rgba(8,5,15,.98))!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.68),0 0 22px rgba(168,136,255,.14),inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+body:has(#s-game.active) .ooc-toggle-row:has(.ooc-toggle.ooc-mode)::before{
+  content:'CONVERSA OFF COM O MESTRE'!important;
+  color:rgba(203,181,255,.86)!important;
+  background:#0d0916!important;
+}
+body:has(#s-game.active) .free-in.ooc-active{
+  border-color:rgba(168,136,255,.40)!important;
+  background:rgba(31,20,58,.74)!important;
+  color:#e4d9ff!important;
+}
+
+/* Footer realmente pertence ao estado da tela de jogo, embora esteja fora dela no HTML. */
+body:has(#s-game.active) .footer-bar{
+  display:flex!important;
+  position:fixed!important;
+  left:max(7px,calc((100vw - 430px)/2 + 7px))!important;
+  right:max(7px,calc((100vw - 430px)/2 + 7px))!important;
+  bottom:5px!important;
+  z-index:129!important;
+  height:47px!important;
+  padding:0 3px!important;
+  border:1px solid rgba(229,189,103,.22)!important;
+  border-radius:17px!important;
+  background:linear-gradient(180deg,rgba(16,13,9,.97),rgba(3,3,2,.99))!important;
+  box-shadow:0 10px 28px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+body:has(#s-game.active) .fbar-btn{height:100%!important;padding:3px 4px!important;}
+body:has(#s-game.active) .fbl{font-size:6.8px!important;color:rgba(229,189,103,.68)!important;}
+body:not(:has(#s-game.active)) .footer-bar,
+body:not(:has(#s-game.active)) .ooc-toggle-row{display:none!important;}
+
+/* Mantem somente o CTA premium Reviver esta Cena. */
+#s-game .immersive-scene-card{display:none!important;}
+#s-game #scene-btn-wrap.v33-scene-card{display:block!important;}
+
+@media(max-height:740px){
+  #s-game.active{padding-bottom:116px!important;}
+  #s-game.active .char-strip{min-height:64px!important;padding:5px 7px!important;}
+  #s-game.active .xp-portrait-wrap{width:42px!important;height:42px!important;min-width:42px!important;flex-basis:42px!important;}
+  #s-game.active .mini-stats{display:none!important;}
+  #s-game.active .narr{min-height:135px!important;padding:14px 15px 17px!important;}
+  #s-game.active .narr::before{top:-14px!important;margin:-14px -15px 11px!important;}
+  #s-game.active .actions-wrap{max-height:none!important;}
+  #s-game.active .act-btn{min-height:44px!important;}
+  body:has(#s-game.active) .ooc-toggle-row{bottom:53px!important;min-height:57px!important;padding:5px!important;}
+  body:has(#s-game.active) .ooc-toggle,
+  body:has(#s-game.active) .free-send{width:45px!important;min-width:45px!important;height:45px!important;}
+  body:has(#s-game.active) .free-in{min-height:45px!important;}
+  body:has(#s-game.active) .footer-bar{height:44px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .char-strip{gap:6px!important;margin-left:6px!important;margin-right:6px!important;}
+  #s-game.active .char-strip > div:last-child{width:49px!important;min-width:49px!important;flex-basis:49px!important;}
+  #s-game.active .gold-pill{font-size:8px!important;padding-left:3px!important;padding-right:3px!important;}
+  #s-game.active .narr,#s-game.active .actions-wrap{margin-left:7px!important;margin-right:7px!important;}
+  body:has(#s-game.active) .ooc-toggle-row{left:7px!important;right:7px!important;}
+}
+</style>
+
+<script id="aimaster-v453-version-label">
+try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.5.3');});}catch(e){}
+</script>
