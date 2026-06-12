@@ -2333,6 +2333,168 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 }
 </style>
 
+
+<style id="aimaster-v45-free-action-premium">
+/* AIMASTER v4.5 — Ação Livre Premium
+   Objetivo: transformar o campo livre em um recurso central do RPG,
+   mantendo a estrutura fixa e sem mexer no motor narrativo. */
+#s-game .ooc-toggle-row{
+  bottom:61px!important;
+  left:12px!important;right:12px!important;
+  min-height:58px!important;
+  padding:10px 10px 9px!important;
+  gap:9px!important;
+  border-radius:22px!important;
+  overflow:visible!important;
+  background:
+    radial-gradient(circle at 82% 0%,rgba(217,169,68,.16),transparent 42%),
+    linear-gradient(180deg,rgba(25,16,7,.985),rgba(5,4,3,.995))!important;
+  border:1px solid rgba(232,184,75,.40)!important;
+  box-shadow:
+    0 -13px 34px rgba(0,0,0,.64),
+    0 0 28px rgba(217,169,68,.13),
+    inset 0 1px 0 rgba(255,255,255,.055),
+    inset 0 0 22px rgba(217,169,68,.035)!important;
+}
+#s-game .ooc-toggle-row::before{
+  content:'✦ AÇÃO LIVRE ✦'!important;
+  position:absolute!important;
+  top:-12px!important;
+  left:22px!important;
+  z-index:2!important;
+  padding:0 10px!important;
+  font-family:var(--font-title)!important;
+  font-size:8.5px!important;
+  letter-spacing:1.9px!important;
+  color:rgba(239,199,103,.82)!important;
+  background:linear-gradient(90deg,rgba(5,4,3,0),rgba(12,8,4,.96) 18%,rgba(12,8,4,.96) 82%,rgba(5,4,3,0))!important;
+  text-shadow:0 0 12px rgba(217,169,68,.24)!important;
+}
+#s-game .ooc-toggle-row::after{
+  content:''!important;
+  position:absolute!important;
+  inset:5px!important;
+  border-radius:18px!important;
+  border:1px solid rgba(232,184,75,.08)!important;
+  pointer-events:none!important;
+}
+#s-game .ooc-toggle{
+  width:58px!important;min-width:58px!important;height:48px!important;
+  border-radius:16px!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(232,184,75,.13),transparent 55%),
+    linear-gradient(180deg,rgba(14,10,5,.88),rgba(3,3,2,.96))!important;
+  border:1px solid rgba(232,184,75,.38)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 0 16px rgba(217,169,68,.12)!important;
+}
+#s-game .ooc-toggle .ooc-icon{font-size:15px!important;filter:drop-shadow(0 0 7px rgba(217,169,68,.30))!important;}
+#s-game .ooc-toggle .ooc-label{font-family:var(--font-title)!important;font-size:7.7px!important;letter-spacing:1px!important;color:rgba(244,223,176,.78)!important;margin-top:2px!important;}
+#s-game .ooc-toggle.ooc-mode{
+  border-color:rgba(188,158,255,.48)!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(188,158,255,.16),transparent 55%),
+    linear-gradient(180deg,rgba(25,18,55,.86),rgba(4,3,8,.96))!important;
+  box-shadow:0 0 18px rgba(164,126,255,.18),inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+#s-game .ooc-toggle.ooc-mode .ooc-label{color:rgba(224,210,255,.86)!important;}
+#s-game .free-in{
+  min-height:48px!important;
+  max-height:104px!important;
+  border-radius:17px!important;
+  padding:12px 13px!important;
+  font-size:13.7px!important;
+  line-height:1.36!important;
+  color:#f7e8c8!important;
+  resize:none!important;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.50),rgba(14,9,4,.78))!important;
+  border:1px solid rgba(232,184,75,.30)!important;
+  box-shadow:
+    inset 0 1px 10px rgba(0,0,0,.64),
+    inset 0 0 16px rgba(217,169,68,.025)!important;
+}
+#s-game .free-in::placeholder{
+  color:rgba(232,184,75,.45)!important;
+  font-style:italic!important;
+}
+#s-game .free-in:focus{
+  border-color:rgba(245,210,110,.76)!important;
+  background:linear-gradient(180deg,rgba(2,1,0,.62),rgba(18,11,4,.84))!important;
+  box-shadow:
+    0 0 0 2px rgba(217,169,68,.12),
+    0 0 26px rgba(217,169,68,.20),
+    inset 0 1px 10px rgba(0,0,0,.68)!important;
+}
+#s-game .free-in.ooc-active{
+  border-color:rgba(188,158,255,.58)!important;
+  background:linear-gradient(180deg,rgba(8,5,18,.70),rgba(18,12,34,.80))!important;
+  box-shadow:0 0 0 2px rgba(164,126,255,.10),0 0 24px rgba(164,126,255,.16),inset 0 1px 10px rgba(0,0,0,.68)!important;
+}
+#s-game .free-send{
+  width:52px!important;min-width:52px!important;height:48px!important;
+  border-radius:17px!important;
+  font-size:20px!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  color:#fff3cf!important;
+  background:
+    radial-gradient(circle at 50% 22%,rgba(255,230,150,.32),transparent 52%),
+    linear-gradient(180deg,rgba(230,179,70,.64),rgba(89,56,12,.94))!important;
+  border:1px solid rgba(255,220,120,.58)!important;
+  box-shadow:0 0 22px rgba(217,169,68,.22),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+#s-game .free-send:active{transform:scale(.96)!important;filter:brightness(1.14)!important;}
+#s-game .free-in:focus + .free-send{
+  box-shadow:0 0 30px rgba(217,169,68,.32),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+/* Pequeno ajuste para manter a ação livre confortável sem cobrir o footer */
+@media(max-height:700px){
+  #s-game .ooc-toggle-row{bottom:57px!important;min-height:54px!important;padding:8px!important;}
+  #s-game .free-in{min-height:44px!important;max-height:86px!important;font-size:13px!important;padding:10px 11px!important;}
+  #s-game .free-send,#s-game .ooc-toggle{height:44px!important;min-width:50px!important;width:50px!important;}
+}
+@media(max-width:370px){
+  #s-game .ooc-toggle-row{left:9px!important;right:9px!important;gap:7px!important;}
+  #s-game .ooc-toggle{min-width:52px!important;width:52px!important;}
+  #s-game .free-send{min-width:48px!important;width:48px!important;}
+}
+</style>
+
+<script id="aimaster-v45-free-action-js">
+/* AIMASTER v4.5 — microcopy e autoexpansão da Ação Livre */
+(function(){
+  function updateFreePlaceholder(){
+    var inp=document.getElementById('free-in');
+    if(!inp) return;
+    if(inp.classList.contains('ooc-active')){
+      inp.placeholder='Pergunte ao Mestre fora da cena...';
+    }else{
+      inp.placeholder='Descreva qualquer ação do seu personagem...';
+    }
+  }
+  function resizeFree(){
+    var el=document.getElementById('free-in');
+    if(!el) return;
+    el.style.height='auto';
+    el.style.height=Math.min(el.scrollHeight,104)+'px';
+  }
+  document.addEventListener('input',function(e){
+    if(e.target && e.target.id==='free-in') resizeFree();
+  });
+  document.addEventListener('focusin',function(e){
+    if(e.target && e.target.id==='free-in'){ updateFreePlaceholder(); setTimeout(resizeFree,25); }
+  });
+  var oldToggle=window.toggleOOC;
+  if(typeof oldToggle==='function'){
+    window.toggleOOC=function(){
+      oldToggle.apply(this,arguments);
+      updateFreePlaceholder();
+      setTimeout(resizeFree,25);
+    };
+  }
+  window.addEventListener('load',function(){updateFreePlaceholder();resizeFree();});
+})();
+</script>
+
 </head>
 <body>
 <div id="app">
@@ -2373,7 +2535,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.4</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.5</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
@@ -2576,7 +2738,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
           <span class="ooc-icon" id="ooc-icon">⚔️</span>
           <span class="ooc-label" id="ooc-label">AÇÃO</span>
         </button>
-        <textarea class="free-in" id="free-in" rows="1" placeholder="Outra decisão..." autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" inputmode="text"></textarea>
+        <textarea class="free-in" id="free-in" rows="1" placeholder="Descreva qualquer ação do seu personagem..." autocomplete="off" readonly onfocus="this.removeAttribute('readonly')" inputmode="text"></textarea>
         <button class="free-send" id="free-send" onclick="sendFree()">➤</button>
       </div>
   </div>
@@ -9955,7 +10117,7 @@ function updateCharSheet(){
 
 
 <style id="aimaster-v434-combat-spacing-fix">
-/* AIMASTER Visual v4.4 — Integração fina do combate
+/* AIMASTER Visual v4.5 — Integração fina do combate
    Remove a faixa espremida entre HUD e narrativa. O encontro ativo fica dentro do grimório. */
 #s-game #v33-combat-hud{
   display:none!important;
@@ -9991,7 +10153,7 @@ function updateCharSheet(){
 }
 </style>
 <script id="aimaster-v434-version-label">
-try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.4');});}catch(e){}
+try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.5');});}catch(e){}
 </script>
 
 </body>
@@ -10759,7 +10921,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 </style>
 
 <style id="aimaster-v433-combat-compact-fix">
-/* AIMASTER Visual v4.4 — Combate Cinemático Compacto
+/* AIMASTER Visual v4.5 — Combate Cinemático Compacto
    Corrige o modo combate sem alterar o motor do jogo. */
 #v33-combat-hud{
   display:none;
@@ -10820,5 +10982,5 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 </style>
 
 <script id="aimaster-v433-version-label">
-try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.4');});}catch(e){}
+try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.5');});}catch(e){}
 </script>
