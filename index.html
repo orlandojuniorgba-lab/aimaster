@@ -2199,6 +2199,140 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 }
 </style>
 
+
+<style id="aimaster-v44-cinematic-actions">
+/* AIMASTER v4.4 — Ações Cinemáticas
+   Upgrade seguro: apenas CSS + classes visuais nas ações geradas. */
+#s-game .actions-wrap{
+  margin:0 13px 8px!important;
+  padding:9px 9px 10px!important;
+  border-radius:21px!important;
+  background:
+    radial-gradient(circle at 50% -20%,rgba(217,169,68,.10),transparent 42%),
+    linear-gradient(180deg,rgba(18,11,5,.82),rgba(3,3,2,.91))!important;
+  border:1px solid rgba(217,169,68,.24)!important;
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,255,255,.04),
+    inset 0 0 26px rgba(217,169,68,.035)!important;
+}
+#s-game .actions-wrap::before{
+  content:'— ESCOLHA SUA AÇÃO —'!important;
+  margin:0 0 8px!important;
+  display:block!important;
+  text-align:center!important;
+  font-family:var(--font-title)!important;
+  font-size:8.7px!important;
+  letter-spacing:2.4px!important;
+  color:rgba(231,185,82,.70)!important;
+  text-shadow:0 0 12px rgba(217,169,68,.18)!important;
+}
+#s-game #acts-lbl{display:none!important;}
+#s-game .act-grid{
+  gap:8px!important;
+  overflow:visible!important;
+  max-height:none!important;
+}
+#s-game .act-btn{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-height:51px!important;
+  padding:10px 12px 10px 13px!important;
+  border-radius:17px!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(135deg,rgba(37,25,13,.78),rgba(4,4,3,.92))!important;
+  border:1px solid rgba(217,169,68,.24)!important;
+  box-shadow:
+    0 9px 20px rgba(0,0,0,.40),
+    inset 0 1px 0 rgba(255,255,255,.045),
+    inset 0 -16px 28px rgba(0,0,0,.22)!important;
+  transform:translateZ(0)!important;
+}
+#s-game .act-btn::before{
+  content:''!important;
+  position:absolute!important;
+  left:0!important;top:0!important;bottom:0!important;
+  width:3px!important;
+  background:linear-gradient(180deg,rgba(217,169,68,.15),rgba(217,169,68,.85),rgba(217,169,68,.15))!important;
+  opacity:.75!important;
+}
+#s-game .act-btn::after{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  background:linear-gradient(110deg,transparent 0%,rgba(255,230,170,.055) 45%,transparent 68%)!important;
+  opacity:.55!important;
+  pointer-events:none!important;
+}
+#s-game .act-btn:active{
+  transform:scale(.985)!important;
+  filter:brightness(1.10)!important;
+  box-shadow:0 5px 14px rgba(0,0,0,.52),inset 0 0 20px rgba(217,169,68,.08)!important;
+}
+#s-game .act-btn .a-icon,
+#s-game .act-btn .a-circle{
+  width:34px!important;height:34px!important;min-width:34px!important;
+  border-radius:50%!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  border:1px solid rgba(217,169,68,.32)!important;
+  background:radial-gradient(circle at 35% 30%,rgba(255,230,160,.12),rgba(0,0,0,.38))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 0 14px rgba(217,169,68,.09)!important;
+  font-size:15px!important;
+}
+#s-game .act-btn .a-icon::before{content:'✦';font-size:14px;color:rgba(230,190,95,.85);}
+#s-game .act-btn.type-combat .a-icon::before{content:'⚔';color:#ff7770;}
+#s-game .act-btn.type-magic .a-icon::before{content:'✧';color:#c49cff;}
+#s-game .act-btn.type-move .a-icon::before{content:'➤';color:#86d88a;}
+#s-game .act-btn.type-investigation .a-icon::before{content:'⌕';color:#e7c069;}
+#s-game .act-btn.type-diplomacy .a-icon::before{content:'◌';color:#79a7ff;}
+#s-game .act-btn.type-threat .a-icon::before{content:'!';color:#ff8a55;font-weight:700;}
+#s-game .act-btn.type-heal .a-icon::before{content:'✚';color:#75e0a0;}
+#s-game .act-btn.type-urgent .a-icon::before{content:'⚠';color:#ffb34d;}
+#s-game .act-btn.type-combat{border-color:rgba(205,70,58,.34)!important;background:linear-gradient(135deg,rgba(52,15,12,.78),rgba(5,4,3,.93))!important;}
+#s-game .act-btn.type-combat::before{background:linear-gradient(180deg,rgba(255,90,80,.10),rgba(255,90,80,.85),rgba(255,90,80,.10))!important;}
+#s-game .act-btn.type-magic{border-color:rgba(183,130,255,.32)!important;background:linear-gradient(135deg,rgba(39,20,62,.72),rgba(5,4,8,.93))!important;}
+#s-game .act-btn.type-magic::before{background:linear-gradient(180deg,rgba(185,130,255,.10),rgba(185,130,255,.85),rgba(185,130,255,.10))!important;}
+#s-game .act-btn.type-move{border-color:rgba(92,174,93,.28)!important;background:linear-gradient(135deg,rgba(18,43,24,.68),rgba(4,5,3,.93))!important;}
+#s-game .act-btn.type-move::before{background:linear-gradient(180deg,rgba(98,210,98,.10),rgba(98,210,98,.78),rgba(98,210,98,.10))!important;}
+#s-game .act-btn.type-diplomacy{border-color:rgba(82,136,220,.30)!important;background:linear-gradient(135deg,rgba(15,31,55,.70),rgba(4,4,6,.93))!important;}
+#s-game .act-btn.type-diplomacy::before{background:linear-gradient(180deg,rgba(90,150,255,.10),rgba(90,150,255,.80),rgba(90,150,255,.10))!important;}
+#s-game .act-btn.type-investigation{border-color:rgba(217,169,68,.31)!important;}
+#s-game .act-btn.type-urgent{border-color:rgba(255,150,45,.42)!important;box-shadow:0 9px 22px rgba(0,0,0,.42),0 0 18px rgba(255,150,45,.10),inset 0 1px 0 rgba(255,255,255,.05)!important;}
+#s-game .a-text{position:relative!important;z-index:1!important;min-width:0!important;}
+#s-game .a-title{
+  display:block!important;
+  font-size:13.9px!important;
+  line-height:1.18!important;
+  color:#f7e7c7!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.55)!important;
+}
+#s-game .a-hint,#s-game .a-type{
+  display:block!important;
+  margin-top:5px!important;
+  font-family:var(--font-title)!important;
+  font-size:7.6px!important;
+  letter-spacing:1.15px!important;
+  text-transform:uppercase!important;
+  opacity:.94!important;
+}
+#s-game .a-chevron{
+  position:relative!important;
+  z-index:1!important;
+  color:rgba(231,185,82,.62)!important;
+  font-size:22px!important;
+  line-height:1!important;
+  margin-left:auto!important;
+}
+@media(max-height:700px){
+  #s-game .act-btn{min-height:47px!important;padding:8px 11px!important;}
+  #s-game .act-btn .a-icon,#s-game .act-btn .a-circle{width:30px!important;height:30px!important;min-width:30px!important;}
+  #s-game .a-title{font-size:13.1px!important;}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
@@ -2239,7 +2373,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.3.4</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.4</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
@@ -4862,11 +4996,25 @@ function updateActionButtons(actions){
       hint='⚠ URGENTE'; hcolor='rgba(230,130,20,.9)';
     }
 
+    const typeClass = hint.includes('MAGIA') ? 'type-magic'
+      : hint.includes('COMBATE') ? 'type-combat'
+      : hint.includes('MOVIMENTO') ? 'type-move'
+      : hint.includes('INVESTIGA') ? 'type-investigation'
+      : hint.includes('DIPLOMACIA') ? 'type-diplomacy'
+      : hint.includes('INTIMIDA') ? 'type-threat'
+      : hint.includes('CURA') ? 'type-heal'
+      : hint.includes('URGENTE') ? 'type-urgent'
+      : 'type-action';
+    btn.classList.add(typeClass);
+    btn.setAttribute('data-type', hint.replace('⚠ ','').trim());
+
     btn.innerHTML=`
+      <div class="a-icon" aria-hidden="true"></div>
       <div class="a-text" style="flex:1">
         <span class="a-title">${action}</span>
         <span class="a-hint" style="color:${hcolor}">${hint}</span>
-      </div>`;
+      </div>
+      <span class="a-chevron" aria-hidden="true">›</span>`;
     btn.onclick=()=>doAct(action);
     grid.appendChild(btn);
   });
@@ -9807,7 +9955,7 @@ function updateCharSheet(){
 
 
 <style id="aimaster-v434-combat-spacing-fix">
-/* AIMASTER v4.3.4 — Integração fina do combate
+/* AIMASTER Visual v4.4 — Integração fina do combate
    Remove a faixa espremida entre HUD e narrativa. O encontro ativo fica dentro do grimório. */
 #s-game #v33-combat-hud{
   display:none!important;
@@ -9843,7 +9991,7 @@ function updateCharSheet(){
 }
 </style>
 <script id="aimaster-v434-version-label">
-try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','v4.3.4');});}catch(e){}
+try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.4');});}catch(e){}
 </script>
 
 </body>
@@ -10611,7 +10759,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 </style>
 
 <style id="aimaster-v433-combat-compact-fix">
-/* AIMASTER v4.3.3 — Combate Cinemático Compacto
+/* AIMASTER Visual v4.4 — Combate Cinemático Compacto
    Corrige o modo combate sem alterar o motor do jogo. */
 #v33-combat-hud{
   display:none;
@@ -10672,5 +10820,5 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 </style>
 
 <script id="aimaster-v433-version-label">
-try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','v4.3.4');});}catch(e){}
+try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.4');});}catch(e){}
 </script>
