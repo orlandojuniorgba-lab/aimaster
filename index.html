@@ -2239,7 +2239,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
     <button type="button" class="auth-guest" onclick="v3ContinueAsGuest()">CONTINUAR COMO VISITANTE</button>
   </div>
-  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.3.2</div>
+  <div class="ver-tag">MVP v0.8 · PWA · Visual v4.3.4</div>
 </div>
 
 <!-- LOGIN VISUAL V3.1 — Preparado para Supabase/Firebase no futuro; hoje mantém modo local seguro. -->
@@ -9804,6 +9804,48 @@ function updateCharSheet(){
   window.addEventListener('load',autosizeFreeAction);
 })();
 </script>
+
+
+<style id="aimaster-v434-combat-spacing-fix">
+/* AIMASTER v4.3.4 — Integração fina do combate
+   Remove a faixa espremida entre HUD e narrativa. O encontro ativo fica dentro do grimório. */
+#s-game #v33-combat-hud{
+  display:none!important;
+  visibility:hidden!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  opacity:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+}
+#s-game.v33-combat-mode .narr{
+  margin-top:6px!important;
+  border-color:rgba(217,169,68,.31)!important;
+}
+#s-game.v33-combat-mode .narr::before{
+  padding-top:10px!important;
+  padding-bottom:9px!important;
+}
+#s-game.v33-combat-mode .combat-panel{
+  margin-top:2px!important;
+  margin-bottom:12px!important;
+}
+#s-game.v33-combat-mode .actions-wrap{
+  margin-top:0!important;
+}
+@media(max-width:430px){
+  #s-game.v33-combat-mode .narr{margin-top:5px!important;}
+  #s-game.v33-combat-mode .combat-panel{margin-top:0!important;margin-bottom:10px!important;}
+}
+</style>
+<script id="aimaster-v434-version-label">
+try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','v4.3.4');});}catch(e){}
+</script>
+
 </body>
 </html>
 
@@ -10630,5 +10672,5 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 </style>
 
 <script id="aimaster-v433-version-label">
-try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','v4.3.3');});}catch(e){}
+try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','v4.3.4');});}catch(e){}
 </script>
