@@ -1481,6 +1481,228 @@ div.msg-dm div.bbl,
 }
 </style>
 
+<!-- AiMaster v4.6.1: geometria ornamental e hierarquia do HUD. -->
+<style id="aimaster-v461-ornamental-hud-source" media="not all">
+/* Retrato com aro duplo e medalhao de XP legivel. */
+#s-game.active .xp-portrait-wrap::before{
+  content:''!important;
+  position:absolute!important;
+  inset:-3px!important;
+  border:1px solid rgba(229,189,103,.34)!important;
+  border-radius:50%!important;
+  box-shadow:inset 0 0 0 3px rgba(5,5,4,.82),0 0 10px rgba(200,146,42,.12)!important;
+  pointer-events:none!important;
+}
+#s-game.active .xp-portrait-wrap::after{
+  content:''!important;
+  position:absolute!important;
+  width:7px!important;
+  height:7px!important;
+  left:50%!important;
+  top:-6px!important;
+  transform:translateX(-50%) rotate(45deg)!important;
+  border:1px solid rgba(255,220,135,.62)!important;
+  background:#171007!important;
+  box-shadow:0 0 7px rgba(229,189,103,.32)!important;
+  pointer-events:none!important;
+}
+#s-game.active .xp-label{
+  bottom:-15px!important;
+  min-width:62px!important;
+  padding:3px 5px!important;
+  border-color:rgba(229,189,103,.45)!important;
+  color:#f2cd73!important;
+  background:linear-gradient(180deg,rgba(39,27,10,.98),rgba(5,5,4,.98))!important;
+  box-shadow:0 4px 10px rgba(0,0,0,.58),0 0 8px rgba(200,146,42,.13)!important;
+}
+
+/* Barras em formato de placas metalicas, inspiradas na referencia. */
+#s-game.active .bar-row{
+  position:relative!important;
+}
+#s-game.active .bar-lbl{
+  position:relative!important;
+  z-index:2!important;
+  text-align:center!important;
+  text-shadow:0 1px 2px #000!important;
+}
+#s-game.active .bar-track{
+  overflow:visible!important;
+  border-radius:2px!important;
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 50%,calc(100% - 7px) 100%,0 100%,4px 50%)!important;
+}
+#s-game.active .bar-track::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:-3px -5px!important;
+  z-index:-1!important;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,5px 50%)!important;
+  background:linear-gradient(180deg,rgba(255,222,143,.65),rgba(91,58,17,.58))!important;
+  opacity:.68!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-fill{
+  border-radius:1px!important;
+  clip-path:polygon(0 0,calc(100% - 4px) 0,100% 50%,calc(100% - 4px) 100%,0 100%)!important;
+}
+#s-game.active .bar-val{
+  position:relative!important;
+  z-index:2!important;
+  padding:2px 3px!important;
+  border-left:1px solid rgba(229,189,103,.16)!important;
+  color:#efd9a6!important;
+  text-shadow:0 1px 2px #000!important;
+}
+
+/* Stats inferiores funcionam como pequenos selos do personagem. */
+#s-game.active .mini-stats{
+  justify-content:flex-start!important;
+}
+#s-game.active .mstat{
+  min-width:0!important;
+  flex:0 1 auto!important;
+  padding:2px 5px!important;
+  border-color:rgba(229,189,103,.23)!important;
+  background:linear-gradient(180deg,rgba(229,189,103,.08),rgba(0,0,0,.28))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+#s-game.active .mstat span{
+  color:#f0ddb0!important;
+}
+
+/* Mostradores de moeda com divisao visual e detalhe circular decorativo. */
+#s-game.active .gold-pill{
+  position:relative!important;
+  justify-content:flex-start!important;
+  padding-left:8px!important;
+  padding-right:20px!important;
+  overflow:hidden!important;
+}
+#s-game.active .gold-pill::after{
+  content:'\2726'!important;
+  position:absolute!important;
+  right:4px!important;
+  top:50%!important;
+  width:14px!important;
+  height:14px!important;
+  transform:translateY(-50%)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid rgba(229,189,103,.30)!important;
+  border-radius:50%!important;
+  color:rgba(229,189,103,.72)!important;
+  background:rgba(0,0,0,.28)!important;
+  font-size:7px!important;
+  line-height:1!important;
+}
+#s-game.active .char-strip > div:last-child .gold-pill:last-child::after{
+  border-color:rgba(184,158,255,.34)!important;
+  color:rgba(204,187,255,.78)!important;
+}
+
+/* Linha luminosa discreta organiza nome e recursos. */
+#s-game.active .char-info::after{
+  content:''!important;
+  display:block!important;
+  width:74%!important;
+  height:1px!important;
+  margin-top:4px!important;
+  background:linear-gradient(90deg,rgba(229,189,103,.32),transparent)!important;
+  pointer-events:none!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .xp-label{bottom:-13px!important;min-width:54px!important;padding:2px 4px!important;}
+  #s-game.active .char-info::after{display:none!important;}
+  #s-game.active .gold-pill{padding-left:5px!important;padding-right:16px!important;}
+  #s-game.active .gold-pill::after{right:3px!important;width:11px!important;height:11px!important;font-size:6px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .gold-pill{padding-left:3px!important;padding-right:13px!important;}
+  #s-game.active .gold-pill::after{right:2px!important;width:10px!important;height:10px!important;}
+}
+</style>
+
+<!-- AiMaster v4.6.1 final: carregado por ultimo para vencer as camadas antigas. -->
+<style id="aimaster-v461-ornamental-hud">
+#s-game.active .xp-portrait-wrap::before{
+  content:''!important;position:absolute!important;inset:-3px!important;
+  border:1px solid rgba(229,189,103,.34)!important;border-radius:50%!important;
+  box-shadow:inset 0 0 0 3px rgba(5,5,4,.82),0 0 10px rgba(200,146,42,.12)!important;pointer-events:none!important;
+}
+#s-game.active .xp-portrait-wrap::after{
+  content:''!important;position:absolute!important;width:7px!important;height:7px!important;
+  left:50%!important;top:-6px!important;transform:translateX(-50%) rotate(45deg)!important;
+  border:1px solid rgba(255,220,135,.62)!important;background:#171007!important;
+  box-shadow:0 0 7px rgba(229,189,103,.32)!important;pointer-events:none!important;
+}
+#s-game.active .xp-label{
+  bottom:-15px!important;min-width:62px!important;padding:3px 5px!important;
+  border-color:rgba(229,189,103,.45)!important;color:#f2cd73!important;
+  background:linear-gradient(180deg,rgba(39,27,10,.98),rgba(5,5,4,.98))!important;
+  box-shadow:0 4px 10px rgba(0,0,0,.58),0 0 8px rgba(200,146,42,.13)!important;
+}
+#s-game.active .bar-row{position:relative!important;}
+#s-game.active .bar-lbl{
+  position:relative!important;z-index:2!important;text-align:center!important;text-shadow:0 1px 2px #000!important;
+}
+#s-game.active .bar-track{
+  overflow:visible!important;border-radius:2px!important;
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 50%,calc(100% - 7px) 100%,0 100%,4px 50%)!important;
+}
+#s-game.active .bar-track::before{
+  content:''!important;display:block!important;position:absolute!important;inset:-3px -5px!important;z-index:-1!important;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,5px 50%)!important;
+  background:linear-gradient(180deg,rgba(255,222,143,.65),rgba(91,58,17,.58))!important;
+  opacity:.68!important;pointer-events:none!important;
+}
+#s-game.active .bar-fill{
+  border-radius:1px!important;
+  clip-path:polygon(0 0,calc(100% - 4px) 0,100% 50%,calc(100% - 4px) 100%,0 100%)!important;
+}
+#s-game.active .bar-val{
+  position:relative!important;z-index:2!important;padding:2px 3px!important;
+  border-left:1px solid rgba(229,189,103,.16)!important;color:#efd9a6!important;text-shadow:0 1px 2px #000!important;
+}
+#s-game.active .mini-stats{justify-content:flex-start!important;}
+#s-game.active .mstat{
+  min-width:0!important;flex:0 1 auto!important;padding:2px 5px!important;
+  border-color:rgba(229,189,103,.23)!important;
+  background:linear-gradient(180deg,rgba(229,189,103,.08),rgba(0,0,0,.28))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+#s-game.active .mstat span{color:#f0ddb0!important;}
+#s-game.active .gold-pill{
+  position:relative!important;justify-content:flex-start!important;padding-left:8px!important;padding-right:20px!important;overflow:hidden!important;
+}
+#s-game.active .gold-pill::after{
+  content:'\2726'!important;position:absolute!important;right:4px!important;top:50%!important;
+  width:14px!important;height:14px!important;transform:translateY(-50%)!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  border:1px solid rgba(229,189,103,.30)!important;border-radius:50%!important;
+  color:rgba(229,189,103,.72)!important;background:rgba(0,0,0,.28)!important;font-size:7px!important;line-height:1!important;
+}
+#s-game.active .char-strip > div:last-child .gold-pill:last-child::after{
+  border-color:rgba(184,158,255,.34)!important;color:rgba(204,187,255,.78)!important;
+}
+#s-game.active .char-info::after{
+  content:''!important;display:block!important;width:74%!important;height:1px!important;margin-top:4px!important;
+  background:linear-gradient(90deg,rgba(229,189,103,.32),transparent)!important;pointer-events:none!important;
+}
+@media(max-height:740px){
+  #s-game.active .xp-label{bottom:-13px!important;min-width:54px!important;padding:2px 4px!important;}
+  #s-game.active .char-info::after{display:none!important;}
+  #s-game.active .gold-pill{padding-left:5px!important;padding-right:16px!important;}
+  #s-game.active .gold-pill::after{right:3px!important;width:11px!important;height:11px!important;font-size:6px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .gold-pill{padding-left:3px!important;padding-right:13px!important;}
+  #s-game.active .gold-pill::after{right:2px!important;width:10px!important;height:10px!important;}
+}
+</style>
+
 
 <style id="aimaster-v36-hotfix">
 /* AIMASTER v3.6 — Hotfix mobile
@@ -11517,5 +11739,192 @@ try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute
   #s-game.active .bar-val{min-width:30px!important;font-size:7px!important;}
   #s-game.active .char-strip > div:last-child{width:50px!important;min-width:50px!important;flex-basis:50px!important;}
   #s-game.active .gold-pill{font-size:7.8px!important;padding-left:3px!important;padding-right:3px!important;}
+}
+</style>
+
+<style id="aimaster-v461-final-priority">
+#s-game.active .xp-label{
+  bottom:-15px!important;min-width:62px!important;padding:3px 5px!important;
+  border-color:rgba(229,189,103,.45)!important;color:#f2cd73!important;
+  background:linear-gradient(180deg,rgba(39,27,10,.98),rgba(5,5,4,.98))!important;
+}
+#s-game.active .bar-track{
+  overflow:visible!important;border-radius:2px!important;
+  clip-path:polygon(0 0,calc(100% - 7px) 0,100% 50%,calc(100% - 7px) 100%,0 100%,4px 50%)!important;
+}
+#s-game.active .bar-fill{
+  border-radius:1px!important;
+  clip-path:polygon(0 0,calc(100% - 4px) 0,100% 50%,calc(100% - 4px) 100%,0 100%)!important;
+}
+#s-game.active .gold-pill{
+  position:relative!important;justify-content:flex-start!important;
+  padding-left:8px!important;padding-right:20px!important;overflow:hidden!important;
+}
+@media(max-height:740px){
+  #s-game.active .xp-label{bottom:-13px!important;min-width:54px!important;padding:2px 4px!important;}
+  #s-game.active .gold-pill{padding-left:5px!important;padding-right:16px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .gold-pill{padding-left:3px!important;padding-right:13px!important;}
+}
+</style>
+
+<!-- AiMaster v4.6.2: composicao cinematografica do HUD. -->
+<style id="aimaster-v462-cinematic-hud">
+/* Silhueta mais longa e baixa, semelhante a uma barra de status de RPG. */
+#s-game.active .char-strip{
+  min-height:86px!important;
+  padding:9px 10px 9px 8px!important;
+  border-radius:17px!important;
+  background:
+    linear-gradient(90deg,rgba(229,189,103,.08),transparent 18%,transparent 76%,rgba(229,189,103,.055)),
+    radial-gradient(circle at 13% 12%,rgba(229,189,103,.18),transparent 26%),
+    linear-gradient(180deg,rgba(22,19,14,.99),rgba(4,4,3,.995))!important;
+}
+#s-game.active .char-strip::before{
+  inset:2px!important;
+  border-radius:14px!important;
+  border-color:rgba(229,189,103,.11)!important;
+}
+
+/* Retrato assume o papel de ancora visual do header. */
+#s-game.active .xp-portrait-wrap{
+  width:64px!important;
+  height:64px!important;
+  min-width:64px!important;
+  min-height:64px!important;
+  flex:0 0 64px!important;
+  margin-left:1px!important;
+}
+#s-game.active .xp-portrait-wrap::before{
+  inset:-4px!important;
+  border-color:rgba(245,204,111,.48)!important;
+  box-shadow:
+    inset 0 0 0 3px rgba(5,5,4,.90),
+    inset 0 0 0 4px rgba(229,189,103,.15),
+    0 0 13px rgba(200,146,42,.18)!important;
+}
+#s-game.active .xp-portrait-wrap::after{
+  top:-7px!important;
+  width:8px!important;
+  height:8px!important;
+}
+#s-game.active .portrait{
+  inset:7px!important;
+  font-size:24px!important;
+  border-color:rgba(255,220,135,.68)!important;
+}
+#s-game.active .xp-label{
+  bottom:-14px!important;
+  z-index:4!important;
+  min-width:65px!important;
+  font-size:7.2px!important;
+}
+
+/* Uma divisoria metalica separa personagem e economia. */
+#s-game.active .char-info{
+  position:relative!important;
+  padding-right:8px!important;
+}
+#s-game.active .char-info::before{
+  content:''!important;
+  position:absolute!important;
+  top:4px!important;
+  bottom:4px!important;
+  right:0!important;
+  width:1px!important;
+  background:linear-gradient(180deg,transparent,rgba(229,189,103,.30),rgba(229,189,103,.08),transparent)!important;
+  box-shadow:1px 0 0 rgba(0,0,0,.50)!important;
+  pointer-events:none!important;
+}
+#s-game.active .char-info::after{
+  width:86%!important;
+  margin-top:5px!important;
+  background:linear-gradient(90deg,rgba(229,189,103,.36),rgba(229,189,103,.05),transparent)!important;
+}
+#s-game.active .c-name{
+  font-size:14.5px!important;
+  letter-spacing:.45px!important;
+}
+#s-game.active .c-meta{
+  color:rgba(229,189,103,.60)!important;
+}
+
+/* Barras mais largas e com leitura imediata. */
+#s-game.active .bar-row{
+  grid-template-columns:20px minmax(68px,1fr) 37px!important;
+}
+#s-game.active .bar-track{
+  min-width:68px!important;
+  height:10px!important;
+}
+#s-game.active .bar-val{
+  min-width:37px!important;
+  font-size:8.2px!important;
+}
+
+/* Bloco economico com titulo discreto e alinhamento consistente. */
+#s-game.active .char-strip > div:last-child{
+  position:relative!important;
+  width:67px!important;
+  min-width:67px!important;
+  flex:0 0 67px!important;
+  padding-top:10px!important;
+  gap:5px!important;
+}
+#s-game.active .char-strip > div:last-child::before{
+  content:'RECURSOS'!important;
+  position:absolute!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  color:rgba(229,189,103,.50)!important;
+  font-family:var(--font-title)!important;
+  font-size:5.8px!important;
+  line-height:1!important;
+  letter-spacing:1px!important;
+  text-align:center!important;
+  pointer-events:none!important;
+}
+#s-game.active .gold-pill{
+  width:100%!important;
+  min-height:27px!important;
+  font-size:9px!important;
+  border-radius:7px 13px 13px 7px!important;
+}
+#s-game.active .gold-pill::before{
+  content:''!important;
+  position:absolute!important;
+  left:-1px!important;
+  top:50%!important;
+  width:4px!important;
+  height:4px!important;
+  transform:translate(-50%,-50%) rotate(45deg)!important;
+  border:1px solid rgba(229,189,103,.50)!important;
+  background:#171007!important;
+  pointer-events:none!important;
+}
+#s-game.active .char-strip > div:last-child .gold-pill:last-child::before{
+  border-color:rgba(184,158,255,.50)!important;
+  background:#160e26!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .char-strip{min-height:74px!important;padding-top:6px!important;padding-bottom:6px!important;}
+  #s-game.active .xp-portrait-wrap{width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;flex-basis:50px!important;}
+  #s-game.active .portrait{inset:6px!important;font-size:20px!important;}
+  #s-game.active .char-strip > div:last-child{width:57px!important;min-width:57px!important;flex-basis:57px!important;padding-top:8px!important;}
+  #s-game.active .char-strip > div:last-child::before{font-size:5px!important;}
+  #s-game.active .gold-pill{min-height:24px!important;}
+  #s-game.active .bar-track{height:8px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .char-strip{padding-left:6px!important;padding-right:6px!important;}
+  #s-game.active .xp-portrait-wrap{width:47px!important;height:47px!important;min-width:47px!important;min-height:47px!important;flex-basis:47px!important;}
+  #s-game.active .char-info{padding-right:4px!important;}
+  #s-game.active .bar-row{grid-template-columns:17px minmax(44px,1fr) 29px!important;}
+  #s-game.active .bar-track{min-width:44px!important;}
+  #s-game.active .bar-val{min-width:29px!important;font-size:6.8px!important;}
+  #s-game.active .char-strip > div:last-child{width:50px!important;min-width:50px!important;flex-basis:50px!important;}
 }
 </style>
