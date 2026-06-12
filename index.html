@@ -2448,6 +2448,111 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 }
 </style>
 
+
+<style id="aimaster-v452-header-fix">
+/* AIMASTER v4.5.2 — Header/HUD estável */
+#s-game.active{
+  padding-top:0!important;
+}
+
+/* garante cabeçalho sempre visível no jogo */
+#s-game.active .char-strip{
+  display:flex!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:sticky!important;
+  top:0!important;
+  left:auto!important;
+  right:auto!important;
+  transform:none!important;
+  z-index:120!important;
+  min-height:66px!important;
+  height:auto!important;
+  max-height:none!important;
+  margin:4px 8px 4px!important;
+  padding:6px 8px!important;
+  gap:7px!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+}
+#s-game.active .char-strip::before,
+#s-game.active .char-strip::after{
+  display:block!important;
+}
+#s-game.active .char-strip > *,
+#s-game.active .char-strip .char-info,
+#s-game.active .char-strip .bars,
+#s-game.active .char-strip .bar-row,
+#s-game.active .char-strip .mini-stats,
+#s-game.active .char-strip .gold-pill,
+#s-game.active .char-strip .xp-portrait-wrap,
+#s-game.active .char-strip .portrait,
+#s-game.active .char-strip .xp-label{
+  visibility:visible!important;
+  opacity:1!important;
+  display:flex;
+}
+#s-game.active .char-strip .portrait{display:flex!important;align-items:center!important;justify-content:center!important;}
+#s-game.active .char-strip .char-info{display:block!important;min-width:0!important;flex:1 1 auto!important;}
+#s-game.active .char-strip .bars{display:flex!important;}
+#s-game.active .char-strip .bar-row{display:flex!important;}
+#s-game.active .char-strip .mini-stats{display:flex!important;gap:6px!important;flex-wrap:nowrap!important;overflow:hidden!important;}
+#s-game.active .char-strip > div:last-child{
+  display:flex!important;
+  flex-direction:column!important;
+  width:50px!important;
+  flex:0 0 50px!important;
+  min-width:50px!important;
+  gap:4px!important;
+  justify-content:center!important;
+  align-self:stretch!important;
+}
+#s-game.active .char-strip .xp-portrait-wrap{
+  width:42px!important;height:42px!important;flex:0 0 42px!important;min-width:42px!important;
+}
+#s-game.active .char-strip .portrait{inset:4px!important;font-size:17px!important;}
+#s-game.active .char-strip .xp-label{
+  display:block!important;
+  bottom:-14px!important;
+  font-size:8px!important;
+  letter-spacing:.35px!important;
+}
+#s-game.active .char-strip .c-name{font-size:11px!important;line-height:1.05!important;}
+#s-game.active .char-strip .c-meta{font-size:8px!important;letter-spacing:.8px!important;margin-bottom:3px!important;}
+#s-game.active .char-strip .bars{gap:3px!important;}
+#s-game.active .char-strip .bar-lbl{font-size:8px!important;width:14px!important;}
+#s-game.active .char-strip .bar-track{height:5px!important;}
+#s-game.active .char-strip .bar-val{font-size:9px!important;min-width:24px!important;}
+#s-game.active .char-strip .mstat{font-size:8px!important;letter-spacing:.25px!important;}
+#s-game.active .char-strip .gold-pill{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  min-height:24px!important;padding:2px 6px!important;font-size:10px!important;border-radius:14px!important;
+}
+#s-game.active .narr-border{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  flex:0 0 auto!important;
+  margin:0 8px 3px!important;
+}
+#s-game.active .narr{
+  margin-top:0!important;
+}
+
+/* se houver classes/estados de combate, manter HUD visível */
+#s-game.v33-combat-mode .char-strip{
+  position:sticky!important;
+  top:0!important;
+  z-index:125!important;
+}
+
+@media (max-height:760px){
+  #s-game.active .char-strip{min-height:62px!important;padding:5px 7px!important;}
+  #s-game.active .char-strip .xp-portrait-wrap{width:40px!important;height:40px!important;flex-basis:40px!important;}
+  #s-game.active .char-strip .gold-pill{min-height:22px!important;font-size:9.5px!important;}
+}
+</style>
+
 </head>
 <body>
 <div id="app">
