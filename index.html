@@ -11304,3 +11304,218 @@ body:not(:has(#s-game.active)) .ooc-toggle-row{display:none!important;}
 <script id="aimaster-v453-version-label">
 try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute('data-visual-version','Visual v4.5.3');});}catch(e){}
 </script>
+
+<!-- AiMaster v4.6: upgrade visual isolado do HUD. -->
+<style id="aimaster-v46-reference-hud">
+/* Moldura principal inspirada na referencia, sem alterar o layout do jogo. */
+#s-game.active .char-strip{
+  min-height:82px!important;
+  padding:8px 9px!important;
+  gap:9px!important;
+  overflow:visible!important;
+  border-color:rgba(229,189,103,.46)!important;
+  border-radius:20px!important;
+  background:
+    radial-gradient(circle at 15% 5%,rgba(229,189,103,.18),transparent 28%),
+    radial-gradient(circle at 72% 0%,rgba(229,189,103,.07),transparent 35%),
+    linear-gradient(180deg,rgba(24,20,14,.985),rgba(5,5,4,.99))!important;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.68),
+    0 0 22px rgba(200,146,42,.09),
+    inset 0 1px 0 rgba(255,235,185,.09),
+    inset 0 -1px 0 rgba(0,0,0,.82)!important;
+}
+#s-game.active .char-strip::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:3px!important;
+  border:1px solid rgba(229,189,103,.08)!important;
+  border-radius:16px!important;
+  background:linear-gradient(90deg,rgba(229,189,103,.07),transparent 24%,transparent 78%,rgba(229,189,103,.05))!important;
+  pointer-events:none!important;
+}
+#s-game.active .char-strip::after{
+  content:'\2726'!important;
+  display:flex!important;
+  position:absolute!important;
+  left:72px!important;
+  top:-7px!important;
+  width:16px!important;
+  height:13px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  color:#e5bd67!important;
+  font-size:9px!important;
+  line-height:1!important;
+  background:#0b0906!important;
+  border-left:1px solid rgba(229,189,103,.40)!important;
+  border-right:1px solid rgba(229,189,103,.40)!important;
+  transform:rotate(45deg)!important;
+  text-shadow:0 0 8px rgba(229,189,103,.45)!important;
+  pointer-events:none!important;
+}
+
+/* Avatar maior e com moldura dourada mais semelhante a um retrato de heroi. */
+#s-game.active .xp-portrait-wrap{
+  width:58px!important;
+  height:58px!important;
+  min-width:58px!important;
+  min-height:58px!important;
+  flex:0 0 58px!important;
+  filter:drop-shadow(0 0 12px rgba(200,146,42,.24))!important;
+}
+#s-game.active .xp-ring{
+  filter:drop-shadow(0 0 5px rgba(229,189,103,.32))!important;
+}
+#s-game.active .portrait{
+  inset:6px!important;
+  font-size:22px!important;
+  border:1px solid rgba(255,219,133,.55)!important;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(229,189,103,.23),transparent 48%),
+    linear-gradient(180deg,#211b12,#070605)!important;
+  box-shadow:inset 0 0 16px rgba(0,0,0,.78),0 0 10px rgba(200,146,42,.16)!important;
+}
+#s-game.active .xp-label{
+  display:block!important;
+  bottom:-13px!important;
+  min-width:58px!important;
+  padding:2px 4px!important;
+  border:1px solid rgba(229,189,103,.30)!important;
+  border-radius:999px!important;
+  background:rgba(5,5,4,.94)!important;
+  color:#e5bd67!important;
+  font-size:7px!important;
+  text-align:center!important;
+  box-shadow:0 3px 8px rgba(0,0,0,.50)!important;
+}
+
+/* Nome, classe e recursos com hierarquia mais clara. */
+#s-game.active .char-info{
+  padding:1px 0!important;
+  overflow:hidden!important;
+}
+#s-game.active .c-name{
+  font-family:var(--font-title)!important;
+  font-size:14px!important;
+  line-height:1.05!important;
+  letter-spacing:.25px!important;
+  color:#f6d990!important;
+  text-shadow:0 0 12px rgba(229,189,103,.18)!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#s-game.active .c-meta{
+  margin-top:2px!important;
+  margin-bottom:4px!important;
+  font-size:7.8px!important;
+  letter-spacing:1px!important;
+  color:rgba(240,221,176,.58)!important;
+}
+#s-game.active .bars{
+  gap:5px!important;
+  margin-top:2px!important;
+}
+#s-game.active .bar-row{
+  grid-template-columns:20px minmax(62px,1fr) 35px!important;
+  gap:5px!important;
+}
+#s-game.active .bar-lbl{
+  width:auto!important;
+  font-size:8px!important;
+  color:rgba(240,221,176,.82)!important;
+}
+#s-game.active .bar-track{
+  position:relative!important;
+  height:9px!important;
+  min-width:62px!important;
+  border:1px solid rgba(229,189,103,.30)!important;
+  border-radius:3px!important;
+  background:linear-gradient(180deg,#020202,#161109)!important;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.90),0 0 5px rgba(200,146,42,.07)!important;
+}
+#s-game.active .bar-track::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:1px 2px auto 2px!important;
+  height:2px!important;
+  border-radius:99px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.28),rgba(255,255,255,.02))!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-fill.hp{
+  background:linear-gradient(90deg,#78120f,#c62f27 62%,#f36a54)!important;
+  box-shadow:0 0 8px rgba(211,66,54,.48),inset 0 1px 0 rgba(255,255,255,.25)!important;
+}
+#s-game.active .bar-fill.mp{
+  background:linear-gradient(90deg,#183a7a,#297fd0 62%,#55b9ff)!important;
+  box-shadow:0 0 8px rgba(55,143,235,.46),inset 0 1px 0 rgba(255,255,255,.25)!important;
+}
+#s-game.active .bar-val{
+  min-width:35px!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  color:rgba(240,221,176,.78)!important;
+}
+#s-game.active .mini-stats{
+  gap:4px!important;
+  margin-top:5px!important;
+}
+#s-game.active .mstat{
+  padding:2px 4px!important;
+  border:1px solid rgba(229,189,103,.16)!important;
+  border-radius:6px!important;
+  background:rgba(229,189,103,.045)!important;
+  color:rgba(229,189,103,.72)!important;
+}
+
+/* Ouro e diamantes como pequenos mostradores nobres. */
+#s-game.active .char-strip > div:last-child{
+  width:62px!important;
+  min-width:62px!important;
+  flex:0 0 62px!important;
+  gap:6px!important;
+}
+#s-game.active .gold-pill{
+  min-height:28px!important;
+  padding:4px 6px!important;
+  border:1px solid rgba(229,189,103,.36)!important;
+  border-radius:999px!important;
+  font-family:var(--font-title)!important;
+  font-size:9.5px!important;
+  color:#f7dda0!important;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(255,226,151,.14),transparent 42%),
+    linear-gradient(180deg,rgba(54,39,16,.78),rgba(5,5,4,.88))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 4px 10px rgba(0,0,0,.36)!important;
+}
+#s-game.active .char-strip > div:last-child .gold-pill:last-child{
+  border-color:rgba(155,126,244,.40)!important;
+  color:#e4d9ff!important;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(197,177,255,.17),transparent 42%),
+    linear-gradient(180deg,rgba(48,34,87,.78),rgba(7,5,13,.90))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 12px rgba(137,107,220,.13)!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .char-strip{min-height:72px!important;padding:6px 8px!important;}
+  #s-game.active .xp-portrait-wrap{width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;flex-basis:48px!important;}
+  #s-game.active .portrait{font-size:19px!important;}
+  #s-game.active .c-name{font-size:12.5px!important;}
+  #s-game.active .bar-track{height:7px!important;}
+  #s-game.active .char-strip > div:last-child{width:55px!important;min-width:55px!important;flex-basis:55px!important;}
+  #s-game.active .gold-pill{min-height:24px!important;font-size:8.5px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .char-strip{gap:6px!important;padding-left:6px!important;padding-right:6px!important;}
+  #s-game.active .xp-portrait-wrap{width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;flex-basis:46px!important;}
+  #s-game.active .bar-row{grid-template-columns:18px minmax(48px,1fr) 30px!important;gap:3px!important;}
+  #s-game.active .bar-val{min-width:30px!important;font-size:7px!important;}
+  #s-game.active .char-strip > div:last-child{width:50px!important;min-width:50px!important;flex-basis:50px!important;}
+  #s-game.active .gold-pill{font-size:7.8px!important;padding-left:3px!important;padding-right:3px!important;}
+}
+</style>
