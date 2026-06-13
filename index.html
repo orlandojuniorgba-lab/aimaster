@@ -14416,3 +14416,389 @@ body #s-game.active .char-strip.hud-ref .hud-reputation::before{
   body #s-game.active .char-strip.hud-ref .hud-reputation::before{font-size:5.9px!important;}
 }
 </style>
+
+<style id="aimaster-v526-bar-icon-alignment">
+/* Recuo interno dos icones para nao vazarem perto do avatar. */
+body #s-game.active .char-strip.hud-ref .bar-row::before{
+  left:9px!important;
+}
+body #s-game.active .char-strip.hud-ref .mp-row::before{
+  left:10px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-lbl{
+  left:27px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-val{
+  left:45px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill::after{
+  background:linear-gradient(90deg,rgba(0,0,0,.40) 0 76px,transparent 94px,rgba(255,255,255,.07) 70%,transparent)!important;
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-row::before{left:7px!important;}
+  body #s-game.active .char-strip.hud-ref .mp-row::before{left:8px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:24px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:39px!important;}
+}
+</style>
+
+<style id="aimaster-v527-mp-orb-alignment">
+/* O aro do orbe MP ocupava mais espaco visual que o coracao. */
+body #s-game.active .char-strip.hud-ref .mp-row::before{
+  left:11px!important;
+  width:10px!important;
+  height:10px!important;
+  border-width:1px!important;
+  box-sizing:border-box!important;
+  transform:translateY(-50%)!important;
+}
+body #s-game.active .char-strip.hud-ref .hp-row::before{
+  left:10px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-lbl{
+  left:28px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-val{
+  left:46px!important;
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .mp-row::before{left:9px!important;width:9px!important;height:9px!important;}
+  body #s-game.active .char-strip.hud-ref .hp-row::before{left:8px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:25px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:40px!important;}
+}
+</style>
+
+<style id="aimaster-v528-split-resource-bars">
+/* Moldura envolve a linha inteira; preenchimento comeca apos icone, rotulo e valor. */
+body #s-game.active .char-strip.hud-ref .bar-row{
+  height:15px!important;
+  min-height:15px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-track{
+  left:76px!important;
+  right:0!important;
+  top:3px!important;
+  bottom:3px!important;
+  width:auto!important;
+  height:auto!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-track::before{
+  inset:-3px -7px -3px -76px!important;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,0 100%,5px 50%)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-track::after{
+  inset:-2px -5px -2px -74px!important;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,4px 50%)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill{
+  z-index:1!important;
+  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 50%,calc(100% - 5px) 100%,0 100%)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill::after{
+  background:linear-gradient(90deg,rgba(0,0,0,.14),transparent 15%,rgba(255,255,255,.08) 62%,transparent)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-row::before,
+body #s-game.active .char-strip.hud-ref .bar-lbl,
+body #s-game.active .char-strip.hud-ref .bar-val{
+  z-index:6!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-lbl{
+  left:29px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-val{
+  left:47px!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .bar-row{height:13px!important;min-height:13px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-track{left:65px!important;top:3px!important;bottom:3px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-track::before{inset:-3px -6px -3px -65px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-track::after{inset:-2px -4px -2px -63px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:25px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:41px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-track{left:57px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-track::before{inset:-3px -6px -3px -57px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-track::after{inset:-2px -4px -2px -55px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:23px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:37px!important;}
+}
+</style>
+
+<style id="aimaster-v529-unified-bar-frame">
+/* A propria linha vira a moldura unica; o preenchimento continua separado. */
+body #s-game.active .char-strip.hud-ref .bar-row{
+  width:calc(100% + 3px)!important;
+  margin-left:-3px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:1px solid rgba(209,158,57,.72)!important;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,4px 50%)!important;
+  background:
+    radial-gradient(circle at 9% 50%,rgba(218,169,69,.07),transparent 22%),
+    linear-gradient(180deg,#171108,#030302)!important;
+  box-shadow:inset 0 1px 0 rgba(255,235,180,.035),inset 0 -1px 0 rgba(0,0,0,.70)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-track{
+  left:76px!important;
+  right:5px!important;
+  top:2px!important;
+  bottom:2px!important;
+  overflow:hidden!important;
+  z-index:2!important;
+  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 50%,calc(100% - 5px) 100%,0 100%)!important;
+  background:#070503!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-track::before,
+body #s-game.active .char-strip.hud-ref .bar-track::after{
+  display:none!important;
+  content:none!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill{
+  z-index:1!important;
+  clip-path:none!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-row::before,
+body #s-game.active .char-strip.hud-ref .bar-lbl,
+body #s-game.active .char-strip.hud-ref .bar-val{
+  z-index:5!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .bar-track{left:65px!important;right:4px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-track{left:57px!important;right:3px!important;}
+}
+</style>
+
+<style id="aimaster-v530-fill-under-info">
+/* Na referencia, a cor percorre toda a barra por baixo das informacoes. */
+body #s-game.active .char-strip.hud-ref .bar-track{
+  left:2px!important;
+  right:5px!important;
+  top:2px!important;
+  bottom:2px!important;
+  z-index:1!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-row::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:1px!important;
+  top:1px!important;
+  bottom:1px!important;
+  width:78px!important;
+  z-index:3!important;
+  background:linear-gradient(90deg,rgba(5,4,3,.82) 0%,rgba(5,4,3,.64) 72%,rgba(5,4,3,.18) 100%)!important;
+  pointer-events:none!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill{
+  z-index:1!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-row::before,
+body #s-game.active .char-strip.hud-ref .bar-lbl,
+body #s-game.active .char-strip.hud-ref .bar-val{
+  z-index:5!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .bar-track{left:2px!important;right:4px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-row::after{width:67px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-track{left:2px!important;right:3px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-row::after{width:59px!important;}
+}
+</style>
+
+<style id="aimaster-v531-fill-under-info-fix">
+/* Remove recortes antigos: o preenchimento realmente nasce no inicio da moldura. */
+body #s-game.active .char-strip.hud-ref .bar-fill{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  bottom:0!important;
+  height:auto!important;
+  min-width:0!important;
+  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 50%,calc(100% - 5px) 100%,0 100%)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-row::after{
+  width:76px!important;
+  background:linear-gradient(90deg,rgba(5,4,3,.58),rgba(5,4,3,.38) 70%,transparent)!important;
+}
+body #s-game.active .char-strip.hud-ref .hp-row::after{
+  box-shadow:inset 0 0 8px rgba(70,0,0,.12)!important;
+}
+body #s-game.active .char-strip.hud-ref .mp-row::after{
+  box-shadow:inset 0 0 8px rgba(0,35,80,.14)!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .bar-row::after{width:65px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-row::after{width:57px!important;}
+}
+</style>
+
+<style id="aimaster-v532-icons-at-bar-start">
+/* Icones exatamente no inicio da moldura, como na referencia. */
+body #s-game.active .char-strip.hud-ref .bar-row::before{
+  left:4px!important;
+}
+body #s-game.active .char-strip.hud-ref .mp-row::before{
+  left:5px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-lbl{
+  left:22px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-val{
+  left:40px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-row::after{
+  width:70px!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .bar-row::before{left:3px!important;}
+  body #s-game.active .char-strip.hud-ref .mp-row::before{left:4px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:19px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:35px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-row::after{width:59px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-row::before{left:2px!important;}
+  body #s-game.active .char-strip.hud-ref .mp-row::before{left:3px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:17px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:31px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-row::after{width:52px!important;}
+}
+</style>
+
+<style id="aimaster-v533-bars-up-compact">
+/* Barras mais altas, proximas entre si e icones na ponta inicial. */
+body #s-game.active .char-strip.hud-ref .c-name{
+  margin-bottom:5px!important;
+}
+body #s-game.active .char-strip.hud-ref .bars{
+  gap:4px!important;
+  margin-top:-1px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-row::before{
+  left:2px!important;
+}
+body #s-game.active .char-strip.hud-ref .mp-row::before{
+  left:3px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-lbl{
+  left:20px!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-val{
+  left:38px!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .c-name{margin-bottom:3px!important;}
+  body #s-game.active .char-strip.hud-ref .bars{gap:3px!important;margin-top:-1px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-row::before{left:1px!important;}
+  body #s-game.active .char-strip.hud-ref .mp-row::before{left:2px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:18px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:34px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-row::before{left:1px!important;}
+  body #s-game.active .char-strip.hud-ref .mp-row::before{left:2px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-lbl{left:16px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{left:30px!important;}
+}
+</style>
+
+<style id="aimaster-v534-reference-bar-colors">
+/* Paleta da referencia: rubi profundo e azul cobalto, com reflexo fino. */
+body #s-game.active .char-strip.hud-ref .bar-fill.hp{
+  background:
+    linear-gradient(180deg,
+      #ff554d 0%,
+      #d72723 17%,
+      #a80f11 52%,
+      #650408 82%,
+      #3a0205 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,211,198,.62),
+    inset 0 -1px 0 rgba(35,0,0,.82),
+    0 0 4px rgba(178,15,18,.46)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill.mp{
+  background:
+    linear-gradient(180deg,
+      #42bfff 0%,
+      #168ce3 19%,
+      #075db8 54%,
+      #03347b 82%,
+      #021b4d 100%)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(207,242,255,.62),
+    inset 0 -1px 0 rgba(0,16,50,.86),
+    0 0 4px rgba(6,91,184,.48)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill::before{
+  content:''!important;
+  position:absolute!important;
+  left:2px!important;
+  right:6px!important;
+  top:1px!important;
+  height:1px!important;
+  z-index:3!important;
+  border-radius:99px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.62),rgba(255,255,255,.16) 58%,transparent)!important;
+  pointer-events:none!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-fill::after{
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.18),transparent 18%,rgba(255,255,255,.055) 64%,transparent 92%),
+    linear-gradient(180deg,rgba(255,255,255,.05),transparent 45%,rgba(0,0,0,.20))!important;
+}
+body #s-game.active .char-strip.hud-ref .hp-row{
+  border-color:rgba(202,150,53,.74)!important;
+}
+body #s-game.active .char-strip.hud-ref .mp-row{
+  border-color:rgba(187,142,49,.68)!important;
+}
+</style>
+
+<style id="aimaster-v535-bar-text-contrast">
+/* Mais contraste para PV/MP e contadores sem alterar a composicao. */
+body #s-game.active .char-strip.hud-ref .bar-lbl{
+  color:#ffe2a8!important;
+  font-size:7.5px!important;
+  font-weight:700!important;
+  letter-spacing:.55px!important;
+  text-shadow:
+    0 1px 1px rgba(0,0,0,.98),
+    0 0 3px rgba(0,0,0,.92),
+    0 0 5px rgba(238,193,94,.20)!important;
+}
+body #s-game.active .char-strip.hud-ref .bar-val{
+  color:#fff0c5!important;
+  font-size:7.6px!important;
+  font-weight:800!important;
+  letter-spacing:.05px!important;
+  text-shadow:
+    0 1px 1px rgba(0,0,0,1),
+    0 0 3px rgba(0,0,0,.95),
+    0 0 4px rgba(255,224,160,.16)!important;
+}
+body #s-game.active .char-strip.hud-ref .hp-row .bar-lbl,
+body #s-game.active .char-strip.hud-ref .hp-row .bar-val{
+  color:#ffe0b4!important;
+}
+body #s-game.active .char-strip.hud-ref .mp-row .bar-lbl,
+body #s-game.active .char-strip.hud-ref .mp-row .bar-val{
+  color:#d9edff!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .bar-lbl{font-size:6.8px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{font-size:6.9px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .bar-lbl{font-size:5.9px!important;}
+  body #s-game.active .char-strip.hud-ref .bar-val{font-size:6px!important;}
+}
+</style>
