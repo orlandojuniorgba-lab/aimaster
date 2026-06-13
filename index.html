@@ -1481,6 +1481,185 @@ div.msg-dm div.bbl,
 }
 </style>
 
+<!-- AiMaster v5.1: layout do HUD conforme marcacao do diretor criativo. -->
+<style id="aimaster-v51-directed-hud">
+#s-game.active .char-strip.hud-ref{
+  display:block!important;
+  min-height:120px!important;
+  padding:8px 9px 27px!important;
+}
+#s-game.active .hud-main{
+  display:flex!important;
+  width:100%!important;
+  min-width:0!important;
+  padding-right:88px!important;
+}
+#s-game.active .hud-ref .char-info{
+  min-width:0!important;
+  overflow:visible!important;
+}
+#s-game.active .hud-ref .c-name{
+  padding-right:4px!important;
+}
+#s-game.active .hud-ref .c-meta{
+  margin-bottom:8px!important;
+}
+
+/* Icone, rotulo e contador ficam dentro da propria barra. */
+#s-game.active .hud-ref .bars{
+  gap:8px!important;
+}
+#s-game.active .hud-ref .bar-row{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:13px!important;
+  min-height:13px!important;
+}
+#s-game.active .hud-ref .bar-row::before{
+  position:absolute!important;
+  left:5px!important;
+  top:50%!important;
+  z-index:5!important;
+  width:14px!important;
+  height:14px!important;
+  transform:translateY(-50%)!important;
+}
+#s-game.active .hud-ref .hp-row::before{
+  font-size:15px!important;
+  color:#f0473d!important;
+  text-shadow:0 0 4px rgba(240,71,61,.68),0 1px 1px #000!important;
+}
+#s-game.active .hud-ref .mp-row::before{
+  width:12px!important;
+  height:12px!important;
+  left:6px!important;
+}
+#s-game.active .hud-ref .bar-lbl{
+  position:absolute!important;
+  left:23px!important;
+  top:50%!important;
+  z-index:5!important;
+  transform:translateY(-50%)!important;
+  color:#f0ddb0!important;
+  font-size:7px!important;
+  text-shadow:0 1px 2px #000!important;
+  pointer-events:none!important;
+}
+#s-game.active .hud-ref .bar-val{
+  position:absolute!important;
+  left:41px!important;
+  top:50%!important;
+  z-index:5!important;
+  min-width:31px!important;
+  transform:translateY(-50%)!important;
+  color:#fff0c8!important;
+  font-size:7px!important;
+  font-weight:700!important;
+  text-align:left!important;
+  text-shadow:0 1px 2px #000!important;
+  pointer-events:none!important;
+}
+#s-game.active .hud-ref .bar-track{
+  position:absolute!important;
+  inset:1px 0!important;
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+}
+#s-game.active .hud-ref .bar-track::before{
+  inset:-2px -7px!important;
+}
+#s-game.active .hud-ref .bar-track::after{
+  inset:-1px -5px!important;
+}
+#s-game.active .hud-ref .bar-fill{
+  min-width:0!important;
+}
+#s-game.active .hud-ref .bar-fill::after{
+  background:linear-gradient(90deg,rgba(0,0,0,.40) 0 72px,transparent 90px,rgba(255,255,255,.07) 70%,transparent)!important;
+}
+
+/* Ouro e diamantes retornam ao canto direito da referencia. */
+#s-game.active .char-strip.hud-ref > .hud-resources{
+  position:absolute!important;
+  top:11px!important;
+  right:9px!important;
+  z-index:6!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  width:76px!important;
+  gap:6px!important;
+}
+#s-game.active .hud-ref .gold-pill{
+  width:76px!important;
+  min-width:76px!important;
+  min-height:24px!important;
+  justify-content:flex-start!important;
+  padding:4px 8px!important;
+  font-size:8px!important;
+  border-radius:999px!important;
+}
+
+/* Atributos saem; faixa inferior recebe local e reputacao. */
+#s-game.active .hud-ref .hud-old-stats{
+  display:none!important;
+}
+#s-game.active .char-strip.hud-ref > .hud-sub{
+  display:none!important;
+}
+#s-game.active .hud-world{
+  position:absolute!important;
+  left:91px!important;
+  right:10px!important;
+  bottom:6px!important;
+  z-index:5!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  min-width:0!important;
+  padding-top:5px!important;
+  border-top:1px solid rgba(218,169,69,.16)!important;
+  font-family:var(--font-title)!important;
+  font-size:6.4px!important;
+  line-height:1!important;
+  color:rgba(234,214,170,.72)!important;
+}
+#s-game.active .hud-location{
+  min-width:0!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+#s-game.active .hud-reputation{
+  flex:0 0 auto!important;
+  color:rgba(231,199,122,.78)!important;
+  white-space:nowrap!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .char-strip.hud-ref{min-height:105px!important;padding-bottom:23px!important;}
+  #s-game.active .hud-main{padding-right:73px!important;}
+  #s-game.active .char-strip.hud-ref > .hud-resources{top:8px!important;right:7px!important;width:64px!important;gap:4px!important;}
+  #s-game.active .hud-ref .gold-pill{width:64px!important;min-width:64px!important;min-height:21px!important;padding:3px 6px!important;font-size:7px!important;}
+  #s-game.active .hud-ref .bars{gap:6px!important;}
+  #s-game.active .hud-ref .bar-row{height:11px!important;min-height:11px!important;}
+  #s-game.active .hud-world{left:76px!important;bottom:5px!important;font-size:5.8px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .hud-main{padding-right:61px!important;}
+  #s-game.active .char-strip.hud-ref > .hud-resources{right:5px!important;width:54px!important;}
+  #s-game.active .hud-ref .gold-pill{width:54px!important;min-width:54px!important;padding:2px 4px!important;font-size:6px!important;}
+  #s-game.active .hud-ref .bar-lbl{left:20px!important;font-size:6px!important;}
+  #s-game.active .hud-ref .bar-val{left:35px!important;min-width:26px!important;font-size:6px!important;}
+  #s-game.active .hud-ref .bar-fill::after{background:linear-gradient(90deg,rgba(0,0,0,.40) 0 61px,transparent 72px,rgba(255,255,255,.06) 76%,transparent)!important;}
+  #s-game.active .hud-world{left:64px!important;right:7px!important;font-size:5.2px!important;}
+  #s-game.active .hud-reputation{font-size:5px!important;}
+}
+</style>
+
 <!-- AiMaster v4.6.1: geometria ornamental e hierarquia do HUD. -->
 <style id="aimaster-v461-ornamental-hud-source" media="not all">
 /* Retrato com aro duplo e medalhao de XP legivel. */
@@ -2957,8 +3136,9 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
       <polygon points="0,56 0,42 15,31 30,43 48,27 65,39 82,21 100,35 118,25 136,39 153,29 170,43 188,31 205,45 222,27 240,41 257,33 274,47 292,35 310,49 327,37 344,51 362,39 390,45 390,56" fill="#152008"/>
     </svg>
   </div>
-  <!-- Char strip com XP ring -->
-  <div class="char-strip">
+  <!-- HUD reconstruido: IDs e hierarquia funcional preservados -->
+  <div class="char-strip hud-ref">
+    <div class="hud-main">
     <div class="xp-portrait-wrap" onclick="openMo('mo-xp')">
       <svg class="xp-ring" viewBox="0 0 50 50">
         <circle cx="25" cy="25" r="22" fill="none" stroke="rgba(200,146,42,.15)" stroke-width="3"/>
@@ -2975,17 +3155,24 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
       <div class="c-name" id="g-nm">Herói</div>
       <div class="c-meta" id="g-mt">Nível 1</div>
       <div class="bars">
-        <div class="bar-row"><span class="bar-lbl">PV</span><div class="bar-track"><div class="bar-fill hp" id="bar-hp" style="width:100%"></div></div><span class="bar-val" id="g-hp-txt">10/10</span></div>
-        <div class="bar-row"><span class="bar-lbl">MP</span><div class="bar-track"><div class="bar-fill mp" id="bar-mp" style="width:100%"></div></div><span class="bar-val" id="g-mp-txt">2/2</span></div>
+        <div class="bar-row hp-row"><span class="bar-lbl">PV</span><span class="bar-val" id="g-hp-txt">10/10</span><div class="bar-track"><div class="bar-fill hp" id="bar-hp" style="width:100%"></div></div></div>
+        <div class="bar-row mp-row"><span class="bar-lbl">MP</span><span class="bar-val" id="g-mp-txt">2/2</span><div class="bar-track"><div class="bar-fill mp" id="bar-mp" style="width:100%"></div></div></div>
       </div>
-      <div class="mini-stats">
+    </div>
+    </div>
+    <div class="hud-sub">
+      <div class="mini-stats hud-old-stats">
         <span class="mstat">CA <span id="f-ca">—</span></span>
         <span class="mstat">FOR <span id="f-str">—</span></span>
         <span class="mstat">DES <span id="f-dex">—</span></span>
         <span class="mstat">SAB <span id="f-wis">—</span></span>
       </div>
     </div>
-    <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0">
+    <div class="hud-world">
+      <span class="hud-location">&#128205; <span id="hud-location">Local desconhecido</span></span>
+      <span class="hud-reputation">&#11088; Reputação: <span id="hud-reputation">0</span></span>
+    </div>
+    <div class="hud-resources">
       <div class="gold-pill" id="gold-pill-display">🪙 <span id="g-gd">50</span></div>
       <div class="gold-pill" style="background:rgba(100,60,180,0.15);border-color:rgba(100,60,180,0.35);font-size:12px;padding:3px 8px;">💎 <span id="g-credits">0</span></div>
 
@@ -5044,6 +5231,17 @@ function updateVitals(){
     ];
     const rt = REP_TIERS_V.find(t=>(hero.rep||0)>=t.min&&(hero.rep||0)<=t.max)||REP_TIERS_V[0];
     repEl.textContent = `${hero.rep||0} pts · ${rt.name}`;
+  }
+  // Sincroniza somente os novos campos visuais com dados já existentes.
+  const hudRep = document.getElementById('hud-reputation');
+  if(hudRep) hudRep.textContent = hero.rep||0;
+  const hudLoc = document.getElementById('hud-location');
+  if(hudLoc){
+    const memoryLoc = typeof gameMemory!=='undefined'
+      ? gameMemory.events?.slice().reverse().find(e=>e.type==='local')?.summary
+      : '';
+    hudLoc.textContent = (window.currentLocation||hero.location||memoryLoc||'Local desconhecido')
+      .replace(/^Chegou em:\s*/i,'').trim();
   }
 }
 
@@ -12299,5 +12497,1349 @@ try{document.addEventListener('DOMContentLoaded',()=>{document.body.setAttribute
   #s-game.active .bar-row:first-child .bar-lbl::before{font-size:12px!important;}
   #s-game.active .bar-track{min-width:36px!important;}
   #s-game.active .bar-val{min-width:27px!important;font-size:6.2px!important;padding:0!important;}
+}
+</style>
+
+<!-- AiMaster v4.7.1: proporcoes mobile mais proximas da referencia. -->
+<style id="aimaster-v471-hud-proportions">
+/* Libera largura central para PV/MP e reduz competicao visual. */
+#s-game.active .char-strip{
+  gap:7px!important;
+  padding-left:7px!important;
+  padding-right:7px!important;
+}
+#s-game.active .xp-portrait-wrap{
+  width:58px!important;
+  height:58px!important;
+  min-width:58px!important;
+  min-height:58px!important;
+  flex-basis:58px!important;
+}
+#s-game.active .portrait{
+  inset:6px!important;
+  font-size:22px!important;
+}
+#s-game.active .xp-label{
+  min-width:60px!important;
+  font-size:6.6px!important;
+}
+#s-game.active .char-info{
+  padding-right:5px!important;
+}
+#s-game.active .c-name{
+  font-size:13.5px!important;
+}
+#s-game.active .c-meta{
+  max-width:132px!important;
+  margin-bottom:4px!important;
+}
+
+/* Barras recebem prioridade horizontal dentro do HUD. */
+#s-game.active .bar-row{
+  grid-template-columns:17px 19px minmax(88px,1fr) 32px!important;
+  gap:2px!important;
+}
+#s-game.active .bar-track{
+  min-width:88px!important;
+}
+#s-game.active .bar-val{
+  min-width:32px!important;
+  font-size:7px!important;
+}
+#s-game.active .bar-lbl{
+  font-size:7px!important;
+}
+
+/* Stats ficam como uma linha tecnica discreta abaixo das barras. */
+#s-game.active .mini-stats{
+  gap:2px!important;
+  margin-top:4px!important;
+  max-height:13px!important;
+  overflow:hidden!important;
+}
+#s-game.active .mstat{
+  padding:1px 3px!important;
+  border:0!important;
+  border-right:1px solid rgba(229,189,103,.16)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-size:6.2px!important;
+}
+#s-game.active .mstat:last-child{
+  border-right:0!important;
+}
+
+/* Recursos mais compactos, permitindo que o centro respire. */
+#s-game.active .char-strip > div:last-child{
+  width:57px!important;
+  min-width:57px!important;
+  flex-basis:57px!important;
+  padding-left:3px!important;
+}
+#s-game.active .char-strip > div:last-child::before{
+  font-size:5px!important;
+  letter-spacing:.65px!important;
+}
+#s-game.active .gold-pill{
+  min-height:25px!important;
+  padding-left:5px!important;
+  padding-right:15px!important;
+  font-size:8px!important;
+}
+#s-game.active .gold-pill::after{
+  right:3px!important;
+  width:10px!important;
+  height:10px!important;
+  font-size:5px!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .xp-portrait-wrap{width:47px!important;height:47px!important;min-width:47px!important;min-height:47px!important;flex-basis:47px!important;}
+  #s-game.active .portrait{inset:5px!important;font-size:19px!important;}
+  #s-game.active .bar-row{grid-template-columns:14px 17px minmax(68px,1fr) 28px!important;}
+  #s-game.active .bar-track{min-width:68px!important;}
+  #s-game.active .bar-val{min-width:28px!important;font-size:6.2px!important;}
+  #s-game.active .char-strip > div:last-child{width:51px!important;min-width:51px!important;flex-basis:51px!important;}
+  #s-game.active .gold-pill{min-height:22px!important;font-size:7.3px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .char-strip{gap:4px!important;padding-left:5px!important;padding-right:5px!important;}
+  #s-game.active .xp-portrait-wrap{width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important;flex-basis:43px!important;}
+  #s-game.active .c-name{font-size:11.5px!important;}
+  #s-game.active .c-meta{max-width:90px!important;}
+  #s-game.active .bar-row{grid-template-columns:12px 15px minmax(42px,1fr) 25px!important;}
+  #s-game.active .bar-track{min-width:42px!important;}
+  #s-game.active .bar-val{min-width:25px!important;font-size:5.8px!important;}
+  #s-game.active .char-strip > div:last-child{width:46px!important;min-width:46px!important;flex-basis:46px!important;}
+  #s-game.active .gold-pill{padding-left:3px!important;padding-right:12px!important;font-size:6.8px!important;}
+}
+</style>
+
+<!-- AiMaster v4.7.2: recursos preparados para valores maiores. -->
+<style id="aimaster-v472-resource-width">
+#s-game.active .char-strip > div:last-child{
+  width:72px!important;
+  min-width:72px!important;
+  flex-basis:72px!important;
+}
+#s-game.active .gold-pill{
+  min-width:0!important;
+  padding-left:7px!important;
+  padding-right:17px!important;
+  font-size:8.5px!important;
+  white-space:nowrap!important;
+  font-variant-numeric:tabular-nums!important;
+  overflow:visible!important;
+}
+#s-game.active .gold-pill span{
+  min-width:0!important;
+  white-space:nowrap!important;
+}
+@media(max-height:740px){
+  #s-game.active .char-strip > div:last-child{
+    width:64px!important;
+    min-width:64px!important;
+    flex-basis:64px!important;
+  }
+  #s-game.active .gold-pill{padding-left:5px!important;padding-right:14px!important;font-size:7.8px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .char-strip > div:last-child{
+    width:57px!important;
+    min-width:57px!important;
+    flex-basis:57px!important;
+  }
+  #s-game.active .gold-pill{padding-left:3px!important;padding-right:12px!important;font-size:7px!important;}
+}
+</style>
+
+<!-- AiMaster v4.7.3: mostradores e molduras refinados. -->
+<style id="aimaster-v473-hud-instruments">
+/* Barras recebem moldura externa mais clara e pequenos terminais metalicos. */
+#s-game.active .bar-row{
+  overflow:visible!important;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.40))!important;
+}
+#s-game.active .bar-row::before{
+  background:
+    linear-gradient(180deg,rgba(255,224,147,.72),rgba(76,48,15,.82))!important;
+}
+#s-game.active .bar-row::after{
+  inset:1px 2px 1px 1px!important;
+  background:
+    radial-gradient(circle at 7% 50%,rgba(229,189,103,.09),transparent 20%),
+    linear-gradient(180deg,rgba(19,16,11,.99),rgba(2,2,2,.99))!important;
+}
+#s-game.active .bar-track{
+  border-color:rgba(229,189,103,.34)!important;
+}
+#s-game.active .bar-track::after{
+  background:linear-gradient(90deg,rgba(255,255,255,.43),rgba(255,255,255,.07) 52%,transparent)!important;
+}
+
+/* Simbolos ganham pequenas bases circulares como na referencia. */
+#s-game.active .bar-lbl::before{
+  z-index:3!important;
+  border-radius:50%!important;
+}
+#s-game.active .bar-row:first-child .bar-lbl::before{
+  width:15px!important;
+  height:15px!important;
+  background:radial-gradient(circle,rgba(96,8,7,.96),rgba(26,4,3,.98))!important;
+  border:1px solid rgba(255,100,84,.45)!important;
+  font-size:13px!important;
+}
+#s-game.active .bar-row:last-child .bar-lbl::before{
+  width:15px!important;
+  height:15px!important;
+}
+
+/* Recursos com icone separado do numero e terminal circular. */
+#s-game.active .gold-pill{
+  display:grid!important;
+  grid-template-columns:14px minmax(0,1fr) 12px!important;
+  align-items:center!important;
+  gap:3px!important;
+  padding:3px 3px 3px 5px!important;
+  border-radius:5px 14px 14px 5px!important;
+  text-align:center!important;
+}
+#s-game.active .gold-pill span{
+  display:block!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  text-align:center!important;
+}
+#s-game.active .gold-pill::after{
+  position:static!important;
+  grid-column:3!important;
+  transform:none!important;
+  width:11px!important;
+  height:11px!important;
+}
+#s-game.active .gold-pill::before{
+  left:-2px!important;
+}
+#s-game.active .char-strip > div:last-child{
+  gap:6px!important;
+}
+#s-game.active .char-strip > div:last-child::before{
+  color:rgba(229,189,103,.60)!important;
+  text-shadow:0 0 7px rgba(200,146,42,.15)!important;
+}
+
+/* Separador fino entre HUD e narrativa. */
+#s-game.active .narr-border{
+  height:2px!important;
+  margin:0 18px 3px!important;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(229,189,103,.68) 0 2px,transparent 3px),
+    linear-gradient(90deg,transparent,rgba(229,189,103,.18),rgba(229,189,103,.62),rgba(229,189,103,.18),transparent)!important;
+  box-shadow:0 0 7px rgba(200,146,42,.12)!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .gold-pill{grid-template-columns:12px minmax(0,1fr) 10px!important;gap:2px!important;padding-left:3px!important;}
+  #s-game.active .gold-pill::after{width:9px!important;height:9px!important;}
+  #s-game.active .narr-border{margin-left:16px!important;margin-right:16px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .gold-pill{grid-template-columns:10px minmax(0,1fr) 8px!important;gap:1px!important;padding:2px!important;}
+  #s-game.active .gold-pill::after{width:8px!important;height:8px!important;}
+}
+</style>
+
+<!-- AiMaster v4.7.4: profundidade e legibilidade final do HUD. -->
+<style id="aimaster-v474-hud-depth">
+/* Profundidade controlada na moldura principal. */
+#s-game.active .char-strip{
+  box-shadow:
+    0 14px 32px rgba(0,0,0,.72),
+    0 0 24px rgba(200,146,42,.10),
+    inset 0 1px 0 rgba(255,235,185,.11),
+    inset 0 -8px 18px rgba(0,0,0,.32)!important;
+}
+
+/* Retrato mais profundo, sem alterar seu tamanho. */
+#s-game.active .portrait{
+  background:
+    radial-gradient(circle at 48% 30%,rgba(246,207,119,.25),transparent 34%),
+    radial-gradient(circle at 50% 48%,rgba(72,49,20,.42),transparent 65%),
+    linear-gradient(180deg,#1b1710,#050504)!important;
+  box-shadow:
+    inset 0 0 5px rgba(255,224,145,.13),
+    inset 0 -10px 18px rgba(0,0,0,.68),
+    0 0 11px rgba(200,146,42,.18)!important;
+}
+#s-game.active .xp-portrait-wrap::before{
+  background:
+    conic-gradient(from 45deg,
+      rgba(229,189,103,.08),
+      rgba(229,189,103,.42),
+      rgba(229,189,103,.08),
+      rgba(229,189,103,.30),
+      rgba(229,189,103,.08))!important;
+  padding:1px!important;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0)!important;
+  -webkit-mask-composite:xor!important;
+  mask-composite:exclude!important;
+}
+
+/* Nome mais limpo e forte sobre o fundo escuro. */
+#s-game.active .c-name{
+  color:#f5d991!important;
+  font-weight:700!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.90),0 0 10px rgba(229,189,103,.18)!important;
+}
+#s-game.active .c-meta{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025),0 2px 5px rgba(0,0,0,.22)!important;
+}
+
+/* Trilhos internos reforcam volume sem competir com o preenchimento. */
+#s-game.active .bar-track{
+  position:relative!important;
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,.98),
+    inset 0 -1px 0 rgba(255,255,255,.05),
+    0 0 0 1px rgba(0,0,0,.50),
+    0 0 5px rgba(200,146,42,.09)!important;
+}
+#s-game.active .bar-track::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:2px!important;
+  right:5px!important;
+  bottom:1px!important;
+  height:1px!important;
+  z-index:2!important;
+  background:linear-gradient(90deg,rgba(0,0,0,.48),rgba(255,255,255,.08),rgba(0,0,0,.48))!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-fill{
+  position:relative!important;
+}
+#s-game.active .bar-fill::after{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.09) 55%,transparent)!important;
+  pointer-events:none!important;
+}
+
+/* Valores mais legiveis sem aumentar a largura. */
+#s-game.active .bar-val{
+  font-weight:700!important;
+  letter-spacing:-.15px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.95)!important;
+}
+#s-game.active .gold-pill{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.075),
+    inset 0 -6px 10px rgba(0,0,0,.20),
+    0 4px 10px rgba(0,0,0,.38)!important;
+}
+#s-game.active .char-strip > div:last-child .gold-pill:last-child{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.075),
+    inset 0 -6px 10px rgba(0,0,0,.20),
+    0 0 12px rgba(137,107,220,.14)!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .bar-track::before{display:none!important;}
+}
+</style>
+
+<!-- AiMaster v4.7.5: correcao baseada na visualizacao real do HUD. -->
+<style id="aimaster-v475-real-view-fix">
+/* Avatar ocupa melhor a moldura circular. */
+#s-game.active .xp-portrait-wrap{
+  width:62px!important;
+  height:62px!important;
+  min-width:62px!important;
+  min-height:62px!important;
+  flex-basis:62px!important;
+}
+#s-game.active .portrait{
+  inset:4px!important;
+  font-size:28px!important;
+  border-width:1.5px!important;
+}
+#s-game.active .xp-ring{
+  inset:-1px!important;
+}
+#s-game.active .xp-label{
+  bottom:-16px!important;
+  min-width:64px!important;
+}
+
+/* Nome e identidade deixam de parecer comprimidos. */
+#s-game.active .char-info{
+  padding-right:6px!important;
+}
+#s-game.active .c-name{
+  min-height:17px!important;
+  padding-left:7px!important;
+  font-size:14px!important;
+  line-height:1.1!important;
+}
+#s-game.active .c-meta{
+  display:flex!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:16px!important;
+  padding:2px 6px 2px 12px!important;
+  font-size:6.8px!important;
+  letter-spacing:.65px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* Recursos largos e limpos; remove enfeites que espremiam os numeros. */
+#s-game.active .char-strip > div:last-child{
+  width:82px!important;
+  min-width:82px!important;
+  flex-basis:82px!important;
+  padding-left:5px!important;
+}
+#s-game.active .gold-pill{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  width:100%!important;
+  min-height:27px!important;
+  padding:4px 8px!important;
+  gap:5px!important;
+  overflow:hidden!important;
+  border-radius:14px!important;
+  font-size:9px!important;
+}
+#s-game.active .gold-pill span{
+  flex:1 1 auto!important;
+  min-width:0!important;
+  overflow:visible!important;
+  text-align:left!important;
+}
+#s-game.active .gold-pill::before,
+#s-game.active .gold-pill::after{
+  display:none!important;
+  content:none!important;
+}
+
+/* Mantem as barras largas mesmo com recursos mais legiveis. */
+#s-game.active .bar-row{
+  grid-template-columns:16px 18px minmax(64px,1fr) 30px!important;
+}
+#s-game.active .bar-track{
+  min-width:64px!important;
+}
+#s-game.active .bar-val{
+  min-width:30px!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .xp-portrait-wrap{width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;flex-basis:50px!important;}
+  #s-game.active .portrait{inset:3px!important;font-size:23px!important;}
+  #s-game.active .char-strip > div:last-child{width:70px!important;min-width:70px!important;flex-basis:70px!important;}
+  #s-game.active .gold-pill{min-height:23px!important;padding:3px 6px!important;font-size:8px!important;}
+  #s-game.active .bar-row{grid-template-columns:14px 16px minmax(52px,1fr) 27px!important;}
+  #s-game.active .bar-track{min-width:52px!important;}
+  #s-game.active .bar-val{min-width:27px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .xp-portrait-wrap{width:45px!important;height:45px!important;min-width:45px!important;min-height:45px!important;flex-basis:45px!important;}
+  #s-game.active .portrait{font-size:20px!important;}
+  #s-game.active .c-name{font-size:11.5px!important;}
+  #s-game.active .c-meta{font-size:5.7px!important;padding-left:9px!important;padding-right:3px!important;}
+  #s-game.active .char-strip > div:last-child{width:60px!important;min-width:60px!important;flex-basis:60px!important;padding-left:2px!important;}
+  #s-game.active .gold-pill{padding:2px 4px!important;gap:2px!important;font-size:7px!important;}
+  #s-game.active .bar-row{grid-template-columns:12px 14px minmax(34px,1fr) 24px!important;}
+  #s-game.active .bar-track{min-width:34px!important;}
+  #s-game.active .bar-val{min-width:24px!important;font-size:5.6px!important;}
+}
+</style>
+
+<!-- AiMaster v4.8: barras limpas e alongadas conforme a referencia. -->
+<style id="aimaster-v48-reference-bars-v2">
+/* Remove a placa externa anterior: a referencia usa linhas leves e barras dominantes. */
+#s-game.active .bars{
+  gap:6px!important;
+  margin-top:2px!important;
+}
+#s-game.active .bar-row{
+  display:grid!important;
+  grid-template-columns:17px 18px minmax(74px,1fr) 34px!important;
+  align-items:center!important;
+  gap:4px!important;
+  min-height:12px!important;
+  padding:0!important;
+  overflow:visible!important;
+  clip-path:none!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+#s-game.active .bar-row::before,
+#s-game.active .bar-row::after{
+  display:none!important;
+  content:none!important;
+}
+
+/* Icones soltos, imediatamente antes dos rotulos PV e MP. */
+#s-game.active .bar-lbl{
+  grid-column:2!important;
+  position:relative!important;
+  width:auto!important;
+  padding:0!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  line-height:1!important;
+  letter-spacing:.55px!important;
+  color:#ead5a5!important;
+  text-align:left!important;
+  text-shadow:0 1px 2px #000!important;
+}
+#s-game.active .bar-lbl::before{
+  position:absolute!important;
+  left:-21px!important;
+  top:50%!important;
+  width:15px!important;
+  height:15px!important;
+  transform:translateY(-50%)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+#s-game.active .bar-row:first-child .bar-lbl::before{
+  content:'\2665'!important;
+  border:0!important;
+  background:transparent!important;
+  color:#f0473c!important;
+  font-family:Arial,sans-serif!important;
+  font-size:16px!important;
+  text-shadow:0 0 4px rgba(255,65,55,.80),0 1px 1px #000!important;
+}
+#s-game.active .bar-row:last-child .bar-lbl::before{
+  content:''!important;
+  border:2px solid #3baeff!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 42% 42%,#87dcff 0 12%,#188dd4 15% 31%,#06192f 34% 54%,#269de8 57% 67%,#071a31 70%)!important;
+  box-shadow:0 0 5px rgba(46,165,255,.62),inset 0 0 3px rgba(160,225,255,.38)!important;
+}
+
+/* Trilho angular longo, contorno dourado e preenchimento brilhante. */
+#s-game.active .bar-track{
+  grid-column:3!important;
+  position:relative!important;
+  width:100%!important;
+  min-width:74px!important;
+  height:8px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(215,166,66,.72)!important;
+  border-radius:1px!important;
+  clip-path:polygon(0 0,calc(100% - 6px) 0,100% 50%,calc(100% - 6px) 100%,0 100%)!important;
+  background:linear-gradient(180deg,#040302,#171006 48%,#030302)!important;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.98),0 0 4px rgba(200,146,42,.10)!important;
+}
+#s-game.active .bar-track::before{
+  display:none!important;
+  content:none!important;
+}
+#s-game.active .bar-track::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:1px 5px auto 2px!important;
+  height:2px!important;
+  z-index:3!important;
+  border-radius:99px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.58),rgba(255,255,255,.12) 58%,transparent)!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-fill{
+  position:relative!important;
+  height:100%!important;
+  border-radius:0!important;
+  clip-path:none!important;
+}
+#s-game.active .bar-fill::after{
+  background:linear-gradient(90deg,transparent 8%,rgba(255,255,255,.10) 62%,transparent 92%)!important;
+}
+#s-game.active .bar-fill.hp{
+  background:linear-gradient(180deg,#ff685a 0%,#e12d25 38%,#8a0b0b 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,220,208,.72),0 0 7px rgba(236,45,37,.72)!important;
+}
+#s-game.active .bar-fill.mp{
+  background:linear-gradient(180deg,#76d8ff 0%,#168ce1 40%,#063d88 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(222,249,255,.74),0 0 7px rgba(31,145,240,.70)!important;
+}
+
+/* Valor simples ao lado, exatamente como na referencia. */
+#s-game.active .bar-val{
+  grid-column:4!important;
+  min-width:34px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  font-family:var(--font-narr)!important;
+  font-size:8px!important;
+  font-weight:600!important;
+  letter-spacing:0!important;
+  line-height:1!important;
+  text-align:left!important;
+  color:#ead5a5!important;
+}
+#s-game.active .bar-row:first-child .bar-val,
+#s-game.active .bar-row:last-child .bar-val{
+  color:#ead5a5!important;
+  border:0!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .bars{gap:4px!important;}
+  #s-game.active .bar-row{grid-template-columns:14px 16px minmax(54px,1fr) 29px!important;gap:3px!important;}
+  #s-game.active .bar-lbl{font-size:7px!important;}
+  #s-game.active .bar-lbl::before{left:-18px!important;width:13px!important;height:13px!important;}
+  #s-game.active .bar-row:first-child .bar-lbl::before{font-size:14px!important;}
+  #s-game.active .bar-track{min-width:54px!important;height:7px!important;}
+  #s-game.active .bar-val{min-width:29px!important;font-size:7px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .bar-row{grid-template-columns:12px 14px minmax(34px,1fr) 24px!important;gap:2px!important;}
+  #s-game.active .bar-lbl{font-size:6px!important;}
+  #s-game.active .bar-lbl::before{left:-15px!important;width:11px!important;height:11px!important;}
+  #s-game.active .bar-row:first-child .bar-lbl::before{font-size:12px!important;}
+  #s-game.active .bar-track{min-width:34px!important;height:6px!important;}
+  #s-game.active .bar-val{min-width:24px!important;font-size:6px!important;}
+}
+</style>
+
+<!-- AiMaster v4.8.1: correcao das barras a partir da captura real. -->
+<style id="aimaster-v481-bars-real-fix">
+/* Icones ocupam uma coluna propria e nao dependem mais do rotulo. */
+#s-game.active .bar-row::before{
+  grid-column:1!important;
+  position:static!important;
+  inset:auto!important;
+  z-index:2!important;
+  align-self:center!important;
+  justify-self:center!important;
+  display:flex!important;
+  width:15px!important;
+  height:15px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  clip-path:none!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-row:first-child::before{
+  content:'\2665'!important;
+  border:0!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(103,9,8,.98),rgba(25,3,3,.98))!important;
+  color:#ff5145!important;
+  font-family:Arial,sans-serif!important;
+  font-size:13px!important;
+  line-height:1!important;
+  text-shadow:0 0 5px rgba(255,67,57,.88),0 1px 1px #000!important;
+  box-shadow:0 0 0 1px rgba(255,94,79,.30),0 0 5px rgba(226,42,35,.28)!important;
+}
+#s-game.active .bar-row:last-child::before{
+  content:''!important;
+  border:1px solid rgba(103,203,255,.92)!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 42% 38%,#b5efff 0 9%,#27a6ef 13% 30%,#071b35 34% 53%,#3ab8ff 57% 67%,#06182e 71%)!important;
+  box-shadow:0 0 5px rgba(44,167,255,.72),inset 0 0 3px rgba(196,240,255,.44)!important;
+}
+#s-game.active .bar-lbl::before{
+  display:none!important;
+  content:none!important;
+}
+
+/* Aumenta a espessura e devolve vermelho/azul visiveis. */
+#s-game.active .bar-row{
+  grid-template-columns:17px 18px minmax(74px,1fr) 34px!important;
+}
+#s-game.active .bar-track{
+  height:10px!important;
+  border-color:rgba(219,171,72,.76)!important;
+  background:linear-gradient(180deg,#020202,#120c05 52%,#020202)!important;
+}
+#s-game.active .bar-track::after{
+  inset:1px 6px auto 2px!important;
+  height:1px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.34),rgba(255,255,255,.06) 62%,transparent)!important;
+}
+#s-game.active .bar-fill.hp{
+  background:linear-gradient(180deg,#ff5d50 0%,#d51e19 45%,#790807 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,203,190,.52),0 0 7px rgba(230,39,31,.75)!important;
+}
+#s-game.active .bar-fill.mp{
+  background:linear-gradient(180deg,#67d2ff 0%,#087ed6 46%,#053878 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(211,246,255,.55),0 0 7px rgba(22,133,230,.74)!important;
+}
+#s-game.active .bar-fill::after{
+  opacity:.32!important;
+}
+#s-game.active .bar-val{
+  font-size:8.2px!important;
+  color:#f0ddb0!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .bar-row::before{width:13px!important;height:13px!important;}
+  #s-game.active .bar-row:first-child::before{font-size:11px!important;}
+  #s-game.active .bar-track{height:8px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .bar-row::before{width:11px!important;height:11px!important;}
+  #s-game.active .bar-row:first-child::before{font-size:10px!important;}
+  #s-game.active .bar-track{height:7px!important;}
+}
+</style>
+
+<!-- AiMaster v4.8.2: ordem das barras igual a referencia. -->
+<style id="aimaster-v482-bars-order">
+/* Referencia: simbolo, PV/MP, valor atual/maximo e barra longa. */
+#s-game.active .bar-row{
+  grid-template-columns:17px 18px 31px minmax(72px,1fr)!important;
+  gap:3px!important;
+}
+#s-game.active .bar-lbl{
+  grid-column:2!important;
+}
+#s-game.active .bar-val{
+  grid-column:3!important;
+  min-width:31px!important;
+  font-family:var(--font-narr)!important;
+  font-size:8px!important;
+  font-weight:600!important;
+  text-align:left!important;
+  white-space:nowrap!important;
+  color:#ead5a5!important;
+}
+#s-game.active .bar-track{
+  grid-column:4!important;
+  min-width:72px!important;
+}
+@media(max-height:740px){
+  #s-game.active .bar-row{grid-template-columns:14px 16px 27px minmax(52px,1fr)!important;}
+  #s-game.active .bar-val{min-width:27px!important;font-size:7px!important;}
+  #s-game.active .bar-track{min-width:52px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .bar-row{grid-template-columns:12px 14px 23px minmax(32px,1fr)!important;gap:2px!important;}
+  #s-game.active .bar-val{min-width:23px!important;font-size:6px!important;}
+  #s-game.active .bar-track{min-width:32px!important;}
+}
+</style>
+
+<!-- AiMaster v4.8.3: barras alongadas com moldura dupla da referencia. -->
+<style id="aimaster-v483-reference-shape">
+/* Recupera largura para o trilho: rotulo e valor ficam compactos. */
+#s-game.active .bar-row{
+  grid-template-columns:17px 17px 29px minmax(86px,1fr)!important;
+  gap:2px!important;
+}
+#s-game.active .bar-lbl{
+  font-size:7.6px!important;
+}
+#s-game.active .bar-val{
+  min-width:29px!important;
+  font-size:7.5px!important;
+  letter-spacing:-.2px!important;
+}
+
+/* Moldura externa angular dourada e trilho interno escuro. */
+#s-game.active .bar-track{
+  min-width:86px!important;
+  height:9px!important;
+  overflow:visible!important;
+  border:0!important;
+  clip-path:none!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  isolation:isolate!important;
+}
+#s-game.active .bar-track::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:-2px -7px!important;
+  z-index:-2!important;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,0 100%,4px 50%)!important;
+  background:linear-gradient(180deg,#d5a43f,#684315)!important;
+  opacity:.82!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-track::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:-1px -5px!important;
+  z-index:-1!important;
+  height:auto!important;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,4px 50%)!important;
+  background:linear-gradient(180deg,#161009,#030302)!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-fill{
+  overflow:hidden!important;
+  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 50%,calc(100% - 5px) 100%,0 100%)!important;
+}
+#s-game.active .bar-fill::before{
+  content:''!important;
+  position:absolute!important;
+  left:1px!important;
+  right:5px!important;
+  top:1px!important;
+  height:2px!important;
+  border-radius:99px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.50),rgba(255,255,255,.08),transparent)!important;
+  pointer-events:none!important;
+}
+#s-game.active .bar-fill::after{
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.16),transparent 16%,rgba(255,255,255,.08) 58%,transparent 90%),
+    repeating-linear-gradient(90deg,transparent 0 12px,rgba(0,0,0,.055) 13px)!important;
+  opacity:1!important;
+}
+
+/* Cores menos neon e mais proximas do exemplo. */
+#s-game.active .bar-fill.hp{
+  background:linear-gradient(180deg,#f14e43 0%,#bd201b 47%,#680706 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,194,180,.46),0 0 5px rgba(198,31,25,.52)!important;
+}
+#s-game.active .bar-fill.mp{
+  background:linear-gradient(180deg,#58bdf1 0%,#0873c0 48%,#042e68 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(205,241,255,.48),0 0 5px rgba(21,115,196,.50)!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .bar-row{grid-template-columns:14px 15px 25px minmax(62px,1fr)!important;}
+  #s-game.active .bar-val{min-width:25px!important;font-size:6.6px!important;}
+  #s-game.active .bar-track{min-width:62px!important;height:7px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .bar-row{grid-template-columns:11px 13px 22px minmax(37px,1fr)!important;gap:1px!important;}
+  #s-game.active .bar-lbl{font-size:5.8px!important;}
+  #s-game.active .bar-val{min-width:22px!important;font-size:5.5px!important;}
+  #s-game.active .bar-track{min-width:37px!important;height:6px!important;}
+}
+</style>
+
+<!-- AiMaster v4.8.4: terminais e encaixe fino das barras. -->
+<style id="aimaster-v484-bars-terminals">
+/* Alinhamento preciso entre simbolo, texto, valor e trilho. */
+#s-game.active .bar-row{
+  min-height:14px!important;
+}
+#s-game.active .bar-lbl,
+#s-game.active .bar-val{
+  align-self:center!important;
+  line-height:1!important;
+}
+#s-game.active .bar-val{
+  position:relative!important;
+  padding-right:4px!important;
+  text-align:right!important;
+}
+
+/* Pequeno conector dourado entre o valor e a moldura. */
+#s-game.active .bar-val::after{
+  content:''!important;
+  position:absolute!important;
+  right:-3px!important;
+  top:50%!important;
+  width:5px!important;
+  height:5px!important;
+  transform:translateY(-50%) rotate(45deg)!important;
+  border:1px solid rgba(224,177,77,.70)!important;
+  background:#100b05!important;
+  box-shadow:0 0 4px rgba(200,146,42,.24)!important;
+  pointer-events:none!important;
+}
+
+/* Ponta direita e contorno mais nobre, sem aumentar a barra. */
+#s-game.active .bar-track::before{
+  background:
+    linear-gradient(180deg,#efc665 0%,#b17b27 44%,#5b3910 100%)!important;
+  opacity:.90!important;
+  filter:drop-shadow(0 0 2px rgba(200,146,42,.18))!important;
+}
+#s-game.active .bar-track::after{
+  background:
+    radial-gradient(circle at calc(100% - 8px) 50%,rgba(229,189,103,.18),transparent 4px),
+    linear-gradient(180deg,#171108,#020202)!important;
+}
+
+/* Icones um pouco mais solidos e próximos do exemplo. */
+#s-game.active .bar-row:first-child::before{
+  color:#f04b40!important;
+  background:radial-gradient(circle,rgba(102,8,7,.92),rgba(18,2,2,.96))!important;
+  box-shadow:0 0 0 1px rgba(255,105,88,.34),0 0 6px rgba(226,42,35,.34)!important;
+}
+#s-game.active .bar-row:last-child::before{
+  border-color:rgba(103,203,255,.94)!important;
+  box-shadow:0 0 0 1px rgba(20,89,143,.40),0 0 6px rgba(44,167,255,.76),inset 0 0 3px rgba(196,240,255,.48)!important;
+}
+
+/* Diferenca sutil entre o metal de PV e MP. */
+#s-game.active .bar-row:first-child .bar-track::before{
+  background:linear-gradient(180deg,#e9bd5b,#a76f21 48%,#56320d)!important;
+}
+#s-game.active .bar-row:last-child .bar-track::before{
+  background:linear-gradient(180deg,#d6b357,#8c6524 48%,#49300f)!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .bar-row{min-height:12px!important;}
+  #s-game.active .bar-val{padding-right:3px!important;}
+  #s-game.active .bar-val::after{right:-2px!important;width:4px!important;height:4px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .bar-val{padding-right:2px!important;}
+  #s-game.active .bar-val::after{display:none!important;}
+}
+</style>
+
+<!-- AiMaster v5.0: HUD reconstruido para reproduzir a composicao da referencia. -->
+<style id="aimaster-v50-rebuilt-hud">
+#s-game.active .char-strip.hud-ref{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  grid-template-rows:auto 21px!important;
+  align-items:stretch!important;
+  gap:3px 8px!important;
+  position:sticky!important;
+  top:2px!important;
+  min-height:116px!important;
+  margin:4px 7px 6px!important;
+  padding:8px 9px 6px!important;
+  overflow:visible!important;
+  clip-path:polygon(0 10px,10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px))!important;
+  border:1px solid rgba(218,169,69,.58)!important;
+  border-radius:0!important;
+  background:
+    radial-gradient(circle at 13% 35%,rgba(188,130,37,.15),transparent 25%),
+    linear-gradient(180deg,rgba(17,15,11,.99),rgba(3,3,2,.995))!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.68),inset 0 1px 0 rgba(255,228,164,.08),inset 0 0 28px rgba(0,0,0,.35)!important;
+}
+#s-game.active .char-strip.hud-ref::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:3px!important;
+  border:1px solid rgba(218,169,69,.10)!important;
+  border-radius:0!important;
+  background:none!important;
+  pointer-events:none!important;
+}
+#s-game.active .char-strip.hud-ref::after{display:none!important;content:none!important;}
+
+#s-game.active .hud-main{
+  grid-column:1/-1!important;
+  grid-row:1!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:10px!important;
+  min-width:0!important;
+}
+
+/* Retrato grande, parcialmente dominante como na referencia. */
+#s-game.active .hud-ref .xp-portrait-wrap{
+  display:block!important;
+  position:relative!important;
+  width:82px!important;
+  height:82px!important;
+  min-width:82px!important;
+  min-height:82px!important;
+  flex:0 0 82px!important;
+  margin:0!important;
+  filter:drop-shadow(0 0 9px rgba(200,146,42,.22))!important;
+}
+#s-game.active .hud-ref .xp-portrait-wrap::before{
+  content:''!important;
+  position:absolute!important;
+  inset:-4px!important;
+  padding:0!important;
+  border:1px solid rgba(239,194,91,.65)!important;
+  border-radius:50%!important;
+  background:conic-gradient(from 45deg,#4e310d,#d4a444,#59370e,#b27c24,#4e310d)!important;
+  box-shadow:inset 0 0 0 3px #080704,0 0 8px rgba(200,146,42,.22)!important;
+  -webkit-mask:none!important;
+  mask:none!important;
+  pointer-events:none!important;
+}
+#s-game.active .hud-ref .xp-portrait-wrap::after{
+  display:none!important;
+  content:none!important;
+}
+#s-game.active .hud-ref .xp-ring{
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,transparent 57%,rgba(0,0,0,.58) 58%,rgba(218,169,69,.12) 68%,transparent 70%)!important;
+}
+#s-game.active .hud-ref .portrait{
+  inset:8px!important;
+  border:1px solid rgba(239,194,91,.58)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 50% 32%,rgba(218,169,69,.20),#17120b 52%,#030302 100%)!important;
+  font-size:31px!important;
+  box-shadow:inset 0 -14px 22px rgba(0,0,0,.72)!important;
+}
+#s-game.active .hud-ref .xp-label{
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;
+  bottom:-8px!important;
+  min-width:62px!important;
+  padding:2px 4px!important;
+  transform:translateX(-50%)!important;
+  border:1px solid rgba(239,194,91,.48)!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#251806,#080603)!important;
+  color:#e7c675!important;
+  font-family:var(--font-title)!important;
+  font-size:6px!important;
+  line-height:1!important;
+  text-align:center!important;
+  box-shadow:0 0 0 2px #050403,0 0 6px rgba(200,146,42,.18)!important;
+}
+
+/* Identidade e barras ocupam toda a largura restante. */
+#s-game.active .hud-ref .char-info{
+  display:block!important;
+  flex:1 1 auto!important;
+  min-width:0!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+#s-game.active .hud-ref .char-info::before,
+#s-game.active .hud-ref .char-info::after{display:none!important;content:none!important;}
+#s-game.active .hud-ref .c-name{
+  display:block!important;
+  min-height:0!important;
+  padding:0 0 4px!important;
+  border-bottom:1px solid rgba(218,169,69,.24)!important;
+  color:#edcf8a!important;
+  font-family:var(--font-title)!important;
+  font-size:15px!important;
+  font-weight:600!important;
+  line-height:1!important;
+  letter-spacing:.25px!important;
+  text-shadow:0 1px 1px #000!important;
+}
+#s-game.active .hud-ref .c-name::before{display:none!important;content:none!important;}
+#s-game.active .hud-ref .c-meta{
+  display:block!important;
+  width:auto!important;
+  max-width:100%!important;
+  min-height:0!important;
+  margin:4px 0 7px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:0!important;
+  background:none!important;
+  box-shadow:none!important;
+  color:rgba(225,196,135,.58)!important;
+  font-size:6.8px!important;
+  line-height:1!important;
+  letter-spacing:.8px!important;
+  white-space:nowrap!important;
+  text-overflow:ellipsis!important;
+}
+#s-game.active .hud-ref .c-meta::before{display:none!important;content:none!important;}
+
+#s-game.active .hud-ref .bars{
+  display:flex!important;
+  flex-direction:column!important;
+  width:100%!important;
+  gap:7px!important;
+  margin:0!important;
+}
+#s-game.active .hud-ref .bar-row{
+  display:grid!important;
+  grid-template-columns:17px 18px 34px minmax(80px,1fr)!important;
+  align-items:center!important;
+  gap:3px!important;
+  min-height:11px!important;
+  padding:0!important;
+  overflow:visible!important;
+  clip-path:none!important;
+  background:none!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+#s-game.active .hud-ref .bar-row::after{display:none!important;content:none!important;}
+#s-game.active .hud-ref .bar-row::before{
+  grid-column:1!important;
+  position:static!important;
+  display:flex!important;
+  width:15px!important;
+  height:15px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  justify-self:center!important;
+  transform:none!important;
+  clip-path:none!important;
+}
+#s-game.active .hud-ref .hp-row::before{
+  content:'\2665'!important;
+  border:0!important;
+  border-radius:0!important;
+  background:none!important;
+  color:#e63e34!important;
+  font-family:Arial,sans-serif!important;
+  font-size:17px!important;
+  text-shadow:0 0 4px rgba(232,56,47,.60),0 1px 1px #000!important;
+  box-shadow:none!important;
+}
+#s-game.active .hud-ref .mp-row::before{
+  content:''!important;
+  border:2px solid #2e9ee8!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,#92e2ff 0 9%,#1688d1 13% 31%,#071a31 34% 55%,#36aef4 58% 68%,#071a31 71%)!important;
+  box-shadow:0 0 4px rgba(45,164,242,.58)!important;
+}
+#s-game.active .hud-ref .bar-lbl{
+  grid-column:2!important;
+  position:static!important;
+  display:block!important;
+  width:auto!important;
+  padding:0!important;
+  color:#ead6aa!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  line-height:1!important;
+  letter-spacing:.4px!important;
+}
+#s-game.active .hud-ref .bar-lbl::before{display:none!important;content:none!important;}
+#s-game.active .hud-ref .bar-val{
+  grid-column:3!important;
+  position:static!important;
+  min-width:34px!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  color:#ead6aa!important;
+  font-family:var(--font-narr)!important;
+  font-size:8.5px!important;
+  font-weight:500!important;
+  line-height:1!important;
+  text-align:left!important;
+  white-space:nowrap!important;
+}
+#s-game.active .hud-ref .bar-val::after{display:none!important;content:none!important;}
+#s-game.active .hud-ref .bar-track{
+  grid-column:4!important;
+  position:relative!important;
+  width:100%!important;
+  min-width:80px!important;
+  height:9px!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  clip-path:none!important;
+  background:none!important;
+  box-shadow:none!important;
+  isolation:isolate!important;
+}
+#s-game.active .hud-ref .bar-track::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:-2px -8px!important;
+  z-index:-2!important;
+  clip-path:polygon(0 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,0 100%,4px 50%)!important;
+  background:linear-gradient(180deg,#d5a441,#684313)!important;
+  opacity:.82!important;
+}
+#s-game.active .hud-ref .bar-track::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:-1px -6px!important;
+  z-index:-1!important;
+  height:auto!important;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,4px 50%)!important;
+  background:linear-gradient(180deg,#151008,#020202)!important;
+}
+#s-game.active .hud-ref .bar-fill{
+  position:relative!important;
+  height:100%!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+  clip-path:polygon(0 0,calc(100% - 5px) 0,100% 50%,calc(100% - 5px) 100%,0 100%)!important;
+}
+#s-game.active .hud-ref .bar-fill.hp{
+  background:linear-gradient(180deg,#f14b40,#b91d19 50%,#650706)!important;
+  box-shadow:inset 0 1px 0 rgba(255,194,180,.45),0 0 5px rgba(198,31,25,.46)!important;
+}
+#s-game.active .hud-ref .bar-fill.mp{
+  background:linear-gradient(180deg,#53b9ed,#0870bb 50%,#042d65)!important;
+  box-shadow:inset 0 1px 0 rgba(205,241,255,.45),0 0 5px rgba(21,115,196,.46)!important;
+}
+
+/* Faixa inferior libera o bloco principal e mantem recursos legiveis. */
+#s-game.active .hud-sub{
+  grid-column:1!important;
+  grid-row:2!important;
+  display:flex!important;
+  align-items:center!important;
+  min-width:0!important;
+  padding-left:91px!important;
+}
+#s-game.active .hud-ref .mini-stats{
+  display:flex!important;
+  gap:7px!important;
+  margin:0!important;
+  max-height:none!important;
+  overflow:visible!important;
+  opacity:1!important;
+}
+#s-game.active .hud-ref .mstat{
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:none!important;
+  color:rgba(218,169,69,.80)!important;
+  font-size:6.5px!important;
+  line-height:1!important;
+  letter-spacing:.2px!important;
+}
+#s-game.active .hud-ref .mstat span{color:#ead6aa!important;}
+#s-game.active .hud-resources{
+  grid-column:2!important;
+  grid-row:2!important;
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:5px!important;
+  width:auto!important;
+  min-width:0!important;
+  padding:0!important;
+  border:0!important;
+}
+#s-game.active .char-strip.hud-ref > .hud-resources{
+  display:flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  align-self:center!important;
+  justify-content:flex-end!important;
+  width:auto!important;
+  min-width:0!important;
+  flex:0 1 auto!important;
+  padding:0!important;
+  gap:5px!important;
+  overflow:visible!important;
+}
+#s-game.active .char-strip.hud-ref > .hud-resources::before,
+#s-game.active .char-strip.hud-ref > .hud-resources::after{
+  display:none!important;
+  content:none!important;
+}
+#s-game.active .hud-ref .gold-pill{
+  display:flex!important;
+  width:auto!important;
+  min-width:55px!important;
+  min-height:20px!important;
+  padding:3px 7px!important;
+  gap:4px!important;
+  border:1px solid rgba(218,169,69,.35)!important;
+  border-radius:999px!important;
+  background:linear-gradient(180deg,rgba(47,34,14,.90),rgba(5,5,4,.94))!important;
+  color:#edd28f!important;
+  font-size:7.5px!important;
+  white-space:nowrap!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+#s-game.active .hud-ref .gold-pill::before,
+#s-game.active .hud-ref .gold-pill::after{display:none!important;content:none!important;}
+#s-game.active .hud-ref .credits-pill{
+  border-color:rgba(139,111,208,.42)!important;
+  background:linear-gradient(180deg,rgba(45,31,78,.90),rgba(6,5,11,.94))!important;
+  color:#ddd0ff!important;
+}
+#s-game.active .hud-resources .gold-pill:last-child{
+  border-color:rgba(139,111,208,.42)!important;
+  background:linear-gradient(180deg,rgba(45,31,78,.90),rgba(6,5,11,.94))!important;
+  color:#ddd0ff!important;
+}
+
+@media(max-height:740px){
+  #s-game.active .char-strip.hud-ref{min-height:101px!important;padding-top:6px!important;padding-bottom:5px!important;}
+  #s-game.active .hud-ref .xp-portrait-wrap{width:68px!important;height:68px!important;min-width:68px!important;min-height:68px!important;flex-basis:68px!important;}
+  #s-game.active .hud-ref .portrait{font-size:26px!important;}
+  #s-game.active .hud-main{gap:8px!important;}
+  #s-game.active .hud-ref .c-name{font-size:13px!important;}
+  #s-game.active .hud-ref .c-meta{margin:3px 0 5px!important;font-size:6px!important;}
+  #s-game.active .hud-ref .bars{gap:5px!important;}
+  #s-game.active .hud-ref .bar-row{grid-template-columns:14px 16px 29px minmax(60px,1fr)!important;gap:2px!important;}
+  #s-game.active .hud-ref .bar-track{min-width:60px!important;height:7px!important;}
+  #s-game.active .hud-sub{padding-left:76px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .char-strip.hud-ref{margin-left:5px!important;margin-right:5px!important;padding-left:6px!important;padding-right:6px!important;}
+  #s-game.active .hud-ref .xp-portrait-wrap{width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;flex-basis:58px!important;}
+  #s-game.active .hud-main{gap:6px!important;}
+  #s-game.active .hud-ref .c-name{font-size:11.5px!important;}
+  #s-game.active .hud-ref .bar-row{grid-template-columns:12px 13px 25px minmax(35px,1fr)!important;gap:1px!important;}
+  #s-game.active .hud-ref .bar-track{min-width:35px!important;height:6px!important;}
+  #s-game.active .hud-sub{padding-left:64px!important;}
+  #s-game.active .hud-ref .mini-stats{gap:4px!important;}
+  #s-game.active .hud-ref .mstat{font-size:5.5px!important;}
+  #s-game.active .hud-ref .gold-pill{min-width:45px!important;padding:2px 5px!important;font-size:6.5px!important;}
+}
+</style>
+
+<style id="aimaster-v51-directed-hud-final">
+#s-game.active .char-strip.hud-ref{display:block!important;min-height:120px!important;padding:8px 9px 27px!important;}
+#s-game.active .hud-main{display:flex!important;width:100%!important;min-width:0!important;padding-right:88px!important;}
+#s-game.active .hud-ref .c-meta{margin-bottom:8px!important;}
+#s-game.active .hud-ref .bars{gap:8px!important;}
+#s-game.active .hud-ref .bar-row{position:relative!important;display:block!important;width:100%!important;height:13px!important;min-height:13px!important;}
+#s-game.active .hud-ref .bar-row::before{position:absolute!important;left:5px!important;top:50%!important;z-index:5!important;width:14px!important;height:14px!important;transform:translateY(-50%)!important;}
+#s-game.active .hud-ref .mp-row::before{width:12px!important;height:12px!important;left:6px!important;}
+#s-game.active .hud-ref .bar-lbl{position:absolute!important;left:23px!important;top:50%!important;z-index:5!important;transform:translateY(-50%)!important;color:#f0ddb0!important;font-size:7px!important;text-shadow:0 1px 2px #000!important;}
+#s-game.active .hud-ref .bar-val{position:absolute!important;left:41px!important;top:50%!important;z-index:5!important;min-width:31px!important;transform:translateY(-50%)!important;color:#fff0c8!important;font-size:7px!important;font-weight:700!important;text-align:left!important;text-shadow:0 1px 2px #000!important;}
+#s-game.active .hud-ref .bar-track{position:absolute!important;inset:1px 0!important;width:auto!important;min-width:0!important;height:auto!important;}
+#s-game.active .hud-ref .bar-track::before{inset:-2px -7px!important;}
+#s-game.active .hud-ref .bar-track::after{inset:-1px -5px!important;}
+#s-game.active .hud-ref .bar-fill::after{background:linear-gradient(90deg,rgba(0,0,0,.40) 0 72px,transparent 90px,rgba(255,255,255,.07) 70%,transparent)!important;}
+#s-game.active .char-strip.hud-ref > .hud-resources{position:absolute!important;top:11px!important;right:9px!important;z-index:6!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;width:76px!important;gap:6px!important;}
+#s-game.active .hud-ref .gold-pill{width:76px!important;min-width:76px!important;min-height:24px!important;justify-content:flex-start!important;padding:4px 8px!important;font-size:8px!important;border-radius:999px!important;}
+#s-game.active .char-strip.hud-ref > .hud-sub{display:none!important;}
+#s-game.active .hud-world{position:absolute!important;left:91px!important;right:10px!important;bottom:6px!important;z-index:5!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;min-width:0!important;padding-top:5px!important;border-top:1px solid rgba(218,169,69,.16)!important;font-family:var(--font-title)!important;font-size:6.4px!important;line-height:1!important;color:rgba(234,214,170,.72)!important;}
+#s-game.active .hud-location{min-width:0!important;overflow:hidden!important;white-space:nowrap!important;text-overflow:ellipsis!important;}
+#s-game.active .hud-reputation{flex:0 0 auto!important;color:rgba(231,199,122,.78)!important;white-space:nowrap!important;}
+@media(max-height:740px){
+  #s-game.active .char-strip.hud-ref{min-height:105px!important;padding-bottom:23px!important;}
+  #s-game.active .hud-main{padding-right:73px!important;}
+  #s-game.active .char-strip.hud-ref > .hud-resources{top:8px!important;right:7px!important;width:64px!important;gap:4px!important;}
+  #s-game.active .hud-ref .gold-pill{width:64px!important;min-width:64px!important;min-height:21px!important;padding:3px 6px!important;font-size:7px!important;}
+  #s-game.active .hud-ref .bars{gap:6px!important;}
+  #s-game.active .hud-ref .bar-row{height:11px!important;min-height:11px!important;}
+  #s-game.active .hud-world{left:76px!important;bottom:5px!important;font-size:5.8px!important;}
+}
+@media(max-width:370px){
+  #s-game.active .hud-main{padding-right:61px!important;}
+  #s-game.active .char-strip.hud-ref > .hud-resources{right:5px!important;width:54px!important;}
+  #s-game.active .hud-ref .gold-pill{width:54px!important;min-width:54px!important;padding:2px 4px!important;font-size:6px!important;}
+  #s-game.active .hud-ref .bar-lbl{left:20px!important;font-size:6px!important;}
+  #s-game.active .hud-ref .bar-val{left:35px!important;min-width:26px!important;font-size:6px!important;}
+  #s-game.active .hud-ref .bar-fill::after{background:linear-gradient(90deg,rgba(0,0,0,.40) 0 61px,transparent 72px,rgba(255,255,255,.06) 76%,transparent)!important;}
+  #s-game.active .hud-world{left:64px!important;right:7px!important;font-size:5.2px!important;}
+  #s-game.active .hud-reputation{font-size:5px!important;}
 }
 </style>
