@@ -1481,6 +1481,651 @@ div.msg-dm div.bbl,
 }
 </style>
 
+<style id="aimaster-v547-visible-location-atmosphere">
+/* Torna a mudanca ambiental perceptivel mesmo sob os paineis escuros. */
+html body #s-game.screen.active.location-theme-forest{
+  background:
+    radial-gradient(circle at 28% 13%,rgba(104,166,70,.42),transparent 33%),
+    linear-gradient(180deg,rgba(3,20,8,.20),rgba(1,7,3,.84)),
+    url('aimaster-bg-premium.png') center/cover no-repeat,
+    url('fundo.jpg') center/cover no-repeat!important;
+}
+html body #s-game.screen.active.location-theme-interior{
+  background:
+    radial-gradient(circle at 74% 14%,rgba(255,139,39,.46),transparent 30%),
+    linear-gradient(180deg,rgba(36,15,4,.18),rgba(8,3,1,.84)),
+    url('aimaster-bg-premium.png') center/cover no-repeat,
+    url('fundo.jpg') center/cover no-repeat!important;
+}
+html body #s-game.screen.active.location-theme-city{
+  background:
+    radial-gradient(circle at 68% 15%,rgba(196,158,87,.30),transparent 31%),
+    linear-gradient(180deg,rgba(13,20,27,.23),rgba(3,5,7,.88)),
+    url('aimaster-bg-premium.png') center/cover no-repeat,
+    url('fundo.jpg') center/cover no-repeat!important;
+}
+html body #s-game.screen.active.location-theme-dungeon{
+  background:
+    radial-gradient(circle at 72% 18%,rgba(194,77,29,.32),transparent 24%),
+    linear-gradient(180deg,rgba(6,9,13,.38),rgba(1,2,3,.94)),
+    url('aimaster-bg-premium.png') center/cover no-repeat,
+    url('fundo.jpg') center/cover no-repeat!important;
+}
+html body #s-game.screen.active.location-theme-road,
+html body #s-game.screen.active.location-theme-mountain,
+html body #s-game.screen.active.location-theme-swamp,
+html body #s-game.screen.active.location-theme-arcane{
+  background:
+    var(--location-atmosphere),
+    url('aimaster-bg-premium.png') center/cover no-repeat,
+    url('fundo.jpg') center/cover no-repeat!important;
+}
+html body #s-game.screen.active.location-theme-forest .narr{
+  background:
+    repeating-linear-gradient(112deg,rgba(210,242,190,.012) 0 1px,transparent 1px 8px),
+    radial-gradient(ellipse at 50% 0,rgba(82,140,63,.13),transparent 44%),
+    linear-gradient(180deg,rgba(8,15,8,.94),rgba(3,6,3,.98))!important;
+  border-color:rgba(177,164,82,.48)!important;
+}
+html body #s-game.screen.active.location-theme-interior .narr{
+  background:
+    repeating-linear-gradient(112deg,rgba(255,232,190,.014) 0 1px,transparent 1px 8px),
+    radial-gradient(ellipse at 62% 0,rgba(195,91,28,.16),transparent 42%),
+    linear-gradient(180deg,rgba(18,10,5,.95),rgba(5,3,2,.99))!important;
+}
+html body #s-game.screen.active.location-theme-arcane .narr{
+  background:
+    repeating-linear-gradient(112deg,rgba(226,211,255,.014) 0 1px,transparent 1px 8px),
+    radial-gradient(ellipse at 50% 0,rgba(123,85,202,.17),transparent 44%),
+    linear-gradient(180deg,rgba(14,8,24,.95),rgba(4,2,8,.99))!important;
+  border-color:rgba(167,130,220,.42)!important;
+}
+</style>
+
+<style id="aimaster-v546-contextual-hud-time">
+/* Horario visual acompanha a narrativa; nao altera dados ou save do jogo. */
+html body #s-game.screen.active .char-strip.hud-ref .hud-location::after{
+  content:var(--hud-time-label,"Tempo desconhecido")!important;
+}
+</style>
+
+<style id="aimaster-v545-location-backdrops">
+/* Fundo atmosferico muda por categoria da localizacao; interface permanece legivel. */
+html body #s-game.screen{
+  --location-atmosphere:
+    radial-gradient(circle at 50% 16%,rgba(202,146,42,.16),transparent 34%),
+    linear-gradient(180deg,rgba(4,3,2,.44),rgba(2,2,1,.90));
+  --location-image:url('aimaster-bg-premium.png');
+  background:
+    var(--location-atmosphere),
+    var(--location-image),
+    url('fundo.jpg') center/cover no-repeat!important;
+  background-size:cover,cover,cover!important;
+  background-position:center,center,center!important;
+  background-blend-mode:normal,soft-light,normal!important;
+  transition:background-color .8s ease,filter .8s ease!important;
+}
+html body #s-game.screen::before{
+  background:
+    linear-gradient(180deg,rgba(2,2,1,.18),rgba(2,2,1,.56) 52%,rgba(0,0,0,.84)),
+    radial-gradient(circle at 50% 24%,transparent 0 24%,rgba(0,0,0,.48) 82%),
+    linear-gradient(90deg,rgba(0,0,0,.62),transparent 22%,transparent 78%,rgba(0,0,0,.62))!important;
+}
+html body #s-game.screen.location-theme-interior{
+  --location-atmosphere:
+    radial-gradient(circle at 72% 18%,rgba(255,145,43,.34),transparent 25%),
+    radial-gradient(circle at 20% 42%,rgba(135,66,20,.18),transparent 32%),
+    linear-gradient(180deg,rgba(27,12,4,.24),rgba(5,3,2,.86));
+  background-color:#1a0d05!important;
+}
+html body #s-game.screen.location-theme-city{
+  --location-atmosphere:
+    radial-gradient(circle at 74% 20%,rgba(235,174,70,.22),transparent 27%),
+    linear-gradient(180deg,rgba(18,20,24,.32),rgba(4,4,5,.90));
+  background-color:#101114!important;
+}
+html body #s-game.screen.location-theme-forest{
+  --location-atmosphere:
+    radial-gradient(circle at 36% 18%,rgba(104,145,65,.22),transparent 30%),
+    linear-gradient(180deg,rgba(5,18,10,.28),rgba(2,6,3,.91));
+  background-color:#071008!important;
+}
+html body #s-game.screen.location-theme-dungeon{
+  --location-atmosphere:
+    radial-gradient(circle at 68% 20%,rgba(179,94,32,.18),transparent 22%),
+    linear-gradient(180deg,rgba(8,9,11,.48),rgba(1,2,3,.96));
+  background-color:#050609!important;
+}
+html body #s-game.screen.location-theme-road{
+  --location-atmosphere:
+    radial-gradient(circle at 50% 12%,rgba(178,141,70,.20),transparent 32%),
+    linear-gradient(180deg,rgba(17,14,8,.28),rgba(4,4,2,.90));
+  background-color:#111008!important;
+}
+html body #s-game.screen.location-theme-mountain{
+  --location-atmosphere:
+    radial-gradient(circle at 50% 12%,rgba(164,194,211,.20),transparent 34%),
+    linear-gradient(180deg,rgba(12,20,27,.34),rgba(3,5,8,.92));
+  background-color:#0a1117!important;
+}
+html body #s-game.screen.location-theme-swamp{
+  --location-atmosphere:
+    radial-gradient(circle at 34% 20%,rgba(104,128,48,.21),transparent 31%),
+    linear-gradient(180deg,rgba(10,17,6,.38),rgba(3,6,2,.94));
+  background-color:#091005!important;
+}
+html body #s-game.screen.location-theme-arcane{
+  --location-atmosphere:
+    radial-gradient(circle at 52% 17%,rgba(127,91,211,.27),transparent 31%),
+    linear-gradient(180deg,rgba(19,10,38,.34),rgba(4,2,10,.94));
+  background-color:#0d0718!important;
+}
+html body #s-game.screen.location-theme-wilds{
+  --location-atmosphere:
+    radial-gradient(circle at 50% 16%,rgba(202,146,42,.16),transparent 34%),
+    linear-gradient(180deg,rgba(4,3,2,.44),rgba(2,2,1,.90));
+  background-color:#0f0c07!important;
+}
+</style>
+
+<style id="aimaster-v544-grimoire-crown-fix">
+/* Ornamento mais fino e titulo NARRATIVA livre, sem sobreposicao. */
+html body #s-game.screen.active .narr-border{
+  z-index:9!important;
+  flex-basis:8px!important;
+  height:8px!important;
+  margin:0 72px -4px!important;
+  background:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(218,169,69,.16) 16%,
+      rgba(235,191,88,.70) 39%,
+      transparent 46% 54%,
+      rgba(235,191,88,.70) 61%,
+      rgba(218,169,69,.16) 84%,
+      transparent 100%)!important;
+}
+html body #s-game.screen.active .narr-border::before{
+  width:13px!important;
+  height:13px!important;
+  border-color:#efc866!important;
+  background:linear-gradient(135deg,#e8b94e 0%,#69400d 48%,#d69b31 100%)!important;
+  color:transparent!important;
+  box-shadow:
+    0 0 0 2px #080603,
+    0 0 0 3px rgba(187,132,33,.72),
+    0 0 6px rgba(218,169,69,.28)!important;
+}
+html body #s-game.screen.active .narr-border::after{
+  width:3px!important;
+  height:3px!important;
+  border-color:rgba(255,241,191,.85)!important;
+  background:#ffe095!important;
+  box-shadow:0 0 4px rgba(255,218,126,.52)!important;
+}
+html body #s-game.screen.active .narr::before{
+  content:'NARRATIVA'!important;
+  margin:-16px -16px 12px!important;
+  padding:13px 0 7px!important;
+  color:#d8b665!important;
+  font-size:8px!important;
+  font-weight:700!important;
+  letter-spacing:3.4px!important;
+  text-shadow:0 1px 2px #000,0 0 6px rgba(218,169,69,.22)!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .narr-border{
+    margin-left:58px!important;
+    margin-right:58px!important;
+  }
+  html body #s-game.screen.active .narr-border::before{
+    width:11px!important;
+    height:11px!important;
+  }
+  html body #s-game.screen.active .narr::before{
+    padding-top:12px!important;
+    letter-spacing:2.8px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v543-grimoire-crown-and-question">
+/* Ornamento central inspirado na referencia e pergunta narrativa direta. */
+body #s-game.active .narr-border{
+  position:relative!important;
+  z-index:8!important;
+  display:block!important;
+  visibility:visible!important;
+  flex:0 0 12px!important;
+  width:auto!important;
+  height:12px!important;
+  margin:0 54px -7px!important;
+  padding:0!important;
+  overflow:visible!important;
+  background:
+    linear-gradient(90deg,
+      transparent,
+      rgba(218,169,69,.18) 26%,
+      rgba(235,191,88,.78) 43%,
+      transparent 43% 57%,
+      rgba(235,191,88,.78) 57%,
+      rgba(218,169,69,.18) 74%,
+      transparent)!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
+}
+body #s-game.active .narr-border::before{
+  content:'\2726'!important;
+  display:flex!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  z-index:2!important;
+  width:20px!important;
+  height:20px!important;
+  transform:translate(-50%,-50%) rotate(45deg)!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border:1px solid #e8bd5c!important;
+  background:
+    radial-gradient(circle at 35% 30%,#fff0a7 0 7%,#c48a24 24%,#392307 72%)!important;
+  color:#ffe08b!important;
+  font-size:10px!important;
+  line-height:1!important;
+  text-shadow:0 1px 2px #000,0 0 5px rgba(255,216,116,.42)!important;
+  box-shadow:
+    0 0 0 3px #080603,
+    0 0 0 4px rgba(187,132,33,.78),
+    0 0 8px rgba(218,169,69,.34)!important;
+}
+body #s-game.active .narr-border::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  z-index:3!important;
+  width:5px!important;
+  height:5px!important;
+  transform:translate(-50%,-50%) rotate(45deg)!important;
+  border:1px solid rgba(255,235,169,.72)!important;
+  background:#6f4710!important;
+  box-shadow:0 0 5px rgba(255,211,105,.38)!important;
+}
+body #s-game.active .actions-wrap::before{
+  content:'\2014  O QUE VOC\00CA  FAZ?  \2014'!important;
+}
+@media(max-width:370px){
+  body #s-game.active .narr-border{
+    margin-left:42px!important;
+    margin-right:42px!important;
+  }
+  body #s-game.active .narr-border::before{
+    width:17px!important;
+    height:17px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v542-narrative-voices">
+/* Separa visualmente Mestre, acao do personagem e conversa OFF. */
+body #s-game.active .narr .msg{
+  position:relative!important;
+  margin-bottom:13px!important;
+}
+body #s-game.active .narr .msg:last-child{
+  margin-bottom:0!important;
+}
+body #s-game.active .narr .msg-dm:not(.ooc-reply) + .msg-dm:not(.ooc-reply){
+  padding-top:4px!important;
+}
+body #s-game.active .narr .msg-pl{
+  display:flex!important;
+  justify-content:flex-end!important;
+  text-align:right!important;
+}
+body #s-game.active .narr .msg-pl .bbl{
+  display:inline-block!important;
+  max-width:91%!important;
+  padding:8px 11px!important;
+  border:1px solid rgba(218,169,69,.28)!important;
+  border-right:2px solid rgba(232,187,88,.64)!important;
+  border-radius:10px 3px 10px 10px!important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(218,169,69,.10),transparent 32%),
+    linear-gradient(180deg,rgba(53,37,14,.48),rgba(17,12,6,.58))!important;
+  color:#ead6aa!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+  font-style:italic!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,226,150,.06),
+    0 4px 12px rgba(0,0,0,.22)!important;
+  text-shadow:0 1px 2px #000!important;
+}
+body #s-game.active .narr .msg-ooc{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-end!important;
+  text-align:right!important;
+}
+body #s-game.active .narr .msg-ooc .ooc-tag{
+  margin:0 3px 4px 0!important;
+  color:#ad91ef!important;
+  font-size:7.5px!important;
+  font-weight:700!important;
+  letter-spacing:1.5px!important;
+  text-shadow:0 1px 2px #000,0 0 6px rgba(139,111,208,.24)!important;
+}
+body #s-game.active .narr .msg-ooc .bbl{
+  display:inline-block!important;
+  max-width:91%!important;
+  padding:8px 11px!important;
+  border:1px solid rgba(150,119,222,.42)!important;
+  border-right:2px solid rgba(174,143,242,.70)!important;
+  border-radius:10px 3px 10px 10px!important;
+  background:
+    radial-gradient(circle at 100% 0,rgba(179,145,246,.13),transparent 34%),
+    linear-gradient(180deg,rgba(53,36,91,.60),rgba(19,12,37,.68))!important;
+  color:#e0d4fa!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+  box-shadow:
+    inset 0 1px 0 rgba(231,218,255,.08),
+    0 4px 14px rgba(0,0,0,.25),
+    0 0 10px rgba(139,111,208,.08)!important;
+}
+body #s-game.active .narr .msg-dm.ooc-reply{
+  padding:9px 10px!important;
+  border:1px solid rgba(139,111,208,.26)!important;
+  border-left:2px solid rgba(174,143,242,.66)!important;
+  border-radius:3px 11px 11px 11px!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(179,145,246,.12),transparent 34%),
+    linear-gradient(180deg,rgba(45,30,78,.42),rgba(15,10,29,.48))!important;
+  box-shadow:inset 0 1px 0 rgba(231,218,255,.05),0 4px 14px rgba(0,0,0,.20)!important;
+}
+body #s-game.active .narr .msg-dm.ooc-reply .lbl{
+  color:#b69aef!important;
+}
+body #s-game.active .narr .msg-dm.ooc-reply .lbl::after{
+  background:linear-gradient(90deg,rgba(159,127,225,.30),transparent)!important;
+}
+body #s-game.active .narr .msg-dm.ooc-reply .bbl{
+  color:#ded4f2!important;
+  font-size:14px!important;
+  line-height:1.65!important;
+}
+@media(max-width:370px){
+  body #s-game.active .narr .msg{
+    margin-bottom:10px!important;
+  }
+  body #s-game.active .narr .msg-pl .bbl,
+  body #s-game.active .narr .msg-ooc .bbl{
+    max-width:94%!important;
+    padding:7px 9px!important;
+    font-size:12px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v540-hero-identity-polish">
+/* Identidade heroica: mais presenca para o nome sem alterar a composicao. */
+body #s-game.active .char-strip.hud-ref .char-info{
+  position:relative!important;
+  background:
+    radial-gradient(ellipse at 24% 6%,rgba(218,169,69,.045),transparent 48%)!important;
+}
+body #s-game.active .char-strip.hud-ref .c-name{
+  position:relative!important;
+  overflow:visible!important;
+  border-bottom-color:rgba(218,169,69,.48)!important;
+  color:#f4d792!important;
+  font-weight:700!important;
+  letter-spacing:.4px!important;
+  text-shadow:
+    0 1px 1px #000,
+    0 0 5px rgba(218,169,69,.17)!important;
+  background:
+    linear-gradient(90deg,rgba(218,169,69,.05),transparent 55%)!important;
+}
+body #s-game.active .char-strip.hud-ref .c-name::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  right:1px!important;
+  bottom:-3px!important;
+  z-index:3!important;
+  width:5px!important;
+  height:5px!important;
+  transform:rotate(45deg)!important;
+  border:1px solid rgba(235,191,88,.76)!important;
+  background:linear-gradient(135deg,#e6b950,#59360c)!important;
+  box-shadow:
+    0 0 0 2px #070503,
+    0 0 5px rgba(218,169,69,.30)!important;
+  pointer-events:none!important;
+}
+body #s-game.active .char-strip.hud-ref .bars{
+  position:relative!important;
+}
+body #s-game.active .char-strip.hud-ref .bars::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;
+  right:3px!important;
+  top:50%!important;
+  z-index:-1!important;
+  height:30px!important;
+  transform:translateY(-50%)!important;
+  background:radial-gradient(ellipse at 35% 50%,rgba(218,169,69,.035),transparent 68%)!important;
+  pointer-events:none!important;
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .c-name{
+    letter-spacing:.25px!important;
+  }
+  body #s-game.active .char-strip.hud-ref .c-name::after{
+    width:4px!important;
+    height:4px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v539-premium-avatar-frame">
+/* Retrato heroico com moldura metalica; preserva o icone dinamico atual. */
+body #s-game.active .char-strip.hud-ref .xp-portrait-wrap{
+  filter:
+    drop-shadow(0 2px 3px rgba(0,0,0,.82))
+    drop-shadow(0 0 8px rgba(200,146,42,.26))!important;
+}
+body #s-game.active .char-strip.hud-ref .xp-portrait-wrap::before{
+  inset:-5px!important;
+  border:1px solid rgba(255,218,121,.72)!important;
+  background:
+    radial-gradient(circle,transparent 60%,rgba(255,224,137,.12) 61%,transparent 64%),
+    conic-gradient(
+      from 22deg,
+      #3a2309 0 9%,
+      #c18a2d 14%,
+      #f0ca6c 20%,
+      #765017 27%,
+      #2b1907 36%,
+      #d3a044 48%,
+      #4a2c0b 62%,
+      #e1b554 76%,
+      #5b360d 89%,
+      #3a2309 100%)!important;
+  box-shadow:
+    inset 0 0 0 2px #080603,
+    inset 0 0 0 4px rgba(209,158,57,.38),
+    inset 0 0 12px rgba(0,0,0,.76),
+    0 0 0 1px rgba(55,34,8,.92),
+    0 0 10px rgba(200,146,42,.24)!important;
+}
+body #s-game.active .char-strip.hud-ref .xp-portrait-wrap::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:50%!important;
+  top:-8px!important;
+  z-index:9!important;
+  width:9px!important;
+  height:9px!important;
+  transform:translateX(-50%) rotate(45deg)!important;
+  border:1px solid #e8bd5c!important;
+  background:
+    radial-gradient(circle at 35% 30%,#fff0a7 0 8%,#c48a24 24%,#352006 72%)!important;
+  box-shadow:
+    0 0 0 2px #080603,
+    0 0 0 3px rgba(174,121,29,.72),
+    0 0 7px rgba(232,189,92,.38)!important;
+  pointer-events:none!important;
+}
+body #s-game.active .char-strip.hud-ref .portrait{
+  inset:7px!important;
+  border-color:rgba(244,205,108,.72)!important;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(238,193,94,.24),transparent 32%),
+    radial-gradient(circle at 50% 58%,#241b0e 0%,#0c0905 62%,#020201 100%)!important;
+  color:#f1d482!important;
+  text-shadow:
+    0 2px 3px rgba(0,0,0,.95),
+    0 0 9px rgba(218,169,69,.30)!important;
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,.76),
+    inset 0 1px 0 rgba(255,226,147,.15),
+    inset 0 -16px 24px rgba(0,0,0,.76),
+    0 0 8px rgba(218,169,69,.18)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-level{
+  border-color:rgba(249,207,105,.90)!important;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(255,224,139,.20),transparent 30%),
+    linear-gradient(180deg,#392408,#090603 72%)!important;
+  color:#ffe096!important;
+  font-weight:800!important;
+  text-shadow:0 1px 2px #000,0 0 4px rgba(255,211,105,.30)!important;
+  box-shadow:
+    0 0 0 3px #050403,
+    0 0 0 4px rgba(151,101,20,.58),
+    inset 0 1px 0 rgba(255,231,157,.24),
+    0 0 8px rgba(200,146,42,.34)!important;
+}
+body #s-game.active .char-strip.hud-ref .xp-label{
+  border-color:rgba(222,171,66,.54)!important;
+  background:linear-gradient(180deg,rgba(42,27,7,.98),rgba(7,5,3,.99))!important;
+  color:#e8c875!important;
+  font-weight:700!important;
+  letter-spacing:.18px!important;
+  text-shadow:0 1px 2px #000!important;
+  box-shadow:
+    0 0 0 1px rgba(55,34,8,.72),
+    inset 0 1px 0 rgba(255,227,145,.10),
+    0 2px 5px rgba(0,0,0,.60)!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .xp-portrait-wrap::after{
+    top:-7px!important;
+    width:8px!important;
+    height:8px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v537-premium-resource-capsules">
+/* Capsulas de recursos com acabamento metalico, sem alterar posicao ou tamanho. */
+body #s-game.active .char-strip.hud-ref .hud-resources .gold-pill{
+  position:relative!important;
+  isolation:isolate!important;
+  overflow:hidden!important;
+  border-color:rgba(225,174,66,.62)!important;
+  background:
+    radial-gradient(circle at 18% 22%,rgba(255,215,111,.14),transparent 30%),
+    linear-gradient(180deg,rgba(55,39,13,.96) 0%,rgba(20,14,6,.98) 52%,rgba(5,4,3,.98) 100%)!important;
+  color:#f2cd72!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,229,151,.20),
+    inset 0 -1px 0 rgba(0,0,0,.82),
+    0 0 0 1px rgba(70,45,8,.34),
+    0 2px 7px rgba(0,0,0,.48)!important;
+  text-shadow:0 1px 2px #000,0 0 5px rgba(224,167,48,.30)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-resources .gold-pill:last-child{
+  border-color:rgba(139,112,220,.66)!important;
+  background:
+    radial-gradient(circle at 18% 22%,rgba(194,166,255,.16),transparent 30%),
+    linear-gradient(180deg,rgba(48,33,82,.97) 0%,rgba(22,14,43,.98) 52%,rgba(6,5,12,.99) 100%)!important;
+  color:#dfd2ff!important;
+  box-shadow:
+    inset 0 1px 0 rgba(226,213,255,.20),
+    inset 0 -1px 0 rgba(0,0,0,.84),
+    0 0 0 1px rgba(58,38,105,.38),
+    0 2px 7px rgba(0,0,0,.48),
+    0 0 7px rgba(101,65,183,.13)!important;
+  text-shadow:0 1px 2px #000,0 0 5px rgba(152,112,235,.34)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-resources .gold-pill::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:-1!important;
+  inset:1px!important;
+  border:1px solid rgba(255,226,144,.07)!important;
+  border-radius:999px!important;
+  pointer-events:none!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-resources .gold-pill:last-child::before{
+  border-color:rgba(225,211,255,.08)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-resources .gold-pill::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  z-index:-1!important;
+  top:2px!important;
+  left:13px!important;
+  right:12px!important;
+  height:1px!important;
+  border-radius:99px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,232,164,.30),transparent)!important;
+  pointer-events:none!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-resources .gold-pill:last-child::after{
+  background:linear-gradient(90deg,transparent,rgba(220,203,255,.28),transparent)!important;
+}
+</style>
+
+<style id="aimaster-v536-resource-number-emphasis">
+/* Numeros de ouro e diamantes mais destacados, sem alterar as capsulas. */
+body #s-game.active .char-strip.hud-ref .hud-resources #g-gd,
+body #s-game.active .char-strip.hud-ref .hud-resources #g-credits{
+  font-size:10px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  letter-spacing:.15px!important;
+  font-variant-numeric:tabular-nums!important;
+  text-shadow:
+    0 1px 1px rgba(0,0,0,.98),
+    0 0 4px currentColor!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-resources #g-gd{
+  color:#ffe08a!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-resources #g-credits{
+  color:#eee5ff!important;
+}
+@media(max-height:740px){
+  body #s-game.active .char-strip.hud-ref .hud-resources #g-gd,
+  body #s-game.active .char-strip.hud-ref .hud-resources #g-credits{font-size:9px!important;}
+}
+@media(max-width:370px){
+  body #s-game.active .char-strip.hud-ref .hud-resources #g-gd,
+  body #s-game.active .char-strip.hud-ref .hud-resources #g-credits{font-size:8.5px!important;}
+}
+</style>
+
 <style id="aimaster-v52-compact-hud-final">
 #s-game.active .char-strip.hud-ref{min-height:124px!important;padding-bottom:31px!important;}
 #s-game.active .hud-ref .c-meta{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;}
@@ -5573,6 +6218,77 @@ function updateTurnCounter(){
   }
 }
 
+function updateLocationBackdrop(locationName){
+  const gameScreen = document.getElementById('s-game');
+  if(!gameScreen) return;
+  const normalized = String(locationName||'')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase();
+  const themes = [
+    ['interior',/taverna|estalagem|pouso|taberna|loja|ferreiro|templo|salao|interior/g],
+    ['city',/cidade|aldeia|vila|vilarejo|mercado|porto|castelo|fortaleza/g],
+    ['forest',/floresta|bosque|selva|mata|arvore/g],
+    ['dungeon',/masmorra|caverna|cripta|catacumba|mina|ruina|subterraneo/g],
+    ['mountain',/montanha|pico|neve|geleira|penhasco/g],
+    ['swamp',/pantano|brejo|charco/g],
+    ['arcane',/arcano|eter|plano|astral|magico|torre/g],
+    ['road',/estrada|campo|colina|vale|planicie|trilha/g]
+  ];
+  let theme = 'wilds';
+  let latestMatch = -1;
+  themes.forEach(([name,re])=>{
+    for(const match of normalized.matchAll(re)){
+      if(match.index>=latestMatch){ latestMatch=match.index; theme=name; }
+    }
+  });
+  const classes = [...gameScreen.classList].filter(c=>c.startsWith('location-theme-'));
+  classes.forEach(c=>gameScreen.classList.remove(c));
+  gameScreen.classList.add(`location-theme-${theme}`);
+}
+
+function updateVisualWorldContext(text, officialLocation){
+  const source = String(officialLocation||text||'');
+  const normalized = source.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  const locationPatterns = [
+    ['Taverna ou estalagem',/taverna|estalagem|pouso|taberna/g],
+    ['Cidade ou aldeia',/cidade|aldeia|vila|vilarejo|mercado|porto|castelo|fortaleza/g],
+    ['Trilha na floresta',/floresta|bosque|selva|mata|arvore|trilha/g],
+    ['Masmorra ou caverna',/masmorra|caverna|cripta|catacumba|mina|ruina|subterraneo/g],
+    ['Montanhas',/montanha|pico|neve|geleira|penhasco/g],
+    ['Pantano',/pantano|brejo|charco/g],
+    ['Regiao arcana',/arcano|eter|plano|astral|magico|torre/g],
+    ['Estrada ou campo',/estrada|campo|colina|vale|planicie/g]
+  ];
+  let inferredLocation = '';
+  let latestLocation = -1;
+  locationPatterns.forEach(([label,re])=>{
+    for(const match of normalized.matchAll(re)){
+      if(match.index>=latestLocation){ latestLocation=match.index; inferredLocation=label; }
+    }
+  });
+  window.visualLocationHint = officialLocation || inferredLocation || window.visualLocationHint || '';
+
+  const currentTimeText = normalized
+    .replace(/noite anterior|na noite anterior|ontem a noite|na vespera/g,'');
+  const timePatterns = [
+    ['Manha',/amanhecer|aurora|manha|sol da manha/g],
+    ['Meio-dia',/meio-dia|meio dia/g],
+    ['Tarde',/tarde/g],
+    ['Anoitecer',/anoitecer|entardecer|crepusculo/g],
+    ['Noite',/noite|luar|meia-noite|meia noite/g]
+  ];
+  let inferredTime = '';
+  let earliestTime = Infinity;
+  timePatterns.forEach(([label,re])=>{
+    for(const match of currentTimeText.matchAll(re)){
+      if(match.index<earliestTime){ earliestTime=match.index; inferredTime=label; }
+    }
+  });
+  if(inferredTime) window.visualTimeHint = inferredTime;
+  const gameScreen = document.getElementById('s-game');
+  if(gameScreen) gameScreen.style.setProperty('--hud-time-label',`"${window.visualTimeHint||'Tempo desconhecido'}"`);
+}
+
 function updateVitals(){
   // Guard: ensure valid values
   hero.hp    = Math.max(0, Math.min(hero.maxHP||1, hero.hp||0));
@@ -5654,8 +6370,14 @@ function updateVitals(){
     const memoryLoc = typeof gameMemory!=='undefined'
       ? gameMemory.events?.slice().reverse().find(e=>e.type==='local')?.summary
       : '';
-    hudLoc.textContent = (window.currentLocation||hero.location||memoryLoc||'Local desconhecido')
+    const visibleNarrative = document.getElementById('narr')?.textContent||'';
+    if((!window.visualLocationHint||!window.visualTimeHint) && visibleNarrative){
+      updateVisualWorldContext(visibleNarrative,'');
+    }
+    const visualLocation = (window.visualLocationHint||window.currentLocation||hero.location||memoryLoc||'Local desconhecido')
       .replace(/^Chegou em:\s*/i,'').trim();
+    hudLoc.textContent = visualLocation;
+    updateLocationBackdrop(visualLocation);
   }
 }
 
@@ -6074,7 +6796,7 @@ function updateActionButtons(actions){
   });
 
   const lbl=document.getElementById('acts-lbl');
-  if(lbl) lbl.textContent='— ESCOLHA SUA AÇÃO —';
+  if(lbl) lbl.textContent='— O QUE VOCÊ FAZ? —';
 }
 
 
@@ -7136,6 +7858,9 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
         if(/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto|estalagem|loja|ferreiro|boticário)/i.test(reply))inCity=true;
         else if(/(?:floresta|estrada aberta|ruínas|caverna|campo aberto|matagal|deserto|montanha|pântano)/i.test(reply))inCity=false;
       }
+      // Apoio somente visual quando o Mestre narra o local, mas nao envia a tag.
+      updateLocationBackdrop(locMatch ? locMatch[1] : reply);
+      updateVisualWorldContext(reply, locMatch ? locMatch[1].trim() : '');
       // Mercador encontrado = contexto de cidade temporário
       if(/mercador|vendedor|lojista|comerciante/i.test(reply))inCity=true;
       // Combat: only ON via [COMBATE:] tag, OFF via keywords or [FIM_COMBATE]
@@ -14800,5 +15525,160 @@ body #s-game.active .char-strip.hud-ref .mp-row .bar-val{
 @media(max-width:370px){
   body #s-game.active .char-strip.hud-ref .bar-lbl{font-size:5.9px!important;}
   body #s-game.active .char-strip.hud-ref .bar-val{font-size:6px!important;}
+}
+</style>
+
+<style id="aimaster-v538-world-context-premium">
+/* Leitura mais nobre para localizacao e reputacao, mantendo a composicao atual. */
+body #s-game.active .char-strip.hud-ref .hud-world{
+  border-top-color:rgba(218,169,69,.42)!important;
+  background:linear-gradient(90deg,transparent,rgba(198,142,39,.025) 48%,transparent)!important;
+  box-shadow:inset 0 1px 0 rgba(255,224,151,.025)!important;
+}
+body #s-game.active .char-strip.hud-ref #hud-location{
+  color:#f1ddb0!important;
+  font-weight:700!important;
+  letter-spacing:.3px!important;
+  text-shadow:0 1px 2px #000,0 0 5px rgba(218,169,69,.13)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-location::before{
+  color:#b8b6aa!important;
+  text-shadow:0 1px 2px #000,0 0 5px rgba(218,169,69,.25)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-location::after{
+  color:#cbb17a!important;
+  letter-spacing:.35px!important;
+  text-shadow:0 1px 2px #000!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-reputation{
+  border-left-color:rgba(218,169,69,.25)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-reputation::before{
+  color:#dfc992!important;
+  font-weight:600!important;
+  letter-spacing:.15px!important;
+  text-shadow:0 1px 2px #000!important;
+}
+body #s-game.active .char-strip.hud-ref #hud-reputation{
+  color:#ffd878!important;
+  font-weight:800!important;
+  margin-left:2px!important;
+  text-shadow:0 1px 2px #000,0 0 5px rgba(222,170,47,.26)!important;
+}
+body #s-game.active .char-strip.hud-ref .hud-reputation::after{
+  border:1px solid rgba(185,225,116,.34)!important;
+  background:
+    radial-gradient(circle at 50% 32%,rgba(211,247,149,.28),transparent 25%),
+    linear-gradient(160deg,#4c722d 0%,#1c3817 52%,#0b180b 100%)!important;
+  color:#d5f49b!important;
+  box-shadow:
+    inset 0 1px 0 rgba(229,255,178,.26),
+    inset 0 -7px 9px rgba(0,0,0,.36),
+    0 0 0 1px rgba(30,63,20,.7),
+    0 0 8px rgba(105,166,58,.27)!important;
+  text-shadow:0 1px 2px #000,0 0 4px rgba(202,244,130,.35)!important;
+}
+</style>
+
+<style id="aimaster-v541-premium-grimoire">
+/* Grimorio cinematografico; o scroll permanece exclusivo da narrativa. */
+body #s-game.active .narr{
+  position:relative!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior:contain!important;
+  border:1px solid rgba(226,181,82,.48)!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(225,177,76,.12),transparent 19px),
+    radial-gradient(circle at 100% 0,rgba(225,177,76,.10),transparent 19px),
+    radial-gradient(circle at 0 100%,rgba(139,88,26,.10),transparent 24px),
+    radial-gradient(circle at 100% 100%,rgba(139,88,26,.09),transparent 24px),
+    repeating-linear-gradient(112deg,rgba(255,239,194,.012) 0 1px,transparent 1px 8px),
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.11),transparent 42%),
+    linear-gradient(180deg,rgba(13,10,6,.96),rgba(4,3,2,.985))!important;
+  box-shadow:
+    0 16px 38px rgba(0,0,0,.68),
+    0 0 20px rgba(218,169,69,.08),
+    inset 0 1px 0 rgba(255,232,169,.10),
+    inset 0 0 0 4px rgba(5,4,3,.66),
+    inset 0 0 0 5px rgba(218,169,69,.08),
+    inset 0 0 32px rgba(0,0,0,.52)!important;
+  scrollbar-color:rgba(220,169,61,.62) rgba(0,0,0,.18)!important;
+}
+body #s-game.active .narr::before{
+  content:'\2726  NARRATIVA  \2726'!important;
+  border-bottom:1px solid rgba(218,169,69,.19)!important;
+  color:#d8b665!important;
+  font-weight:700!important;
+  letter-spacing:3.2px!important;
+  text-shadow:0 1px 2px #000,0 0 7px rgba(218,169,69,.25)!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.12),transparent 68%),
+    linear-gradient(180deg,rgba(12,8,4,.99),rgba(9,6,3,.76),transparent)!important;
+}
+body #s-game.active .narr::-webkit-scrollbar{
+  width:5px!important;
+}
+body #s-game.active .narr::-webkit-scrollbar-track{
+  margin:18px 0!important;
+  border-radius:99px!important;
+  background:rgba(0,0,0,.20)!important;
+  box-shadow:inset 0 0 3px rgba(0,0,0,.70)!important;
+}
+body #s-game.active .narr::-webkit-scrollbar-thumb{
+  border:1px solid rgba(255,218,126,.26)!important;
+  border-radius:99px!important;
+  background:linear-gradient(90deg,#63400f,#d49a30,#68420f)!important;
+  box-shadow:0 0 4px rgba(218,169,69,.22)!important;
+}
+body #s-game.active .narr .msg-dm .lbl{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  margin-bottom:6px!important;
+  color:rgba(224,188,105,.72)!important;
+  font-size:8px!important;
+  font-weight:700!important;
+  letter-spacing:1.8px!important;
+  text-shadow:0 1px 2px #000!important;
+}
+body #s-game.active .narr .msg-dm .lbl::after{
+  background:linear-gradient(90deg,rgba(218,169,69,.28),transparent)!important;
+}
+body #s-game.active .narr .bbl{
+  color:#f1ddb2!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.82)!important;
+}
+body #s-game.active .narr .scene-title{
+  position:relative!important;
+  display:block!important;
+  margin:2px 0 12px!important;
+  padding:0 0 8px!important;
+  color:#f0ca70!important;
+  font-size:14px!important;
+  font-weight:700!important;
+  letter-spacing:.7px!important;
+  text-align:center!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(218,169,69,.20)!important;
+}
+body #s-game.active .narr .scene-title::after{
+  content:''!important;
+  display:block!important;
+  width:56%!important;
+  height:1px!important;
+  margin:7px auto 0!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.45),transparent)!important;
+}
+body #s-game.active .narr .scene-title + br,
+body #s-game.active .narr .scene-title + br + br{
+  display:none!important;
+}
+body #s-game.active .narr .msg-pl .bbl{
+  padding:8px 10px!important;
+  border:1px solid rgba(149,119,218,.22)!important;
+  border-radius:10px!important;
+  background:linear-gradient(180deg,rgba(50,34,86,.34),rgba(15,10,28,.42))!important;
+  color:#e4daf7!important;
+  box-shadow:inset 0 1px 0 rgba(226,211,255,.05)!important;
 }
 </style>
