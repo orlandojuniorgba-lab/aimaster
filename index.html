@@ -1481,6 +1481,705 @@ div.msg-dm div.bbl,
 }
 </style>
 
+<style id="aimaster-v557-final-grimoire-reading">
+/* Upgrade de leitura do grimorio: mais respiro, fim confortavel e falas mais cinematograficas. */
+html body #s-game.screen.active .narr{
+  padding:30px 18px 34px!important;
+  scroll-padding-top:28px!important;
+  scroll-padding-bottom:34px!important;
+  border-color:rgba(226,181,82,.54)!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(225,177,76,.13),transparent 20px),
+    radial-gradient(circle at 100% 0,rgba(225,177,76,.11),transparent 20px),
+    radial-gradient(circle at 0 100%,rgba(139,88,26,.10),transparent 25px),
+    radial-gradient(circle at 100% 100%,rgba(139,88,26,.09),transparent 25px),
+    linear-gradient(90deg,rgba(255,226,143,.025),transparent 8%,transparent 92%,rgba(255,226,143,.018)),
+    repeating-linear-gradient(112deg,rgba(255,239,194,.013) 0 1px,transparent 1px 8px),
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.12),transparent 43%),
+    linear-gradient(180deg,rgba(13,10,6,.97),rgba(4,3,2,.99))!important;
+  box-shadow:
+    0 16px 38px rgba(0,0,0,.68),
+    0 0 22px rgba(218,169,69,.09),
+    inset 0 1px 0 rgba(255,232,169,.11),
+    inset 0 0 0 4px rgba(5,4,3,.68),
+    inset 0 0 0 5px rgba(218,169,69,.09),
+    inset 0 -22px 28px rgba(0,0,0,.36),
+    inset 0 0 34px rgba(0,0,0,.52)!important;
+}
+html body #s-game.screen.active .narr::before{
+  margin:-30px -18px 18px!important;
+  padding:10px 0 9px!important;
+  border-bottom-color:rgba(218,169,69,.24)!important;
+  color:#dfbd69!important;
+  letter-spacing:3.5px!important;
+}
+html body #s-game.screen.active .narr::after{
+  content:''!important;
+  position:sticky!important;
+  display:block!important;
+  bottom:-34px!important;
+  left:0!important;
+  right:0!important;
+  height:22px!important;
+  margin:8px -18px -34px!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,transparent,rgba(4,3,2,.82))!important;
+}
+html body #s-game.screen.active .narr .msg{
+  margin-bottom:16px!important;
+}
+html body #s-game.screen.active .narr .msg:last-child{
+  margin-bottom:26px!important;
+}
+html body #s-game.screen.active .narr .msg-dm .lbl{
+  position:relative!important;
+  margin:2px 0 10px!important;
+  color:rgba(226,190,106,.78)!important;
+  font-size:8.2px!important;
+  letter-spacing:2px!important;
+}
+html body #s-game.screen.active .narr .msg-dm .lbl::before{
+  content:'\2726'!important;
+  margin-right:1px!important;
+  color:#d8b665!important;
+  text-shadow:0 0 8px rgba(218,169,69,.34)!important;
+}
+html body #s-game.screen.active .narr .msg-dm .lbl::after{
+  height:1px!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.34),transparent)!important;
+}
+html body #s-game.screen.active .narr .bbl{
+  color:#f3e0bb!important;
+  font-size:17.2px!important;
+  line-height:1.72!important;
+  letter-spacing:.05px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.86)!important;
+}
+html body #s-game.screen.active .narr .bbl p{
+  margin:0 0 13px!important;
+}
+html body #s-game.screen.active .narr .bbl p:last-child{
+  margin-bottom:0!important;
+}
+html body #s-game.screen.active .narr .scene-title{
+  margin:1px 0 14px!important;
+  padding:0 8px 10px!important;
+  color:#f2cb72!important;
+  font-size:14.5px!important;
+  letter-spacing:.8px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.23)!important;
+}
+html body #s-game.screen.active .narr .scene-title::before{
+  content:''!important;
+  display:block!important;
+  width:24px!important;
+  height:1px!important;
+  margin:0 auto 9px!important;
+  background:linear-gradient(90deg,transparent,#d8b665,transparent)!important;
+  box-shadow:0 0 8px rgba(218,169,69,.28)!important;
+}
+html body #s-game.screen.active .narr .scene-title::after{
+  width:68%!important;
+  margin-top:9px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.50),transparent)!important;
+}
+html body #s-game.screen.active .narr .msg-dm .bbl{
+  padding-bottom:2px!important;
+}
+html body #s-game.screen.active .narr .msg-dm .bbl em,
+html body #s-game.screen.active .narr .msg-dm .bbl i{
+  color:#ead09a!important;
+}
+html body #s-game.screen.active .narr .msg-pl .bbl{
+  margin-left:auto!important;
+  max-width:88%!important;
+  padding:8px 11px!important;
+  border-color:rgba(151,119,226,.32)!important;
+  background:linear-gradient(180deg,rgba(54,37,99,.38),rgba(15,10,28,.50))!important;
+  color:#eadfff!important;
+}
+html body #s-game.screen.active .narr::-webkit-scrollbar{
+  width:6px!important;
+}
+html body #s-game.screen.active .narr::-webkit-scrollbar-track{
+  margin:22px 0 22px!important;
+}
+html body #s-game.screen.active .narr::-webkit-scrollbar-thumb{
+  min-height:48px!important;
+  border-color:rgba(255,218,126,.32)!important;
+  background:linear-gradient(90deg,#5a390d,#d89e32,#68420f)!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .narr{
+    padding:28px 15px 32px!important;
+    scroll-padding-bottom:32px!important;
+  }
+  html body #s-game.screen.active .narr::before{
+    margin:-28px -15px 16px!important;
+  }
+  html body #s-game.screen.active .narr::after{
+    margin-left:-15px!important;
+    margin-right:-15px!important;
+  }
+  html body #s-game.screen.active .narr .bbl{
+    font-size:16.4px!important;
+    line-height:1.70!important;
+  }
+  html body #s-game.screen.active .narr .scene-title{
+    font-size:13.5px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v556-premium-decision-deck">
+/* Polimento visual da area de decisao; sem alterar fluxo, cliques ou scroll. */
+html body #s-game.screen.active .acts-area{
+  position:relative!important;
+  overflow:visible!important;
+  border:1px solid rgba(201,146,42,.28)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.10),transparent 48%),
+    linear-gradient(180deg,rgba(18,12,6,.72),rgba(5,4,3,.88))!important;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.48),
+    inset 0 1px 0 rgba(255,230,166,.06),
+    inset 0 0 0 1px rgba(0,0,0,.36)!important;
+}
+html body #s-game.screen.active .acts-lbl{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin:0 20px 8px!important;
+  color:#d9b764!important;
+  font-family:var(--font-title)!important;
+  font-size:8.5px!important;
+  font-weight:800!important;
+  letter-spacing:2.8px!important;
+  text-align:center!important;
+  text-shadow:0 1px 2px #000,0 0 9px rgba(218,169,69,.22)!important;
+}
+html body #s-game.screen.active .acts-lbl::before,
+html body #s-game.screen.active .acts-lbl::after{
+  content:''!important;
+  flex:1!important;
+  height:1px!important;
+  max-width:72px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.42),transparent)!important;
+}
+html body #s-game.screen.active .act-grid{
+  overflow:visible!important;
+  max-height:none!important;
+  gap:8px!important;
+  padding:0 8px 7px!important;
+}
+html body #s-game.screen.active .act-btn{
+  position:relative!important;
+  isolation:isolate!important;
+  min-height:54px!important;
+  border:1px solid rgba(201,146,42,.34)!important;
+  border-radius:15px!important;
+  background:
+    radial-gradient(circle at 0 50%,rgba(218,169,69,.13),transparent 34%),
+    linear-gradient(180deg,rgba(19,14,8,.96),rgba(8,6,4,.98))!important;
+  box-shadow:
+    0 8px 18px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,232,170,.07),
+    inset 0 0 0 1px rgba(0,0,0,.32)!important;
+}
+html body #s-game.screen.active .act-btn::before{
+  content:''!important;
+  position:absolute!important;
+  inset:1px!important;
+  z-index:-1!important;
+  border-radius:14px!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.10),transparent 36%,rgba(218,169,69,.05))!important;
+  opacity:.85!important;
+}
+html body #s-game.screen.active .act-btn::after{
+  content:''!important;
+  position:absolute!important;
+  left:16px!important;
+  right:16px!important;
+  bottom:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.45),transparent)!important;
+  opacity:.55!important;
+}
+html body #s-game.screen.active .act-btn:active{
+  transform:translateY(1px) scale(.992)!important;
+  filter:brightness(1.08)!important;
+}
+html body #s-game.screen.active .act-btn .a-icon,
+html body #s-game.screen.active .act-btn .a-circle{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  border:1px solid rgba(218,169,69,.42)!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(255,227,152,.18),transparent 42%),
+    linear-gradient(180deg,rgba(32,25,13,.98),rgba(8,6,4,.98))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,235,175,.08),
+    0 0 12px rgba(218,169,69,.10)!important;
+}
+html body #s-game.screen.active .a-title{
+  color:#f4dfb6!important;
+  font-size:13.8px!important;
+  font-weight:700!important;
+  letter-spacing:.05px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.82)!important;
+}
+html body #s-game.screen.active .a-hint,
+html body #s-game.screen.active .a-type{
+  margin-top:3px!important;
+  font-size:7.7px!important;
+  font-weight:800!important;
+  letter-spacing:1.35px!important;
+  opacity:.95!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.screen.active .a-chevron,
+html body #s-game.screen.active .a-arrow{
+  color:#cfa34d!important;
+  font-size:24px!important;
+  font-weight:300!important;
+  text-shadow:0 0 9px rgba(218,169,69,.25)!important;
+}
+html body #s-game.screen.active .act-btn.type-combat{border-color:rgba(204,64,49,.46)!important;background:radial-gradient(circle at 0 50%,rgba(204,64,49,.14),transparent 36%),linear-gradient(180deg,rgba(24,10,8,.96),rgba(8,5,4,.99))!important;}
+html body #s-game.screen.active .act-btn.type-magic{border-color:rgba(151,101,225,.46)!important;background:radial-gradient(circle at 0 50%,rgba(151,101,225,.15),transparent 36%),linear-gradient(180deg,rgba(19,11,30,.96),rgba(6,4,10,.99))!important;}
+html body #s-game.screen.active .act-btn.type-move{border-color:rgba(82,176,91,.42)!important;background:radial-gradient(circle at 0 50%,rgba(82,176,91,.13),transparent 36%),linear-gradient(180deg,rgba(9,22,11,.96),rgba(4,8,4,.99))!important;}
+html body #s-game.screen.active .act-btn.type-diplomacy{border-color:rgba(82,137,211,.44)!important;background:radial-gradient(circle at 0 50%,rgba(82,137,211,.14),transparent 36%),linear-gradient(180deg,rgba(8,16,28,.96),rgba(4,6,10,.99))!important;}
+html body #s-game.screen.active .ooc-toggle-row{
+  backdrop-filter:blur(10px)!important;
+  border-radius:18px!important;
+}
+html body #s-game.screen.active .footer-bar{
+  border:1px solid rgba(201,146,42,.30)!important;
+  border-bottom-color:rgba(201,146,42,.18)!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.11),transparent 55%),
+    linear-gradient(180deg,rgba(18,12,6,.96),rgba(5,4,3,.98))!important;
+  box-shadow:
+    0 -10px 26px rgba(0,0,0,.58),
+    inset 0 1px 0 rgba(255,232,169,.07),
+    inset 0 0 0 1px rgba(0,0,0,.35)!important;
+}
+html body #s-game.screen.active .footer-bar button,
+html body #s-game.screen.active .footer-bar .fbar-btn{
+  color:#cba85c!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.screen.active .footer-bar button svg,
+html body #s-game.screen.active .footer-bar .fbar-btn svg{
+  filter:drop-shadow(0 0 5px rgba(218,169,69,.18))!important;
+}
+html body #s-game.screen.active .footer-bar .fbl{
+  margin-top:1px!important;
+  font-size:7px!important;
+  font-weight:800!important;
+  letter-spacing:.7px!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .act-grid{gap:7px!important;padding-left:6px!important;padding-right:6px!important;}
+  html body #s-game.screen.active .act-btn{min-height:50px!important;}
+  html body #s-game.screen.active .act-btn .a-icon,
+  html body #s-game.screen.active .act-btn .a-circle{width:31px!important;height:31px!important;min-width:31px!important;}
+  html body #s-game.screen.active .a-title{font-size:12.7px!important;}
+  html body #s-game.screen.active .a-hint,
+  html body #s-game.screen.active .a-type{font-size:7px!important;}
+}
+</style>
+
+<style id="aimaster-v557-final-grimoire-reading-override">
+/* Camada final real do grimorio, mantendo scroll apenas na narrativa. */
+html body #s-game.screen.active .narr{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding:30px 18px 34px!important;
+  scroll-padding-top:28px!important;
+  scroll-padding-bottom:34px!important;
+  border-color:rgba(226,181,82,.56)!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(225,177,76,.13),transparent 20px),
+    radial-gradient(circle at 100% 0,rgba(225,177,76,.11),transparent 20px),
+    linear-gradient(90deg,rgba(255,226,143,.025),transparent 8%,transparent 92%,rgba(255,226,143,.018)),
+    repeating-linear-gradient(112deg,rgba(255,239,194,.013) 0 1px,transparent 1px 8px),
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.12),transparent 43%),
+    linear-gradient(180deg,rgba(13,10,6,.97),rgba(4,3,2,.99))!important;
+  box-shadow:
+    0 16px 38px rgba(0,0,0,.68),
+    0 0 22px rgba(218,169,69,.09),
+    inset 0 1px 0 rgba(255,232,169,.11),
+    inset 0 0 0 4px rgba(5,4,3,.68),
+    inset 0 0 0 5px rgba(218,169,69,.09),
+    inset 0 -22px 28px rgba(0,0,0,.36),
+    inset 0 0 34px rgba(0,0,0,.52)!important;
+}
+html body #s-game.screen.active .narr::before{
+  margin:-30px -18px 18px!important;
+  padding:10px 0 9px!important;
+  border-bottom-color:rgba(218,169,69,.24)!important;
+  color:#dfbd69!important;
+  letter-spacing:3.5px!important;
+}
+html body #s-game.screen.active .narr::after{
+  content:''!important;
+  position:sticky!important;
+  display:block!important;
+  bottom:-34px!important;
+  height:22px!important;
+  margin:8px -18px -34px!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,transparent,rgba(4,3,2,.82))!important;
+}
+html body #s-game.screen.active .narr .msg{margin-bottom:16px!important;}
+html body #s-game.screen.active .narr .msg:last-child{margin-bottom:26px!important;}
+html body #s-game.screen.active .narr .msg-dm .lbl{
+  margin:2px 0 10px!important;
+  color:rgba(226,190,106,.78)!important;
+  font-size:8.2px!important;
+  letter-spacing:2px!important;
+}
+html body #s-game.screen.active .narr .msg-dm .lbl::before{
+  content:'\2726'!important;
+  margin-right:1px!important;
+  color:#d8b665!important;
+  text-shadow:0 0 8px rgba(218,169,69,.34)!important;
+}
+html body #s-game.screen.active .narr .msg-dm .lbl::after{
+  height:1px!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.34),transparent)!important;
+}
+html body #s-game.screen.active .narr .bbl{
+  color:#f3e0bb!important;
+  font-size:17.2px!important;
+  line-height:1.72!important;
+  letter-spacing:.05px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.86)!important;
+}
+html body #s-game.screen.active .narr .bbl p{margin:0 0 13px!important;}
+html body #s-game.screen.active .narr .bbl p:last-child{margin-bottom:0!important;}
+html body #s-game.screen.active .narr .scene-title{
+  margin:1px 0 14px!important;
+  padding:0 8px 10px!important;
+  color:#f2cb72!important;
+  font-size:14.5px!important;
+  letter-spacing:.8px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.23)!important;
+}
+html body #s-game.screen.active .narr .scene-title::before{
+  content:''!important;
+  display:block!important;
+  width:24px!important;
+  height:1px!important;
+  margin:0 auto 9px!important;
+  background:linear-gradient(90deg,transparent,#d8b665,transparent)!important;
+  box-shadow:0 0 8px rgba(218,169,69,.28)!important;
+}
+html body #s-game.screen.active .narr .scene-title::after{
+  width:68%!important;
+  margin-top:9px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.50),transparent)!important;
+}
+html body #s-game.screen.active .narr .msg-dm .bbl em,
+html body #s-game.screen.active .narr .msg-dm .bbl i{color:#ead09a!important;}
+html body #s-game.screen.active .narr .msg-pl .bbl{
+  margin-left:auto!important;
+  max-width:88%!important;
+  padding:8px 11px!important;
+  border-color:rgba(151,119,226,.32)!important;
+  background:linear-gradient(180deg,rgba(54,37,99,.38),rgba(15,10,28,.50))!important;
+  color:#eadfff!important;
+}
+html body #s-game.screen.active .narr::-webkit-scrollbar{width:6px!important;}
+html body #s-game.screen.active .narr::-webkit-scrollbar-track{margin:22px 0!important;}
+html body #s-game.screen.active .narr::-webkit-scrollbar-thumb{
+  min-height:48px!important;
+  border-color:rgba(255,218,126,.32)!important;
+  background:linear-gradient(90deg,#5a390d,#d89e32,#68420f)!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .narr{padding:28px 15px 32px!important;scroll-padding-bottom:32px!important;}
+  html body #s-game.screen.active .narr::before{margin:-28px -15px 16px!important;}
+  html body #s-game.screen.active .narr::after{margin-left:-15px!important;margin-right:-15px!important;}
+  html body #s-game.screen.active .narr .bbl{font-size:16.4px!important;line-height:1.70!important;}
+  html body #s-game.screen.active .narr .scene-title{font-size:13.5px!important;}
+}
+</style>
+
+<style id="aimaster-v552-free-action-premium">
+/* Acao livre como CTA principal, mantendo posicao e tamanho aprovados. */
+html body #s-game.screen.active .ooc-toggle-row{
+  border-color:rgba(225,174,66,.48)!important;
+  background:
+    radial-gradient(circle at 50% -20%,rgba(218,169,69,.17),transparent 42%),
+    linear-gradient(180deg,rgba(26,17,7,.98),rgba(5,4,3,.99))!important;
+  box-shadow:
+    0 -10px 28px rgba(0,0,0,.62),
+    0 0 24px rgba(218,169,69,.13),
+    inset 0 1px 0 rgba(255,232,160,.07),
+    inset 0 0 18px rgba(218,169,69,.035)!important;
+}
+html body #s-game.screen.active .ooc-toggle-row::before{
+  content:'ACAO LIVRE'!important;
+  top:-8px!important;
+  left:17px!important;
+  padding:0 8px!important;
+  color:#d8b665!important;
+  background:#0b0805!important;
+  font-size:7.4px!important;
+  font-weight:800!important;
+  letter-spacing:1.9px!important;
+  text-shadow:0 1px 2px #000,0 0 7px rgba(218,169,69,.24)!important;
+}
+html body #s-game.screen.active .ooc-toggle{
+  border-color:rgba(218,169,69,.44)!important;
+  background:
+    radial-gradient(circle at 50% 24%,rgba(255,225,145,.14),transparent 35%),
+    linear-gradient(180deg,rgba(35,25,10,.94),rgba(7,5,3,.98))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,236,172,.08),
+    0 0 10px rgba(218,169,69,.10)!important;
+}
+html body #s-game.screen.active .ooc-icon{
+  color:#f0cf81!important;
+  text-shadow:0 1px 2px #000,0 0 7px rgba(218,169,69,.28)!important;
+}
+html body #s-game.screen.active .ooc-label{
+  color:#cfa95b!important;
+  font-weight:800!important;
+  letter-spacing:.9px!important;
+}
+html body #s-game.screen.active .free-in{
+  border-color:rgba(218,169,69,.35)!important;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.54),rgba(13,8,4,.78))!important;
+  color:#f1ddb2!important;
+  font-weight:500!important;
+  box-shadow:
+    inset 0 1px 9px rgba(0,0,0,.68),
+    0 0 0 1px rgba(0,0,0,.32)!important;
+}
+html body #s-game.screen.active .free-in::placeholder{
+  color:rgba(218,169,69,.48)!important;
+  font-style:italic!important;
+}
+html body #s-game.screen.active .free-send{
+  color:#1b1104!important;
+  font-size:18px!important;
+  font-weight:900!important;
+  border-color:rgba(255,224,137,.66)!important;
+  background:
+    radial-gradient(circle at 50% 22%,rgba(255,242,177,.45),transparent 38%),
+    linear-gradient(180deg,#e9bd5e,#a76a1f 58%,#56320d)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,245,193,.36),
+    inset 0 -1px 0 rgba(48,24,4,.82),
+    0 0 18px rgba(218,169,69,.22)!important;
+}
+html body #s-game.screen.active .free-send:active{
+  transform:translateY(1px) scale(.98)!important;
+  filter:brightness(1.08)!important;
+}
+html body #s-game.screen.active .ooc-toggle-row:has(.ooc-toggle.ooc-mode){
+  border-color:rgba(151,119,226,.52)!important;
+  background:
+    radial-gradient(circle at 50% -20%,rgba(151,119,226,.22),transparent 42%),
+    linear-gradient(180deg,rgba(28,17,54,.98),rgba(6,4,12,.99))!important;
+  box-shadow:
+    0 -10px 28px rgba(0,0,0,.62),
+    0 0 24px rgba(139,111,208,.15),
+    inset 0 1px 0 rgba(231,218,255,.06)!important;
+}
+html body #s-game.screen.active .ooc-toggle-row:has(.ooc-toggle.ooc-mode)::before{
+  content:'CONVERSA OFF'!important;
+  color:#cdbbff!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(151,119,226,.30)!important;
+}
+html body #s-game.screen.active .ooc-toggle.ooc-mode{
+  border-color:rgba(151,119,226,.58)!important;
+  background:
+    radial-gradient(circle at 50% 24%,rgba(205,187,255,.18),transparent 35%),
+    linear-gradient(180deg,rgba(54,37,99,.96),rgba(12,8,25,.99))!important;
+}
+html body #s-game.screen.active .free-in.ooc-active{
+  border-color:rgba(151,119,226,.52)!important;
+  background:linear-gradient(180deg,rgba(22,13,44,.72),rgba(8,5,18,.88))!important;
+  color:#e4d8ff!important;
+}
+html body #s-game.screen.active .free-in.ooc-active::placeholder{
+  color:rgba(205,187,255,.46)!important;
+}
+</style>
+
+<style id="aimaster-v551-premium-action-buttons">
+/* Botoes de acao mais nobres, sem criar scroll nas opcoes. */
+html body #s-game.screen.active .actions-wrap{
+  border-color:rgba(218,169,69,.34)!important;
+  background:
+    radial-gradient(circle at 50% -18%,rgba(218,169,69,.12),transparent 38%),
+    linear-gradient(180deg,rgba(18,11,5,.88),rgba(3,3,2,.94))!important;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,.52),
+    inset 0 1px 0 rgba(255,229,150,.06),
+    inset 0 0 22px rgba(218,169,69,.035)!important;
+}
+html body #s-game.screen.active .actions-wrap::before{
+  content:'\2014  O QUE VOC\00CA  FAZ?  \2014'!important;
+  margin:0 0 8px!important;
+  padding-bottom:5px!important;
+  border-bottom:1px solid rgba(218,169,69,.12)!important;
+  color:#d9b461!important;
+  font-size:8px!important;
+  font-weight:700!important;
+  letter-spacing:2.8px!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(218,169,69,.22)!important;
+}
+html body #s-game.screen.active .act-grid{
+  gap:7px!important;
+  overflow:visible!important;
+  max-height:none!important;
+}
+html body #s-game.screen.active .act-btn{
+  position:relative!important;
+  min-height:46px!important;
+  padding:7px 10px!important;
+  overflow:hidden!important;
+  border-width:1px!important;
+  border-color:rgba(218,169,69,.34)!important;
+  border-radius:14px!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(218,169,69,.12),transparent 32%),
+    linear-gradient(180deg,rgba(24,17,8,.92),rgba(5,4,3,.96))!important;
+  box-shadow:
+    0 7px 17px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,230,155,.07),
+    inset 0 -1px 0 rgba(0,0,0,.70)!important;
+  transform:none!important;
+}
+html body #s-game.screen.active .act-btn::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  inset:1px!important;
+  z-index:0!important;
+  border:1px solid rgba(255,226,150,.045)!important;
+  border-radius:12px!important;
+  background:linear-gradient(90deg,rgba(255,226,150,.05),transparent 38%,rgba(0,0,0,.12))!important;
+  opacity:1!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .act-btn::after{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;
+  top:8px!important;
+  bottom:8px!important;
+  width:2px!important;
+  border-radius:99px!important;
+  background:rgba(218,169,69,.62)!important;
+  box-shadow:0 0 8px rgba(218,169,69,.22)!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .act-btn > *{
+  position:relative!important;
+  z-index:1!important;
+}
+html body #s-game.screen.active .act-btn:active{
+  transform:translateY(1px) scale(.99)!important;
+  filter:brightness(1.08)!important;
+}
+html body #s-game.screen.active .act-btn .a-icon,
+html body #s-game.screen.active .act-btn .a-circle{
+  width:31px!important;
+  height:31px!important;
+  min-width:31px!important;
+  border-color:rgba(218,169,69,.38)!important;
+  background:
+    radial-gradient(circle at 40% 28%,rgba(255,225,145,.15),transparent 32%),
+    linear-gradient(180deg,rgba(37,27,10,.92),rgba(8,6,3,.98))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,236,172,.08),
+    0 0 0 1px rgba(0,0,0,.55),
+    0 0 9px rgba(218,169,69,.10)!important;
+}
+html body #s-game.screen.active .a-title{
+  color:#f4dfb4!important;
+  font-size:13.4px!important;
+  font-weight:650!important;
+  line-height:1.18!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.screen.active .a-hint,
+html body #s-game.screen.active .a-type{
+  font-size:7.4px!important;
+  font-weight:700!important;
+  letter-spacing:1.25px!important;
+  margin-top:3px!important;
+  opacity:.88!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.screen.active .a-chevron{
+  min-width:14px!important;
+  color:#d7ae55!important;
+  font-size:22px!important;
+  line-height:1!important;
+  opacity:.90!important;
+  text-shadow:0 0 7px rgba(218,169,69,.24)!important;
+}
+html body #s-game.screen.active .act-btn.type-combat{
+  border-color:rgba(204,68,58,.44)!important;
+}
+html body #s-game.screen.active .act-btn.type-combat::after{
+  background:#d94d43!important;
+  box-shadow:0 0 9px rgba(217,77,67,.34)!important;
+}
+html body #s-game.screen.active .act-btn.type-magic{
+  border-color:rgba(174,126,241,.44)!important;
+}
+html body #s-game.screen.active .act-btn.type-magic::after{
+  background:#b68bff!important;
+  box-shadow:0 0 10px rgba(182,139,255,.34)!important;
+}
+html body #s-game.screen.active .act-btn.type-move{
+  border-color:rgba(79,174,90,.42)!important;
+}
+html body #s-game.screen.active .act-btn.type-move::after{
+  background:#68c76e!important;
+  box-shadow:0 0 9px rgba(104,199,110,.30)!important;
+}
+html body #s-game.screen.active .act-btn.type-diplomacy{
+  border-color:rgba(91,145,219,.42)!important;
+}
+html body #s-game.screen.active .act-btn.type-diplomacy::after{
+  background:#76a8ff!important;
+  box-shadow:0 0 9px rgba(118,168,255,.30)!important;
+}
+html body #s-game.screen.active .act-btn.type-investigation::after{
+  background:#d9a944!important;
+}
+@media(max-height:740px){
+  html body #s-game.screen.active .act-btn{
+    min-height:44px!important;
+    padding-top:6px!important;
+    padding-bottom:6px!important;
+  }
+  html body #s-game.screen.active .act-btn .a-icon,
+  html body #s-game.screen.active .act-btn .a-circle{
+    width:29px!important;
+    height:29px!important;
+    min-width:29px!important;
+  }
+  html body #s-game.screen.active .a-title{font-size:12.8px!important;}
+}
+</style>
+
 <style id="aimaster-v547-visible-location-atmosphere">
 /* Torna a mudanca ambiental perceptivel mesmo sob os paineis escuros. */
 html body #s-game.screen.active.location-theme-forest{
@@ -4269,7 +4968,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 
   <!-- ★ FOOTER COM ÍCONES MELHORADOS -->
   <div class="footer-bar">
-        <button class="fbar-btn" id="fbar-tutorial-btn" onclick="openMo('mo-tutorial')" title="Tutorial">
+        <button class="fbar-btn" id="fbar-tutorial-btn-old" onclick="openMo('mo-tutorial')" title="Tutorial">
       <svg viewBox="0 0 40 40" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="20" cy="20" r="17" stroke="#C8922A" stroke-width="1.5" fill="rgba(200,146,42,.1)"/>
         <text x="20" y="27" text-anchor="middle" fill="#E8B84B" font-size="20" font-family="Cinzel,serif" font-weight="700">?</text>
@@ -4277,7 +4976,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
       <span class="fbl">Guia</span>
     </button>
     <button class="fbar-btn" onclick="openMo('mo-char')" title="Ficha"><span class="fbi">📜</span><span class="fbl">Ficha</span></button>
-    <button class="fbar-btn" onclick="toggleDiceTray()" title="Bandeja de Dados" id="dados-fbar-btn">
+    <button class="fbar-btn" onclick="toggleDiceTray()" title="Bandeja de Dados" id="dados-fbar-btn-old">
       <svg class="d20-icon-svg" viewBox="0 0 36 36" width="24" height="24">
   <defs>
     <linearGradient id="fbd20" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -4306,7 +5005,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     </button>
     <button class="fbar-btn" onclick="openMo('mo-shop')" title="Diamantes"><span class="fbi">💎</span><span class="fbl">Diamantes</span></button>
     <button class="fbar-btn" onclick="openMo('mo-map')" title="Mapa"><span class="fbi">🗺️</span><span class="fbl">Mapa</span></button>
-    <button class="fbar-btn" onclick="openRestModal()" title="Descanso" id="rest-footer-btn">
+    <button class="fbar-btn" onclick="openRestModal()" title="Descanso" id="rest-footer-btn-old">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.6" style="display:block;margin:0 auto">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="rgba(200,146,42,.15)"/>
         <line x1="12" y1="10" x2="12" y2="12" stroke-linecap="round"/>
@@ -4318,6 +5017,51 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <button class="fbar-btn" onclick="openMo('mo-api')" title="API"><span class="fbi">🔑</span><span class="fbl">API</span></button>
   </div>
 </div>
+
+<button class="dice-float-btn" onclick="toggleDiceTray()" title="Bandeja de Dados" id="dados-fbar-btn">
+  <svg class="d20-icon-svg" viewBox="0 0 36 36" width="24" height="24">
+    <defs>
+      <linearGradient id="fbd20-float" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#f4c84c"/>
+        <stop offset="50%" stop-color="#c08030"/>
+        <stop offset="100%" stop-color="#2a1004"/>
+      </linearGradient>
+    </defs>
+    <polygon points="18,3 31,11 28,27 8,27 5,11" fill="url(#fbd20-float)"/>
+    <text x="18" y="22" text-anchor="middle" font-size="9" font-weight="900" fill="#ffe080" font-family="Georgia,serif">20</text>
+  </svg>
+  <span class="dice-float-label">Dados</span>
+</button>
+
+<div class="footer-bar footer-main-ref">
+  <button class="fbar-btn is-journey" onclick="document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));if(window.closeDiceTray)closeDiceTray();" title="Jornada">
+    <span class="fbi">✥</span><span class="fbl">Jornada</span>
+  </button>
+  <button class="fbar-btn" onclick="openMo('mo-char');setTimeout(()=>switchTab('tab-inv'),0)" title="Inventário">
+    <span class="fbi">▣</span><span class="fbl">Inventário</span>
+  </button>
+  <button class="fbar-btn" onclick="openMo('mo-char');setTimeout(()=>switchTab('tab-stats'),0)" title="Personagem">
+    <span class="fbi">◆</span><span class="fbl">Personagem</span>
+  </button>
+  <button class="fbar-btn" onclick="openMemoryModal()" title="Diário de Aventura">
+    <span class="fbi">▤</span><span class="fbl">Diário</span>
+  </button>
+  <button class="fbar-btn" onclick="openMo('mo-game-menu')" title="Menu">
+    <span class="fbi">☰</span><span class="fbl">Menu</span>
+  </button>
+</div>
+
+<div class="mo" id="mo-game-menu"><div class="ms">
+  <div class="mt">Menu <button class="mc" onclick="closeMo('mo-game-menu')">×</button></div>
+  <div class="game-menu-grid">
+    <button class="game-menu-tile" onclick="closeMo('mo-game-menu');toggleDiceTray()"><span>🎲</span><b>Dados</b><small>Bandeja e rolagens</small></button>
+    <button class="game-menu-tile gem" onclick="closeMo('mo-game-menu');openMo('mo-shop')"><span>💎</span><b>Diamantes</b><small>Recursos premium</small></button>
+    <button class="game-menu-tile" onclick="closeMo('mo-game-menu');openMo('mo-map')"><span>🗺️</span><b>Mapa</b><small>Regiões e jornada</small></button>
+    <button class="game-menu-tile" onclick="closeMo('mo-game-menu');openRestModal()" id="rest-footer-btn"><span>☾</span><b>Descanso</b><small>Recuperar forças</small></button>
+    <button class="game-menu-tile" onclick="closeMo('mo-game-menu');openMo('mo-tutorial')" id="fbar-tutorial-btn"><span>?</span><b>Guia</b><small>Como jogar</small></button>
+    <button class="game-menu-tile" onclick="closeMo('mo-game-menu');openMo('mo-api')"><span>🔑</span><b>API</b><small>Chave do Mestre</small></button>
+  </div>
+</div></div>
 
 <!-- MODAL D20 REDESENHADO -->
 <div class="mo" id="mo-d20"><div class="ms" style="padding:1rem 1rem 1.2rem">
@@ -4523,10 +5267,16 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 
 <div class="mo" id="mo-api"><div class="ms">
   <div class="mt">🔑 Mestre IA <button class="mc" onclick="closeMo('mo-api')">×</button></div>
-  <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo.</p>
-  <div class="api-field"><label>Chave Anthropic</label><input type="password" id="api-key-input" placeholder="sk-ant-..."/></div>
+  <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo. Para testes grátis, use Gemini API.</p>
+  <div class="api-field"><label>Tipo de Mestre</label>
+    <select id="api-provider-select" onchange="updateApiProviderUI()" style="background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:11px 14px;color:var(--parch);font-family:var(--font-ui)">
+      <option value="anthropic">Mestre Profissional · Anthropic</option>
+      <option value="gemini">Mestre Iniciante · Gemini grátis</option>
+    </select>
+  </div>
+  <div class="api-field"><label id="api-key-label">Chave Anthropic</label><input type="password" id="api-key-input" placeholder="sk-ant-..."/></div>
   <button class="btn-primary" onclick="saveApiKey()">SALVAR CHAVE</button>
-  <p class="mo-note">console.anthropic.com</p>
+  <p class="mo-note" id="api-help">console.anthropic.com</p>
   <p class="mo-note" id="api-status" style="color:var(--green)"></p>
 </div></div>
 <div class="mo" id="mo-char"><div class="ms">
@@ -5893,6 +6643,14 @@ let pendingRollAttr=null, pendingRollCD=null, pendingRollLabel=null, pendingRoll
 let pendingActionAfterPaywall=null; // ação salva quando paywall interrompe // teste pendente
 let currentEnemy=null; // inimigo atual em combate
 
+function clearPendingRoll(){
+  pendingRollAttr = null;
+  pendingRollCD = null;
+  pendingRollLabel = null;
+  pendingRollCritical = false;
+  pendingRollType = 'check';
+}
+
 // Partículas
 (function(){
   const c=document.getElementById('particles');
@@ -6005,8 +6763,9 @@ function loadSpellChoices(){
   }catch(e){}
 }
 function startAdventure(){
-  const _k=localStorage.getItem('aimaster_api_key')||'';
-  if(!_k){ showToast('🔑 Configure sua chave de API!'); openMo('mo-api'); return; }
+  const _provider=getApiProvider();
+  const _k=getApiKeyForProvider(_provider);
+  if(!_k){ showToast(_provider==='gemini'?'🔑 Configure sua chave Gemini API!':'🔑 Configure sua chave de API!'); openMo('mo-api'); return; }
   const name=document.getElementById('inp-name').value.trim()||'Herói Desconhecido';
   const race=document.getElementById('inp-race').value;
   const cls=document.getElementById('inp-class').value;
@@ -6931,18 +7690,13 @@ function detectPendingRoll(text){
     const patterns = [
       new RegExp('role\\s+(?:um\\s+)?(?:teste\\s+de\\s+)?('+PT+')(?:\\s+CD\\s*(\\d+))?','i'),
       new RegExp('faça\\s+(?:um\\s+)?(?:teste\\s+de\\s+)?('+PT+')(?:\\s+CD\\s*(\\d+))?','i'),
-      new RegExp('teste\\s+de\\s+('+PT+')\\s+CD\\s*(\\d+)','i'),
-      new RegExp('teste\\s+de\\s+('+PT+')','i'),
-      new RegExp('('+PT+')\\s+CD\\s+(\\d+)','i'),
-      new RegExp('Rolar\\s+('+PT+')\\s+CD\\s*(\\d+)','i'),
+      new RegExp('jogue?\\s+(?:um\\s+)?(?:teste\\s+de\\s+)?('+PT+')(?:\\s+CD\\s*(\\d+))?','i'),
       // ★ Iniciativa — padrões específicos
       new RegExp('role\\s+(?:sua\\s+)?iniciativa','i'),
       new RegExp('rola\\s+(?:a\\s+)?iniciativa','i'),
-      new RegExp('iniciativa\\s*[:!]','i'),
     ];
     // ★ Iniciativa — detecta antes de tentar mapear
-    const initMatch = /\b(?:role?|rola(?:r|ndo)?|faça|jogue?)\s+(?:a\s+|sua\s+|um[a]?\s+)?iniciativa\b/i.test(text) ||
-                      /\biniciativa\s*[:!]/i.test(text);
+    const initMatch = /\b(?:role?|rola(?:r|ndo)?|faça|jogue?)\s+(?:a\s+|sua\s+|um[a]?\s+)?iniciativa\b/i.test(text);
     if(initMatch && !foundAttr){
       foundAttr = 'dex';
       foundCD   = null;
@@ -6973,7 +7727,7 @@ function detectPendingRoll(text){
   // Aplica só se encontrou algo novo
   if(foundAttr){
     pendingRollAttr  = foundAttr;
-    if(foundCD !== null) pendingRollCD = foundCD;
+    pendingRollCD    = foundCD;
     // Guarda o nome legível da perícia/atributo
     if(tagMatch) pendingRollLabel = tagMatch[1].trim();
     else if(foundAttr) {
@@ -6987,6 +7741,8 @@ function detectPendingRoll(text){
     } else {
       pendingRollCritical = false;
     }
+  } else {
+    clearPendingRoll();
   }
 }
 
@@ -7764,31 +8520,22 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
   }
   setThinking(true);
   gameHistory.push({role:'user',content:acao});
-  const apiKey=localStorage.getItem('aimaster_api_key')||'';
+  const apiProvider=getApiProvider();
+  const apiKey=getApiKeyForProvider(apiProvider);
   if(!apiKey){
     setThinking(false);
     const m=addMsg('msg-dm','');
-    typewriterMsg(m,'⚠️ Configure sua chave de API. Toque em 🔑 na barra inferior.');
+    typewriterMsg(m,apiProvider==='gemini'
+      ? '⚠️ Configure sua chave Gemini API gratuita. Toque em 🔑 na barra inferior.'
+      : '⚠️ Configure sua chave de API. Toque em 🔑 na barra inferior.');
     return;
   }
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,system:buildSystemPrompt(),messages:gameHistory.slice(-20)})
-    });
-    if(!res.ok){
-      const err=await res.json().catch(()=>({}));
-      setThinking(false);
-      const errMsg=res.status===401?'🔑 Chave inválida. Toque em 🔑 API.':res.status===429?'⏳ Limite atingido. Aguarde.':'❌ Erro '+res.status;
-      const m=addMsg('msg-dm','');typewriterMsg(m,errMsg);
-      gameHistory.pop();return;
-    }
-    const data=await res.json();
+    const apiResult=await callMasterProvider(apiProvider,apiKey,gameHistory.slice(-20),buildSystemPrompt());
     setThinking(false);
     updateTurnCounter(); // atualiza contador de turnos
-    if(data.content&&data.content[0]&&data.content[0].text){
-      const reply=data.content[0].text;
+    if(apiResult&&apiResult.text){
+      const reply=apiResult.text;
       gameHistory.push({role:'assistant',content:reply});
       // Extrai tags especiais
       const actions=extractActions(reply);
@@ -7877,7 +8624,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // ★ Trunca após pedido de TESTE (não narra resultado antes do jogador rolar)
       const _testeTagMatch = reply.match(/\[TESTE:[^\]]+\]/i);
       if(_testeTagMatch){
-        const cutIdx = reply.indexOf(_testeTagMatch[0]) + testeMatch[0].length;
+        const cutIdx = reply.indexOf(_testeTagMatch[0]) + _testeTagMatch[0].length;
         // Mantém só até o fim da linha do pedido de teste
         const nextPara = reply.indexOf('\n\n', cutIdx);
         replyToShow = nextPara > 0
@@ -7923,7 +8670,9 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
     console.error('[AiMaster] askMaster error:', e?.message||e);
     const isLocal = typeof location !== 'undefined' && location.protocol === 'file:';
     let _errMsg;
-    if(isLocal){
+    if(e?.message && /^[🔑⏳❌⚠️]/u.test(e.message)){
+      _errMsg = e.message;
+    } else if(isLocal){
       _errMsg = '⚠️ Abra pelo link Netlify — não funciona como arquivo local.';
     } else if(e?.message?.includes('401') || e?.message?.includes('Unauthorized')){
       _errMsg = '🔑 Chave de API inválida. Toque em 🔑 API para reconfigurar.';
@@ -9546,11 +10295,7 @@ async function rollInlineD20(attrKey, label, cd){
   faceEl.style.borderColor = totalColor+'60';
 
   // Limpa estado pendente e desbloqueia a UI
-  pendingRollAttr      = null;
-  pendingRollCD        = null;
-  pendingRollLabel     = null;
-  pendingRollCritical  = false;
-  pendingRollType      = 'check';
+  clearPendingRoll();
   updateD20ButtonState(); // Desbloqueia botões de ação
 
   const rollResult = {diceVal, modVal, total, isCrit, isFail, ok, label, attrKey, cd};
@@ -9661,7 +10406,7 @@ async function rollD20Modal(){
   const outcomeStr=cd?(total>=cd?'✓ SUCESSO':'✗ FALHA'):dr===20?'★ CRÍTICO!':dr===1?'✗ FALHA CRÍTICA':'';
   const skillLbl=pendingRollLabel||attrLabels[attr];
   resultTxt.textContent=`${skillLbl}: d20(${dr}) ${modStr(attrM)}${profTxt} = ${total} ${outcomeStr}`;
-  pendingRollAttr=null;pendingRollCD=null;pendingRollLabel=null;
+  clearPendingRoll();
   // Fecha e adiciona no narr após 1s
   setTimeout(()=>{
     closeMo('mo-d20');
@@ -9691,21 +10436,96 @@ function switchTab(id){
   }
 }
 
+function getApiProvider(){
+  return localStorage.getItem('aimaster_api_provider')||'anthropic';
+}
+
+function getApiKeyForProvider(provider){
+  return provider==='gemini'
+    ? (localStorage.getItem('aimaster_gemini_api_key')||'')
+    : (localStorage.getItem('aimaster_api_key')||'');
+}
+
+function updateApiProviderUI(){
+  const provider=document.getElementById('api-provider-select')?.value||getApiProvider();
+  const input=document.getElementById('api-key-input');
+  const label=document.getElementById('api-key-label');
+  const help=document.getElementById('api-help');
+  const status=document.getElementById('api-status');
+  if(label) label.textContent=provider==='gemini'?'Chave Gemini API':'Chave Anthropic';
+  if(input){
+    input.placeholder=provider==='gemini'?'AIza...':'sk-ant-...';
+    input.value=getApiKeyForProvider(provider);
+  }
+  if(help) help.textContent=provider==='gemini'?'aistudio.google.com/app/apikey':'console.anthropic.com';
+  if(status) status.textContent='';
+}
+
+async function callMasterProvider(provider,apiKey,messages,systemPrompt){
+  if(provider==='gemini'){
+    const beginnerSystemPrompt = systemPrompt + `
+
+MODO MESTRE INICIANTE / GEMINI:
+Responda de forma completa, mas compacta.
+Use no máximo 3 parágrafos curtos de narrativa.
+Não interrompa frases no meio.
+Sempre termine com exatamente uma tag [AÇÕES:opção 1|opção 2|opção 3|opção 4].
+Se estiver perto do limite, reduza a descrição e preserve a tag [AÇÕES:].
+Não use markdown.`;
+    const contents=messages.map(m=>({
+      role:m.role==='assistant'?'model':'user',
+      parts:[{text:String(m.content||'')}]
+    }));
+    const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},
+      body:JSON.stringify({
+        systemInstruction:{parts:[{text:beginnerSystemPrompt}]},
+        contents,
+        generationConfig:{maxOutputTokens:1600,temperature:.75}
+      })
+    });
+    if(!res.ok){
+      const errMsg=res.status===400?'❌ Gemini recusou a requisição. Verifique a chave/modelo.':res.status===401||res.status===403?'🔑 Chave Gemini inválida ou sem permissão.':res.status===429?'⏳ Limite gratuito Gemini atingido. Aguarde.':'❌ Erro Gemini '+res.status;
+      throw new Error(errMsg);
+    }
+    const data=await res.json();
+    const text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('').trim();
+    const finishReason=data.candidates?.[0]?.finishReason||'';
+    if(!text) throw new Error('❌ Gemini não retornou texto.');
+    if(finishReason==='MAX_TOKENS'&&!/\[A[ÇC][ÕO]ES:/i.test(text)){
+      return {text:text.trim()+`\n\n[AÇÕES:Examinar os arredores|Seguir com cautela|Falar com alguém próximo|Preparar-se para perigo]`};
+    }
+    return {text};
+  }
+
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,system:systemPrompt,messages})
+  });
+  if(!res.ok){
+    const errMsg=res.status===401?'🔑 Chave inválida. Toque em 🔑 API.':res.status===429?'⏳ Limite atingido. Aguarde.':'❌ Erro '+res.status;
+    throw new Error(errMsg);
+  }
+  const data=await res.json();
+  return {text:data.content?.[0]?.text||''};
+}
+
 function saveApiKey(){
   const v=document.getElementById('api-key-input').value.trim();
+  const provider=document.getElementById('api-provider-select')?.value||'anthropic';
   if(!v){showToast('Cole sua chave aqui');return;}
-  if(!v.startsWith('sk-ant-')){showToast('⚠️ Deve começar com sk-ant-');return;}
-  localStorage.setItem('aimaster_api_key',v);
+  if(provider==='anthropic'&&!v.startsWith('sk-ant-')){showToast('⚠️ Chave Anthropic deve começar com sk-ant-');return;}
+  localStorage.setItem('aimaster_api_provider',provider);
+  if(provider==='gemini') localStorage.setItem('aimaster_gemini_api_key',v);
+  else localStorage.setItem('aimaster_api_key',v);
   showToast('🔑 Chave salva! Testando...');
-  fetch('https://api.anthropic.com/v1/messages',{method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':v,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:5,messages:[{role:'user',content:'oi'}]})
-  }).then(r=>{
-    if(r.ok) showToast('✅ IA conectada com sucesso!');
-    else if(r.status===401) showToast('❌ Chave inválida. Verifique em console.anthropic.com');
-    else showToast('⚠️ Erro '+r.status+' ao testar');
+  callMasterProvider(provider,v,[{role:'user',content:'Responda apenas: ok'}],'Teste de conexão.')
+  .then(()=>{
+    showToast(provider==='gemini'?'✅ Mestre Iniciante conectado!':'✅ Mestre Profissional conectado!');
   }).catch(e=>{
-    showToast(location.protocol==='file:'?'⚠️ Use o link Netlify!':'🌐 Sem conexão ao testar');
+    showToast(e?.message||'🌐 Sem conexão ao testar');
   });
   setTimeout(()=>closeMo('mo-api'),2500);
 }
@@ -9741,7 +10561,14 @@ function showToast(msg){
 
 function openMo(id){
   if(id==='mo-rep')updateVitalsAndRep();
-  if(id==='mo-api'){const k=localStorage.getItem('aimaster_api_key')||'';if(k)document.getElementById('api-status').textContent='✅ Chave configurada';}
+  if(id==='mo-api'){
+    const provider=getApiProvider();
+    const sel=document.getElementById('api-provider-select');
+    if(sel) sel.value=provider;
+    updateApiProviderUI();
+    const k=getApiKeyForProvider(provider);
+    if(k)document.getElementById('api-status').textContent=provider==='gemini'?'✅ Gemini configurado':'✅ Anthropic configurado';
+  }
   if(id==='mo-d20'){d20ActionMode=null;buildD20Attrs();buildD20AbilitiesPanel();document.querySelectorAll('.d20-action-btn').forEach(b=>b.classList.remove('active'));}
   if(id==='mo-xp')updateXPModal();
   if(id==='mo-shop')updateShopContext();
@@ -10699,7 +11526,7 @@ function usarDestinoVantagem(){
   // Mostra os 2 dados separadamente para o jogador ver
   addRollCard(`🌟 Dado 1 (descartado)`, r1, attrMod2+prof2, r1+attrMod2+prof2, cd, true);
   addRollCard(`🌟 ${label} (MELHOR d20)`, best, attrMod2+prof2, total2, cd);
-  pendingRollAttr=null; pendingRollCD=null; pendingRollLabel=null; pendingRollCritical=false; pendingRollType='check';
+  clearPendingRoll();
   updateD20ButtonState();
   const outcome = rollResult2.isCrit?'CRÍTICO':rollResult2.isFail?'FALHA CRÍTICA':ok2===true?'SUCESSO':ok2===false?'FALHA':`total ${total2}`;
   askMaster(`Jogador usou Destino Favorável (vantagem). Rolou 2d20: ${r1} e ${r2}, ficou com ${best}. ${label}: d20(${best}) +${attrMod2+prof2} = ${total2}${cd?' vs CD '+cd:''} — ${outcome}. Continue a narrativa com este resultado.`);
@@ -15680,5 +16507,1502 @@ body #s-game.active .narr .msg-pl .bbl{
   background:linear-gradient(180deg,rgba(50,34,86,.34),rgba(15,10,28,.42))!important;
   color:#e4daf7!important;
   box-shadow:inset 0 1px 0 rgba(226,211,255,.05)!important;
+}
+</style>
+
+<style id="aimaster-v556-final-decision-polish">
+/* Camada final: reforca o visual premium da tomada de decisao sem mudar comportamento. */
+html body #s-game.screen.active .acts-area{
+  overflow:visible!important;
+  border:1px solid rgba(201,146,42,.30)!important;
+  border-radius:18px!important;
+  background:radial-gradient(ellipse at 50% 0,rgba(218,169,69,.11),transparent 52%),linear-gradient(180deg,rgba(18,12,6,.78),rgba(5,4,3,.90))!important;
+  box-shadow:0 12px 28px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,230,166,.06),inset 0 0 0 1px rgba(0,0,0,.36)!important;
+}
+html body #s-game.screen.active .acts-lbl{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  margin:0 20px 8px!important;
+  color:#d9b764!important;
+  font-family:var(--font-title)!important;
+  font-size:8.5px!important;
+  font-weight:800!important;
+  letter-spacing:2.8px!important;
+  text-align:center!important;
+  text-shadow:0 1px 2px #000,0 0 9px rgba(218,169,69,.22)!important;
+}
+html body #s-game.screen.active .acts-lbl::before,
+html body #s-game.screen.active .acts-lbl::after{
+  content:''!important;
+  flex:1!important;
+  height:1px!important;
+  max-width:72px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.42),transparent)!important;
+}
+html body #s-game.screen.active .act-grid{
+  overflow:visible!important;
+  max-height:none!important;
+  gap:8px!important;
+  padding:0 8px 7px!important;
+}
+html body #s-game.screen.active .act-btn{
+  position:relative!important;
+  min-height:54px!important;
+  border:1px solid rgba(201,146,42,.36)!important;
+  border-radius:15px!important;
+  background:radial-gradient(circle at 0 50%,rgba(218,169,69,.13),transparent 34%),linear-gradient(180deg,rgba(19,14,8,.97),rgba(8,6,4,.99))!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,232,170,.07),inset 0 0 0 1px rgba(0,0,0,.32)!important;
+}
+html body #s-game.screen.active .act-btn::before{
+  content:''!important;
+  position:absolute!important;
+  inset:1px!important;
+  border-radius:14px!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.10),transparent 36%,rgba(218,169,69,.05))!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .act-btn::after{
+  content:''!important;
+  position:absolute!important;
+  left:16px!important;
+  right:16px!important;
+  bottom:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.45),transparent)!important;
+  opacity:.55!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .act-btn .a-icon,
+html body #s-game.screen.active .act-btn .a-circle{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  border:1px solid rgba(218,169,69,.43)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 50% 35%,rgba(255,227,152,.18),transparent 42%),linear-gradient(180deg,rgba(32,25,13,.98),rgba(8,6,4,.98))!important;
+  box-shadow:inset 0 1px 0 rgba(255,235,175,.08),0 0 12px rgba(218,169,69,.10)!important;
+}
+html body #s-game.screen.active .a-title{
+  color:#f4dfb6!important;
+  font-size:13.8px!important;
+  font-weight:700!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.82)!important;
+}
+html body #s-game.screen.active .a-hint,
+html body #s-game.screen.active .a-type{
+  margin-top:3px!important;
+  font-size:7.7px!important;
+  font-weight:800!important;
+  letter-spacing:1.35px!important;
+  opacity:.95!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.screen.active .a-chevron,
+html body #s-game.screen.active .a-arrow{
+  color:#cfa34d!important;
+  font-size:24px!important;
+  font-weight:300!important;
+  text-shadow:0 0 9px rgba(218,169,69,.25)!important;
+}
+html body #s-game.screen.active .act-btn.type-combat{border-color:rgba(204,64,49,.46)!important;background:radial-gradient(circle at 0 50%,rgba(204,64,49,.14),transparent 36%),linear-gradient(180deg,rgba(24,10,8,.97),rgba(8,5,4,.99))!important;}
+html body #s-game.screen.active .act-btn.type-magic{border-color:rgba(151,101,225,.46)!important;background:radial-gradient(circle at 0 50%,rgba(151,101,225,.15),transparent 36%),linear-gradient(180deg,rgba(19,11,30,.97),rgba(6,4,10,.99))!important;}
+html body #s-game.screen.active .act-btn.type-move{border-color:rgba(82,176,91,.42)!important;background:radial-gradient(circle at 0 50%,rgba(82,176,91,.13),transparent 36%),linear-gradient(180deg,rgba(9,22,11,.97),rgba(4,8,4,.99))!important;}
+html body #s-game.screen.active .act-btn.type-diplomacy{border-color:rgba(82,137,211,.44)!important;background:radial-gradient(circle at 0 50%,rgba(82,137,211,.14),transparent 36%),linear-gradient(180deg,rgba(8,16,28,.97),rgba(4,6,10,.99))!important;}
+html body #s-game.screen.active .ooc-toggle-row{
+  backdrop-filter:blur(10px)!important;
+  border-radius:18px!important;
+}
+html body #s-game.screen.active .footer-bar{
+  border:1px solid rgba(201,146,42,.30)!important;
+  border-bottom-color:rgba(201,146,42,.18)!important;
+  background:radial-gradient(ellipse at 50% 0,rgba(218,169,69,.11),transparent 55%),linear-gradient(180deg,rgba(18,12,6,.96),rgba(5,4,3,.98))!important;
+  box-shadow:0 -10px 26px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,232,169,.07),inset 0 0 0 1px rgba(0,0,0,.35)!important;
+}
+html body #s-game.screen.active .footer-bar button,
+html body #s-game.screen.active .footer-bar .fbar-btn{
+  color:#cba85c!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.screen.active .footer-bar .fbl{
+  margin-top:1px!important;
+  font-size:7px!important;
+  font-weight:800!important;
+  letter-spacing:.7px!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .act-grid{gap:7px!important;padding-left:6px!important;padding-right:6px!important;}
+  html body #s-game.screen.active .act-btn{min-height:50px!important;}
+  html body #s-game.screen.active .act-btn .a-icon,
+  html body #s-game.screen.active .act-btn .a-circle{width:31px!important;height:31px!important;min-width:31px!important;}
+  html body #s-game.screen.active .a-title{font-size:12.7px!important;}
+  html body #s-game.screen.active .a-hint,
+  html body #s-game.screen.active .a-type{font-size:7px!important;}
+}
+</style>
+
+<style id="aimaster-v557-eof-grimoire-reading">
+/* Ajuste final no fim do arquivo: leitura mais confortavel da narrativa. */
+html body #s-game.screen.active .narr{
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding:30px 18px 34px!important;
+  scroll-padding-top:28px!important;
+  scroll-padding-bottom:34px!important;
+  border-color:rgba(226,181,82,.56)!important;
+  box-shadow:
+    0 16px 38px rgba(0,0,0,.68),
+    0 0 22px rgba(218,169,69,.09),
+    inset 0 1px 0 rgba(255,232,169,.11),
+    inset 0 0 0 4px rgba(5,4,3,.68),
+    inset 0 0 0 5px rgba(218,169,69,.09),
+    inset 0 -22px 28px rgba(0,0,0,.36),
+    inset 0 0 34px rgba(0,0,0,.52)!important;
+}
+html body #s-game.screen.active .narr::before{
+  margin:-30px -18px 18px!important;
+  padding:10px 0 9px!important;
+  color:#dfbd69!important;
+  letter-spacing:3.5px!important;
+}
+html body #s-game.screen.active .narr::after{
+  content:''!important;
+  position:sticky!important;
+  display:block!important;
+  bottom:-34px!important;
+  height:22px!important;
+  margin:8px -18px -34px!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,transparent,rgba(4,3,2,.82))!important;
+}
+html body #s-game.screen.active .narr .msg{margin-bottom:16px!important;}
+html body #s-game.screen.active .narr .msg:last-child{margin-bottom:26px!important;}
+html body #s-game.screen.active .narr .msg-dm .lbl{
+  margin:2px 0 10px!important;
+  color:rgba(226,190,106,.78)!important;
+  font-size:8.2px!important;
+  letter-spacing:2px!important;
+}
+html body #s-game.screen.active .narr .msg-dm .lbl::before{
+  content:'\2726'!important;
+  margin-right:1px!important;
+  color:#d8b665!important;
+  text-shadow:0 0 8px rgba(218,169,69,.34)!important;
+}
+html body #s-game.screen.active .narr .bbl{
+  color:#f3e0bb!important;
+  font-size:17.2px!important;
+  line-height:1.72!important;
+  letter-spacing:.05px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.86)!important;
+}
+html body #s-game.screen.active .narr .bbl p{margin:0 0 13px!important;}
+html body #s-game.screen.active .narr .bbl p:last-child{margin-bottom:0!important;}
+html body #s-game.screen.active .narr .scene-title{
+  margin:1px 0 14px!important;
+  padding:0 8px 10px!important;
+  color:#f2cb72!important;
+  font-size:14.5px!important;
+  letter-spacing:.8px!important;
+  text-transform:uppercase!important;
+}
+html body #s-game.screen.active .narr .scene-title::before{
+  content:''!important;
+  display:block!important;
+  width:24px!important;
+  height:1px!important;
+  margin:0 auto 9px!important;
+  background:linear-gradient(90deg,transparent,#d8b665,transparent)!important;
+}
+html body #s-game.screen.active .narr .scene-title::after{
+  width:68%!important;
+  margin-top:9px!important;
+}
+html body #s-game.screen.active .narr .msg-pl .bbl{
+  margin-left:auto!important;
+  max-width:88%!important;
+  padding:8px 11px!important;
+}
+html body #s-game.screen.active .narr::-webkit-scrollbar{width:6px!important;}
+html body #s-game.screen.active .narr::-webkit-scrollbar-track{margin:22px 0!important;}
+html body #s-game.screen.active .narr::-webkit-scrollbar-thumb{min-height:48px!important;}
+@media(max-width:370px){
+  html body #s-game.screen.active .narr{padding:28px 15px 32px!important;scroll-padding-bottom:32px!important;}
+  html body #s-game.screen.active .narr::before{margin:-28px -15px 16px!important;}
+  html body #s-game.screen.active .narr::after{margin-left:-15px!important;margin-right:-15px!important;}
+  html body #s-game.screen.active .narr .bbl{font-size:16.4px!important;line-height:1.70!important;}
+}
+</style>
+
+<style id="aimaster-v558-fix-narrative-scroll-mask">
+/* Corrige texto aparecendo por tras da moldura/cabecalho durante o scroll. */
+html body #s-game.screen.active .narr{
+  position:relative!important;
+  isolation:isolate!important;
+  contain:paint!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  padding-bottom:42px!important;
+  background-clip:padding-box!important;
+}
+html body #s-game.screen.active .narr::before{
+  position:sticky!important;
+  top:-30px!important;
+  z-index:8!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.14),transparent 68%),
+    linear-gradient(180deg,#100b05 0%,#0b0704 72%,#080503 100%)!important;
+  box-shadow:
+    0 8px 14px rgba(0,0,0,.46),
+    inset 0 -1px 0 rgba(218,169,69,.22)!important;
+}
+html body #s-game.screen.active .narr::after{
+  content:none!important;
+  display:none!important;
+}
+html body #s-game.screen.active .narr .msg,
+html body #s-game.screen.active .narr .bbl{
+  position:relative!important;
+  z-index:1!important;
+}
+html body #s-game.screen.active .narr .msg:last-child{
+  margin-bottom:34px!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .narr{padding-bottom:38px!important;}
+  html body #s-game.screen.active .narr::before{top:-28px!important;}
+}
+</style>
+
+<style id="aimaster-v559-revive-scene-premium">
+/* Card premium Reviver esta Cena: monetizacao contextual, sem duplicar CTA. */
+html body #s-game.screen.active .immersive-scene-card{
+  display:none!important;
+}
+html body #s-game.screen.active #scene-btn-wrap.v33-scene-card{
+  display:block!important;
+  margin:18px 2px 22px!important;
+  padding:0!important;
+  position:relative!important;
+  z-index:2!important;
+}
+html body #s-game.screen.active #scene-btn-wrap.v33-scene-card::before{
+  content:'VISUAL PREMIUM'!important;
+  position:absolute!important;
+  top:-8px!important;
+  left:18px!important;
+  z-index:3!important;
+  padding:0 8px!important;
+  color:#d8c3ff!important;
+  background:#08050f!important;
+  font-family:var(--font-title)!important;
+  font-size:7px!important;
+  font-weight:900!important;
+  letter-spacing:1.7px!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(159,119,226,.35)!important;
+}
+html body #s-game.screen.active .v33-scene-card-inner{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid rgba(159,119,226,.50)!important;
+  border-radius:17px!important;
+  padding:12px!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(222,201,255,.16),transparent 34%),
+    radial-gradient(circle at 100% 100%,rgba(116,65,195,.18),transparent 38%),
+    linear-gradient(135deg,rgba(31,18,56,.96),rgba(9,6,18,.98) 58%,rgba(23,12,43,.98))!important;
+  box-shadow:
+    0 12px 24px rgba(0,0,0,.52),
+    0 0 22px rgba(137,90,220,.16),
+    inset 0 1px 0 rgba(236,224,255,.10),
+    inset 0 0 0 1px rgba(0,0,0,.38)!important;
+}
+html body #s-game.screen.active .v33-scene-card-inner::before{
+  content:''!important;
+  position:absolute!important;
+  inset:-45%!important;
+  background:
+    conic-gradient(from 40deg,transparent,rgba(222,201,255,.16),transparent 24%,rgba(201,146,42,.12),transparent 42%)!important;
+  animation:aimaster-scene-glint 7s linear infinite!important;
+  opacity:.75!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .v33-scene-card-inner::after{
+  content:''!important;
+  position:absolute!important;
+  left:14px!important;
+  right:14px!important;
+  bottom:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(226,202,255,.62),rgba(218,169,69,.42),transparent)!important;
+  pointer-events:none!important;
+}
+@keyframes aimaster-scene-glint{
+  from{transform:rotate(0deg) scale(1);}
+  to{transform:rotate(360deg) scale(1);}
+}
+html body #s-game.screen.active .v33-scene-content{
+  position:relative!important;
+  z-index:1!important;
+  display:grid!important;
+  grid-template-columns:42px 1fr auto!important;
+  align-items:center!important;
+  gap:11px!important;
+}
+html body #s-game.screen.active .v33-scene-icon,
+html body #s-game.screen.active .v33-scene-ico{
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  border:1px solid rgba(226,202,255,.44)!important;
+  border-radius:50%!important;
+  display:grid!important;
+  place-items:center!important;
+  color:#efe4ff!important;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(255,255,255,.26),transparent 38%),
+    linear-gradient(180deg,#5a3d97,#22123f)!important;
+  box-shadow:
+    0 0 14px rgba(159,119,226,.32),
+    inset 0 1px 0 rgba(255,255,255,.16)!important;
+}
+html body #s-game.screen.active .v33-scene-title{
+  color:#eadcff!important;
+  font-family:var(--font-title)!important;
+  font-size:12.2px!important;
+  font-weight:900!important;
+  letter-spacing:1.5px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(159,119,226,.36)!important;
+}
+html body #s-game.screen.active .v33-scene-sub{
+  margin-top:3px!important;
+  color:rgba(241,224,255,.76)!important;
+  font-size:10.8px!important;
+  line-height:1.28!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.78)!important;
+}
+html body #s-game.screen.active .v33-scene-btn{
+  min-width:76px!important;
+  min-height:34px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(255,225,148,.62)!important;
+  border-radius:12px!important;
+  color:#1a1004!important;
+  background:
+    radial-gradient(circle at 50% 22%,rgba(255,245,189,.48),transparent 38%),
+    linear-gradient(180deg,#eac368,#ad7024 60%,#5d350d)!important;
+  box-shadow:
+    0 0 16px rgba(218,169,69,.24),
+    inset 0 1px 0 rgba(255,248,202,.34),
+    inset 0 -1px 0 rgba(45,23,4,.78)!important;
+  font-family:var(--font-title)!important;
+  font-size:8.8px!important;
+  font-weight:900!important;
+  letter-spacing:.75px!important;
+  white-space:nowrap!important;
+}
+html body #s-game.screen.active .v33-scene-btn:active{
+  transform:translateY(1px) scale(.98)!important;
+  filter:brightness(1.08)!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .v33-scene-card-inner{padding:10px!important;}
+  html body #s-game.screen.active .v33-scene-content{grid-template-columns:36px 1fr!important;gap:9px!important;}
+  html body #s-game.screen.active .v33-scene-icon,
+  html body #s-game.screen.active .v33-scene-ico{width:36px!important;height:36px!important;min-width:36px!important;}
+  html body #s-game.screen.active .v33-scene-btn{
+    grid-column:1 / -1!important;
+    width:100%!important;
+    margin-top:6px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v560-footer-aaa-premium">
+/* Footer premium: navegacao inferior mais legivel e cinematografica, sem alterar cliques. */
+html body #s-game.screen.active .footer-bar{
+  overflow:hidden!important;
+  border:1px solid rgba(201,146,42,.34)!important;
+  border-top-color:rgba(232,184,75,.42)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.15),transparent 52%),
+    linear-gradient(180deg,rgba(20,13,6,.98),rgba(5,4,3,.99))!important;
+  box-shadow:
+    0 -12px 28px rgba(0,0,0,.62),
+    0 0 20px rgba(218,169,69,.08),
+    inset 0 1px 0 rgba(255,232,169,.10),
+    inset 0 0 0 1px rgba(0,0,0,.38)!important;
+}
+html body #s-game.screen.active .footer-bar::before{
+  content:''!important;
+  position:absolute!important;
+  left:16px!important;
+  right:16px!important;
+  top:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,218,126,.70),transparent)!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .footer-bar .fbar-btn{
+  position:relative!important;
+  overflow:hidden!important;
+  min-width:0!important;
+  border:1px solid transparent!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,rgba(255,232,169,.025),rgba(0,0,0,0))!important;
+  color:#cda95d!important;
+  transition:transform .12s ease, filter .12s ease, border-color .12s ease!important;
+}
+html body #s-game.screen.active .footer-bar .fbar-btn::before{
+  content:''!important;
+  position:absolute!important;
+  inset:5px 4px 4px!important;
+  border-radius:11px!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.12),transparent 54%),
+    linear-gradient(180deg,rgba(23,16,8,.44),rgba(0,0,0,.08))!important;
+  opacity:.65!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .footer-bar .fbar-btn::after{
+  content:''!important;
+  position:absolute!important;
+  top:9px!important;
+  bottom:9px!important;
+  right:-1px!important;
+  width:1px!important;
+  background:linear-gradient(180deg,transparent,rgba(218,169,69,.20),transparent)!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .footer-bar .fbar-btn:last-child::after{
+  display:none!important;
+}
+html body #s-game.screen.active .footer-bar .fbar-btn:active{
+  transform:translateY(1px) scale(.97)!important;
+  filter:brightness(1.16)!important;
+}
+html body #s-game.screen.active .footer-bar .fbi,
+html body #s-game.screen.active .footer-bar svg{
+  position:relative!important;
+  z-index:1!important;
+  display:block!important;
+  margin:0 auto!important;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.82)) drop-shadow(0 0 5px rgba(218,169,69,.18))!important;
+}
+html body #s-game.screen.active .footer-bar .fbi{
+  font-size:20px!important;
+  line-height:21px!important;
+}
+html body #s-game.screen.active .footer-bar .fbl{
+  position:relative!important;
+  z-index:1!important;
+  margin-top:2px!important;
+  color:#cda95d!important;
+  font-family:var(--font-title)!important;
+  font-size:6.7px!important;
+  font-weight:900!important;
+  letter-spacing:.65px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 6px rgba(218,169,69,.12)!important;
+}
+html body #s-game.screen.active .footer-bar .fbar-btn:hover,
+html body #s-game.screen.active .footer-bar .fbar-btn:focus-visible{
+  border-color:rgba(218,169,69,.28)!important;
+  outline:none!important;
+}
+html body #s-game.screen.active #dados-fbar-btn.pending{
+  border-color:rgba(255,208,96,.55)!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,208,96,.24),transparent 55%),
+    linear-gradient(180deg,rgba(53,34,10,.78),rgba(10,6,3,.80))!important;
+  box-shadow:
+    0 0 16px rgba(218,169,69,.28),
+    inset 0 1px 0 rgba(255,238,170,.14)!important;
+}
+html body #s-game.screen.active #dados-fbar-btn.pending .fbl{
+  color:#f2cf78!important;
+}
+html body #s-game.screen.active #dados-fbar-btn.pending::before{
+  opacity:1!important;
+  background:radial-gradient(circle at 50% 15%,rgba(255,210,94,.24),transparent 58%)!important;
+}
+html body #s-game.screen.active #fbar-tutorial-btn .fbl{
+  color:#d8b665!important;
+}
+@media(max-width:370px){
+  html body #s-game.screen.active .footer-bar .fbi{font-size:18px!important;line-height:19px!important;}
+  html body #s-game.screen.active .footer-bar .fbl{font-size:5.9px!important;letter-spacing:.45px!important;}
+  html body #s-game.screen.active .footer-bar .fbar-btn::before{inset:5px 2px 4px!important;}
+}
+</style>
+
+<style id="aimaster-v561-modal-premium-shell">
+/* Modais premium: acabamento visual consistente para ficha, loja, mapa, API e sistemas. */
+html body .mo{
+  background:
+    radial-gradient(circle at 50% 100%,rgba(201,146,42,.12),transparent 42%),
+    rgba(0,0,0,.86)!important;
+  backdrop-filter:blur(7px)!important;
+}
+html body .mo.open{
+  align-items:flex-end!important;
+}
+html body .mo .ms{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid rgba(201,146,42,.38)!important;
+  border-top:1px solid rgba(255,218,126,.58)!important;
+  border-radius:22px 22px 0 0!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.14),transparent 42%),
+    repeating-linear-gradient(112deg,rgba(255,239,194,.010) 0 1px,transparent 1px 8px),
+    linear-gradient(180deg,rgba(16,11,6,.98),rgba(6,5,4,.99))!important;
+  box-shadow:
+    0 -20px 42px rgba(0,0,0,.72),
+    0 0 24px rgba(218,169,69,.10),
+    inset 0 1px 0 rgba(255,232,169,.10),
+    inset 0 0 0 1px rgba(0,0,0,.42)!important;
+}
+html body .mo .ms::before{
+  content:''!important;
+  position:absolute!important;
+  left:22px!important;
+  right:22px!important;
+  top:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,218,126,.72),transparent)!important;
+  pointer-events:none!important;
+}
+html body .mo .ms::after{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(255,220,125,.06),transparent 22%),
+    radial-gradient(circle at 100% 0,rgba(255,220,125,.05),transparent 22%)!important;
+}
+html body .mo .mt{
+  position:relative!important;
+  z-index:1!important;
+  align-items:center!important;
+  gap:10px!important;
+  margin:-2px 0 14px!important;
+  padding-bottom:10px!important;
+  border-bottom:1px solid rgba(201,146,42,.20)!important;
+  color:#e5bf67!important;
+  font-family:var(--font-title)!important;
+  font-size:15px!important;
+  font-weight:900!important;
+  letter-spacing:1.25px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.22)!important;
+}
+html body .mo .mt::before{
+  content:'\2726'!important;
+  color:#d8b665!important;
+  font-size:10px!important;
+  text-shadow:0 0 8px rgba(218,169,69,.32)!important;
+}
+html body .mo .mc{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(201,146,42,.34)!important;
+  border-radius:50%!important;
+  color:#e0bd70!important;
+  background:
+    radial-gradient(circle at 50% 30%,rgba(255,232,169,.12),transparent 45%),
+    linear-gradient(180deg,rgba(33,22,9,.95),rgba(8,6,4,.98))!important;
+  box-shadow:inset 0 1px 0 rgba(255,232,169,.09),0 0 10px rgba(218,169,69,.10)!important;
+  font-size:20px!important;
+  line-height:1!important;
+}
+html body .mo .mc:active{
+  transform:translateY(1px) scale(.96)!important;
+  filter:brightness(1.12)!important;
+}
+html body .mo .ms > *{
+  position:relative!important;
+  z-index:1!important;
+}
+html body .mo .ms input,
+html body .mo .ms textarea,
+html body .mo .ms select{
+  border:1px solid rgba(201,146,42,.30)!important;
+  border-radius:12px!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.46),rgba(12,8,4,.70))!important;
+  color:#f0ddb0!important;
+  box-shadow:inset 0 1px 8px rgba(0,0,0,.58)!important;
+}
+html body .mo .ms input::placeholder,
+html body .mo .ms textarea::placeholder{
+  color:rgba(218,169,69,.42)!important;
+}
+html body .mo .ms button:not(.mc):not(.fbar-btn){
+  border-radius:12px!important;
+  border-color:rgba(201,146,42,.38)!important;
+  box-shadow:inset 0 1px 0 rgba(255,232,169,.08),0 0 12px rgba(0,0,0,.24)!important;
+}
+html body .mo .ms .btn,
+html body .mo .ms .primary,
+html body .mo .ms button.primary{
+  color:#1a1004!important;
+  border-color:rgba(255,225,148,.60)!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(255,245,189,.36),transparent 38%),
+    linear-gradient(180deg,#e2b85a,#a0661e 60%,#5a330d)!important;
+}
+html body .mo .mo-note,
+html body .mo .muted,
+html body .mo small{
+  color:rgba(240,221,176,.68)!important;
+}
+html body #mo-char .ms,
+html body #mo-shop .ms,
+html body #mo-api .ms,
+html body #mo-memory .ms,
+html body #mo-tutorial .ms{
+  scrollbar-color:rgba(220,169,61,.62) rgba(0,0,0,.18)!important;
+}
+html body #mo-char .ms::-webkit-scrollbar,
+html body #mo-shop .ms::-webkit-scrollbar,
+html body #mo-api .ms::-webkit-scrollbar,
+html body #mo-memory .ms::-webkit-scrollbar,
+html body #mo-tutorial .ms::-webkit-scrollbar{
+  width:6px!important;
+}
+html body #mo-char .ms::-webkit-scrollbar-thumb,
+html body #mo-shop .ms::-webkit-scrollbar-thumb,
+html body #mo-api .ms::-webkit-scrollbar-thumb,
+html body #mo-memory .ms::-webkit-scrollbar-thumb,
+html body #mo-tutorial .ms::-webkit-scrollbar-thumb{
+  border-radius:99px!important;
+  background:linear-gradient(90deg,#63400f,#d49a30,#68420f)!important;
+}
+@media(min-width:560px){
+  html body .mo{
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  html body .mo .ms{
+    max-width:460px!important;
+    border-radius:22px!important;
+  }
+}
+@media(max-width:370px){
+  html body .mo .ms{padding:1.05rem!important;border-radius:18px 18px 0 0!important;}
+  html body .mo .mt{font-size:13px!important;margin-bottom:11px!important;}
+  html body .mo .mc{width:30px!important;height:30px!important;min-width:30px!important;}
+}
+</style>
+
+<style id="aimaster-v562-footer-active-state">
+/* Estado ativo visual do footer baseado no modal aberto; sem JS novo. */
+html body #s-game.screen.active .footer-bar .fbar-btn{
+  opacity:.86!important;
+}
+html body:has(#mo-tutorial.open) #s-game.screen.active #fbar-tutorial-btn,
+html body:has(#mo-char.open) #s-game.screen.active .footer-bar .fbar-btn[title="Ficha"],
+html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"],
+html body:has(#mo-map.open) #s-game.screen.active .footer-bar .fbar-btn[title="Mapa"],
+html body:has(#mo-memory.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diário de Aventura"],
+html body:has(#mo-api.open) #s-game.screen.active .footer-bar .fbar-btn[title="API"],
+html body:has(#mo-rest.open) #s-game.screen.active #rest-footer-btn,
+html body #s-game.screen.active #dados-fbar-btn.pending{
+  opacity:1!important;
+  border-color:rgba(255,218,126,.48)!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,218,126,.22),transparent 54%),
+    linear-gradient(180deg,rgba(45,30,11,.88),rgba(10,7,3,.92))!important;
+  box-shadow:
+    0 0 16px rgba(218,169,69,.24),
+    inset 0 1px 0 rgba(255,236,170,.14)!important;
+}
+html body:has(#mo-tutorial.open) #s-game.screen.active #fbar-tutorial-btn::before,
+html body:has(#mo-char.open) #s-game.screen.active .footer-bar .fbar-btn[title="Ficha"]::before,
+html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"]::before,
+html body:has(#mo-map.open) #s-game.screen.active .footer-bar .fbar-btn[title="Mapa"]::before,
+html body:has(#mo-memory.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diário de Aventura"]::before,
+html body:has(#mo-api.open) #s-game.screen.active .footer-bar .fbar-btn[title="API"]::before,
+html body:has(#mo-rest.open) #s-game.screen.active #rest-footer-btn::before,
+html body #s-game.screen.active #dados-fbar-btn.pending::before{
+  opacity:1!important;
+  background:
+    radial-gradient(circle at 50% 12%,rgba(255,218,126,.27),transparent 58%),
+    linear-gradient(180deg,rgba(76,49,14,.55),rgba(12,8,3,.12))!important;
+}
+html body:has(#mo-tutorial.open) #s-game.screen.active #fbar-tutorial-btn::after,
+html body:has(#mo-char.open) #s-game.screen.active .footer-bar .fbar-btn[title="Ficha"]::after,
+html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"]::after,
+html body:has(#mo-map.open) #s-game.screen.active .footer-bar .fbar-btn[title="Mapa"]::after,
+html body:has(#mo-memory.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diário de Aventura"]::after,
+html body:has(#mo-api.open) #s-game.screen.active .footer-bar .fbar-btn[title="API"]::after,
+html body:has(#mo-rest.open) #s-game.screen.active #rest-footer-btn::after,
+html body #s-game.screen.active #dados-fbar-btn.pending::after{
+  content:''!important;
+  position:absolute!important;
+  left:24%!important;
+  right:24%!important;
+  top:3px!important;
+  bottom:auto!important;
+  width:auto!important;
+  height:2px!important;
+  border-radius:99px!important;
+  background:linear-gradient(90deg,transparent,#f2cf78,transparent)!important;
+  box-shadow:0 0 8px rgba(218,169,69,.55)!important;
+}
+html body:has(#mo-tutorial.open) #s-game.screen.active #fbar-tutorial-btn .fbl,
+html body:has(#mo-char.open) #s-game.screen.active .footer-bar .fbar-btn[title="Ficha"] .fbl,
+html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"] .fbl,
+html body:has(#mo-map.open) #s-game.screen.active .footer-bar .fbar-btn[title="Mapa"] .fbl,
+html body:has(#mo-memory.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diário de Aventura"] .fbl,
+html body:has(#mo-api.open) #s-game.screen.active .footer-bar .fbar-btn[title="API"] .fbl,
+html body:has(#mo-rest.open) #s-game.screen.active #rest-footer-btn .fbl,
+html body #s-game.screen.active #dados-fbar-btn.pending .fbl{
+  color:#f0cd78!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(218,169,69,.30)!important;
+}
+html body:has(#mo-tutorial.open) #s-game.screen.active #fbar-tutorial-btn .fbi,
+html body:has(#mo-char.open) #s-game.screen.active .footer-bar .fbar-btn[title="Ficha"] .fbi,
+html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"] .fbi,
+html body:has(#mo-map.open) #s-game.screen.active .footer-bar .fbar-btn[title="Mapa"] .fbi,
+html body:has(#mo-memory.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diário de Aventura"] .fbi,
+html body:has(#mo-api.open) #s-game.screen.active .footer-bar .fbar-btn[title="API"] .fbi,
+html body:has(#mo-rest.open) #s-game.screen.active #rest-footer-btn svg,
+html body #s-game.screen.active #dados-fbar-btn.pending svg{
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.82)) drop-shadow(0 0 8px rgba(218,169,69,.34))!important;
+}
+html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"]{
+  border-color:rgba(92,204,255,.46)!important;
+  box-shadow:0 0 16px rgba(78,184,255,.20),inset 0 1px 0 rgba(214,246,255,.12)!important;
+}
+html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"] .fbl{
+  color:#8fdcff!important;
+}
+html body:has(#mo-api.open) #s-game.screen.active .footer-bar .fbar-btn[title="API"]{
+  border-color:rgba(218,169,69,.52)!important;
+}
+@media(max-width:370px){
+  html body:has(#mo-tutorial.open) #s-game.screen.active #fbar-tutorial-btn::after,
+  html body:has(#mo-char.open) #s-game.screen.active .footer-bar .fbar-btn[title="Ficha"]::after,
+  html body:has(#mo-shop.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diamantes"]::after,
+  html body:has(#mo-map.open) #s-game.screen.active .footer-bar .fbar-btn[title="Mapa"]::after,
+  html body:has(#mo-memory.open) #s-game.screen.active .footer-bar .fbar-btn[title="Diário de Aventura"]::after,
+  html body:has(#mo-api.open) #s-game.screen.active .footer-bar .fbar-btn[title="API"]::after,
+  html body:has(#mo-rest.open) #s-game.screen.active #rest-footer-btn::after,
+  html body #s-game.screen.active #dados-fbar-btn.pending::after{
+    left:18%!important;
+    right:18%!important;
+  }
+}
+</style>
+
+<style id="aimaster-v563-character-sheet-premium">
+/* Ficha do Heroi premium: visual de grimorio/ficha D&D sem alterar dados ou abas. */
+html body #mo-char .ms{
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.16),transparent 42%),
+    radial-gradient(circle at 0 22%,rgba(142,91,28,.10),transparent 28%),
+    repeating-linear-gradient(112deg,rgba(255,239,194,.012) 0 1px,transparent 1px 8px),
+    linear-gradient(180deg,rgba(16,11,6,.98),rgba(5,4,3,.99))!important;
+}
+html body #mo-char .sheet-tabs{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:5px!important;
+  margin:0 0 12px!important;
+  padding:4px!important;
+  border:1px solid rgba(201,146,42,.20)!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.38),rgba(18,12,6,.44))!important;
+  box-shadow:inset 0 1px 8px rgba(0,0,0,.44)!important;
+}
+html body #mo-char .stab{
+  min-height:34px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(201,146,42,.18)!important;
+  border-radius:11px!important;
+  background:linear-gradient(180deg,rgba(24,16,7,.72),rgba(8,6,4,.72))!important;
+  color:rgba(224,190,110,.68)!important;
+  font-family:var(--font-title)!important;
+  font-size:9px!important;
+  font-weight:900!important;
+  letter-spacing:.65px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #mo-char .stab.active{
+  border-color:rgba(255,218,126,.55)!important;
+  color:#f2cf78!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,218,126,.20),transparent 58%),
+    linear-gradient(180deg,rgba(54,35,11,.88),rgba(13,8,4,.92))!important;
+  box-shadow:0 0 12px rgba(218,169,69,.18),inset 0 1px 0 rgba(255,236,170,.12)!important;
+}
+html body #mo-char .sheet-page{
+  animation:aimasterSheetIn .18s ease-out!important;
+}
+@keyframes aimasterSheetIn{
+  from{opacity:.72;transform:translateY(4px);}
+  to{opacity:1;transform:translateY(0);}
+}
+html body #mo-char .sh-hero-banner{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid rgba(201,146,42,.34)!important;
+  border-radius:18px!important;
+  padding:12px!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(218,169,69,.16),transparent 38%),
+    linear-gradient(135deg,rgba(26,17,8,.96),rgba(7,5,3,.98))!important;
+  box-shadow:0 12px 24px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,232,169,.08)!important;
+}
+html body #mo-char .sh-hero-banner::after{
+  content:''!important;
+  position:absolute!important;
+  left:14px!important;
+  right:14px!important;
+  bottom:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.50),transparent)!important;
+}
+html body #mo-char .sh-portrait{
+  width:54px!important;
+  height:54px!important;
+  min-width:54px!important;
+  display:grid!important;
+  place-items:center!important;
+  border:1px solid rgba(255,218,126,.46)!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle at 50% 30%,rgba(255,232,169,.20),transparent 42%),
+    linear-gradient(180deg,rgba(40,28,12,.98),rgba(7,5,3,.98))!important;
+  box-shadow:0 0 18px rgba(218,169,69,.14),inset 0 1px 0 rgba(255,236,170,.10)!important;
+  font-size:26px!important;
+}
+html body #mo-char .sh-hero-name{
+  color:#f2d58e!important;
+  font-family:var(--font-title)!important;
+  font-size:17px!important;
+  font-weight:900!important;
+  letter-spacing:.8px!important;
+  text-shadow:0 1px 2px #000,0 0 9px rgba(218,169,69,.22)!important;
+}
+html body #mo-char .sh-hero-meta,
+html body #mo-char .sh-hero-align{
+  color:rgba(240,221,176,.70)!important;
+  font-size:11px!important;
+}
+html body #mo-char .sh-level-badge{
+  border:1px solid rgba(255,218,126,.42)!important;
+  border-radius:14px!important;
+  background:radial-gradient(circle at 50% 0,rgba(255,218,126,.18),transparent 56%),linear-gradient(180deg,rgba(35,23,8,.94),rgba(8,6,4,.96))!important;
+  box-shadow:0 0 14px rgba(218,169,69,.12),inset 0 1px 0 rgba(255,232,169,.10)!important;
+}
+html body #mo-char .sh-level-num{
+  color:#f4d27d!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #mo-char .sh-resources{
+  gap:8px!important;
+  margin:12px 0!important;
+}
+html body #mo-char .sh-res-card{
+  position:relative!important;
+  overflow:hidden!important;
+  border-radius:14px!important;
+  padding:9px 8px!important;
+  background:linear-gradient(180deg,rgba(18,12,6,.88),rgba(7,5,3,.95))!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,232,169,.06)!important;
+}
+html body #mo-char .sh-res-hp{border-color:rgba(210,57,48,.44)!important;}
+html body #mo-char .sh-res-mp{border-color:rgba(118,91,214,.44)!important;}
+html body #mo-char .sh-res-xp{border-color:rgba(218,169,69,.38)!important;}
+html body #mo-char .sh-res-icon{
+  filter:drop-shadow(0 0 6px rgba(218,169,69,.18))!important;
+}
+html body #mo-char .sh-res-val{
+  font-size:19px!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #mo-char .sh-res-bar{
+  height:5px!important;
+  border:1px solid rgba(0,0,0,.45)!important;
+  background:rgba(0,0,0,.55)!important;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.72)!important;
+}
+html body #mo-char .sh-res-fill{
+  box-shadow:0 0 8px currentColor!important;
+}
+html body #mo-char .sec-hdr{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  color:#d8b665!important;
+  font-size:10px!important;
+  letter-spacing:2.2px!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #mo-char .sec-hdr::after{
+  content:''!important;
+  flex:1!important;
+  height:1px!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.34),transparent)!important;
+}
+html body #mo-char .stats-row{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:7px!important;
+}
+html body #mo-char .sb{
+  border:1px solid rgba(201,146,42,.24)!important;
+  border-radius:14px!important;
+  padding:8px 4px!important;
+  background:radial-gradient(circle at 50% 0,rgba(218,169,69,.11),transparent 55%),linear-gradient(180deg,rgba(18,12,6,.92),rgba(7,5,3,.96))!important;
+  box-shadow:inset 0 1px 0 rgba(255,232,169,.06)!important;
+}
+html body #mo-char .sn{
+  color:#d7b363!important;
+  font-size:9px!important;
+  letter-spacing:1.2px!important;
+}
+html body #mo-char .sv{
+  color:#f0ddb0!important;
+  font-size:19px!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #mo-char .sm{
+  color:#f2cf78!important;
+}
+html body #mo-char .sh-combat-bar{
+  gap:7px!important;
+  margin-top:11px!important;
+}
+html body #mo-char .sh-cb{
+  border-color:rgba(201,146,42,.26)!important;
+  border-radius:13px!important;
+  background:linear-gradient(180deg,rgba(20,14,7,.86),rgba(7,5,3,.94))!important;
+  box-shadow:inset 0 1px 0 rgba(255,232,169,.06)!important;
+}
+html body #mo-char .sh-cb-val{
+  color:#f0cf81!important;
+}
+html body #mo-char .pp-tags .tag,
+html body #mo-char .racial-bonus-tag{
+  border-radius:999px!important;
+  border-color:rgba(201,146,42,.34)!important;
+  background:linear-gradient(180deg,rgba(31,21,9,.76),rgba(9,6,4,.82))!important;
+  box-shadow:inset 0 1px 0 rgba(255,232,169,.05)!important;
+}
+html body #mo-char .bonus-row,
+html body #mo-char .inv-weight-bar,
+html body #mo-char .inv-item,
+html body #mo-char .spell-card,
+html body #mo-char .skill-card{
+  border:1px solid rgba(201,146,42,.24)!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,rgba(18,12,6,.82),rgba(7,5,3,.92))!important;
+  box-shadow:inset 0 1px 0 rgba(255,232,169,.05)!important;
+}
+html body #mo-char .inv-item.magic,
+html body #mo-char .spell-card{
+  border-color:rgba(139,111,208,.38)!important;
+  background:linear-gradient(180deg,rgba(25,16,45,.78),rgba(8,5,14,.92))!important;
+}
+html body #mo-char .inv-wb-track,
+html body #mo-char .inv-wb-fill{
+  border-radius:99px!important;
+}
+@media(max-width:370px){
+  html body #mo-char .stab{font-size:7.5px!important;letter-spacing:.35px!important;min-height:31px!important;}
+  html body #mo-char .sh-portrait{width:48px!important;height:48px!important;min-width:48px!important;font-size:23px!important;}
+  html body #mo-char .sh-hero-name{font-size:15px!important;}
+  html body #mo-char .sh-resources{gap:6px!important;}
+  html body #mo-char .sh-res-val{font-size:16px!important;}
+  html body #mo-char .stats-row{gap:6px!important;}
+}
+</style>
+
+<style id="aimaster-v564-footer-five-tabs-reference">
+/* Footer de 5 abas inspirado na referencia + Dados flutuante contextual. */
+#s-game.screen.active > .footer-bar:not(.footer-main-ref){
+  display:none!important;
+}
+html body .footer-main-ref{
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  position:fixed!important;
+  left:8px!important;
+  right:8px!important;
+  bottom:6px!important;
+  z-index:120!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr)!important;
+  height:66px!important;
+  padding:0!important;
+  overflow:hidden!important;
+  border:1px solid rgba(201,146,42,.46)!important;
+  border-radius:0 0 16px 16px!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(218,169,69,.12),transparent 56%),
+    linear-gradient(180deg,rgba(16,12,7,.96),rgba(5,4,3,.99))!important;
+  box-shadow:
+    0 -10px 26px rgba(0,0,0,.62),
+    0 0 18px rgba(218,169,69,.10),
+    inset 0 1px 0 rgba(255,232,169,.10)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::before{
+  content:''!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,218,126,.68),transparent)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  position:relative!important;
+  height:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  border:0!important;
+  border-right:1px solid rgba(201,146,42,.22)!important;
+  border-radius:0!important;
+  background:linear-gradient(180deg,rgba(255,232,169,.02),rgba(0,0,0,0))!important;
+  color:#b9944d!important;
+  opacity:.86!important;
+  box-shadow:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:last-child{
+  border-right:0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn::before{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  opacity:0!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(255,218,126,.18),transparent 55%),
+    linear-gradient(180deg,rgba(63,39,12,.42),rgba(0,0,0,0))!important;
+  transition:opacity .16s ease!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn::after{
+  content:''!important;
+  position:absolute!important;
+  left:24%!important;
+  right:24%!important;
+  bottom:0!important;
+  height:2px!important;
+  opacity:0!important;
+  background:linear-gradient(90deg,transparent,#f1c96c,transparent)!important;
+  box-shadow:0 -1px 10px rgba(218,169,69,.65)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbi{
+  position:relative!important;
+  z-index:1!important;
+  color:#cda95d!important;
+  font-size:25px!important;
+  line-height:24px!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(218,169,69,.18)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbl{
+  position:relative!important;
+  z-index:1!important;
+  color:#c6a15a!important;
+  font-family:var(--font-title)!important;
+  font-size:8.2px!important;
+  font-weight:800!important;
+  letter-spacing:.75px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"],
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"],
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"],
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"]{
+  opacity:1!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey::before,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"]::before,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"]::before,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"]::before,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"]::before,
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey::after,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"]::after,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"]::after,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"]::after,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"]::after{
+  opacity:1!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey .fbi,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"] .fbi,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"] .fbi,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"] .fbi,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"] .fbi,
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey .fbl,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"] .fbl,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"] .fbl,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"] .fbl,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"] .fbl{
+  color:#f1cd75!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.34)!important;
+}
+html body .dice-float-btn{
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .dice-float-btn{
+  position:fixed!important;
+  right:14px!important;
+  bottom:82px!important;
+  z-index:122!important;
+  width:58px!important;
+  min-height:58px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-direction:column!important;
+  gap:1px!important;
+  border:1px solid rgba(255,218,126,.50)!important;
+  border-radius:18px!important;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(255,230,150,.28),transparent 52%),
+    linear-gradient(180deg,rgba(45,29,9,.96),rgba(9,6,3,.98))!important;
+  color:#f1cd75!important;
+  box-shadow:0 0 18px rgba(218,169,69,.24),inset 0 1px 0 rgba(255,232,169,.14)!important;
+}
+html body:has(#s-game.screen.active) .dice-float-btn.pending,
+html body:has(#s-game.screen.active) .dice-float-btn.active{
+  display:flex!important;
+}
+html body:has(#s-game.screen.active) .dice-float-btn.pending{
+  animation:aimasterDicePulse 1.35s ease-in-out infinite!important;
+}
+html body:has(#s-game.screen.active) .dice-float-label{
+  font-family:var(--font-title)!important;
+  font-size:7px!important;
+  font-weight:900!important;
+  letter-spacing:.7px!important;
+  text-transform:uppercase!important;
+}
+@keyframes aimasterDicePulse{
+  0%,100%{transform:translateY(0);box-shadow:0 0 18px rgba(218,169,69,.24),inset 0 1px 0 rgba(255,232,169,.14);}
+  50%{transform:translateY(-2px);box-shadow:0 0 26px rgba(255,208,96,.42),inset 0 1px 0 rgba(255,232,169,.18);}
+}
+html body #mo-game-menu .game-menu-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,1fr)!important;
+  gap:9px!important;
+}
+html body #mo-game-menu .game-menu-tile{
+  min-height:82px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  justify-content:center!important;
+  gap:3px!important;
+  padding:11px!important;
+  border:1px solid rgba(201,146,42,.30)!important;
+  border-radius:15px!important;
+  background:linear-gradient(180deg,rgba(18,12,6,.86),rgba(7,5,3,.94))!important;
+  color:#f0ddb0!important;
+  text-align:left!important;
+}
+html body #mo-game-menu .game-menu-tile span{
+  font-size:20px!important;
+}
+html body #mo-game-menu .game-menu-tile b{
+  color:#e3bd68!important;
+  font-family:var(--font-title)!important;
+  font-size:11px!important;
+  letter-spacing:.8px!important;
+  text-transform:uppercase!important;
+}
+html body #mo-game-menu .game-menu-tile small{
+  color:rgba(240,221,176,.58)!important;
+  font-size:10px!important;
+}
+html body #mo-game-menu .game-menu-tile.gem{
+  border-color:rgba(92,204,255,.40)!important;
+  background:linear-gradient(180deg,rgba(8,22,32,.86),rgba(4,8,13,.94))!important;
+}
+@media(max-width:370px){
+  html body:has(#s-game.screen.active) .footer-main-ref{left:6px!important;right:6px!important;height:62px!important;}
+  html body:has(#s-game.screen.active) .footer-main-ref .fbi{font-size:22px!important;}
+  html body:has(#s-game.screen.active) .footer-main-ref .fbl{font-size:7px!important;letter-spacing:.45px!important;}
+  html body:has(#s-game.screen.active) .dice-float-btn{right:10px!important;bottom:77px!important;width:52px!important;min-height:52px!important;}
+}
+</style>
+
+<style id="aimaster-v566-fix-footer-layering">
+/* Garante que apenas o novo footer de 5 abas apareca acima da barra antiga. */
+html body:has(#s-game.screen.active) #s-game.screen.active .footer-bar:not(.footer-main-ref){
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  z-index:-1!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  display:grid!important;
+  z-index:260!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+html body:has(#s-game.screen.active) .dice-float-btn{
+  z-index:265!important;
+}
+html body:has(#s-game.screen.active) #mo-game-menu{
+  z-index:300!important;
+}
+</style>
+
+<style id="aimaster-v567-footer-icons-reference">
+/* Refinamento dos 5 botoes: icones desenhados em CSS e ativo mais proximo da referencia. */
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  bottom:76px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  height:68px!important;
+  bottom:7px!important;
+  border-radius:0 0 17px 17px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  gap:4px!important;
+  padding-top:7px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+  position:relative!important;
+  width:31px!important;
+  height:28px!important;
+  display:block!important;
+  font-size:0!important;
+  color:transparent!important;
+  text-shadow:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi::before,
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi::after{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  box-sizing:border-box!important;
+}
+/* Jornada: rosa dos ventos */
+html body:has(#s-game.screen.active) .footer-main-ref .is-journey .fbi::before{
+  width:25px!important;
+  height:25px!important;
+  background:
+    linear-gradient(45deg,transparent 42%,#d8b665 43% 57%,transparent 58%),
+    linear-gradient(-45deg,transparent 42%,#d8b665 43% 57%,transparent 58%),
+    linear-gradient(90deg,transparent 44%,#d8b665 45% 55%,transparent 56%),
+    linear-gradient(0deg,transparent 44%,#d8b665 45% 55%,transparent 56%)!important;
+  filter:drop-shadow(0 0 5px rgba(218,169,69,.28))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .is-journey .fbi::after{
+  width:8px!important;
+  height:8px!important;
+  border:1px solid #f1cd75!important;
+  border-radius:50%!important;
+  background:#151007!important;
+}
+/* Inventario: bau */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Inventário"] .fbi::before{
+  width:24px!important;
+  height:16px!important;
+  top:56%!important;
+  border:2px solid #b9944d!important;
+  border-radius:4px 4px 5px 5px!important;
+  background:linear-gradient(180deg,rgba(218,169,69,.20),rgba(52,34,12,.70))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Inventário"] .fbi::after{
+  width:18px!important;
+  height:10px!important;
+  top:36%!important;
+  border:2px solid #d8b665!important;
+  border-bottom:0!important;
+  border-radius:9px 9px 0 0!important;
+}
+/* Personagem: elmo/brasao */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Personagem"] .fbi::before{
+  width:22px!important;
+  height:25px!important;
+  clip-path:polygon(50% 0,86% 22%,78% 78%,50% 100%,22% 78%,14% 22%)!important;
+  background:linear-gradient(180deg,#d8b665,#7b5620)!important;
+  filter:drop-shadow(0 0 5px rgba(218,169,69,.22))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Personagem"] .fbi::after{
+  width:3px!important;
+  height:23px!important;
+  background:#241605!important;
+  box-shadow:-6px 6px 0 -1px rgba(36,22,5,.82),6px 6px 0 -1px rgba(36,22,5,.82)!important;
+}
+/* Diario: livro aberto */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Diário de Aventura"] .fbi::before{
+  width:24px!important;
+  height:19px!important;
+  border:2px solid #cda95d!important;
+  border-radius:3px!important;
+  background:
+    linear-gradient(90deg,transparent 48%,#cda95d 49% 51%,transparent 52%),
+    repeating-linear-gradient(0deg,transparent 0 4px,rgba(218,169,69,.38) 4px 5px)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Diário de Aventura"] .fbi::after{
+  width:1px!important;
+  height:17px!important;
+  background:#211507!important;
+}
+/* Menu: linhas premium */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Menu"] .fbi::before{
+  width:25px!important;
+  height:18px!important;
+  background:
+    linear-gradient(#d8b665,#d8b665) 0 0/25px 2px no-repeat,
+    linear-gradient(#d8b665,#d8b665) 0 8px/25px 2px no-repeat,
+    linear-gradient(#d8b665,#d8b665) 0 16px/25px 2px no-repeat!important;
+  filter:drop-shadow(0 0 5px rgba(218,169,69,.24))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Menu"] .fbi::after{
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-size:8px!important;
+  letter-spacing:.78px!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey{
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(255,218,126,.22),transparent 58%),
+    linear-gradient(180deg,rgba(56,36,12,.62),rgba(0,0,0,0))!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey::after{
+  left:14%!important;
+  right:14%!important;
+  height:3px!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey .fbi{
+  filter:drop-shadow(0 0 10px rgba(255,218,126,.38))!important;
+}
+@media(max-width:370px){
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{bottom:72px!important;}
+  html body:has(#s-game.screen.active) .footer-main-ref{height:64px!important;}
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{width:28px!important;height:25px!important;}
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{font-size:6.8px!important;}
+}
+</style>
+
+<style id="aimaster-v568-fix-footer-spacing">
+/* Compacta o footer de 5 abas para nao invadir a area de acao livre. */
+html body:has(#s-game.screen.active) .footer-main-ref{
+  left:8px!important;
+  right:8px!important;
+  bottom:5px!important;
+  height:55px!important;
+  border-radius:0 0 15px 15px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  gap:2px!important;
+  padding-top:3px!important;
+  padding-bottom:3px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+  width:25px!important;
+  height:22px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .is-journey .fbi::before{
+  width:21px!important;
+  height:21px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .is-journey .fbi::after{
+  width:6px!important;
+  height:6px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Inventário"] .fbi::before{
+  width:20px!important;
+  height:13px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Inventário"] .fbi::after{
+  width:15px!important;
+  height:8px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Personagem"] .fbi::before{
+  width:18px!important;
+  height:21px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Personagem"] .fbi::after{
+  height:19px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Diário de Aventura"] .fbi::before{
+  width:20px!important;
+  height:16px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Diário de Aventura"] .fbi::after{
+  height:14px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn[title="Menu"] .fbi::before{
+  width:22px!important;
+  height:15px!important;
+  background:
+    linear-gradient(#d8b665,#d8b665) 0 0/22px 2px no-repeat,
+    linear-gradient(#d8b665,#d8b665) 0 7px/22px 2px no-repeat,
+    linear-gradient(#d8b665,#d8b665) 0 14px/22px 2px no-repeat!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-size:6.9px!important;
+  letter-spacing:.55px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  bottom:64px!important;
+}
+html body:has(#s-game.screen.active) .dice-float-btn{
+  bottom:69px!important;
+  width:50px!important;
+  min-height:50px!important;
+}
+html body:has(#s-game.screen.active) .dice-float-label{
+  display:none!important;
+}
+@media(max-width:370px){
+  html body:has(#s-game.screen.active) .footer-main-ref{
+    left:6px!important;
+    right:6px!important;
+    height:52px!important;
+    bottom:5px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+    bottom:60px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+    width:23px!important;
+    height:20px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+    font-size:6.1px!important;
+  }
+  html body:has(#s-game.screen.active) .dice-float-btn{
+    bottom:64px!important;
+    width:46px!important;
+    min-height:46px!important;
+  }
 }
 </style>
