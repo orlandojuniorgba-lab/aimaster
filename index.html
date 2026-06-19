@@ -1481,6 +1481,546 @@ div.msg-dm div.bbl,
 }
 </style>
 
+<style id="aimaster-v595-character-buttons-flow-eof">
+/* EOF verdadeiro: alinhamento e acabamento dos botoes da criacao. */
+html body #s-char.screen .cf-pane{
+  position:relative!important;
+}
+html body #s-char.screen .cf-pane::before,
+html body #s-char.screen .cf-pane::after{
+  content:''!important;position:absolute!important;top:9px!important;width:36px!important;height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.45),transparent)!important;pointer-events:none!important;
+}
+html body #s-char.screen .cf-pane::before{left:12px!important;}
+html body #s-char.screen .cf-pane::after{right:12px!important;}
+html body #s-char.screen #cf-pane-2 > div[style*="display:flex"],
+html body #s-char.screen #cf-pane-3 > div[style*="display:flex"],
+html body #s-char.screen #cf-pane-4 > div[style*="display:flex"],
+html body #s-char.screen #cf-pane-5 > div[style*="display:flex"]{
+  align-items:center!important;justify-content:space-between!important;gap:12px!important;margin-top:14px!important;
+}
+html body #s-char.screen .cf-back-btn,
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{
+  position:relative!important;overflow:hidden!important;text-transform:uppercase!important;letter-spacing:1.1px!important;
+  font-family:var(--font-title)!important;text-shadow:0 1px 2px #000!important;
+}
+html body #s-char.screen .cf-back-btn::before,
+html body #s-char.screen .cf-next-btn::before,
+html body #s-char.screen .start-btn::before{
+  content:''!important;position:absolute!important;inset:1px!important;border-radius:6px!important;
+  background:linear-gradient(180deg,rgba(255,239,183,.10),transparent 42%,rgba(0,0,0,.18))!important;
+  pointer-events:none!important;
+}
+html body #s-char.screen .cf-back-btn{
+  flex:0 0 122px!important;max-width:122px!important;color:#d2b56d!important;
+}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{
+  flex:0 0 154px!important;max-width:154px!important;color:#ffdf8a!important;
+}
+html body #s-char.screen .cf-next-btn:not(:disabled):active,
+html body #s-char.screen .cf-back-btn:active,
+html body #s-char.screen .start-btn:active{
+  transform:translateY(1px) scale(.99)!important;
+}
+html body #s-char.screen .cf-next-btn:disabled{
+  filter:saturate(.55)!important;opacity:.42!important;box-shadow:none!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn{
+  display:block!important;margin:13px 0 0 auto!important;
+}
+html body #s-char.screen #cf-pane-5 .start-btn{
+  flex-basis:178px!important;max-width:178px!important;
+}
+html body #s-char.screen #pane2-stats-hint{
+  font-family:var(--font-title)!important;letter-spacing:1px!important;text-transform:uppercase!important;color:rgba(218,169,69,.55)!important;
+}
+html body #s-char.screen #cf-pane-1{gap:9px!important;}
+html body #s-char.screen #cf-pane-1 .cf-race-info{
+  min-height:178px!important;margin-top:12px!important;padding:12px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head{margin-bottom:8px!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-bonus{margin-bottom:8px!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-traits{
+  display:flex!important;flex-wrap:wrap!important;gap:5px!important;margin:0 0 8px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-traits span{
+  display:inline-flex!important;align-items:center!important;min-height:20px!important;padding:2px 7px!important;border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.24)!important;background:rgba(218,169,69,.07)!important;
+  font-family:var(--font-title)!important;font-size:8.5px!important;letter-spacing:.65px!important;text-transform:uppercase!important;color:#c9a75a!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-text{
+  font-size:11.4px!important;line-height:1.48!important;color:rgba(240,221,176,.86)!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn,
+html body #s-char.screen #cf-pane-1 button.cf-next-btn,
+html body #s-char.screen #cf-pane-1 #cf-next-1{
+  flex:0 0 auto!important;width:136px!important;min-width:136px!important;max-width:136px!important;
+  height:42px!important;min-height:42px!important;max-height:42px!important;
+  align-self:flex-end!important;margin:8px 0 0 auto!important;padding:0 14px!important;line-height:42px!important;
+}
+@media(max-width:370px){
+  html body #s-char.screen .cf-back-btn{flex-basis:106px!important;max-width:106px!important;padding-left:8px!important;padding-right:8px!important;}
+  html body #s-char.screen .cf-next-btn{flex-basis:136px!important;max-width:136px!important;}
+  html body #s-char.screen #cf-pane-5 .start-btn{flex-basis:154px!important;max-width:154px!important;font-size:10.5px!important;}
+  html body #s-char.screen #cf-pane-1 .cf-race-info{min-height:166px!important;padding:10px!important;}
+  html body #s-char.screen #cf-pane-1 .race-summary-text{font-size:10.7px!important;line-height:1.42!important;}
+  html body #s-char.screen #cf-pane-1 .race-summary-traits span{font-size:8px!important;padding-left:6px!important;padding-right:6px!important;}
+  html body #s-char.screen #cf-pane-1 #cf-next-1{width:128px!important;min-width:128px!important;max-width:128px!important;}
+}
+</style>
+
+<style id="aimaster-v598-race-info-button-true-eof">
+/* EOF verdadeiro: botao compacto e quadro racial ampliado. */
+html body #s-char.screen #cf-pane-1{
+  gap:9px!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-race-info{
+  min-height:178px!important;margin-top:12px!important;padding:12px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head{
+  margin-bottom:8px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-bonus{
+  margin-bottom:8px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-traits{
+  display:flex!important;flex-wrap:wrap!important;gap:5px!important;margin:0 0 8px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-traits span{
+  display:inline-flex!important;align-items:center!important;min-height:20px!important;padding:2px 7px!important;border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.24)!important;background:rgba(218,169,69,.07)!important;
+  font-family:var(--font-title)!important;font-size:8.5px!important;letter-spacing:.65px!important;text-transform:uppercase!important;color:#c9a75a!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-text{
+  font-size:11.4px!important;line-height:1.48!important;color:rgba(240,221,176,.86)!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn,
+html body #s-char.screen #cf-pane-1 button.cf-next-btn,
+html body #s-char.screen #cf-pane-1 #cf-next-1{
+  flex:0 0 auto!important;width:136px!important;min-width:136px!important;max-width:136px!important;
+  height:42px!important;min-height:42px!important;max-height:42px!important;
+  align-self:flex-end!important;margin:8px 0 0 auto!important;padding:0 14px!important;line-height:42px!important;
+}
+html body #s-char.screen #cf-pane-1 #cf-next-1::before{
+  border-radius:6px!important;
+}
+@media(max-width:370px){
+  html body #s-char.screen #cf-pane-1 .cf-race-info{min-height:166px!important;padding:10px!important;}
+  html body #s-char.screen #cf-pane-1 .race-summary-text{font-size:10.7px!important;line-height:1.42!important;}
+  html body #s-char.screen #cf-pane-1 .race-summary-traits span{font-size:8px!important;padding-left:6px!important;padding-right:6px!important;}
+  html body #s-char.screen #cf-pane-1 #cf-next-1{width:128px!important;min-width:128px!important;max-width:128px!important;}
+}
+</style>
+
+<style id="aimaster-v597-race-gender-summary-true-eof">
+/* EOF verdadeiro: genero visual, resumo racial e botao proximo compacto. */
+html body #s-char.screen #cf-pane-1{
+  min-height:0!important;
+}
+html body #s-char.screen .cf-gender-pick{
+  display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:-4px 0 10px!important;
+  padding:4px!important;border:1px solid rgba(218,169,69,.20)!important;border-radius:10px!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.30),rgba(218,169,69,.035))!important;
+}
+html body #s-char.screen .cf-gender-btn{
+  min-height:32px!important;border-radius:7px!important;border:1px solid rgba(218,169,69,.28)!important;
+  background:linear-gradient(180deg,rgba(12,9,5,.82),rgba(1,1,1,.88))!important;color:#b9974f!important;
+  font-family:var(--font-title)!important;font-size:10.5px!important;letter-spacing:1px!important;text-transform:uppercase!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.04)!important;
+}
+html body #s-char.screen .cf-gender-btn.active{
+  color:#ffe29a!important;border-color:rgba(245,202,101,.74)!important;
+  background:linear-gradient(180deg,rgba(218,169,69,.30),rgba(80,48,12,.76))!important;
+  box-shadow:0 0 14px rgba(218,169,69,.22),inset 0 1px 0 rgba(255,236,175,.16)!important;
+}
+html body #s-char.screen #cf-pane-1 .race-card-grid{
+  grid-template-columns:repeat(3,1fr)!important;gap:8px!important;
+}
+html body #s-char.screen #cf-pane-1 .rc{
+  min-height:96px!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-race-info{
+  display:block!important;margin:11px 0 0!important;padding:10px 12px!important;min-height:106px!important;
+  border-radius:9px!important;border:1px solid rgba(218,169,69,.36)!important;
+  background:
+    radial-gradient(circle at 12% 0,rgba(218,169,69,.14),transparent 34%),
+    linear-gradient(180deg,rgba(20,14,7,.82),rgba(4,3,2,.94))!important;
+  color:#f0ddb0!important;box-shadow:inset 0 1px 0 rgba(255,236,175,.08),0 10px 18px rgba(0,0,0,.30)!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head{
+  display:flex!important;align-items:center!important;gap:9px!important;margin-bottom:7px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-icon{
+  width:34px!important;height:34px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  border:1px solid rgba(218,169,69,.36)!important;background:radial-gradient(circle,rgba(218,169,69,.20),rgba(0,0,0,.55))!important;
+  font-size:20px!important;filter:drop-shadow(0 5px 7px rgba(0,0,0,.6))!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head strong{
+  display:block!important;font-family:var(--font-title)!important;font-size:13px!important;letter-spacing:1.1px!important;text-transform:uppercase!important;color:#ffe29a!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head small{
+  display:block!important;margin-top:2px!important;font-size:9px!important;letter-spacing:.7px!important;text-transform:uppercase!important;color:#9aa0a6!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-bonus{
+  display:inline-block!important;margin-bottom:6px!important;padding:3px 8px!important;border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.26)!important;background:rgba(218,169,69,.08)!important;
+  font-family:var(--font-title)!important;font-size:10px!important;letter-spacing:.8px!important;color:#d2b56d!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-text,
+html body #s-char.screen #cf-pane-1 .cf-race-info > span{
+  font-size:11px!important;line-height:1.42!important;color:rgba(240,221,176,.78)!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-race-info > strong{
+  display:block!important;margin-bottom:5px!important;font-family:var(--font-title)!important;font-size:13px!important;color:#ffe29a!important;text-transform:uppercase!important;letter-spacing:1px!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn{
+  width:auto!important;min-width:136px!important;max-width:150px!important;margin:12px 0 0 auto!important;
+  min-height:42px!important;
+}
+@media(min-width:430px){
+  html body #s-char.screen #cf-pane-1 .race-card-grid{grid-template-columns:repeat(4,1fr)!important;}
+  html body #s-char.screen #cf-pane-1 .cf-race-info{min-height:96px!important;}
+}
+@media(max-width:370px){
+  html body #s-char.screen .cf-gender-pick{gap:6px!important;}
+  html body #s-char.screen .cf-gender-btn{font-size:9.5px!important;min-height:30px!important;}
+  html body #s-char.screen #cf-pane-1 .cf-race-info{min-height:98px!important;padding:9px 10px!important;}
+}
+</style>
+
+<style id="aimaster-v592-character-reference-cards">
+/* Criacao de personagem inspirada na referencia enviada. */
+html body #s-char.screen .screen-hdr{
+  display:none!important;
+}
+html body #s-char.screen .char-flow-body{
+  justify-content:flex-start!important;
+  padding:14px 8px 24px!important;
+}
+html body #s-char.screen .char-flow-body::before{
+  content:'CRIAÇÃO DE PERSONAGEM'!important;
+  display:block!important;
+  margin:0 8px -2px!important;
+  padding:11px 8px 3px!important;
+  font-family:var(--font-title)!important;
+  font-size:15px!important;
+  letter-spacing:2.6px!important;
+  text-align:center!important;
+  color:#efd28a!important;
+  text-shadow:0 0 12px rgba(218,169,69,.22),0 1px 2px #000!important;
+}
+html body #s-char.screen .cf-stepper{
+  order:1!important;
+  max-width:360px!important;
+  width:calc(100% - 24px)!important;
+  margin:4px auto 8px!important;
+  padding:6px 8px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+html body #s-char.screen .cf-step{
+  width:28px!important;
+  height:28px!important;
+  border-radius:50%!important;
+  font-size:11px!important;
+  color:#d8bd78!important;
+  border:1px solid rgba(218,169,69,.44)!important;
+  background:radial-gradient(circle at 45% 35%,rgba(255,225,142,.17),rgba(17,12,6,.88) 62%,rgba(0,0,0,.88))!important;
+  box-shadow:0 0 0 2px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,236,175,.10)!important;
+}
+html body #s-char.screen .cf-step.active{
+  color:#fff0bd!important;
+  border-color:#f0bd4f!important;
+  background:radial-gradient(circle at 45% 35%,rgba(255,231,148,.40),rgba(139,80,15,.90) 58%,rgba(10,6,2,.94))!important;
+  box-shadow:0 0 16px rgba(218,169,69,.50),0 0 0 2px rgba(35,20,4,.88),inset 0 1px 0 rgba(255,244,190,.24)!important;
+}
+html body #s-char.screen .cf-step-line{
+  max-width:50px!important;
+  height:1px!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.12),rgba(218,169,69,.46),rgba(218,169,69,.12))!important;
+}
+html body #s-char.screen .cf-pane{
+  order:2!important;
+  width:calc(100% - 12px)!important;
+  max-width:560px!important;
+  margin:0 auto!important;
+  padding:8px 12px 12px!important;
+  border:1px solid rgba(218,169,69,.46)!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,rgba(10,8,5,.82),rgba(2,2,1,.92))!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,236,175,.06),inset 0 0 38px rgba(218,169,69,.025)!important;
+}
+html body #s-char.screen .cf-pane-title{
+  margin:0 0 12px!important;
+  padding:4px 0 0!important;
+  border:0!important;
+  color:#f0ddb0!important;
+  font-size:17px!important;
+  letter-spacing:1.7px!important;
+  text-transform:uppercase!important;
+}
+html body #s-char.screen .race-card-grid{
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:8px!important;
+}
+html body #s-char.screen .class-card-grid{
+  grid-template-columns:repeat(2,1fr)!important;
+  gap:8px!important;
+}
+html body #s-char.screen .rc,
+html body #s-char.screen .cc{
+  min-height:96px!important;
+  padding:0!important;
+  border-radius:7px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-end!important;
+  align-items:center!important;
+  text-align:center!important;
+  border:1px solid rgba(218,169,69,.42)!important;
+  background:linear-gradient(180deg,rgba(28,22,14,.76),rgba(5,4,3,.96))!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,236,175,.05)!important;
+}
+html body #s-char.screen .rc::before,
+html body #s-char.screen .cc::before{
+  content:''!important;
+  position:absolute!important;
+  inset:0 0 31px 0!important;
+  background:
+    radial-gradient(circle at 50% 22%,rgba(240,221,176,.20),transparent 24%),
+    radial-gradient(circle at 50% 62%,rgba(218,169,69,.16),transparent 44%),
+    linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.55))!important;
+  pointer-events:none!important;
+}
+html body #s-char.screen .rc-icon,
+html body #s-char.screen .cc-icon{
+  position:absolute!important;
+  top:13px!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  z-index:1!important;
+  font-size:34px!important;
+  line-height:1!important;
+  filter:drop-shadow(0 6px 8px rgba(0,0,0,.75)) drop-shadow(0 0 8px rgba(218,169,69,.16))!important;
+}
+html body #s-char.screen .rc-copy,
+html body #s-char.screen .cc-info{
+  position:relative!important;
+  z-index:2!important;
+  width:100%!important;
+  min-height:38px!important;
+  padding:5px 4px 6px!important;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.42))!important;
+}
+html body #s-char.screen .rc-name,
+html body #s-char.screen .cc-name{
+  font-family:var(--font-title)!important;
+  font-size:14px!important;
+  color:#f0ddb0!important;
+  line-height:1.05!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-char.screen .rc-bonus,
+html body #s-char.screen .cc-desc{
+  margin-top:3px!important;
+  font-size:9.5px!important;
+  line-height:1.1!important;
+  color:#d2b56d!important;
+  font-family:var(--font-narr)!important;
+}
+html body #s-char.screen .rc.sel,
+html body #s-char.screen .cc.sel{
+  border-color:#f0b73d!important;
+  box-shadow:0 0 0 1px rgba(255,217,117,.42),0 0 18px rgba(218,169,69,.42),0 10px 22px rgba(0,0,0,.44),inset 0 1px 0 rgba(255,236,175,.18)!important;
+}
+html body #s-char.screen .rc.sel::after,
+html body #s-char.screen .cc.sel::after{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  border-radius:7px!important;
+  background:linear-gradient(90deg,rgba(255,218,117,.18),transparent 25%,transparent 75%,rgba(255,218,117,.16))!important;
+  pointer-events:none!important;
+}
+html body #s-char.screen .cf-race-info,
+html body #s-char.screen .cf-class-info{
+  display:none!important;
+}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .cf-back-btn,
+html body #s-char.screen .start-btn{
+  min-height:42px!important;
+  border-radius:7px!important;
+  font-size:12px!important;
+}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{
+  max-width:150px!important;
+  margin-left:auto!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn{
+  margin-top:12px!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn::before{
+  content:''!important;
+}
+@media(min-width:430px){
+  html body #s-char.screen .race-card-grid{grid-template-columns:repeat(4,1fr)!important;}
+  html body #s-char.screen .rc{min-height:104px!important;}
+}
+@media(max-width:370px){
+  html body #s-char.screen .race-card-grid{gap:6px!important;}
+  html body #s-char.screen .rc{min-height:88px!important;}
+  html body #s-char.screen .rc-icon{font-size:29px!important;top:11px!important;}
+  html body #s-char.screen .rc-name{font-size:12.5px!important;}
+  html body #s-char.screen .rc-bonus{font-size:8.4px!important;}
+}
+</style>
+
+<style id="aimaster-v590-character-creation-premium">
+/* Criacao de personagem premium: somente visual, fluxo preservado. */
+html body #s-char.screen{
+  background:
+    radial-gradient(circle at 50% 10%,rgba(218,169,69,.16),transparent 28%),
+    linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.78)),
+    url('aimaster-bg-premium.png') center/cover no-repeat,
+    url('fundo.jpg') center/cover no-repeat!important;
+}
+html body #s-char.screen .screen-hdr{
+  border-bottom:1px solid rgba(218,169,69,.32)!important;
+  background:linear-gradient(180deg,rgba(17,11,5,.96),rgba(5,4,3,.94))!important;
+  box-shadow:0 10px 24px rgba(0,0,0,.36),inset 0 -1px 0 rgba(0,0,0,.58)!important;
+}
+html body #s-char.screen .sec-hdr{
+  justify-content:center!important;
+  color:#f2d28a!important;
+  letter-spacing:3px!important;
+  text-shadow:0 0 12px rgba(218,169,69,.24),0 1px 2px #000!important;
+}
+html body #s-char.screen .char-flow-body{
+  padding:14px 14px 86px!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.10),transparent 34%),
+    linear-gradient(180deg,rgba(7,5,3,.15),rgba(0,0,0,.28))!important;
+}
+html body #s-char.screen .cf-stepper{
+  position:relative!important;
+  margin:2px 4px 18px!important;
+  padding:10px 12px!important;
+  border:1px solid rgba(218,169,69,.22)!important;
+  border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(15,10,5,.78),rgba(2,2,1,.72))!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.06),0 10px 24px rgba(0,0,0,.28)!important;
+}
+html body #s-char.screen .cf-step{
+  width:30px!important;
+  height:30px!important;
+  border-color:rgba(218,169,69,.36)!important;
+  background:radial-gradient(circle at 50% 35%,rgba(218,169,69,.12),rgba(0,0,0,.40))!important;
+  color:rgba(240,221,176,.55)!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.06)!important;
+}
+html body #s-char.screen .cf-step.active{
+  border-color:rgba(245,202,101,.80)!important;
+  background:radial-gradient(circle at 50% 35%,rgba(245,202,101,.32),rgba(77,45,11,.76))!important;
+  color:#fff0bd!important;
+  box-shadow:0 0 16px rgba(218,169,69,.24),inset 0 1px 0 rgba(255,236,175,.18)!important;
+}
+html body #s-char.screen .cf-step.done{
+  border-color:rgba(126,202,116,.58)!important;
+  background:radial-gradient(circle at 50% 35%,rgba(126,202,116,.22),rgba(16,45,17,.70))!important;
+  color:#d8ffd0!important;
+}
+html body #s-char.screen .cf-step-line{
+  background:linear-gradient(90deg,rgba(218,169,69,.12),rgba(218,169,69,.42),rgba(218,169,69,.12))!important;
+}
+html body #s-char.screen .cf-pane{
+  border:1px solid rgba(218,169,69,.26)!important;
+  border-radius:20px!important;
+  padding:14px!important;
+  background:
+    radial-gradient(circle at 50% -8%,rgba(218,169,69,.10),transparent 36%),
+    linear-gradient(180deg,rgba(13,9,4,.82),rgba(3,3,2,.88))!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,236,175,.05)!important;
+}
+html body #s-char.screen .cf-pane-title{
+  color:#efcd7d!important;
+  font-size:12px!important;
+  letter-spacing:2.2px!important;
+  text-transform:uppercase!important;
+  border-bottom:1px solid rgba(218,169,69,.22)!important;
+  margin-bottom:4px!important;
+  padding-bottom:9px!important;
+  text-shadow:0 0 10px rgba(218,169,69,.20),0 1px 2px #000!important;
+}
+html body #s-char.screen .race-card-grid,
+html body #s-char.screen .class-card-grid{
+  gap:9px!important;
+}
+html body #s-char.screen .rc,
+html body #s-char.screen .cc,
+html body #s-char.screen .style-card,
+html body #s-char.screen .patron-card,
+html body #s-char.screen .spell-card{
+  position:relative!important;
+  overflow:hidden!important;
+  border-color:rgba(218,169,69,.24)!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.08),transparent 38%),
+    linear-gradient(180deg,rgba(17,12,6,.88),rgba(4,4,3,.92))!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,236,175,.04)!important;
+}
+html body #s-char.screen .rc.selected,
+html body #s-char.screen .cc.selected,
+html body #s-char.screen .style-card.selected,
+html body #s-char.screen .patron-card.selected,
+html body #s-char.screen .spell-card.selected{
+  border-color:rgba(245,202,101,.82)!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(245,202,101,.18),transparent 42%),
+    linear-gradient(180deg,rgba(47,30,8,.92),rgba(8,6,3,.96))!important;
+  box-shadow:0 0 18px rgba(218,169,69,.18),0 10px 22px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,236,175,.12)!important;
+}
+html body #s-char.screen .cf-race-info,
+html body #s-char.screen .cf-class-info,
+html body #s-char.screen .char-preview-card{
+  border-color:rgba(218,169,69,.28)!important;
+  background:linear-gradient(180deg,rgba(19,13,6,.78),rgba(5,4,3,.86))!important;
+  color:rgba(240,221,176,.82)!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.05)!important;
+}
+html body #s-char.screen .cf input,
+html body #s-char.screen .cf select{
+  border-color:rgba(218,169,69,.30)!important;
+  background:linear-gradient(180deg,rgba(8,6,3,.88),rgba(0,0,0,.72))!important;
+  color:#f0ddb0!important;
+}
+html body #s-char.screen .cf input:focus,
+html body #s-char.screen .cf select:focus{
+  border-color:rgba(245,202,101,.70)!important;
+  box-shadow:0 0 0 2px rgba(218,169,69,.12),0 0 18px rgba(218,169,69,.12)!important;
+}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{
+  border-color:rgba(245,202,101,.58)!important;
+  background:linear-gradient(180deg,rgba(239,194,89,.30),rgba(103,64,16,.72))!important;
+  box-shadow:0 12px 24px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,236,175,.14)!important;
+}
+html body #s-char.screen .cf-back-btn{
+  border-color:rgba(218,169,69,.26)!important;
+  background:linear-gradient(180deg,rgba(12,8,4,.74),rgba(0,0,0,.72))!important;
+  color:rgba(240,221,176,.62)!important;
+}
+@media(max-width:370px){
+  html body #s-char.screen .char-flow-body{padding-left:10px!important;padding-right:10px!important;}
+  html body #s-char.screen .cf-pane{padding:12px!important;border-radius:18px!important;}
+  html body #s-char.screen .cf-step{width:27px!important;height:27px!important;}
+}
+</style>
+
 <style id="aimaster-v587-home-polish-final">
 /* Polimento final da home premium. */
 html body #s-title.screen.active .logo-bg{
@@ -5653,6 +6193,10 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     <!-- PASSO 1: RAÇA -->
     <div class="cf-pane active" id="cf-pane-1">
       <div class="cf-pane-title">Escolha sua Raça</div>
+      <div class="cf-gender-pick" aria-label="Escolha o gênero visual do personagem">
+        <button type="button" class="cf-gender-btn active" id="cf-gender-m" onclick="cfSetGender('m')">Masculino</button>
+        <button type="button" class="cf-gender-btn" id="cf-gender-f" onclick="cfSetGender('f')">Feminino</button>
+      </div>
       <div class="race-card-grid" id="race-card-grid"></div>
       <div class="cf-race-info" id="cf-race-info"></div>
       <button class="cf-next-btn" onclick="cfNext(1)" id="cf-next-1" disabled>Próximo →</button>
@@ -12933,34 +13477,145 @@ let _cfSelectedStyle = null;
 let _cfSelectedPatron = null;
 let _cfSelectedSpells = [];
 let _cfSelectedCantrips = [];
+let _cfSelectedGender = 'm';
 let _cfCurrentPane = 1;
 let _cfTotalPanes = 5;
+
+const RACE_GENDER_ICONS = {
+  m: {
+    'Humano':'🧔',
+    'Elfo':'🧝‍♂️',
+    'Meio-Elfo':'🧝‍♂️',
+    'Anão':'👨‍🦲',
+    'Halfling':'🧒',
+    'Gnomo':'🧙‍♂️',
+    'Meio-Orc':'🧌',
+    'Tiefling':'😈',
+    'Draconato':'🐲'
+  },
+  f: {
+    'Humano':'👩',
+    'Elfo':'🧝‍♀️',
+    'Meio-Elfo':'🧝‍♀️',
+    'Anão':'👩‍🦱',
+    'Halfling':'👧',
+    'Gnomo':'🧙‍♀️',
+    'Meio-Orc':'💪',
+    'Tiefling':'😈',
+    'Draconato':'🐲'
+  }
+};
+
+const RACE_TRAIT_SUMMARIES = {
+  'Humano': {
+    traits:['Versatilidade', 'Talento extra', 'Atributos equilibrados'],
+    text:'Adaptáveis e ambiciosos, humanos funcionam bem em qualquer classe. Costumam receber bônus amplos, uma proficiência ou talento extra, e se destacam por aprender rápido em qualquer caminho.'
+  },
+  'Elfo': {
+    traits:['Visão no escuro', 'Ancestral feérico', 'Transe'],
+    text:'Elegantes e místicos, elfos enxergam melhor na escuridão, resistem a encantamentos e não dormem como outros povos. São ótimos para personagens ágeis, atentos e ligados ao arcano.'
+  },
+  'Meio-Elfo': {
+    traits:['Carisma elevado', 'Duas heranças', 'Perícias extras'],
+    text:'Meio-elfos unem presença social e versatilidade. São fortes em diplomacia, magia espontânea e personagens que caminham entre mundos, ganhando flexibilidade em atributos e perícias.'
+  },
+  'Anão': {
+    traits:['Resistência a veneno', 'Vigor', 'Tradição de ferramentas'],
+    text:'Resilientes e honrados, anões suportam castigos que derrubariam outros povos. Tendem a ter grande Constituição, resistência contra venenos e afinidade com pedra, metal e ofícios.'
+  },
+  'Halfling': {
+    traits:['Sorte', 'Agilidade', 'Coragem discreta'],
+    text:'Pequenos, rápidos e surpreendentemente corajosos, halflings brilham pela sorte e pela leveza. São ótimos para ladinos, bardos e heróis que vencem mais pela esperteza do que pela força.'
+  },
+  'Gnomo': {
+    traits:['Astúcia gnômica', 'Inventividade', 'Intelecto arcano'],
+    text:'Curiosos e brilhantes, gnomos têm mente afiada e resistência natural contra certos efeitos mágicos. Combinam bem com magia, invenção, investigação e personagens excêntricos.'
+  },
+  'Meio-Orc': {
+    traits:['Força brutal', 'Resistência implacável', 'Crítico selvagem'],
+    text:'Fortes e determinados, meio-orcs resistem ao limite quando outros cairiam. São excelentes combatentes físicos, intimidadores e sobreviventes moldados por conflito e honra própria.'
+  },
+  'Tiefling': {
+    traits:['Resistência ao fogo', 'Magia infernal', 'Carisma sombrio'],
+    text:'Marcados por sangue infernal, tieflings carregam presença intensa, resistência ao fogo e dons mágicos ligados às trevas. Funcionam muito bem com classes carismáticas e arcanas.'
+  },
+  'Draconato': {
+    traits:['Ancestral dracônico', 'Sopro elemental', 'Resistência elemental'],
+    text:'Orgulhosos e disciplinados, draconatos trazem no sangue uma herança dracônica. Seu sopro e resistência dependem do tipo de dragão associado à linhagem.'
+  }
+};
 
 function initCreationFlow(){
   _cfSelectedRace=null;_cfSelectedClass=null;_cfSelectedStyle=null;
   _cfSelectedPatron=null;_cfSelectedSpells=[];_cfSelectedCantrips=[];
+  _cfSelectedGender='m';
   _cfCurrentPane=1;
   buildRaceCards();
+  updateRaceSummary();
   cfShowPane(1);
+}
+
+function cfSetGender(gender){
+  _cfSelectedGender = gender === 'f' ? 'f' : 'm';
+  const mBtn = document.getElementById('cf-gender-m');
+  const fBtn = document.getElementById('cf-gender-f');
+  if(mBtn) mBtn.classList.toggle('active', _cfSelectedGender === 'm');
+  if(fBtn) fBtn.classList.toggle('active', _cfSelectedGender === 'f');
+  buildRaceCards();
+  updateRaceSummary();
 }
 
 function buildRaceCards(){
   const grid = document.getElementById('race-card-grid');
   if(!grid) return;
+  const raceSub={
+    'Humano':'Versátil e ambicioso',
+    'Elfo':'Elegante e místico',
+    'Meio-Elfo':'Adaptável e curioso',
+    'Anão':'Resiliente e honrado',
+    'Halfling':'Ágil e sortudo',
+    'Gnomo':'Inteligente e inovador',
+    'Meio-Orc':'Forte e determinado',
+    'Tiefling':'Carismático e singular',
+    'Draconato':'Orgulhoso e disciplinado'
+  };
+  const iconSet = RACE_GENDER_ICONS[_cfSelectedGender] || {};
   grid.innerHTML = RACE_DATA.map(r=>`
-    <div class="rc${_cfSelectedRace===r.id?' sel':''}" onclick="cfSelectRace('${r.id}')">
-      <span class="rc-icon">${r.icon}</span>
-      <div class="rc-name">${r.id}</div>
-      <div class="rc-bonus">${r.bonus}</div>
+    <div class="rc${_cfSelectedRace===r.id?' sel':''}" data-race="${r.id}" onclick="cfSelectRace('${r.id}')">
+      <span class="rc-icon">${iconSet[r.id]||r.icon}</span>
+      <div class="rc-copy">
+        <div class="rc-name">${r.id}</div>
+        <div class="rc-bonus">${raceSub[r.id]||r.bonus}</div>
+      </div>
     </div>`).join('');
+}
+
+function updateRaceSummary(){
+  const info = document.getElementById('cf-race-info');
+  if(!info) return;
+  const race = RACE_DATA.find(r=>r.id===_cfSelectedRace);
+  if(!race){
+    info.innerHTML = '<strong>Escolha uma raça</strong><br><span>Veja aqui o resumo racial, bônus e características antes de avançar.</span>';
+    info.classList.add('show');
+    return;
+  }
+  const iconSet = RACE_GENDER_ICONS[_cfSelectedGender] || {};
+  const traits = RACE_TRAIT_SUMMARIES[race.id] || {traits:[], text:race.info};
+  info.innerHTML = `
+    <div class="race-summary-head">
+      <span class="race-summary-icon">${iconSet[race.id]||race.icon}</span>
+      <span><strong>${race.id}</strong><small>${_cfSelectedGender === 'f' ? 'Avatar feminino' : 'Avatar masculino'}</small></span>
+    </div>
+    <div class="race-summary-bonus">${race.bonus}</div>
+    <div class="race-summary-traits">${traits.traits.map(t=>`<span>${t}</span>`).join('')}</div>
+    <div class="race-summary-text">${traits.text}</div>`;
+  info.classList.add('show');
 }
 
 function cfSelectRace(id){
   _cfSelectedRace = id;
   buildRaceCards();
-  const race = RACE_DATA.find(r=>r.id===id);
-  const info = document.getElementById('cf-race-info');
-  if(info && race){ info.textContent=race.info; info.classList.add('show'); }
+  updateRaceSummary();
   const btn = document.getElementById('cf-next-1');
   if(btn) btn.disabled=false;
   // Set hidden inp-race
@@ -12971,12 +13626,25 @@ function cfSelectRace(id){
 function buildClassCards(){
   const grid = document.getElementById('class-card-grid');
   if(!grid) return;
+  const classSub={
+    'Guerreiro':'Armas e disciplina',
+    'Mago':'Saber arcano',
+    'Ladino':'Sombra e precisão',
+    'Clérigo':'Fé e cura',
+    'Bardo':'Arte e encanto',
+    'Paladino':'Juramento sagrado',
+    'Druida':'Natureza ancestral',
+    'Ranger':'Caça e trilhas',
+    'Bárbaro':'Fúria primal',
+    'Feiticeiro':'Magia no sangue',
+    'Bruxo':'Pacto sombrio'
+  };
   grid.innerHTML = CLASS_DATA.map(c=>`
-    <div class="cc${_cfSelectedClass===c.id?' sel':''}" onclick="cfSelectClass('${c.id}')">
+    <div class="cc${_cfSelectedClass===c.id?' sel':''}" data-class="${c.id}" onclick="cfSelectClass('${c.id}')">
       <div class="cc-icon">${c.icon}</div>
       <div class="cc-info">
         <div class="cc-name">${c.id}</div>
-        <div class="cc-desc">${c.desc}</div>
+        <div class="cc-desc">${classSub[c.id]||c.desc}</div>
       </div>
     </div>`).join('');
 }
@@ -13059,7 +13727,7 @@ function cfShowPane(n){
   if(active){ active.classList.add('active'); active.style.display='flex'; }
 
   // Build cards on first show
-  if(n===1) buildRaceCards();
+  if(n===1){ buildRaceCards(); updateRaceSummary(); }
   if(n===2) buildClassCards();
 }
 
@@ -19577,5 +20245,376 @@ html body #s-title.screen.active .ver-tag::after{
     font-size:30px!important;
     letter-spacing:5.4px!important;
   }
+}
+</style>
+
+<style id="aimaster-v591-character-creation-true-eof">
+/* EOF verdadeiro: criacao de personagem premium, somente visual. */
+html body #s-char.screen{
+  background:radial-gradient(circle at 50% 10%,rgba(218,169,69,.16),transparent 28%),linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.78)),url('aimaster-bg-premium.png') center/cover no-repeat,url('fundo.jpg') center/cover no-repeat!important;
+}
+html body #s-char.screen .screen-hdr{
+  border-bottom:1px solid rgba(218,169,69,.32)!important;
+  background:linear-gradient(180deg,rgba(17,11,5,.96),rgba(5,4,3,.94))!important;
+  box-shadow:0 10px 24px rgba(0,0,0,.36),inset 0 -1px 0 rgba(0,0,0,.58)!important;
+}
+html body #s-char.screen .sec-hdr{
+  justify-content:center!important;color:#f2d28a!important;letter-spacing:3px!important;text-shadow:0 0 12px rgba(218,169,69,.24),0 1px 2px #000!important;
+}
+html body #s-char.screen .char-flow-body{
+  padding:14px 14px 86px!important;
+  background:radial-gradient(circle at 50% 0,rgba(218,169,69,.10),transparent 34%),linear-gradient(180deg,rgba(7,5,3,.15),rgba(0,0,0,.28))!important;
+}
+html body #s-char.screen .cf-stepper{
+  margin:2px 4px 18px!important;padding:10px 12px!important;border:1px solid rgba(218,169,69,.22)!important;border-radius:18px!important;
+  background:linear-gradient(180deg,rgba(15,10,5,.78),rgba(2,2,1,.72))!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.06),0 10px 24px rgba(0,0,0,.28)!important;
+}
+html body #s-char.screen .cf-step{
+  width:30px!important;height:30px!important;border-color:rgba(218,169,69,.36)!important;
+  background:radial-gradient(circle at 50% 35%,rgba(218,169,69,.12),rgba(0,0,0,.40))!important;
+  color:rgba(240,221,176,.55)!important;box-shadow:inset 0 1px 0 rgba(255,236,175,.06)!important;
+}
+html body #s-char.screen .cf-step.active{
+  border-color:rgba(245,202,101,.80)!important;background:radial-gradient(circle at 50% 35%,rgba(245,202,101,.32),rgba(77,45,11,.76))!important;
+  color:#fff0bd!important;box-shadow:0 0 16px rgba(218,169,69,.24),inset 0 1px 0 rgba(255,236,175,.18)!important;
+}
+html body #s-char.screen .cf-step.done{
+  border-color:rgba(126,202,116,.58)!important;background:radial-gradient(circle at 50% 35%,rgba(126,202,116,.22),rgba(16,45,17,.70))!important;color:#d8ffd0!important;
+}
+html body #s-char.screen .cf-step-line{background:linear-gradient(90deg,rgba(218,169,69,.12),rgba(218,169,69,.42),rgba(218,169,69,.12))!important;}
+html body #s-char.screen .cf-pane{
+  border:1px solid rgba(218,169,69,.26)!important;border-radius:20px!important;padding:14px!important;
+  background:radial-gradient(circle at 50% -8%,rgba(218,169,69,.10),transparent 36%),linear-gradient(180deg,rgba(13,9,4,.82),rgba(3,3,2,.88))!important;
+  box-shadow:0 16px 34px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,236,175,.05)!important;
+}
+html body #s-char.screen .cf-pane-title{
+  color:#efcd7d!important;font-size:12px!important;letter-spacing:2.2px!important;text-transform:uppercase!important;
+  border-bottom:1px solid rgba(218,169,69,.22)!important;margin-bottom:4px!important;padding-bottom:9px!important;
+  text-shadow:0 0 10px rgba(218,169,69,.20),0 1px 2px #000!important;
+}
+html body #s-char.screen .race-card-grid,
+html body #s-char.screen .class-card-grid{gap:9px!important;}
+html body #s-char.screen .rc,
+html body #s-char.screen .cc,
+html body #s-char.screen .style-card,
+html body #s-char.screen .patron-card,
+html body #s-char.screen .spell-card{
+  position:relative!important;overflow:hidden!important;border-color:rgba(218,169,69,.24)!important;
+  background:radial-gradient(circle at 50% 0,rgba(218,169,69,.08),transparent 38%),linear-gradient(180deg,rgba(17,12,6,.88),rgba(4,4,3,.92))!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,236,175,.04)!important;
+}
+html body #s-char.screen .rc.selected,
+html body #s-char.screen .cc.selected,
+html body #s-char.screen .style-card.selected,
+html body #s-char.screen .patron-card.selected,
+html body #s-char.screen .spell-card.selected{
+  border-color:rgba(245,202,101,.82)!important;
+  background:radial-gradient(circle at 50% 0,rgba(245,202,101,.18),transparent 42%),linear-gradient(180deg,rgba(47,30,8,.92),rgba(8,6,3,.96))!important;
+  box-shadow:0 0 18px rgba(218,169,69,.18),0 10px 22px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,236,175,.12)!important;
+}
+html body #s-char.screen .cf-race-info,
+html body #s-char.screen .cf-class-info,
+html body #s-char.screen .char-preview-card{
+  border-color:rgba(218,169,69,.28)!important;background:linear-gradient(180deg,rgba(19,13,6,.78),rgba(5,4,3,.86))!important;color:rgba(240,221,176,.82)!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.05)!important;
+}
+html body #s-char.screen .cf input,
+html body #s-char.screen .cf select{
+  border-color:rgba(218,169,69,.30)!important;background:linear-gradient(180deg,rgba(8,6,3,.88),rgba(0,0,0,.72))!important;color:#f0ddb0!important;
+}
+html body #s-char.screen .cf input:focus,
+html body #s-char.screen .cf select:focus{
+  border-color:rgba(245,202,101,.70)!important;box-shadow:0 0 0 2px rgba(218,169,69,.12),0 0 18px rgba(218,169,69,.12)!important;
+}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{
+  border-color:rgba(245,202,101,.58)!important;background:linear-gradient(180deg,rgba(239,194,89,.30),rgba(103,64,16,.72))!important;
+  box-shadow:0 12px 24px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,236,175,.14)!important;
+}
+html body #s-char.screen .cf-back-btn{
+  border-color:rgba(218,169,69,.26)!important;background:linear-gradient(180deg,rgba(12,8,4,.74),rgba(0,0,0,.72))!important;color:rgba(240,221,176,.62)!important;
+}
+@media(max-width:370px){
+  html body #s-char.screen .char-flow-body{padding-left:10px!important;padding-right:10px!important;}
+  html body #s-char.screen .cf-pane{padding:12px!important;border-radius:18px!important;}
+  html body #s-char.screen .cf-step{width:27px!important;height:27px!important;}
+}
+</style>
+
+<style id="aimaster-v593-character-reference-true-eof">
+/* EOF verdadeiro: layout de criacao conforme referencia. */
+html body #s-char.screen .screen-hdr{display:none!important;}
+html body #s-char.screen .char-flow-body{padding:14px 8px 24px!important;justify-content:flex-start!important;}
+html body #s-char.screen .char-flow-body::before{
+  content:'CRIAÇÃO DE PERSONAGEM'!important;display:block!important;margin:0 8px -2px!important;padding:11px 8px 3px!important;
+  font-family:var(--font-title)!important;font-size:15px!important;letter-spacing:2.6px!important;text-align:center!important;color:#efd28a!important;text-shadow:0 0 12px rgba(218,169,69,.22),0 1px 2px #000!important;
+}
+html body #s-char.screen .cf-stepper{order:1!important;max-width:360px!important;width:calc(100% - 24px)!important;margin:4px auto 8px!important;padding:6px 8px!important;border:0!important;background:transparent!important;box-shadow:none!important;}
+html body #s-char.screen .cf-step{width:28px!important;height:28px!important;border-radius:50%!important;font-size:11px!important;color:#d8bd78!important;border:1px solid rgba(218,169,69,.44)!important;background:radial-gradient(circle at 45% 35%,rgba(255,225,142,.17),rgba(17,12,6,.88) 62%,rgba(0,0,0,.88))!important;box-shadow:0 0 0 2px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,236,175,.10)!important;}
+html body #s-char.screen .cf-step.active{color:#fff0bd!important;border-color:#f0bd4f!important;background:radial-gradient(circle at 45% 35%,rgba(255,231,148,.40),rgba(139,80,15,.90) 58%,rgba(10,6,2,.94))!important;box-shadow:0 0 16px rgba(218,169,69,.50),0 0 0 2px rgba(35,20,4,.88),inset 0 1px 0 rgba(255,244,190,.24)!important;}
+html body #s-char.screen .cf-step-line{max-width:50px!important;height:1px!important;background:linear-gradient(90deg,rgba(218,169,69,.12),rgba(218,169,69,.46),rgba(218,169,69,.12))!important;}
+html body #s-char.screen .cf-pane{order:2!important;width:calc(100% - 12px)!important;max-width:560px!important;margin:0 auto!important;padding:8px 12px 12px!important;border:1px solid rgba(218,169,69,.46)!important;border-radius:14px!important;background:linear-gradient(180deg,rgba(10,8,5,.82),rgba(2,2,1,.92))!important;box-shadow:0 16px 34px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,236,175,.06),inset 0 0 38px rgba(218,169,69,.025)!important;}
+html body #s-char.screen .cf-pane-title{margin:0 0 12px!important;padding:4px 0 0!important;border:0!important;color:#f0ddb0!important;font-size:17px!important;letter-spacing:1.7px!important;text-transform:uppercase!important;}
+html body #s-char.screen .race-card-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important;}
+html body #s-char.screen .class-card-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important;}
+html body #s-char.screen .rc,
+html body #s-char.screen .cc{min-height:96px!important;padding:0!important;border-radius:7px!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;align-items:center!important;text-align:center!important;border:1px solid rgba(218,169,69,.42)!important;background:linear-gradient(180deg,rgba(28,22,14,.76),rgba(5,4,3,.96))!important;box-shadow:0 8px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,236,175,.05)!important;}
+html body #s-char.screen .rc::before,
+html body #s-char.screen .cc::before{content:''!important;position:absolute!important;inset:0 0 31px 0!important;background:radial-gradient(circle at 50% 22%,rgba(240,221,176,.20),transparent 24%),radial-gradient(circle at 50% 62%,rgba(218,169,69,.16),transparent 44%),linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.55))!important;pointer-events:none!important;}
+html body #s-char.screen .rc-icon,
+html body #s-char.screen .cc-icon{position:absolute!important;top:13px!important;left:50%!important;transform:translateX(-50%)!important;z-index:1!important;font-size:34px!important;line-height:1!important;filter:drop-shadow(0 6px 8px rgba(0,0,0,.75)) drop-shadow(0 0 8px rgba(218,169,69,.16))!important;}
+html body #s-char.screen .rc-copy,
+html body #s-char.screen .cc-info{position:relative!important;z-index:2!important;width:100%!important;min-height:38px!important;padding:5px 4px 6px!important;background:linear-gradient(180deg,transparent,rgba(0,0,0,.42))!important;}
+html body #s-char.screen .rc-name,
+html body #s-char.screen .cc-name{font-family:var(--font-title)!important;font-size:14px!important;color:#f0ddb0!important;line-height:1.05!important;text-shadow:0 1px 2px #000!important;}
+html body #s-char.screen .rc-bonus,
+html body #s-char.screen .cc-desc{margin-top:3px!important;font-size:9.5px!important;line-height:1.1!important;color:#d2b56d!important;font-family:var(--font-narr)!important;}
+html body #s-char.screen .rc.sel,
+html body #s-char.screen .cc.sel{border-color:#f0b73d!important;box-shadow:0 0 0 1px rgba(255,217,117,.42),0 0 18px rgba(218,169,69,.42),0 10px 22px rgba(0,0,0,.44),inset 0 1px 0 rgba(255,236,175,.18)!important;}
+html body #s-char.screen .rc.sel::after,
+html body #s-char.screen .cc.sel::after{content:''!important;position:absolute!important;inset:0!important;border-radius:7px!important;background:linear-gradient(90deg,rgba(255,218,117,.18),transparent 25%,transparent 75%,rgba(255,218,117,.16))!important;pointer-events:none!important;}
+html body #s-char.screen .cf-race-info,
+html body #s-char.screen .cf-class-info{display:none!important;}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .cf-back-btn,
+html body #s-char.screen .start-btn{min-height:42px!important;border-radius:7px!important;font-size:12px!important;}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{max-width:150px!important;margin-left:auto!important;}
+html body #s-char.screen #cf-pane-1 .cf-next-btn{margin-top:12px!important;}
+@media(min-width:430px){html body #s-char.screen .race-card-grid{grid-template-columns:repeat(4,1fr)!important;}html body #s-char.screen .rc{min-height:104px!important;}}
+@media(max-width:370px){html body #s-char.screen .race-card-grid{gap:6px!important;}html body #s-char.screen .rc{min-height:88px!important;}html body #s-char.screen .rc-icon{font-size:29px!important;top:11px!important;}html body #s-char.screen .rc-name{font-size:12.5px!important;}html body #s-char.screen .rc-bonus{font-size:8.4px!important;}}
+</style>
+
+<style id="aimaster-v594-character-steps-premium-eof">
+/* EOF verdadeiro: acabamento premium nos demais passos da criacao. */
+html body #s-char.screen #cf-pane-2 .cf{margin-bottom:9px!important;}
+html body #s-char.screen #cf-pane-2 label{
+  display:block!important;margin:0 0 5px!important;font-family:var(--font-title)!important;font-size:10px!important;
+  letter-spacing:1.2px!important;text-transform:uppercase!important;color:#c8922a!important;text-shadow:0 1px 2px #000!important;
+}
+html body #s-char.screen #cf-pane-2 input,
+html body #s-char.screen #cf-pane-2 select{
+  min-height:40px!important;border-radius:8px!important;padding:0 12px!important;font-size:13px!important;
+  border:1px solid rgba(218,169,69,.38)!important;background:linear-gradient(180deg,rgba(12,9,5,.92),rgba(2,2,1,.94))!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.06),0 8px 16px rgba(0,0,0,.22)!important;
+}
+html body #s-char.screen #cf-pane-2 [onclick="rollStatsAnimated()"]{
+  min-height:30px!important;border-radius:7px!important;padding:6px 14px!important;
+  border-color:rgba(245,202,101,.55)!important;background:linear-gradient(180deg,rgba(218,169,69,.24),rgba(76,47,12,.70))!important;
+  box-shadow:0 0 13px rgba(218,169,69,.16),inset 0 1px 0 rgba(255,236,175,.14)!important;
+}
+html body #s-char.screen .attr-preview-grid{
+  gap:7px!important;margin-top:6px!important;padding:7px!important;border:1px solid rgba(218,169,69,.18)!important;
+  border-radius:12px!important;background:linear-gradient(180deg,rgba(0,0,0,.24),rgba(218,169,69,.035))!important;
+}
+html body #s-char.screen .ap-cell{
+  min-height:52px!important;border-radius:8px!important;border:1px solid rgba(218,169,69,.34)!important;
+  background:radial-gradient(circle at 50% 0,rgba(218,169,69,.16),transparent 42%),linear-gradient(180deg,rgba(22,15,7,.82),rgba(4,3,2,.92))!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.08),0 8px 14px rgba(0,0,0,.22)!important;
+}
+html body #s-char.screen .ap-lbl{
+  font-family:var(--font-title)!important;font-size:9px!important;letter-spacing:1px!important;color:#b88a33!important;
+}
+html body #s-char.screen .ap-val{
+  font-size:20px!important;color:#f3d98c!important;text-shadow:0 0 10px rgba(218,169,69,.30),0 1px 2px #000!important;
+}
+html body #s-char.screen .style-card-grid,
+html body #s-char.screen .patron-card-grid,
+html body #s-char.screen .spell-select-grid{
+  display:grid!important;grid-template-columns:repeat(2,1fr)!important;gap:8px!important;
+}
+html body #s-char.screen .sc,
+html body #s-char.screen .pc,
+html body #s-char.screen .sp-sel-card{
+  position:relative!important;overflow:hidden!important;min-height:74px!important;padding:9px 8px!important;border-radius:8px!important;
+  display:flex!important;align-items:center!important;gap:8px!important;border:1px solid rgba(218,169,69,.35)!important;
+  background:radial-gradient(circle at 24% 0,rgba(218,169,69,.14),transparent 38%),linear-gradient(180deg,rgba(19,14,8,.86),rgba(4,3,2,.94))!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,236,175,.06)!important;
+}
+html body #s-char.screen .sc.sel,
+html body #s-char.screen .pc.sel,
+html body #s-char.screen .sp-sel-card.sel{
+  border-color:#f0b73d!important;
+  background:radial-gradient(circle at 24% 0,rgba(245,202,101,.24),transparent 44%),linear-gradient(180deg,rgba(44,27,8,.90),rgba(5,4,2,.96))!important;
+  box-shadow:0 0 0 1px rgba(255,217,117,.28),0 0 18px rgba(218,169,69,.28),0 10px 22px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,236,175,.16)!important;
+}
+html body #s-char.screen .sc::after,
+html body #s-char.screen .pc::after,
+html body #s-char.screen .sp-sel-card::after{
+  content:'›'!important;position:absolute!important;right:9px!important;top:50%!important;transform:translateY(-50%)!important;
+  color:#c8922a!important;font-size:18px!important;text-shadow:0 0 8px rgba(218,169,69,.35)!important;
+}
+html body #s-char.screen .sc-icon,
+html body #s-char.screen .pc-icon,
+html body #s-char.screen .sp-sel-icon{
+  width:34px!important;height:34px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  flex:0 0 34px!important;border:1px solid rgba(218,169,69,.34)!important;background:radial-gradient(circle,rgba(218,169,69,.18),rgba(0,0,0,.50))!important;
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.62))!important;
+}
+html body #s-char.screen .sc-info,
+html body #s-char.screen .pc-info,
+html body #s-char.screen .sp-sel-info{min-width:0!important;padding-right:14px!important;}
+html body #s-char.screen .sc-name,
+html body #s-char.screen .pc-name,
+html body #s-char.screen .sp-sel-name{
+  font-family:var(--font-title)!important;font-size:12.5px!important;line-height:1.12!important;color:#f0ddb0!important;text-shadow:0 1px 2px #000!important;
+}
+html body #s-char.screen .sc-desc,
+html body #s-char.screen .pc-desc,
+html body #s-char.screen .sp-sel-desc{
+  margin-top:4px!important;font-size:9.5px!important;line-height:1.24!important;color:#b9974f!important;
+}
+html body #s-char.screen #cf-pane-5-content > div[style*="font-size:10px"]{
+  margin-top:4px!important;color:#c8922a!important;text-align:center!important;font-family:var(--font-title)!important;
+  letter-spacing:1.4px!important;text-transform:uppercase!important;
+}
+html body #s-char.screen .char-preview-card.show{
+  display:block!important;margin-top:10px!important;padding:12px!important;border-radius:10px!important;text-align:center!important;
+  border:1px solid rgba(218,169,69,.38)!important;background:linear-gradient(180deg,rgba(25,17,8,.84),rgba(3,3,2,.92))!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.08),0 10px 20px rgba(0,0,0,.28)!important;
+}
+html body #s-char.screen #cf-pane-3 .cf-class-info{display:none!important;}
+@media(max-width:370px){
+  html body #s-char.screen .style-card-grid,
+  html body #s-char.screen .patron-card-grid,
+  html body #s-char.screen .spell-select-grid{gap:7px!important;}
+  html body #s-char.screen .sc,
+  html body #s-char.screen .pc,
+  html body #s-char.screen .sp-sel-card{min-height:68px!important;padding:8px 7px!important;}
+  html body #s-char.screen .sc-name,
+  html body #s-char.screen .pc-name,
+  html body #s-char.screen .sp-sel-name{font-size:11.5px!important;}
+}
+</style>
+
+<style id="aimaster-v596-character-buttons-flow-true-eof">
+/* EOF verdadeiro: botoes e ornamentos finais da criacao. */
+html body #s-char.screen #cf-pane-1 #cf-race-info{
+  min-height:178px!important;margin-top:12px!important;padding:12px!important;
+}
+html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-traits{
+  display:flex!important;flex-wrap:wrap!important;gap:5px!important;margin:0 0 8px!important;
+}
+html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-traits span{
+  display:inline-flex!important;align-items:center!important;min-height:20px!important;padding:2px 7px!important;border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.24)!important;background:rgba(218,169,69,.07)!important;
+  font-family:var(--font-title)!important;font-size:8.5px!important;letter-spacing:.65px!important;text-transform:uppercase!important;color:#c9a75a!important;
+}
+html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-text{
+  font-size:11.4px!important;line-height:1.48!important;color:rgba(240,221,176,.86)!important;
+}
+html body #s-char.screen #cf-pane-1 #cf-next-1{
+  flex:0 0 auto!important;width:136px!important;min-width:136px!important;max-width:136px!important;
+  height:42px!important;min-height:42px!important;max-height:42px!important;
+  align-self:flex-end!important;margin:8px 0 0 auto!important;padding:0 14px!important;line-height:42px!important;
+}
+html body #s-char.screen #cf-pane-1{min-height:0!important;}
+html body #s-char.screen .cf-gender-pick{
+  display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:-4px 0 10px!important;
+  padding:4px!important;border:1px solid rgba(218,169,69,.20)!important;border-radius:10px!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.30),rgba(218,169,69,.035))!important;
+}
+html body #s-char.screen .cf-gender-btn{
+  min-height:32px!important;border-radius:7px!important;border:1px solid rgba(218,169,69,.28)!important;
+  background:linear-gradient(180deg,rgba(12,9,5,.82),rgba(1,1,1,.88))!important;color:#b9974f!important;
+  font-family:var(--font-title)!important;font-size:10.5px!important;letter-spacing:1px!important;text-transform:uppercase!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.04)!important;
+}
+html body #s-char.screen .cf-gender-btn.active{
+  color:#ffe29a!important;border-color:rgba(245,202,101,.74)!important;
+  background:linear-gradient(180deg,rgba(218,169,69,.30),rgba(80,48,12,.76))!important;
+  box-shadow:0 0 14px rgba(218,169,69,.22),inset 0 1px 0 rgba(255,236,175,.16)!important;
+}
+html body #s-char.screen #cf-pane-1 .race-card-grid{grid-template-columns:repeat(3,1fr)!important;gap:8px!important;}
+html body #s-char.screen #cf-pane-1 .rc{min-height:96px!important;}
+html body #s-char.screen #cf-pane-1 .cf-race-info{
+  display:block!important;margin:11px 0 0!important;padding:10px 12px!important;min-height:106px!important;
+  border-radius:9px!important;border:1px solid rgba(218,169,69,.36)!important;
+  background:radial-gradient(circle at 12% 0,rgba(218,169,69,.14),transparent 34%),linear-gradient(180deg,rgba(20,14,7,.82),rgba(4,3,2,.94))!important;
+  color:#f0ddb0!important;box-shadow:inset 0 1px 0 rgba(255,236,175,.08),0 10px 18px rgba(0,0,0,.30)!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head{display:flex!important;align-items:center!important;gap:9px!important;margin-bottom:7px!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-icon{
+  width:34px!important;height:34px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  border:1px solid rgba(218,169,69,.36)!important;background:radial-gradient(circle,rgba(218,169,69,.20),rgba(0,0,0,.55))!important;font-size:20px!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head strong{
+  display:block!important;font-family:var(--font-title)!important;font-size:13px!important;letter-spacing:1.1px!important;text-transform:uppercase!important;color:#ffe29a!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-head small{
+  display:block!important;margin-top:2px!important;font-size:9px!important;letter-spacing:.7px!important;text-transform:uppercase!important;color:#9aa0a6!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-bonus{
+  display:inline-block!important;margin-bottom:6px!important;padding:3px 8px!important;border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.26)!important;background:rgba(218,169,69,.08)!important;
+  font-family:var(--font-title)!important;font-size:10px!important;letter-spacing:.8px!important;color:#d2b56d!important;
+}
+html body #s-char.screen #cf-pane-1 .race-summary-text,
+html body #s-char.screen #cf-pane-1 .cf-race-info > span{font-size:11px!important;line-height:1.42!important;color:rgba(240,221,176,.78)!important;}
+html body #s-char.screen #cf-pane-1 .cf-race-info > strong{
+  display:block!important;margin-bottom:5px!important;font-family:var(--font-title)!important;font-size:13px!important;color:#ffe29a!important;text-transform:uppercase!important;letter-spacing:1px!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn{
+  width:auto!important;min-width:136px!important;max-width:150px!important;margin:12px 0 0 auto!important;min-height:42px!important;
+}
+@media(min-width:430px){
+  html body #s-char.screen #cf-pane-1 .race-card-grid{grid-template-columns:repeat(4,1fr)!important;}
+  html body #s-char.screen #cf-pane-1 .cf-race-info{min-height:96px!important;}
+}
+html body #s-char.screen .cf-pane{position:relative!important;}
+html body #s-char.screen .cf-pane::before,
+html body #s-char.screen .cf-pane::after{
+  content:''!important;position:absolute!important;top:9px!important;width:36px!important;height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.45),transparent)!important;pointer-events:none!important;
+}
+html body #s-char.screen .cf-pane::before{left:12px!important;}
+html body #s-char.screen .cf-pane::after{right:12px!important;}
+html body #s-char.screen #cf-pane-2 > div[style*="display:flex"],
+html body #s-char.screen #cf-pane-3 > div[style*="display:flex"],
+html body #s-char.screen #cf-pane-4 > div[style*="display:flex"],
+html body #s-char.screen #cf-pane-5 > div[style*="display:flex"]{
+  align-items:center!important;justify-content:space-between!important;gap:12px!important;margin-top:14px!important;
+}
+html body #s-char.screen .cf-back-btn,
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{
+  position:relative!important;overflow:hidden!important;text-transform:uppercase!important;letter-spacing:1.1px!important;
+  font-family:var(--font-title)!important;text-shadow:0 1px 2px #000!important;
+}
+html body #s-char.screen .cf-back-btn::before,
+html body #s-char.screen .cf-next-btn::before,
+html body #s-char.screen .start-btn::before{
+  content:''!important;position:absolute!important;inset:1px!important;border-radius:6px!important;
+  background:linear-gradient(180deg,rgba(255,239,183,.10),transparent 42%,rgba(0,0,0,.18))!important;pointer-events:none!important;
+}
+html body #s-char.screen .cf-back-btn{
+  flex:0 0 122px!important;max-width:122px!important;color:#d2b56d!important;
+}
+html body #s-char.screen .cf-next-btn,
+html body #s-char.screen .start-btn{
+  flex:0 0 154px!important;max-width:154px!important;color:#ffdf8a!important;
+}
+html body #s-char.screen .cf-next-btn:not(:disabled):active,
+html body #s-char.screen .cf-back-btn:active,
+html body #s-char.screen .start-btn:active{
+  transform:translateY(1px) scale(.99)!important;
+}
+html body #s-char.screen .cf-next-btn:disabled{
+  filter:saturate(.55)!important;opacity:.42!important;box-shadow:none!important;
+}
+html body #s-char.screen #cf-pane-1 .cf-next-btn{
+  display:block!important;margin:13px 0 0 auto!important;
+}
+html body #s-char.screen #cf-pane-5 .start-btn{
+  flex-basis:178px!important;max-width:178px!important;
+}
+html body #s-char.screen #pane2-stats-hint{
+  font-family:var(--font-title)!important;letter-spacing:1px!important;text-transform:uppercase!important;color:rgba(218,169,69,.55)!important;
+}
+@media(max-width:370px){
+  html body #s-char.screen .cf-back-btn{flex-basis:106px!important;max-width:106px!important;padding-left:8px!important;padding-right:8px!important;}
+  html body #s-char.screen .cf-next-btn{flex-basis:136px!important;max-width:136px!important;}
+  html body #s-char.screen #cf-pane-5 .start-btn{flex-basis:154px!important;max-width:154px!important;font-size:10.5px!important;}
 }
 </style>
