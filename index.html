@@ -20491,7 +20491,8 @@ html body #s-char.screen #cf-pane-3 .cf-class-info{display:none!important;}
 <style id="aimaster-v596-character-buttons-flow-true-eof">
 /* EOF verdadeiro: botoes e ornamentos finais da criacao. */
 html body #s-char.screen #cf-pane-1 #cf-race-info{
-  min-height:178px!important;margin-top:12px!important;padding:12px!important;
+  flex:0 0 auto!important;height:auto!important;min-height:178px!important;margin-top:12px!important;padding:12px!important;
+  overflow:visible!important;box-sizing:border-box!important;
 }
 html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-traits{
   display:flex!important;flex-wrap:wrap!important;gap:5px!important;margin:0 0 8px!important;
@@ -20507,9 +20508,11 @@ html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-text{
 html body #s-char.screen #cf-pane-1 #cf-next-1{
   flex:0 0 auto!important;width:136px!important;min-width:136px!important;max-width:136px!important;
   height:42px!important;min-height:42px!important;max-height:42px!important;
-  align-self:flex-end!important;margin:8px 0 0 auto!important;padding:0 14px!important;line-height:42px!important;
+  position:relative!important;z-index:2!important;align-self:flex-end!important;margin:12px 0 0 auto!important;padding:0 14px!important;line-height:42px!important;
 }
-html body #s-char.screen #cf-pane-1{min-height:0!important;}
+html body #s-char.screen #cf-pane-1{
+  flex:0 0 auto!important;height:auto!important;min-height:0!important;overflow:visible!important;
+}
 html body #s-char.screen .cf-gender-pick{
   display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:-4px 0 10px!important;
   padding:4px!important;border:1px solid rgba(218,169,69,.20)!important;border-radius:10px!important;
