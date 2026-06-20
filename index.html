@@ -6299,7 +6299,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
     </svg>
   </div>
   <!-- HUD reconstruido: IDs e hierarquia funcional preservados -->
-  <div class="char-strip hud-ref">
+  <div class="char-strip hud-ref hud-reference-v6">
     <div class="hud-main">
     <div class="xp-portrait-wrap" onclick="openMo('mo-xp')">
       <svg class="xp-ring" viewBox="0 0 50 50">
@@ -8216,7 +8216,7 @@ function startAdventure(){
     'Ranger':    Math.floor(Math.random()*50)+75, // 5d4×10
   };
   const initialGold = startingGold[cls] || 50;
-  hero={name,race,cls,bg,align,maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:initialGold,
+  hero={name,race,cls,bg,align,gender:_cfSelectedGender||'m',maxHP,hp:maxHP,maxMP,mp:maxMP,ca,gold:initialGold,
         rep:Math.max(0,repBonus),xp:0,level:1,credits:0,questId:0};
   merchantCD=(cls==='Paladino'||cls==='Clérigo')?10:(race==='Tiefling'?14:12);
   gameHistory=[];
@@ -8224,7 +8224,7 @@ function startAdventure(){
   resetMemory(); // ★ Novo personagem = memória zerada do início
 
   // ── Game screen top bar ──
-  document.getElementById('g-av').textContent=classAv[cls]||'⚔️';
+  updateHUDRacePortrait();
   document.getElementById('g-nm').textContent=name;
   document.getElementById('g-mt').textContent=`${race} · ${cls} · Nível 1`;
   document.getElementById('f-ca').textContent=ca;
@@ -8455,7 +8455,25 @@ function updateVisualWorldContext(text, officialLocation){
   if(gameScreen) gameScreen.style.setProperty('--hud-time-label',`"${window.visualTimeHint||'Tempo desconhecido'}"`);
 }
 
+function updateHUDRacePortrait(){
+  const portrait=document.getElementById('g-av');
+  if(!portrait||!hero) return;
+  const raceIndex=typeof RACE_DATA!=='undefined'?RACE_DATA.findIndex(r=>r.id===hero.race):-1;
+  if(raceIndex<0){
+    portrait.removeAttribute('data-race-gender');
+    portrait.textContent=classAv[hero.cls]||'⚔️';
+    return;
+  }
+  const portraitX=(raceIndex%3)*50;
+  const portraitY=Math.floor(raceIndex/3)*50;
+  portrait.dataset.raceGender=hero.gender==='f'?'f':'m';
+  portrait.style.setProperty('--hud-portrait-x',portraitX+'%');
+  portrait.style.setProperty('--hud-portrait-y',portraitY+'%');
+  portrait.textContent='';
+}
+
 function updateVitals(){
+  updateHUDRacePortrait();
   // Guard: ensure valid values
   hero.hp    = Math.max(0, Math.min(hero.maxHP||1, hero.hp||0));
   hero.mp    = Math.max(0, Math.min(hero.maxMP||0, hero.mp||0));
@@ -8586,6 +8604,13 @@ function gainXP(amount){
   while(lv<20&&hero.xp>=(XP_TABLE[lv]||999999)){
     lv++;
     hero.level=lv;
+    const xpWrap=document.querySelector('#s-game .xp-portrait-wrap');
+    if(xpWrap){
+      xpWrap.classList.remove('level-up-flash');
+      void xpWrap.offsetWidth;
+      xpWrap.classList.add('level-up-flash');
+      setTimeout(()=>xpWrap.classList.remove('level-up-flash'),1400);
+    }
     // HP correto: dado de vida + mod CON por nível (PHB)
     const hdBonus=Math.max(1,Math.ceil((classHP[hero.cls]||8)/2)+1); // média do dado
     hero.maxHP+=(hdBonus+mod(stats.con||10));
@@ -13374,6 +13399,7 @@ function loadGameState(){
     if(!state.hero || !state.hero.name) return false;
 
     Object.assign(hero, state.hero);
+    hero.gender=hero.gender||'m';
     Object.assign(stats, state.stats||{});
     inventory = state.inventory || [];
     gameHistory = state.gameHistory || [];
@@ -20540,6 +20566,202 @@ html body #s-char.screen #cf-pane-3 .cf-class-info{display:none!important;}
 
 <style id="aimaster-v596-character-buttons-flow-true-eof">
 /* EOF verdadeiro: botoes e ornamentos finais da criacao. */
+/* HUD v6.0.4: retrato racial, barras da referencia e aro de XP progressivo. */
+html body #s-game.active .char-strip.hud-ref{
+  min-height:132px!important;padding:8px 9px 32px!important;border-radius:14px!important;
+  background:radial-gradient(circle at 14% 18%,rgba(218,169,69,.10),transparent 28%),linear-gradient(180deg,rgba(13,10,6,.96),rgba(2,2,1,.98))!important;
+  border-color:rgba(218,169,69,.48)!important;box-shadow:0 14px 30px rgba(0,0,0,.50),inset 0 1px 0 rgba(255,235,170,.07)!important;
+}
+html body #s-game.active .char-strip.hud-ref .hud-main{
+  display:flex!important;align-items:flex-start!important;gap:7px!important;width:100%!important;min-width:0!important;padding-right:82px!important;
+}
+html body #s-game.active .char-strip.hud-ref .xp-portrait-wrap{
+  position:relative!important;width:82px!important;height:82px!important;flex:0 0 82px!important;margin-top:0!important;
+  filter:drop-shadow(0 5px 5px rgba(0,0,0,.86)) drop-shadow(0 0 10px rgba(218,169,69,.20))!important;
+}
+html body #s-game.active .char-strip.hud-ref .xp-portrait-wrap::before{
+  content:''!important;position:absolute!important;inset:-4px!important;z-index:1!important;border-radius:50%!important;
+  border:1px solid rgba(246,207,108,.72)!important;
+  background:conic-gradient(from -18deg,#3a2308 0 7%,#d39b32 10%,#5f3a0d 14%,#241706 34%,#ca8d28 52%,#4e2d09 70%,#e2ae43 88%,#3a2308 100%)!important;
+  -webkit-mask:radial-gradient(circle,transparent 67%,#000 69% 76%,transparent 78%)!important;
+  mask:radial-gradient(circle,transparent 67%,#000 69% 76%,transparent 78%)!important;
+  box-shadow:0 0 0 1px rgba(35,20,4,.90),0 0 12px rgba(218,169,69,.24)!important;pointer-events:none!important;
+}
+html body #s-game.active .char-strip.hud-ref .xp-portrait-wrap::after{
+  content:''!important;position:absolute!important;left:50%!important;top:-8px!important;z-index:10!important;width:10px!important;height:10px!important;
+  transform:translateX(-50%) rotate(45deg)!important;border:1px solid #f2c75c!important;background:linear-gradient(135deg,#f8d675,#6e410c)!important;
+  box-shadow:0 0 0 2px #080502,0 0 9px rgba(242,190,70,.70)!important;pointer-events:none!important;
+}
+html body #s-game.active .char-strip.hud-ref .xp-ring{
+  position:absolute!important;inset:-2px!important;z-index:7!important;width:86px!important;height:86px!important;overflow:visible!important;pointer-events:none!important;
+}
+html body #s-game.active .char-strip.hud-ref #xp-ring-circle{
+  stroke-width:2.7!important;transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1)!important;
+  filter:drop-shadow(0 0 1px #fff2b0) drop-shadow(0 0 4px rgba(255,190,55,.92)) drop-shadow(0 0 8px rgba(218,126,20,.44))!important;
+}
+html body #s-game.active .char-strip.hud-ref .portrait{
+  position:absolute!important;inset:7px!important;z-index:3!important;border-radius:50%!important;border:1px solid rgba(246,207,108,.82)!important;
+  background-color:#050403!important;background-repeat:no-repeat!important;background-size:300% 300%!important;
+  background-position:var(--hud-portrait-x,0%) var(--hud-portrait-y,0%)!important;
+  box-shadow:inset 0 -14px 18px rgba(0,0,0,.48),inset 0 0 0 2px rgba(0,0,0,.50),0 0 0 2px rgba(63,39,10,.78)!important;
+  font-size:0!important;filter:saturate(.94) contrast(1.06) brightness(.94)!important;
+}
+html body #s-game.active .char-strip.hud-ref .portrait[data-race-gender="m"]{background-image:url('assets/races/race-atlas-male-v1.jpg')!important;}
+html body #s-game.active .char-strip.hud-ref .portrait[data-race-gender="f"]{background-image:url('assets/races/race-atlas-female-v1.jpg')!important;}
+html body #s-game.active .char-strip.hud-ref .hud-level{
+  left:50%!important;bottom:-7px!important;z-index:11!important;width:27px!important;height:27px!important;
+  border:1px solid #e8b64d!important;background:radial-gradient(circle at 50% 28%,rgba(255,224,139,.28),transparent 28%),linear-gradient(180deg,#422a08,#070402 76%)!important;
+  color:#ffe29a!important;font-size:11px!important;box-shadow:0 0 0 3px #050301,0 0 0 4px rgba(161,106,20,.72),0 0 10px rgba(218,169,69,.45)!important;
+}
+html body #s-game.active .char-strip.hud-ref .xp-label{
+  left:50%!important;bottom:-25px!important;z-index:9!important;min-width:66px!important;min-height:13px!important;padding:2px 5px!important;
+  border-color:rgba(218,169,69,.46)!important;background:rgba(5,3,2,.96)!important;color:#d8b963!important;font-size:6px!important;letter-spacing:.15px!important;
+}
+html body #s-game.active .char-strip.hud-ref .char-info{
+  flex:1 1 auto!important;min-width:0!important;padding-top:1px!important;overflow:visible!important;
+}
+html body #s-game.active .char-strip.hud-ref .c-name{
+  height:23px!important;margin:0 0 6px!important;padding:1px 8px 5px!important;border-bottom:1px solid rgba(218,169,69,.40)!important;
+  font-family:var(--font-title)!important;font-size:15px!important;line-height:17px!important;color:#f0d38d!important;text-align:left!important;
+}
+html body #s-game.active .char-strip.hud-ref .bars{gap:8px!important;margin:0!important;}
+html body #s-game.active .char-strip.hud-ref .bar-row{
+  position:relative!important;display:block!important;width:100%!important;height:17px!important;min-height:17px!important;margin:0!important;
+}
+html body #s-game.active .char-strip.hud-ref .bar-track{
+  position:absolute!important;inset:2px 2px 2px 0!important;height:auto!important;border:1px solid rgba(218,169,69,.52)!important;border-radius:0!important;
+  background:linear-gradient(180deg,#080603,#010101)!important;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,5px 50%)!important;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,.92),0 0 0 1px rgba(31,18,5,.86)!important;overflow:hidden!important;
+}
+html body #s-game.active .char-strip.hud-ref .bar-track::before,
+html body #s-game.active .char-strip.hud-ref .bar-track::after{display:none!important;}
+html body #s-game.active .char-strip.hud-ref .bar-fill{
+  height:100%!important;border-radius:0!important;clip-path:polygon(0 0,calc(100% - 5px) 0,100% 50%,calc(100% - 5px) 100%,0 100%)!important;
+  transition:width .65s ease!important;
+}
+html body #s-game.active .char-strip.hud-ref .bar-fill.hp{
+  background:linear-gradient(180deg,#ff5a55 0%,#cf1718 42%,#780507 78%,#2a0102 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,225,211,.72),inset 0 -2px 4px rgba(45,0,0,.74),0 0 7px rgba(234,28,24,.50)!important;
+}
+html body #s-game.active .char-strip.hud-ref .bar-fill.mp{
+  background:linear-gradient(180deg,#4dd9ff 0%,#087fd5 42%,#03417f 78%,#00172d 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(214,248,255,.72),inset 0 -2px 4px rgba(0,20,55,.78),0 0 7px rgba(16,137,239,.52)!important;
+}
+html body #s-game.active .char-strip.hud-ref .bar-fill::after{
+  background:linear-gradient(90deg,rgba(0,0,0,.52) 0 66px,transparent 82px,rgba(255,255,255,.12) 70%,transparent)!important;
+}
+html body #s-game.active .char-strip.hud-ref .bar-row::before{
+  left:7px!important;top:50%!important;z-index:6!important;width:14px!important;height:14px!important;transform:translateY(-50%)!important;
+}
+html body #s-game.active .char-strip.hud-ref .hp-row::before{content:'♥'!important;color:#ff554d!important;font-size:14px!important;text-shadow:0 0 5px rgba(255,43,37,.82),0 1px 1px #000!important;}
+html body #s-game.active .char-strip.hud-ref .mp-row::before{content:'◉'!important;left:8px!important;color:#24c8ff!important;font-size:12px!important;text-shadow:0 0 5px rgba(20,166,255,.85),0 1px 1px #000!important;}
+html body #s-game.active .char-strip.hud-ref .bar-lbl{
+  left:26px!important;top:50%!important;z-index:6!important;color:#f0ddb0!important;font-size:8px!important;font-weight:600!important;text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.active .char-strip.hud-ref .bar-val{
+  left:45px!important;top:50%!important;z-index:6!important;min-width:39px!important;color:#fff0cc!important;font-size:8px!important;font-weight:800!important;text-align:left!important;text-shadow:0 1px 2px #000,0 0 3px rgba(255,226,166,.24)!important;
+}
+html body #s-game.active .char-strip.hud-ref .hud-world{left:101px!important;}
+html body #s-game.active .xp-portrait-wrap.level-up-flash{animation:hudLevelRise 1.4s ease-out!important;}
+@keyframes hudLevelRise{
+  0%{filter:drop-shadow(0 0 5px rgba(218,169,69,.25));transform:scale(1)}
+  28%{filter:drop-shadow(0 0 18px #ffd76b) drop-shadow(0 0 30px rgba(255,152,24,.72));transform:scale(1.08)}
+  100%{filter:drop-shadow(0 0 8px rgba(218,169,69,.24));transform:scale(1)}
+}
+@media(max-height:740px){
+  html body #s-game.active .char-strip.hud-ref{min-height:119px!important;padding-bottom:29px!important;}
+  html body #s-game.active .char-strip.hud-ref .xp-portrait-wrap{width:72px!important;height:72px!important;flex-basis:72px!important;}
+  html body #s-game.active .char-strip.hud-ref .xp-ring{width:76px!important;height:76px!important;}
+  html body #s-game.active .char-strip.hud-ref .hud-world{left:90px!important;}
+  html body #s-game.active .char-strip.hud-ref .c-name{height:20px!important;margin-bottom:5px!important;font-size:13px!important;line-height:15px!important;}
+  html body #s-game.active .char-strip.hud-ref .bars{gap:6px!important;}
+  html body #s-game.active .char-strip.hud-ref .bar-row{height:15px!important;min-height:15px!important;}
+}
+@media(max-width:370px){
+  html body #s-game.active .char-strip.hud-ref .hud-main{gap:5px!important;padding-right:60px!important;}
+  html body #s-game.active .char-strip.hud-ref .xp-portrait-wrap{width:68px!important;height:68px!important;flex-basis:68px!important;}
+  html body #s-game.active .char-strip.hud-ref .xp-ring{width:72px!important;height:72px!important;}
+  html body #s-game.active .char-strip.hud-ref .c-name{font-size:12px!important;padding-left:5px!important;}
+  html body #s-game.active .char-strip.hud-ref .bar-lbl{left:23px!important;font-size:7px!important;}
+  html body #s-game.active .char-strip.hud-ref .bar-val{left:39px!important;font-size:7px!important;}
+  html body #s-game.active .char-strip.hud-ref .bar-fill::after{background:linear-gradient(90deg,rgba(0,0,0,.52) 0 58px,transparent 70px,rgba(255,255,255,.10) 74%,transparent)!important;}
+  html body #s-game.active .char-strip.hud-ref .hud-world{left:82px!important;}
+}
+/* Geometria forte: composição explicitamente próxima da referência. */
+html body #s-game.active .char-strip.hud-reference-v6{
+  display:block!important;position:relative!important;min-height:144px!important;height:144px!important;
+  margin:5px 7px 4px!important;padding:8px 8px 34px!important;overflow:visible!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .hud-main{
+  position:relative!important;display:flex!important;align-items:flex-start!important;width:100%!important;height:96px!important;
+  gap:5px!important;padding:0 82px 0 0!important;margin:0!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .xp-portrait-wrap{
+  width:92px!important;height:92px!important;flex:0 0 92px!important;margin:0!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .xp-ring{
+  inset:-2px!important;width:96px!important;height:96px!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .portrait{inset:8px!important;}
+html body #s-game.active .char-strip.hud-reference-v6 .char-info{
+  flex:1 1 auto!important;width:auto!important;min-width:0!important;margin:0!important;padding:2px 0 0!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .c-name{
+  display:block!important;width:100%!important;height:25px!important;margin:0 0 7px!important;padding:1px 8px 5px!important;
+  font-size:16px!important;line-height:18px!important;text-align:left!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .bars{
+  display:flex!important;flex-direction:column!important;width:100%!important;gap:8px!important;margin:0!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .bar-row{
+  display:block!important;position:relative!important;width:100%!important;height:20px!important;min-height:20px!important;margin:0!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .bar-track{
+  position:absolute!important;left:0!important;right:0!important;top:2px!important;bottom:2px!important;width:auto!important;height:auto!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .bar-lbl{left:28px!important;font-size:9px!important;}
+html body #s-game.active .char-strip.hud-reference-v6 .bar-val{left:50px!important;font-size:9px!important;min-width:42px!important;}
+html body #s-game.active .char-strip.hud-reference-v6 .hp-row::before{left:8px!important;font-size:16px!important;}
+html body #s-game.active .char-strip.hud-reference-v6 .mp-row::before{left:9px!important;font-size:13px!important;}
+html body #s-game.active .char-strip.hud-reference-v6 > .hud-resources{
+  top:9px!important;right:8px!important;width:72px!important;gap:7px!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .gold-pill{
+  width:72px!important;min-width:72px!important;min-height:25px!important;padding:4px 7px!important;font-size:8px!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .hud-world{
+  left:111px!important;right:13px!important;bottom:5px!important;min-height:31px!important;padding-top:5px!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .hud-level{
+  width:29px!important;height:29px!important;bottom:-8px!important;font-size:12px!important;
+}
+html body #s-game.active .char-strip.hud-reference-v6 .xp-label{
+  bottom:-27px!important;min-width:70px!important;font-size:6.2px!important;
+}
+@media(max-height:740px){
+  html body #s-game.active .char-strip.hud-reference-v6{min-height:130px!important;height:130px!important;padding-bottom:31px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .hud-main{height:84px!important;padding-right:70px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .xp-portrait-wrap{width:80px!important;height:80px!important;flex-basis:80px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .xp-ring{width:84px!important;height:84px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .c-name{height:21px!important;margin-bottom:5px!important;font-size:14px!important;line-height:16px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .bars{gap:6px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .bar-row{height:17px!important;min-height:17px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 > .hud-resources{width:62px!important;gap:5px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .gold-pill{width:62px!important;min-width:62px!important;min-height:22px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .hud-world{left:98px!important;}
+}
+@media(max-width:370px){
+  html body #s-game.active .char-strip.hud-reference-v6{height:124px!important;min-height:124px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .hud-main{height:80px!important;padding-right:56px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .xp-portrait-wrap{width:74px!important;height:74px!important;flex-basis:74px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .xp-ring{width:78px!important;height:78px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .c-name{font-size:12px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .bar-lbl{left:24px!important;font-size:7px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .bar-val{left:40px!important;font-size:7px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 > .hud-resources{right:5px!important;width:52px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .gold-pill{width:52px!important;min-width:52px!important;padding:3px 4px!important;font-size:6px!important;}
+  html body #s-game.active .char-strip.hud-reference-v6 .hud-world{left:88px!important;right:8px!important;}
+}
 html body #s-char.screen #cf-pane-3 .class-card-grid{
   grid-template-columns:repeat(3,1fr)!important;gap:8px!important;
 }
