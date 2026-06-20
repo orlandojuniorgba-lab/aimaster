@@ -13468,6 +13468,20 @@ const CLASS_DATA = [
   {id:'Bruxo',     icon:'🕯️', desc:'Poder concedido por um patrono sobrenatural misterioso.'},
 ];
 
+const CLASS_SUMMARIES = {
+  'Guerreiro': {die:'d10', attr:'FOR ou DES', role:'Combatente versátil', style:'Domina armas, armaduras e diferentes estilos de luta. É resistente, direto e fácil de adaptar ao grupo.'},
+  'Mago': {die:'d6', attr:'INT', role:'Especialista arcano', style:'Aprende muitas magias e resolve problemas com preparação e conhecimento. É poderoso, mas precisa evitar a linha de frente.'},
+  'Ladino': {die:'d8', attr:'DES', role:'Perito e atacante preciso', style:'Usa furtividade, perícias e ataques oportunos. Brilha em exploração, armadilhas e situações que exigem habilidade.'},
+  'Clérigo': {die:'d8', attr:'SAB', role:'Suporte divino', style:'Combina cura, proteção e magia sagrada. Pode lutar de perto e adaptar seus poderes ao domínio escolhido.'},
+  'Bardo': {die:'d8', attr:'CAR', role:'Suporte e diplomacia', style:'Inspira aliados, domina conversas e usa magia versátil. É excelente para jogadores criativos e sociais.'},
+  'Paladino': {die:'d10', attr:'FOR e CAR', role:'Defensor sagrado', style:'Une armadura pesada, cura e golpes divinos. Protege o grupo e segue um juramento que orienta suas decisões.'},
+  'Druida': {die:'d8', attr:'SAB', role:'Magia da natureza', style:'Controla elementos, cura e assume formas animais. Tem muitas opções para exploração e controle do campo.'},
+  'Ranger': {die:'d10', attr:'DES e SAB', role:'Caçador e explorador', style:'Combina armas, rastreamento e magia natural. Funciona muito bem em jornadas, emboscadas e combate à distância.'},
+  'Bárbaro': {die:'d12', attr:'FOR', role:'Combatente resistente', style:'Entra em fúria para causar e suportar muito dano. É simples de conduzir e extremamente forte na linha de frente.'},
+  'Feiticeiro': {die:'d6', attr:'CAR', role:'Conjurador espontâneo', style:'A magia nasce em seu sangue. Conhece menos feitiços, mas consegue modificá-los com grande impacto.'},
+  'Bruxo': {die:'d8', attr:'CAR', role:'Conjurador de pacto', style:'Recebe poderes de uma entidade misteriosa. Possui truques fortes, invocações únicas e escolhas narrativas marcantes.'}
+};
+
 // Which classes get spell selection in creation
 const SPELL_CASTERS_CREATION = ['Mago','Clérigo','Bardo','Druida','Feiticeiro','Bruxo'];
 
@@ -13648,22 +13662,49 @@ function buildClassCards(){
     'Feiticeiro':'Magia no sangue',
     'Bruxo':'Pacto sombrio'
   };
-  grid.innerHTML = CLASS_DATA.map(c=>`
+  grid.dataset.gender = _cfSelectedGender;
+  grid.innerHTML = CLASS_DATA.map((c,index)=>{
+    const portraitX = (index % 4) * (100/3);
+    const cardPortraitY = [0,43,86][Math.floor(index / 4)];
+    return `
     <div class="cc${_cfSelectedClass===c.id?' sel':''}" data-class="${c.id}" onclick="cfSelectClass('${c.id}')">
-      <div class="cc-icon">${c.icon}</div>
+      <div class="cc-icon" data-symbol style="--class-portrait-x:${portraitX}%;--class-card-y:${cardPortraitY}%">${c.icon}</div>
       <div class="cc-info">
         <div class="cc-name">${c.id}</div>
         <div class="cc-desc">${classSub[c.id]||c.desc}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+  updateClassSummary();
+}
+
+function updateClassSummary(){
+  const info = document.getElementById('cf-class-info');
+  if(!info) return;
+  const cls = CLASS_DATA.find(c=>c.id===_cfSelectedClass);
+  if(!cls){
+    info.innerHTML='<strong>Escolha uma classe</strong><br><span>Veja aqui a função, resistência e estilo de jogo de cada caminho.</span>';
+    info.classList.add('show');
+    return;
+  }
+  const details = CLASS_SUMMARIES[cls.id];
+  const classIndex = Math.max(0, CLASS_DATA.findIndex(c=>c.id===cls.id));
+  const portraitX = (classIndex % 4) * (100/3);
+  const portraitY = Math.floor(classIndex / 4) * 50;
+  info.innerHTML=`
+    <div class="class-summary-head">
+      <span class="class-summary-icon" data-symbol style="--class-portrait-x:${portraitX}%;--class-summary-y:${portraitY}%">${cls.icon}</span>
+      <span><strong>${cls.id}</strong><small>${details.role}</small></span>
+    </div>
+    <div class="class-summary-facts"><span>VIDA ${details.die}</span><span>ATRIBUTO ${details.attr}</span></div>
+    <div class="class-summary-text">${details.style}</div>`;
+  info.classList.add('show');
 }
 
 function cfSelectClass(id){
   _cfSelectedClass=id;_cfSelectedStyle=null;_cfSelectedPatron=null;
   buildClassCards();
-  const cls = CLASS_DATA.find(c=>c.id===id);
-  const info = document.getElementById('cf-class-info');
-  if(info&&cls){ info.textContent=cls.desc; info.classList.add('show'); }
+  updateClassSummary();
   // Enable next button on pane 3
   const btn = document.getElementById('cf-next-3');
   if(btn){ btn.disabled=false; btn.style.opacity='1'; btn.style.pointerEvents='auto'; }
@@ -20499,6 +20540,57 @@ html body #s-char.screen #cf-pane-3 .cf-class-info{display:none!important;}
 
 <style id="aimaster-v596-character-buttons-flow-true-eof">
 /* EOF verdadeiro: botoes e ornamentos finais da criacao. */
+html body #s-char.screen #cf-pane-3 .class-card-grid{
+  grid-template-columns:repeat(3,1fr)!important;gap:8px!important;
+}
+html body #s-char.screen #class-card-grid .cc{
+  min-height:108px!important;padding:0!important;border-radius:7px!important;overflow:hidden!important;
+}
+html body #s-char.screen #class-card-grid .cc-icon[data-symbol]{
+  position:absolute!important;inset:0 0 34px 0!important;width:100%!important;height:auto!important;
+  transform:none!important;border-radius:6px 6px 0 0!important;background-repeat:no-repeat!important;
+  background-color:#050403!important;background-size:400% auto!important;
+  background-position:var(--class-portrait-x) var(--class-card-y)!important;
+  background-image:url('assets/classes/class-symbol-atlas-v1.jpg')!important;
+  font-size:0!important;line-height:0!important;filter:saturate(.94) contrast(1.06) brightness(.94)!important;
+  box-shadow:inset 0 -18px 16px rgba(0,0,0,.68),inset 0 0 0 1px rgba(255,220,135,.05)!important;
+}
+html body #s-char.screen #class-card-grid .cc-info{
+  min-height:36px!important;padding:4px 3px 5px!important;
+}
+html body #s-char.screen #class-card-grid .cc-name{font-size:12.5px!important;}
+html body #s-char.screen #class-card-grid .cc-desc{font-size:8.2px!important;line-height:1.08!important;}
+html body #s-char.screen #class-card-grid .cc.sel .cc-icon[data-symbol]{
+  filter:saturate(1.07) contrast(1.06) brightness(1.03)!important;
+}
+html body #s-char.screen #cf-pane-3 #cf-class-info{
+  display:block!important;flex:0 0 142px!important;height:142px!important;min-height:142px!important;max-height:142px!important;
+  margin:10px 0 0!important;padding:10px 11px!important;overflow:hidden!important;box-sizing:border-box!important;
+  border:1px solid rgba(218,169,69,.36)!important;border-radius:9px!important;
+  background:radial-gradient(circle at 12% 0,rgba(218,169,69,.14),transparent 34%),linear-gradient(180deg,rgba(20,14,7,.82),rgba(4,3,2,.94))!important;
+  color:#f0ddb0!important;box-shadow:inset 0 1px 0 rgba(255,236,175,.08),0 10px 18px rgba(0,0,0,.30)!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-head{display:flex!important;align-items:center!important;gap:9px!important;margin-bottom:7px!important;}
+html body #s-char.screen #cf-class-info .class-summary-icon[data-symbol]{
+  flex:0 0 36px!important;width:36px!important;height:36px!important;border-radius:50%!important;
+  background-repeat:no-repeat!important;background-size:400% 300%!important;background-position:var(--class-portrait-x) var(--class-summary-y)!important;
+  background-image:url('assets/classes/class-symbol-atlas-v1.jpg')!important;
+  font-size:0!important;box-shadow:0 0 0 1px rgba(245,202,101,.30),0 4px 10px rgba(0,0,0,.55)!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-head strong{
+  display:block!important;font-family:var(--font-title)!important;font-size:13px!important;letter-spacing:1px!important;text-transform:uppercase!important;color:#ffe29a!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-head small{
+  display:block!important;margin-top:2px!important;font-size:8.5px!important;letter-spacing:.65px!important;text-transform:uppercase!important;color:#9aa0a6!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-facts{display:flex!important;flex-wrap:wrap!important;gap:5px!important;margin-bottom:7px!important;}
+html body #s-char.screen #cf-class-info .class-summary-facts span{
+  min-height:19px!important;padding:2px 7px!important;border-radius:999px!important;border:1px solid rgba(218,169,69,.26)!important;
+  background:rgba(218,169,69,.08)!important;font-family:var(--font-title)!important;font-size:8px!important;letter-spacing:.5px!important;color:#d2b56d!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-text,
+html body #s-char.screen #cf-class-info > span{font-size:10.2px!important;line-height:1.34!important;color:rgba(240,221,176,.84)!important;}
+html body #s-char.screen #cf-class-info > strong{font-family:var(--font-title)!important;color:#ffe29a!important;text-transform:uppercase!important;letter-spacing:1px!important;}
 html body #s-char.screen #race-card-grid .rc-icon[data-gender]{
   position:absolute!important;inset:0 0 31px 0!important;width:100%!important;height:auto!important;
   transform:none!important;border-radius:6px 6px 0 0!important;background-repeat:no-repeat!important;
