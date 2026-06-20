@@ -13580,14 +13580,19 @@ function buildRaceCards(){
     'Draconato':'Orgulhoso e disciplinado'
   };
   const iconSet = RACE_GENDER_ICONS[_cfSelectedGender] || {};
-  grid.innerHTML = RACE_DATA.map(r=>`
+  grid.dataset.gender = _cfSelectedGender;
+  grid.innerHTML = RACE_DATA.map((r,index)=>{
+    const portraitX = (index % 3) * 50;
+    const portraitY = Math.floor(index / 3) * 50;
+    return `
     <div class="rc${_cfSelectedRace===r.id?' sel':''}" data-race="${r.id}" onclick="cfSelectRace('${r.id}')">
-      <span class="rc-icon">${iconSet[r.id]||r.icon}</span>
+      <span class="rc-icon" data-gender="${_cfSelectedGender}" style="--portrait-x:${portraitX}%;--portrait-y:${portraitY}%">${iconSet[r.id]||r.icon}</span>
       <div class="rc-copy">
         <div class="rc-name">${r.id}</div>
         <div class="rc-bonus">${raceSub[r.id]||r.bonus}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function updateRaceSummary(){
@@ -13601,9 +13606,12 @@ function updateRaceSummary(){
   }
   const iconSet = RACE_GENDER_ICONS[_cfSelectedGender] || {};
   const traits = RACE_TRAIT_SUMMARIES[race.id] || {traits:[], text:race.info};
+  const raceIndex = Math.max(0, RACE_DATA.findIndex(r=>r.id===race.id));
+  const portraitX = (raceIndex % 3) * 50;
+  const portraitY = Math.floor(raceIndex / 3) * 50;
   info.innerHTML = `
     <div class="race-summary-head">
-      <span class="race-summary-icon">${iconSet[race.id]||race.icon}</span>
+      <span class="race-summary-icon" data-gender="${_cfSelectedGender}" style="--portrait-x:${portraitX}%;--portrait-y:${portraitY}%">${iconSet[race.id]||race.icon}</span>
       <span><strong>${race.id}</strong><small>${_cfSelectedGender === 'f' ? 'Avatar feminino' : 'Avatar masculino'}</small></span>
     </div>
     <div class="race-summary-bonus">${race.bonus}</div>
@@ -20490,29 +20498,57 @@ html body #s-char.screen #cf-pane-3 .cf-class-info{display:none!important;}
 
 <style id="aimaster-v596-character-buttons-flow-true-eof">
 /* EOF verdadeiro: botoes e ornamentos finais da criacao. */
+html body #s-char.screen #race-card-grid .rc-icon[data-gender]{
+  position:absolute!important;inset:0 0 31px 0!important;width:100%!important;height:auto!important;
+  transform:none!important;border-radius:6px 6px 0 0!important;background-repeat:no-repeat!important;
+  background-size:300% 300%!important;background-position:var(--portrait-x) var(--portrait-y)!important;
+  font-size:0!important;line-height:0!important;filter:saturate(.90) contrast(1.05) brightness(.92)!important;
+  box-shadow:inset 0 -18px 18px rgba(0,0,0,.72),inset 0 0 0 1px rgba(255,220,135,.05)!important;
+}
+html body #s-char.screen #race-card-grid .rc-icon[data-gender="m"],
+html body #s-char.screen #cf-race-info .race-summary-icon[data-gender="m"]{
+  background-image:url('assets/races/race-atlas-male-v1.jpg')!important;
+}
+html body #s-char.screen #race-card-grid .rc-icon[data-gender="f"],
+html body #s-char.screen #cf-race-info .race-summary-icon[data-gender="f"]{
+  background-image:url('assets/races/race-atlas-female-v1.jpg')!important;
+}
+html body #s-char.screen #cf-race-info .race-summary-icon[data-gender]{
+  flex:0 0 34px!important;width:34px!important;height:34px!important;border-radius:50%!important;
+  background-repeat:no-repeat!important;background-size:300% 300%!important;
+  background-position:var(--portrait-x) var(--portrait-y)!important;font-size:0!important;
+  filter:saturate(.92) contrast(1.06) brightness(.96)!important;
+  box-shadow:0 0 0 1px rgba(245,202,101,.26),0 4px 10px rgba(0,0,0,.55)!important;
+}
+html body #s-char.screen #race-card-grid .rc.sel .rc-icon[data-gender]{
+  filter:saturate(1.05) contrast(1.06) brightness(1.02)!important;
+}
 html body #s-char.screen #cf-pane-1 #cf-race-info{
-  flex:0 0 auto!important;height:auto!important;min-height:178px!important;margin-top:12px!important;padding:12px!important;
-  overflow:visible!important;box-sizing:border-box!important;
+  flex:0 0 166px!important;height:166px!important;min-height:166px!important;max-height:166px!important;
+  margin-top:8px!important;padding:9px 10px!important;overflow:hidden!important;box-sizing:border-box!important;
 }
 html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-traits{
-  display:flex!important;flex-wrap:wrap!important;gap:5px!important;margin:0 0 8px!important;
+  display:flex!important;flex-wrap:wrap!important;gap:4px!important;margin:0 0 6px!important;
 }
 html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-traits span{
-  display:inline-flex!important;align-items:center!important;min-height:20px!important;padding:2px 7px!important;border-radius:999px!important;
+  display:inline-flex!important;align-items:center!important;min-height:17px!important;padding:1px 6px!important;border-radius:999px!important;
   border:1px solid rgba(218,169,69,.24)!important;background:rgba(218,169,69,.07)!important;
-  font-family:var(--font-title)!important;font-size:8.5px!important;letter-spacing:.65px!important;text-transform:uppercase!important;color:#c9a75a!important;
+  font-family:var(--font-title)!important;font-size:7.6px!important;line-height:1.1!important;letter-spacing:.45px!important;text-transform:uppercase!important;color:#c9a75a!important;
 }
 html body #s-char.screen #cf-pane-1 #cf-race-info .race-summary-text{
-  font-size:11.4px!important;line-height:1.48!important;color:rgba(240,221,176,.86)!important;
+  font-size:10.2px!important;line-height:1.32!important;color:rgba(240,221,176,.86)!important;
 }
 html body #s-char.screen #cf-pane-1 #cf-next-1{
   flex:0 0 auto!important;width:136px!important;min-width:136px!important;max-width:136px!important;
   height:42px!important;min-height:42px!important;max-height:42px!important;
-  position:relative!important;z-index:2!important;align-self:flex-end!important;margin:12px 0 0 auto!important;padding:0 14px!important;line-height:42px!important;
+  position:relative!important;z-index:2!important;align-self:flex-end!important;margin:4px 0 0 auto!important;padding:0 14px!important;line-height:42px!important;
 }
-html body #s-char.screen #cf-pane-1{
-  flex:0 0 auto!important;height:auto!important;min-height:0!important;overflow:visible!important;
-}
+html body #s-char.screen #cf-pane-1{min-height:0!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-head{margin-bottom:4px!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-icon{width:30px!important;height:30px!important;font-size:17px!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-head strong{font-size:12px!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-head small{font-size:8px!important;margin-top:1px!important;}
+html body #s-char.screen #cf-pane-1 .race-summary-bonus{margin-bottom:5px!important;padding:2px 7px!important;font-size:8.7px!important;}
 html body #s-char.screen .cf-gender-pick{
   display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:-4px 0 10px!important;
   padding:4px!important;border:1px solid rgba(218,169,69,.20)!important;border-radius:10px!important;
