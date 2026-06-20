@@ -13584,9 +13584,10 @@ function buildRaceCards(){
   grid.innerHTML = RACE_DATA.map((r,index)=>{
     const portraitX = (index % 3) * 50;
     const portraitY = Math.floor(index / 3) * 50;
+    const cardPortraitY = [0,43,85][Math.floor(index / 3)];
     return `
     <div class="rc${_cfSelectedRace===r.id?' sel':''}" data-race="${r.id}" onclick="cfSelectRace('${r.id}')">
-      <span class="rc-icon" data-gender="${_cfSelectedGender}" style="--portrait-x:${portraitX}%;--portrait-y:${portraitY}%">${iconSet[r.id]||r.icon}</span>
+      <span class="rc-icon" data-gender="${_cfSelectedGender}" style="--portrait-x:${portraitX}%;--portrait-y:${portraitY}%;--card-portrait-y:${cardPortraitY}%">${iconSet[r.id]||r.icon}</span>
       <div class="rc-copy">
         <div class="rc-name">${r.id}</div>
         <div class="rc-bonus">${raceSub[r.id]||r.bonus}</div>
@@ -20501,7 +20502,7 @@ html body #s-char.screen #cf-pane-3 .cf-class-info{display:none!important;}
 html body #s-char.screen #race-card-grid .rc-icon[data-gender]{
   position:absolute!important;inset:0 0 31px 0!important;width:100%!important;height:auto!important;
   transform:none!important;border-radius:6px 6px 0 0!important;background-repeat:no-repeat!important;
-  background-size:300% 300%!important;background-position:var(--portrait-x) var(--portrait-y)!important;
+  background-color:#050403!important;background-size:300% auto!important;background-position:var(--portrait-x) var(--card-portrait-y)!important;
   font-size:0!important;line-height:0!important;filter:saturate(.90) contrast(1.05) brightness(.92)!important;
   box-shadow:inset 0 -18px 18px rgba(0,0,0,.72),inset 0 0 0 1px rgba(255,220,135,.05)!important;
 }
