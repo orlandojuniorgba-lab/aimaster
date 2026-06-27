@@ -6959,7 +6959,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 // Bônus raciais oficiais PHB (p.18-43)
 const RACIAL_STAT_BONUS={
   'Anão':      {con:2},                    // Sub-raça Colina: +1 SAB | Montanha: +2 FOR
-  'Elfo':      {dex:2},                    // Sub-raça Alto Elfo: +1 INT | Elfo da Floresta: +1 SAB | Drow: +1 CAR
+  'Elfo':      {dex:2,int:1},              // AiMaster usa Alto Elfo como padrão: +2 DES, +1 INT
   'Halfling':  {dex:2},                    // Sub-raça Pé-Leve: +1 CAR | Robusto: +1 CON
   'Humano':    {str:1,dex:1,con:1,int:1,wis:1,cha:1}, // +1 em TODOS (PHB p.29)
   'Draconato': {str:2,cha:1},              // PHB p.32
@@ -7035,6 +7035,7 @@ function loadSpellbook(){
 
 // Número máximo de feitiços preparados por classe/nível (PHB)
 function maxPreparedSpells(cls, lv){
+  if((cls==='Paladino'||cls==='Ranger') && lv<2) return 0;
   const castAttr = CASTING_ATTR[cls]||'int';
   const attrMod  = mod(stats[castAttr]||10);
   const profMod  = lv<=4?2:lv<=8?3:lv<=12?4:lv<=16?5:6;
@@ -7113,6 +7114,19 @@ function buildSpellsTab(cls, level){
         <div style="font-size:13px;color:var(--parch-d);margin-bottom:10px">${res.desc}</div>
         <div style="font-size:11px;color:rgba(200,180,120,.5);line-height:1.6;padding:10px;background:rgba(200,146,42,.05);border-radius:8px;border:1px solid rgba(200,146,42,.1)">${res.detail}</div>
         <div style="margin-top:16px;font-size:11px;color:rgba(200,180,120,.4);font-style:italic">${cls} não usa slots de magia.<br>Habilidades são usadas pela narrativa.</div>
+      </div>`;
+    return;
+  }
+
+  if((cls==='Paladino'||cls==='Ranger') && lv<2){
+    const unlockTxt = cls==='Paladino'
+      ? 'Paladino recebe magia no nível 2. No nível 1, use Imposição de Mãos, presença sagrada e combate.'
+      : 'Ranger recebe magia no nível 2. No nível 1, use exploração, rastreio, armas e sobrevivência.';
+    el.innerHTML=`
+      <div style="padding:20px;text-align:center">
+        <div style="font-size:34px;margin-bottom:8px">${cls==='Paladino'?'🛡️':'🏹'}</div>
+        <div style="font-family:var(--font-title);font-size:14px;color:var(--gold-l);letter-spacing:1px;margin-bottom:6px">MAGIA NO NÍVEL 2</div>
+        <div style="font-size:12px;color:rgba(240,221,176,.68);line-height:1.6;padding:10px;background:rgba(200,146,42,.05);border-radius:8px;border:1px solid rgba(200,146,42,.12)">${unlockTxt}</div>
       </div>`;
     return;
   }
@@ -7260,7 +7274,8 @@ function maxSpellLevel(cls, charLevel){
 // Informa o mestre que o jogador quer usar uma magia (sem lançar automaticamente)
 function tellMasterSpell(spellName, slotLevel){
   if(slotLevel>0){
-    const avail=(SPELL_SLOTS[Math.min(hero.level||1,20)]||SPELL_SLOTS[1])[slotLevel-1]-(usedSpellSlots[slotLevel-1]||0);
+    const tbl = getSpellSlotsTable(hero.cls||'Mago');
+    const avail=((tbl[Math.min(hero.level||1,20)]||tbl[1]||[])[slotLevel-1]||0)-(usedSpellSlots[slotLevel-1]||0);
     if(avail<=0){ showToast('❌ Sem slots de nível '+slotLevel+'!'); return; }
   }
   const spellDesc = slotLevel===0?'(truque — sem custo de slot)':`(slot de nível ${slotLevel})`;
@@ -7575,7 +7590,8 @@ let usedSpellSlots = [0,0,0,0,0,0,0,0,0]; // índice 0 = nível 1
 
 function getAvailableSlots(level) {
   const lv = Math.min(Math.max(hero.level||1,1),20);
-  const total = SPELL_SLOTS[lv] || SPELL_SLOTS[1];
+  const tbl = getSpellSlotsTable(hero.cls||'Mago');
+  const total = tbl[lv] || tbl[1] || [0,0,0,0,0,0,0,0,0];
   return total.map((t,i) => Math.max(0, t - (usedSpellSlots[i]||0)));
 }
 
@@ -7883,6 +7899,7 @@ const PROFILES={
     Druida:{tags:[{l:'Natureza',c:'tag-nature'},{l:'Forma Selvagem',c:'tag-nature'}],bonuses:[{i:'🌿',t:'Sobrevivência +2',v:'+2',c:'b-pos'}],flavor:'voz da natureza',spells:['Cura Ferimentos','Druida de Chamas','Controlar Chamas']},
     Ranger:{tags:[{l:'Explorador',c:'tag-nature'},{l:'Arqueiro',c:'tag-combat'}],bonuses:[{i:'🏹',t:'Ataque arco +1',v:'+1',c:'b-pos'}],flavor:'sentinela dos limites',spells:[]},
     Bárbaro:{tags:[{l:'Fúria',c:'tag-combat'},{l:'Brutal',c:'tag-combat'}],bonuses:[{i:'😤',t:'Fúria +2 dano',v:'Fúria',c:'b-pos'}],flavor:'tempestade de fúria',spells:[]},
+    Monge:{tags:[{l:'Disciplina',c:'tag-light'},{l:'Artes Marciais',c:'tag-combat'}],bonuses:[{i:'🥋',t:'Defesa sem armadura',v:'DES+SAB',c:'b-pos'},{i:'👊',t:'Artes marciais',v:'d4',c:'b-pos'}],flavor:'disciplina viva em movimento',spells:[]},
     Feiticeiro:{tags:[{l:'Magia Inata',c:'tag-dark'},{l:'Imprevisível',c:'tag-dark'}],bonuses:[{i:'✨',t:'Metamagia',v:'Metamagia',c:'b-pos'}],flavor:'a magia É você',spells:['Rajada Elétrica','Bola de Fogo','Voar','Raio do Caos']}
   },
   bg:{
@@ -8046,7 +8063,7 @@ const RACE_SPEED={
   'Meio-Orc':9,     // PHB p.41: 9m
   'Tiefling':9,     // PHB p.43: 9m
 };
-const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Feiticeiro:'✨',Bruxo:'🕯️'};
+const classAv={Guerreiro:'⚔️',Mago:'🧙',Ladino:'🗡️',Clérigo:'✝️',Bardo:'🎸',Paladino:'🛡️',Druida:'🌿',Ranger:'🏹',Bárbaro:'🪓',Monge:'☸',Feiticeiro:'✨',Bruxo:'🕯️'};
 // Dado de vida por classe (PHB) — PV no 1° = dado máximo + mod CON
 const classHP={
   'Bárbaro':12,   // d12 (PHB p.47)
@@ -11511,6 +11528,16 @@ function openSpellManager(){
   const title = document.getElementById('spell-mgr-title');
   const body  = document.getElementById('spell-mgr-body');
   if(!body){ console.error('spell-mgr-body not found'); return; }
+  if((cls==='Paladino'||cls==='Ranger') && lv<2){
+    if(title) title.textContent = 'Magias no Nível 2';
+    body.innerHTML = `<div style="padding:18px;text-align:center;color:rgba(240,221,176,.70);font-size:12px;line-height:1.6">
+      <div style="font-size:32px;margin-bottom:8px">${cls==='Paladino'?'🛡️':'🏹'}</div>
+      <div style="font-family:var(--font-title);color:var(--gold-l);letter-spacing:1px;margin-bottom:8px">${cls.toUpperCase()}</div>
+      ${cls} ainda não conjura no nível 1.<br>As magias são liberadas no nível 2.
+    </div>`;
+    openMo('mo-spell-manager');
+    return;
+  }
 
   let html = '';
 
@@ -12505,6 +12532,7 @@ function initInventory(cls){
     Druida:{weapon:{name:'Cajado de Carvalho',icon:'🌿',desc:'1d6 contundente · Foco druídico',slot:'rhand',weight:2},armor:{name:'Armadura de Couro',icon:'🧥',desc:'CA 11 + DES · Leve · Natural',slot:'body',weight:4.5}},
     Ranger:{weapon:{name:'Arco Longo',icon:'🏹',desc:'1d8 perfurante · Alcance 45/180m · 2 mãos',slot:'rhand',weight:1},armor:{name:'Armadura de Couro Reforçada',icon:'🧥',desc:'CA 12 + DES · Média · Resistente',slot:'body',weight:9}},
     Bárbaro:{weapon:{name:'Machado Grande',icon:'🪓',desc:'2d6 cortante · Pesado · 2 mãos',slot:'rhand',weight:3.5},armor:null},
+    Monge:{weapon:{name:'Bastão',icon:'🥋',desc:'1d6 contundente · Versátil · Arma monástica',slot:'rhand',weight:2},armor:null},
     Feiticeiro:{weapon:{name:'Varinha de Cristal',icon:'🪄',desc:'Foco de conjuração · Frágil',slot:'rhand',weight:0.5},armor:null},
   };
   const gear=classGear[cls]||classGear['Guerreiro'];
@@ -13528,6 +13556,7 @@ const CLASS_DATA = [
   {id:'Bárbaro',   icon:'💢', desc:'Guerreiro feroz movido pela fúria interior.'},
   {id:'Feiticeiro',icon:'✨', desc:'Magia fluindo no sangue por herança dracônica.'},
   {id:'Bruxo',     icon:'🕯️', desc:'Poder concedido por um patrono sobrenatural misterioso.'},
+  {id:'Monge',     icon:'☸', desc:'Artista marcial disciplinado que domina corpo, mente e ki.'},
 ];
 
 const CLASS_SUMMARIES = {
@@ -13540,6 +13569,7 @@ const CLASS_SUMMARIES = {
   'Druida': {die:'d8', attr:'SAB', role:'Magia da natureza', style:'Controla elementos, cura e assume formas animais. Tem muitas opções para exploração e controle do campo.'},
   'Ranger': {die:'d10', attr:'DES e SAB', role:'Caçador e explorador', style:'Combina armas, rastreamento e magia natural. Funciona muito bem em jornadas, emboscadas e combate à distância.'},
   'Bárbaro': {die:'d12', attr:'FOR', role:'Combatente resistente', style:'Entra em fúria para causar e suportar muito dano. É simples de conduzir e extremamente forte na linha de frente.'},
+  'Monge': {die:'d8', attr:'DES e SAB', role:'Artista marcial', style:'Luta sem armadura, usa agilidade e disciplina interior. No nível 1 já possui Defesa sem Armadura e Artes Marciais; o Ki chega no nível 2.'},
   'Feiticeiro': {die:'d6', attr:'CAR', role:'Conjurador espontâneo', style:'A magia nasce em seu sangue. Conhece menos feitiços, mas consegue modificá-los com grande impacto.'},
   'Bruxo': {die:'d8', attr:'CAR', role:'Conjurador de pacto', style:'Recebe poderes de uma entidade misteriosa. Possui truques fortes, invocações únicas e escolhas narrativas marcantes.'}
 };
@@ -13722,7 +13752,8 @@ function buildClassCards(){
     'Ranger':'Caça e trilhas',
     'Bárbaro':'Fúria primal',
     'Feiticeiro':'Magia no sangue',
-    'Bruxo':'Pacto sombrio'
+    'Bruxo':'Pacto sombrio',
+    'Monge':'Corpo, mente e ki'
   };
   grid.dataset.gender = _cfSelectedGender;
   grid.innerHTML = CLASS_DATA.map((c,index)=>{
@@ -13755,7 +13786,7 @@ function updateClassSummary(){
   const portraitY = Math.floor(classIndex / 4) * 50;
   info.innerHTML=`
     <div class="class-summary-head">
-      <span class="class-summary-icon" data-symbol style="--class-portrait-x:${portraitX}%;--class-summary-y:${portraitY}%">${cls.icon}</span>
+      <span class="class-summary-icon" data-symbol data-class="${cls.id}" style="--class-portrait-x:${portraitX}%;--class-summary-y:${portraitY}%">${cls.icon}</span>
       <span><strong>${cls.id}</strong><small>${details.role}</small></span>
     </div>
     <div class="class-summary-facts"><span>VIDA ${details.die}</span><span>ATRIBUTO ${details.attr}</span></div>
@@ -13767,6 +13798,10 @@ function cfSelectClass(id){
   const classChanged = _cfSelectedClass !== id;
   _cfSelectedClass=id;_cfSelectedStyle=null;_cfSelectedPatron=null;
   if(classChanged){
+    _cfSelectedCantrips=[];
+    _cfSelectedSpells=[];
+  }
+  if(!SPELL_CASTERS_CREATION.includes(id||'')){
     _cfSelectedCantrips=[];
     _cfSelectedSpells=[];
   }
@@ -13900,6 +13935,7 @@ function cfSelectPatron(id){
 }
 
 function getCreationSpellsForClass(cls){
+  if(!SPELL_CASTERS_CREATION.includes(cls||'')) return [];
   const base = ((SPELLS_BY_CLASS[cls]||{})[1]||[]);
   if(cls!=='Bruxo') return [...base];
   const patronSpells = ((WARLOCK_PATRON_EXPANDED_SPELLS[_cfSelectedPatron||heroWarlockPatron]||{})[1]||[]);
@@ -13933,13 +13969,15 @@ function renderCreationFinalPreview(){
   const attrs = ['str','dex','con','int','wis','cha'].map(k=>{
     const lbl = {str:'FOR',dex:'DES',con:'CON',int:'INT',wis:'SAB',cha:'CAR'}[k];
     const v = previewStats[k] || baseStats[k] || stats[k] || 10;
-    return `<span><b>${lbl}</b>${v}<em>${modStr(v)}</em></span>`;
+    const baseV = baseStats[k] || v;
+    const racialBonus = Math.max(0, v - baseV);
+    return `<span class="${racialBonus?'racial-boost':''}"><b>${lbl}</b><strong>${v}</strong><em>${modStr(v)}</em>${racialBonus?`<small>+${racialBonus} racial</small>`:''}</span>`;
   }).join('');
   const details = [];
-  if(_cfSelectedPatron) details.push(`<span>Patrono: <b>${creationPatronName(_cfSelectedPatron)}</b></span>`);
-  if(_cfSelectedStyle) details.push(`<span>Estilo: <b>${creationStyleName(_cfSelectedStyle)}</b></span>`);
-  if(_cfSelectedCantrips.length) details.push(`<span>Truques: <b>${_cfSelectedCantrips.join(', ')}</b></span>`);
-  if(_cfSelectedSpells.length) details.push(`<span>Magias: <b>${_cfSelectedSpells.join(', ')}</b></span>`);
+  if(_cfSelectedPatron) details.push(`<span><i>☾</i><em>Patrono</em><b>${creationPatronName(_cfSelectedPatron)}</b></span>`);
+  if(_cfSelectedStyle) details.push(`<span><i>⚔</i><em>Estilo</em><b>${creationStyleName(_cfSelectedStyle)}</b></span>`);
+  if(_cfSelectedCantrips.length) details.push(`<span><i>✦</i><em>Truques</em><b>${_cfSelectedCantrips.join(', ')}</b></span>`);
+  if(_cfSelectedSpells.length) details.push(`<span><i>◆</i><em>Magias</em><b>${_cfSelectedSpells.join(', ')}</b></span>`);
   card.innerHTML = `
     <div class="final-preview-kicker">Ficha de confirmação</div>
     <div class="final-preview-head">
@@ -13950,7 +13988,7 @@ function renderCreationFinalPreview(){
       <span>${bg||'Antecedente'}</span><span>${align||'Alinhamento'}</span><span>${raceDt.bonus||'Raça'}</span>
     </div>
     <div class="final-preview-attrs">${attrs}</div>
-    <div class="final-preview-magic">${details.length?details.join(''):`<span>${clsDt.icon||'⚔️'} Pronto para iniciar a jornada</span>`}</div>`;
+    <div class="final-preview-magic">${details.length?details.join(''):`<span><i>${clsDt.icon||'⚔️'}</i><em>Jornada</em><b>Pronto para iniciar</b></span>`}</div>`;
   card.classList.add('show','final-preview');
 }
 
@@ -13959,6 +13997,16 @@ function buildSpellPane5(){
   const title=document.getElementById('cf-pane-5-title');
   const content=document.getElementById('cf-pane-5-content');
   if(!content) return;
+  const hasMagic = SPELL_CASTERS_CREATION.includes(cls||'');
+
+  if(!hasMagic){
+    _cfSelectedCantrips=[];
+    _cfSelectedSpells=[];
+    if(title) title.textContent='Confirme seu Herói';
+    content.innerHTML=`<div class="final-confirm-note">Confira sua ficha antes de iniciar a jornada.</div>`;
+    renderCreationFinalPreview();
+    return;
+  }
 
   // Get spells using existing data structures
   const cantrips = (CANTRIPS_BY_CLASS[cls]||[]).slice(0,12).map(n=>({id:n,name:n}));
@@ -13968,7 +14016,6 @@ function buildSpellPane5(){
   // How many to pick
   const cantripNeeds = {Mago:3,Clérigo:3,Bardo:2,Druida:2,Feiticeiro:4,Bruxo:2}[cls]||2;
   const spellNeeds   = {Mago:6,Clérigo:0,Bardo:4,Druida:0,Feiticeiro:4,Bruxo:2}[cls]||2;
-  const hasMagic = SPELL_CASTERS_CREATION.includes(cls||'');
 
   let html=``;
   if(cantrips.length && cantripNeeds>0){
@@ -14008,6 +14055,7 @@ function rebuildSpellPaneKeepingScroll(){
 }
 
 function cfToggleCantrip(id, max){
+  if(!SPELL_CASTERS_CREATION.includes(_cfSelectedClass||'')) return;
   const idx=_cfSelectedCantrips.indexOf(id);
   if(idx>=0){ _cfSelectedCantrips.splice(idx,1); }
   else if(_cfSelectedCantrips.length<max){ _cfSelectedCantrips.push(id); }
@@ -14016,6 +14064,7 @@ function cfToggleCantrip(id, max){
 }
 
 function cfToggleSpell(id, max){
+  if(!SPELL_CASTERS_CREATION.includes(_cfSelectedClass||'')) return;
   const idx=_cfSelectedSpells.indexOf(id);
   if(idx>=0){ _cfSelectedSpells.splice(idx,1); }
   else if(_cfSelectedSpells.length<max){ _cfSelectedSpells.push(id); }
@@ -14029,6 +14078,10 @@ function buildFinalPreview(){
   const cSel=document.getElementById('inp-class');
   if(rSel&&_cfSelectedRace) rSel.innerHTML=`<option>${_cfSelectedRace}</option>`;
   if(cSel&&_cfSelectedClass) cSel.innerHTML=`<option>${_cfSelectedClass}</option>`;
+  if(!SPELL_CASTERS_CREATION.includes(_cfSelectedClass||'')){
+    _cfSelectedCantrips=[];
+    _cfSelectedSpells=[];
+  }
   if(_cfSelectedStyle) heroCombatStyle=_cfSelectedStyle;
   if(_cfSelectedCantrips.length) heroKnownCantrips=[..._cfSelectedCantrips];
   if(_cfSelectedSpells.length) heroKnownSpells=[..._cfSelectedSpells];
@@ -20666,6 +20719,52 @@ html body #s-char.screen .char-preview-card.show{
   border:1px solid rgba(218,169,69,.38)!important;background:linear-gradient(180deg,rgba(25,17,8,.84),rgba(3,3,2,.92))!important;
   box-shadow:inset 0 1px 0 rgba(255,236,175,.08),0 10px 20px rgba(0,0,0,.28)!important;
 }
+html body #s-char.screen #class-card-grid .cc[data-class="Monge"] .cc-icon{
+  color:transparent!important;
+  font-size:0!important;
+  background:
+    radial-gradient(circle at 50% 43%,rgba(255,230,156,.18),transparent 18%),
+    radial-gradient(circle at 50% 50%,rgba(0,0,0,.74) 0 28%,rgba(26,17,7,.88) 45%,rgba(0,0,0,.86) 62%,transparent 63%),
+    conic-gradient(from 22deg,transparent 0 8%,rgba(218,169,69,.38) 10% 12%,transparent 14% 22%,rgba(245,202,101,.28) 25% 27%,transparent 30% 100%),
+    linear-gradient(180deg,#080604,#030201)!important;
+  filter:saturate(1.08) contrast(1.08) brightness(1.08) drop-shadow(0 8px 12px rgba(0,0,0,.72))!important;
+  box-shadow:inset 0 -18px 16px rgba(0,0,0,.70),inset 0 0 0 1px rgba(255,220,135,.10)!important;
+}
+html body #s-char.screen #class-card-grid .cc[data-class="Monge"] .cc-icon::before{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;top:39%!important;
+  width:42px!important;height:42px!important;
+  transform:translate(-50%,-50%) rotate(22deg)!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle,transparent 0 22%,#f7d77e 24% 29%,transparent 31%),
+    conic-gradient(from 0deg,#f6dc92 0 6%,transparent 6% 12%,#b98220 12% 18%,transparent 18% 25%,#f6dc92 25% 31%,transparent 31% 37%,#b98220 37% 43%,transparent 43% 50%,#f6dc92 50% 56%,transparent 56% 62%,#b98220 62% 68%,transparent 68% 75%,#f6dc92 75% 81%,transparent 81% 87%,#b98220 87% 93%,transparent 93% 100%)!important;
+  box-shadow:0 0 14px rgba(218,169,69,.42),inset 0 0 0 1px rgba(255,235,170,.22)!important;
+}
+html body #s-char.screen #class-card-grid .cc[data-class="Monge"] .cc-icon::after{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;top:39%!important;
+  width:13px!important;height:13px!important;
+  transform:translate(-50%,-50%) rotate(45deg)!important;
+  background:linear-gradient(135deg,#fff1b8,#c8922a 62%,#3a2107)!important;
+  box-shadow:0 0 12px rgba(245,202,101,.62)!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]{
+  color:transparent!important;
+  font-size:0!important;
+  line-height:40px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(255,226,154,.22),transparent 18%),
+    radial-gradient(circle at 50% 50%,rgba(0,0,0,.78) 0 34%,rgba(28,18,6,.86) 55%,rgba(0,0,0,.92) 72%),
+    linear-gradient(180deg,#080604,#030201)!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.42)!important;
+  box-shadow:0 0 0 1px rgba(231,199,123,.40),0 0 12px rgba(200,146,42,.16),0 5px 10px rgba(0,0,0,.60)!important;
+}
 html body #s-char.screen #cf-pane-3 .cf-class-info{display:none!important;}
 @media(max-width:370px){
   html body #s-char.screen .style-card-grid,
@@ -22085,13 +22184,16 @@ html body #s-char.screen .final-preview-title{
 }
 html body #s-char.screen .final-preview-title strong{
   font-family:var(--font-title)!important;
-  font-size:16px!important;
+  font-size:18px!important;
   color:#f4d891!important;
-  letter-spacing:.7px!important;
+  letter-spacing:.9px!important;
+  text-transform:uppercase!important;
+  line-height:1.05!important;
+  text-shadow:0 1px 2px #000,0 0 12px rgba(218,169,69,.18)!important;
 }
 html body #s-char.screen .final-preview-title small{
-  font-size:10px!important;
-  color:rgba(240,221,176,.64)!important;
+  font-size:10.5px!important;
+  color:rgba(240,221,176,.70)!important;
 }
 html body #s-char.screen .final-preview-tags{
   display:flex!important;
@@ -22136,13 +22238,345 @@ html body #s-char.screen .final-preview-attrs em{
   font-size:10px!important;
   color:#fff0bf!important;
 }
+html body #s-char.screen .final-preview-attrs strong{
+  font-weight:700!important;
+  color:#f0ddb0!important;
+}
+html body #s-char.screen .final-preview-attrs span.racial-boost strong{
+  color:#9be68f!important;
+  text-shadow:0 0 9px rgba(99,201,103,.28)!important;
+}
+html body #s-char.screen .final-preview-attrs span.racial-boost small{
+  display:block!important;
+  margin-top:2px!important;
+  font-family:var(--font-body)!important;
+  font-size:8px!important;
+  color:rgba(176,255,168,.76)!important;
+  text-transform:uppercase!important;
+  letter-spacing:.35px!important;
+}
 html body #s-char.screen .final-preview-magic{
   display:flex!important;
   flex-direction:column!important;
   gap:6px!important;
 }
+html body #s-char.screen .final-preview-magic span{
+  display:grid!important;
+  grid-template-columns:22px 58px 1fr!important;
+  align-items:center!important;
+  gap:6px!important;
+  border-radius:10px!important;
+  padding:6px 8px!important;
+}
+html body #s-char.screen .final-preview-magic i{
+  width:20px!important;
+  height:20px!important;
+  border-radius:50%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-style:normal!important;
+  color:#f4d891!important;
+  background:radial-gradient(circle,rgba(218,169,69,.20),rgba(0,0,0,.42))!important;
+  border:1px solid rgba(218,169,69,.24)!important;
+}
+html body #s-char.screen .final-preview-magic em{
+  font-style:normal!important;
+  font-family:var(--font-title)!important;
+  font-size:9px!important;
+  letter-spacing:1px!important;
+  text-transform:uppercase!important;
+  color:#c8922a!important;
+}
 html body #s-char.screen .final-preview-magic b{
   color:#f4d891!important;
   font-weight:700!important;
+  line-height:1.25!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]{
+  color:transparent!important;
+  font-size:0!important;
+  line-height:1!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(255,226,154,.22),transparent 18%),
+    radial-gradient(circle at 50% 50%,rgba(0,0,0,.78) 0 34%,rgba(28,18,6,.86) 55%,rgba(0,0,0,.92) 72%),
+    linear-gradient(180deg,#080604,#030201)!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.42)!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]::before{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;top:50%!important;
+  width:24px!important;height:24px!important;
+  transform:translate(-50%,-50%) rotate(22deg)!important;
+  border-radius:50%!important;
+  background:
+    radial-gradient(circle,transparent 0 22%,#f7d77e 24% 30%,transparent 32%),
+    conic-gradient(from 0deg,#f6dc92 0 7%,transparent 7% 13%,#b98220 13% 19%,transparent 19% 25%,#f6dc92 25% 32%,transparent 32% 38%,#b98220 38% 44%,transparent 44% 50%,#f6dc92 50% 57%,transparent 57% 63%,#b98220 63% 69%,transparent 69% 75%,#f6dc92 75% 82%,transparent 82% 88%,#b98220 88% 94%,transparent 94% 100%)!important;
+  box-shadow:0 0 9px rgba(218,169,69,.38)!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]::after{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;top:50%!important;
+  width:8px!important;height:8px!important;
+  transform:translate(-50%,-50%) rotate(45deg)!important;
+  background:linear-gradient(135deg,#fff1b8,#c8922a 62%,#3a2107)!important;
+  box-shadow:0 0 8px rgba(245,202,101,.58)!important;
+}
+/* v6.1.47: arte premium do Monge deslocada visualmente para baixo sem alterar escala. */
+html body #s-char.screen #class-card-grid .cc[data-class="Monge"] .cc-icon,
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]{
+  color:transparent!important;
+  font-size:0!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-image:
+    radial-gradient(circle at 50% 38%,rgba(255,205,82,.08),transparent 24%),
+    linear-gradient(180deg,rgba(0,0,0,.54) 0%,rgba(0,0,0,.42) 32%,rgba(0,0,0,.76) 64%,rgba(0,0,0,.96) 100%),
+    url("assets/classes/monge-punho-premium-512.png")!important;
+  background-color:#020101!important;
+}
+html body #s-char.screen #class-card-grid .cc[data-class="Monge"] .cc-icon{
+  background-position:center,center,center 48%!important;
+  background-size:100% 100%,100% 100%,116% auto!important;
+  filter:saturate(.96) contrast(1.14) brightness(.9)!important;
+  box-shadow:inset 0 0 28px rgba(0,0,0,.92),inset 0 -34px 26px rgba(0,0,0,.96),inset 0 0 0 1px rgba(255,220,135,.08),0 0 10px rgba(219,158,45,.10)!important;
+}
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]{
+  background-position:center,center,center 50%!important;
+  background-size:100% 100%,100% 100%,124% auto!important;
+  filter:saturate(.96) contrast(1.12) brightness(.92)!important;
+}
+html body #s-char.screen #class-card-grid .cc[data-class="Monge"] .cc-icon::before,
+html body #s-char.screen #class-card-grid .cc[data-class="Monge"] .cc-icon::after,
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]::before,
+html body #s-char.screen #cf-class-info .class-summary-icon[data-class="Monge"]::after{
+  content:none!important;
+}
+
+/* v6.1.48: upgrade visual premium do passo Seu Heroi. */
+html body #s-char.screen #cf-pane-2{
+  position:relative!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 50% -8%,rgba(218,169,69,.14),transparent 34%),
+    linear-gradient(180deg,rgba(18,12,5,.72),rgba(3,2,1,.96))!important;
+}
+html body #s-char.screen #cf-pane-2::before{
+  content:''!important;
+  position:absolute!important;
+  left:18px!important;right:18px!important;top:12px!important;height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(231,199,123,.42),transparent)!important;
+  pointer-events:none!important;
+}
+html body #s-char.screen #cf-pane-2 .cf-pane-title{
+  margin-bottom:14px!important;
+  text-shadow:0 0 14px rgba(218,169,69,.20),0 2px 4px #000!important;
+}
+html body #s-char.screen #cf-pane-2 .cf{
+  margin-bottom:12px!important;
+}
+html body #s-char.screen #cf-pane-2 label{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  margin-bottom:6px!important;
+  color:#d6b86a!important;
+}
+html body #s-char.screen #cf-pane-2 label::before{
+  content:''!important;
+  width:5px!important;height:5px!important;
+  transform:rotate(45deg)!important;
+  background:linear-gradient(135deg,#ffe6a3,#b77b1d)!important;
+  box-shadow:0 0 8px rgba(218,169,69,.42)!important;
+}
+html body #s-char.screen #cf-pane-2 input,
+html body #s-char.screen #cf-pane-2 select{
+  min-height:46px!important;
+  padding-left:14px!important;
+  border-radius:11px!important;
+  border-color:rgba(218,169,69,.42)!important;
+  background:
+    linear-gradient(90deg,rgba(218,169,69,.07),transparent 36%),
+    linear-gradient(180deg,rgba(22,15,7,.96),rgba(1,1,1,.96))!important;
+}
+html body #s-char.screen #cf-pane-2 [style*="justify-content:space-between"]{
+  padding:0 4px 0 6px!important;
+}
+html body #s-char.screen #cf-pane-2 [onclick="rollStatsAnimated()"]{
+  min-width:98px!important;
+  border-color:rgba(255,220,135,.46)!important;
+  box-shadow:0 0 18px rgba(218,169,69,.18),inset 0 1px 0 rgba(255,244,190,.22),inset 0 -10px 18px rgba(0,0,0,.22)!important;
+}
+html body #s-char.screen .attr-preview-grid{
+  gap:7px!important;
+  padding:10px!important;
+  border-radius:15px!important;
+  background:
+    radial-gradient(circle at 50% -16%,rgba(231,199,123,.18),transparent 36%),
+    linear-gradient(180deg,rgba(8,5,2,.88),rgba(0,0,0,.72))!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.07),0 12px 22px rgba(0,0,0,.22)!important;
+}
+html body #s-char.screen .ap-cell{
+  min-height:61px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  border-color:rgba(218,169,69,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.06),inset 0 -12px 16px rgba(0,0,0,.28)!important;
+}
+html body #s-char.screen .ap-lbl{
+  letter-spacing:1.15px!important;
+}
+html body #s-char.screen .ap-score{
+  font-size:21px!important;
+}
+html body #s-char.screen .ap-mod{
+  background:linear-gradient(180deg,rgba(218,169,69,.13),rgba(0,0,0,.32))!important;
+}
+html body #s-char.screen #cf-pane-2 > div[style*="display:flex;gap:8px"]{
+  margin-top:14px!important;
+}
+
+/* v6.1.49: upgrade premium da ficha de confirmacao. */
+html body #s-char.screen #cf-pane-5{
+  position:relative!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(218,169,69,.13),transparent 34%),
+    linear-gradient(180deg,rgba(15,10,5,.78),rgba(2,1,1,.96))!important;
+}
+html body #s-char.screen #cf-pane-5::before{
+  content:''!important;
+  position:absolute!important;
+  left:18px!important;right:18px!important;top:12px!important;height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(231,199,123,.44),transparent)!important;
+  pointer-events:none!important;
+}
+html body #s-char.screen #cf-pane-5-title{
+  text-shadow:0 0 14px rgba(218,169,69,.22),0 2px 4px #000!important;
+}
+html body #s-char.screen .final-confirm-note{
+  margin:4px 0 10px!important;
+  padding:12px 14px!important;
+  border:1px solid rgba(218,169,69,.22)!important;
+  border-radius:13px!important;
+  color:#c8ae70!important;
+  font-family:var(--font-title)!important;
+  font-size:10px!important;
+  letter-spacing:1.05px!important;
+  text-align:center!important;
+  text-transform:uppercase!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.10),transparent 42%),
+    linear-gradient(180deg,rgba(0,0,0,.34),rgba(0,0,0,.12))!important;
+}
+html body #s-char.screen .char-preview-card.final-preview{
+  position:relative!important;
+  margin-top:10px!important;
+  padding:15px 14px 14px!important;
+  border-radius:16px!important;
+  border-color:rgba(218,169,69,.38)!important;
+  background:
+    radial-gradient(circle at 16% 18%,rgba(218,169,69,.14),transparent 28%),
+    linear-gradient(180deg,rgba(19,12,6,.94),rgba(2,1,1,.96))!important;
+  box-shadow:0 14px 26px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,236,175,.07)!important;
+}
+html body #s-char.screen .char-preview-card.final-preview::before{
+  content:''!important;
+  position:absolute!important;
+  left:14px!important;right:14px!important;top:34px!important;height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.28),transparent)!important;
+  pointer-events:none!important;
+}
+html body #s-char.screen .final-preview-kicker{
+  color:#a97922!important;
+  font-size:8.7px!important;
+  letter-spacing:2.5px!important;
+  margin-bottom:12px!important;
+}
+html body #s-char.screen .final-preview-head{
+  gap:12px!important;
+  margin-bottom:12px!important;
+}
+html body #s-char.screen .final-preview-avatar{
+  width:52px!important;
+  height:52px!important;
+  border-radius:50%!important;
+  border-color:rgba(218,169,69,.55)!important;
+  box-shadow:0 0 0 2px rgba(0,0,0,.64),0 0 18px rgba(218,169,69,.20),inset 0 0 14px rgba(0,0,0,.44)!important;
+}
+html body #s-char.screen .final-preview-title strong{
+  font-size:18px!important;
+  color:#f4dfab!important;
+  text-shadow:0 0 12px rgba(218,169,69,.20),0 2px 3px #000!important;
+}
+html body #s-char.screen .final-preview-title small{
+  margin-top:3px!important;
+  color:#aeb2b4!important;
+}
+html body #s-char.screen .final-preview-tags{
+  gap:6px!important;
+  margin:10px 0!important;
+}
+html body #s-char.screen .final-preview-tags span{
+  min-height:24px!important;
+  border-color:rgba(218,169,69,.28)!important;
+  color:#d6bd78!important;
+  background:linear-gradient(180deg,rgba(218,169,69,.08),rgba(0,0,0,.20))!important;
+}
+html body #s-char.screen .final-preview-attrs{
+  gap:7px!important;
+  margin-top:10px!important;
+}
+html body #s-char.screen .final-preview-attrs span{
+  min-height:58px!important;
+  border-radius:10px!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.12),transparent 38%),
+    linear-gradient(180deg,rgba(12,8,4,.94),rgba(0,0,0,.90))!important;
+}
+html body #s-char.screen .final-preview-magic{
+  margin-top:10px!important;
+  gap:7px!important;
+}
+html body #s-char.screen .final-preview-magic span{
+  min-height:34px!important;
+  border-radius:10px!important;
+  border-color:rgba(218,169,69,.24)!important;
+  background:linear-gradient(180deg,rgba(218,169,69,.06),rgba(0,0,0,.22))!important;
+}
+html body #s-char.screen #cf-pane-5 > div[style*="display:flex;gap:8px"]{
+  margin-top:14px!important;
+  align-items:stretch!important;
+}
+html body #s-char.screen #cf-pane-5 .start-btn{
+  min-height:54px!important;
+  border-radius:12px!important;
+  border-color:rgba(255,220,135,.62)!important;
+  color:#3a2107!important;
+  font-size:12px!important;
+  background:
+    linear-gradient(180deg,rgba(255,243,191,.70),rgba(218,169,69,.84) 46%,rgba(118,70,13,.96))!important;
+  box-shadow:0 0 22px rgba(218,169,69,.25),inset 0 1px 0 rgba(255,250,214,.55),inset 0 -12px 18px rgba(73,38,5,.32)!important;
+  text-shadow:0 1px 0 rgba(255,236,175,.34)!important;
+}
+
+/* v6.1.50: corrige rolagem mobile da etapa 5. */
+html body #s-char.screen .char-flow-body{
+  overflow-y:auto!important;
+  -webkit-overflow-scrolling:touch!important;
+}
+html body #s-char.screen #cf-pane-5{
+  overflow:visible!important;
+}
+html body #s-char.screen #cf-pane-5.active{
+  min-height:auto!important;
+  height:auto!important;
+  padding-bottom:18px!important;
 }
 </style>
