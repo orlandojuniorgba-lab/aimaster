@@ -12636,6 +12636,18 @@ const INV_CATEGORIES=[
 ];
 
 // Slots de equipamento com pesos máximos
+function getInvSlot(item){
+  return item.slot!==undefined ? item.slot : (ITEM_SLOT_MAP[item.name]||null);
+}
+
+const INV_FILTERS=[
+  {key:'all', label:'TODOS', filter:i=>true},
+  {key:'weapons', label:'ARMAS', filter:i=>getInvSlot(i)==='rhand'},
+  {key:'armor', label:'PROTECAO', filter:i=>['head','body','lhand','shield'].includes(getInvSlot(i))},
+  {key:'magic', label:'MAGICOS', filter:i=>MAGIC_ITEMS_SLOTS.includes(i.slot||'')||i.magic},
+  {key:'consumable', label:'CONSUMIVEIS', filter:i=>getInvSlot(i)===null&&/pocao|poção|poÃ§Ã£o|ration|racao|ração|raÃ§Ã£o|tocha|vela|kit/i.test(i.name||'')},
+];
+
 const HEAVY_ARMOR=['Cota de Malha','Armadura de Placas','Armadura de Escamas'];
 const MAGIC_ITEMS_SLOTS=['ring1','ring2','neck','belt','shoulders'];
 
@@ -12666,9 +12678,19 @@ function renderInventory(){
   // Build HTML by category
   let html='';
   const focusedIdx=(typeof window!=='undefined'&&Number.isInteger(window.__lastInvFocus))?window.__lastInvFocus:-1;
-  INV_CATEGORIES.forEach(cat=>{
+  const activeFilter=(typeof window!=='undefined'&&window.__invFilter)?window.__invFilter:'all';
+  const filterBar=INV_FILTERS.map(f=>{
+    const count=inventory.filter(item=>f.filter(item)).length;
+    return `<button type="button" class="inv-filter-chip ${activeFilter===f.key?'active':''}" onclick="window.__invFilter='${f.key}';renderInventory()"><span>${f.label}</span><b>${count}</b></button>`;
+  }).join('');
+  html+=`<div class="inv-filter-row">${filterBar}</div><div class="inv-scroll-list">`;
+  const activeFilterDef=INV_FILTERS.find(f=>f.key===activeFilter)||INV_FILTERS[0];
+  const categoriesToRender=activeFilter==='all'?INV_CATEGORIES:[{key:activeFilterDef.key,label:activeFilterDef.label,filter:activeFilterDef.filter}];
+  let renderedItemCount=0;
+  categoriesToRender.forEach(cat=>{
     const items=inventory.filter((item,i)=>{item._idx=i;return cat.filter(item);});
     if(items.length===0)return;
+    renderedItemCount+=items.length;
     html+=`<div class="inv-cat-header">${cat.label}</div><div class="inv-grid">`;
     items.forEach(item=>{
       const i=inventory.indexOf(item);
@@ -12678,13 +12700,14 @@ function renderInventory(){
       const slotBadge=item.slot&&item.equipped?`<span class="inv-slot-badge">${SLOT_LABEL[item.slot]||item.slot.toUpperCase()}</span>`:'';
       const equippedBadge=item.equipped?`<span class="equipped-badge">EQUIPADO</span>`:'';
       const magicBadge=isMagic?`<span class="inv-magic-badge">✨MÁGICO</span>`:'';
-      const qty=item.qty>1?` ×${item.qty}`:'';
+      const qtyBadge=item.qty>1?`<span class="inv-qty-badge">x${item.qty}</span>`:'';
       const wt=(item.weight*(item.qty||1));
-      html+=`<button type="button" class="${itemClass}" onclick="window.__lastInvFocus=${i};toggleEquip(${i})">
+      html+=`<button type="button" class="${itemClass}" onclick="window.__invScrollTop=this.closest('.inv-scroll-list')?this.closest('.inv-scroll-list').scrollTop:0;window.__lastInvFocus=${i};renderInventory();requestAnimationFrame(()=>{const el=document.querySelector('#mo-char .inv-scroll-list');if(el)el.scrollTop=window.__invScrollTop||0;})">
+        ${qtyBadge}
         <div class="inv-item-icon-wrap ${iconWrapClass}">${item.icon}</div>
         <div class="inv-item-info">
           <div class="inv-item-name-row">
-            <span class="inv-item-name">${item.name}${qty}</span>
+            <span class="inv-item-name">${item.name}</span>
             ${equippedBadge}${slotBadge}${magicBadge}
           </div>
           <div class="inv-item-desc">${item.desc}</div>
@@ -12694,12 +12717,20 @@ function renderInventory(){
     });
     html+=`</div>`;
   });
-  const detailItem=inventory[focusedIdx]||inventory.find(i=>i.equipped)||inventory[0];
+  if(renderedItemCount===0){
+    html+=`<p class="inv-empty-state">Nenhum item nesta categoria.</p>`;
+  }
+  html+=`</div>`;
+  const detailItem=renderedItemCount>0?(inventory[focusedIdx]||inventory.find(i=>i.equipped)||inventory[0]):null;
   if(detailItem){
     const detailIdx=inventory.indexOf(detailItem);
     const detailWt=(detailItem.weight||0)*(detailItem.qty||1);
-    const detailSlot=detailItem.slot?(SLOT_LABEL[detailItem.slot]||detailItem.slot.toUpperCase()):'BOLSA';
-    const detailStatus=detailItem.equipped?'EQUIPADO':(detailItem.slot?'GUARDADO - TOQUE PARA EQUIPAR':'GUARDADO');
+    const detailSlotRaw=getInvSlot(detailItem);
+    const detailSlot=detailSlotRaw?(SLOT_LABEL[detailSlotRaw]||detailSlotRaw.toUpperCase()):'BOLSA';
+    const detailStatus=detailItem.equipped?'EQUIPADO':(detailSlotRaw?'GUARDADO':'GUARDADO');
+    const detailAction=detailSlotRaw?(detailItem.equipped?'GUARDAR':'EQUIPAR'):'ITEM NARRATIVO';
+    const detailBtnClass=detailSlotRaw?'inv-detail-btn':'inv-detail-btn disabled';
+    const detailBtnClick=detailSlotRaw?`onclick="toggleEquip(${detailIdx})"`:'aria-disabled="true"';
     const detailMagic=(MAGIC_ITEMS_SLOTS.includes(detailItem.slot)||detailItem.magic)?'<span>ITEM MAGICO</span>':'';
     html+=`<div class="inv-detail-card ${detailItem.equipped?'equipped':''} ${detailIdx===focusedIdx?'selected':''}">
       <div class="inv-detail-head">
@@ -12716,6 +12747,10 @@ function renderInventory(){
         ${detailMagic}
       </div>
       <div class="inv-detail-desc">${detailItem.desc||'Item obtido durante a aventura.'}</div>
+      <div class="inv-detail-action">
+        <span>${detailSlotRaw?'Selecione o comando para alterar o equipamento.':'Este item fica na bolsa e pode ser usado pela narrativa.'}</span>
+        <button type="button" class="${detailBtnClass}" ${detailBtnClick}>${detailAction}</button>
+      </div>
     </div>`;
   }
   listEl.innerHTML=html||'<p style="color:var(--gold-d);text-align:center;font-style:italic;font-size:13px;padding:20px 0">Inventário vazio</p>';
@@ -23736,7 +23771,7 @@ html body #mo-char .inv-grid .inv-item-icon-wrap{
   height:45px!important;
   min-width:45px!important;
   font-size:22px!important;
-  margin:0 auto!important;
+  margin:5px auto 0!important;
 }
 html body #mo-char .inv-grid .inv-item-info{
   width:100%!important;
@@ -23767,9 +23802,36 @@ html body #mo-char .inv-grid .inv-magic-badge{
   font-size:6.4px!important;
   line-height:1.25!important;
 }
+html body #mo-char .inv-grid .equipped-badge{
+  position:absolute!important;
+  left:7px!important;
+  top:6px!important;
+  max-width:58px!important;
+  overflow:hidden!important;
+  white-space:nowrap!important;
+  font-size:5.9px!important;
+  padding:1px 4px!important;
+}
 html body #mo-char .inv-grid .inv-slot-badge,
 html body #mo-char .inv-grid .inv-magic-badge{
   display:none!important;
+}
+html body #mo-char .inv-grid .inv-qty-badge{
+  position:absolute!important;
+  right:6px!important;
+  bottom:6px!important;
+  min-width:18px!important;
+  min-height:18px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:999px!important;
+  border:1px solid rgba(245,202,101,.50)!important;
+  background:linear-gradient(180deg,rgba(40,26,8,.96),rgba(7,4,2,.98))!important;
+  color:#f0c66a!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  box-shadow:0 0 8px rgba(218,169,69,.16),inset 0 1px 0 rgba(255,236,175,.10)!important;
 }
 html body #mo-char .inv-grid .inv-item-weight{
   position:absolute!important;
@@ -23782,6 +23844,9 @@ html body #mo-char .inv-grid .inv-item-weight{
   background:rgba(0,0,0,.36)!important;
   font-size:7.2px!important;
   line-height:1!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-qty-badge) .inv-item-weight{
+  right:28px!important;
 }
 html body #mo-char .inv-grid .inv-item-weight .kg{
   display:none!important;
@@ -23799,6 +23864,131 @@ html body #mo-char .inv-grid .inv-item.equipped::before{
 }
 html body #mo-char .inv-detail-card{
   margin-top:14px!important;
+}
+
+/* v6.1.71: filtros premium do inventario. */
+html body #mo-char .inv-filter-row{
+  display:flex!important;
+  gap:6px!important;
+  overflow-x:auto!important;
+  padding:1px 2px 8px!important;
+  margin:0 0 4px!important;
+  -webkit-overflow-scrolling:touch!important;
+  scrollbar-width:none!important;
+}
+html body #mo-char .inv-filter-row::-webkit-scrollbar{
+  display:none!important;
+}
+html body #mo-char .inv-filter-chip{
+  flex:0 0 auto!important;
+  min-height:28px!important;
+  padding:0 7px 0 10px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.30)!important;
+  background:
+    linear-gradient(180deg,rgba(25,16,7,.88),rgba(5,3,2,.96))!important;
+  color:#b9964d!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:.95px!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.055)!important;
+}
+html body #mo-char .inv-filter-chip span{
+  display:block!important;
+}
+html body #mo-char .inv-filter-chip b{
+  min-width:17px!important;
+  height:17px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.28)!important;
+  background:rgba(0,0,0,.34)!important;
+  color:#d9b86a!important;
+  font-size:8px!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+}
+html body #mo-char .inv-filter-chip.active{
+  border-color:rgba(245,202,101,.72)!important;
+  color:#231304!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(255,244,190,.48),transparent 42%),
+    linear-gradient(180deg,#e6bc5b,#9b641b)!important;
+  box-shadow:
+    0 0 13px rgba(218,169,69,.22),
+    inset 0 1px 0 rgba(255,248,202,.34)!important;
+  text-shadow:0 1px 0 rgba(255,236,175,.26)!important;
+}
+html body #mo-char .inv-filter-chip.active b{
+  border-color:rgba(255,239,184,.64)!important;
+  background:rgba(32,18,4,.36)!important;
+  color:#fff1c4!important;
+}
+html body #mo-char .inv-empty-state{
+  margin:12px 2px!important;
+  padding:18px 12px!important;
+  border:1px dashed rgba(218,169,69,.28)!important;
+  border-radius:14px!important;
+  background:rgba(8,5,2,.58)!important;
+  color:rgba(240,221,176,.58)!important;
+  font-family:var(--font-title)!important;
+  font-size:10px!important;
+  letter-spacing:1px!important;
+  text-align:center!important;
+}
+
+/* v6.1.75: aproxima o inventario da referencia - filtros compactos, grade e detalhe. */
+html body #mo-char .inv-filter-row{
+  margin-bottom:8px!important;
+  padding-bottom:6px!important;
+}
+html body #mo-char .inv-filter-chip{
+  min-height:24px!important;
+  padding:0 7px 0 9px!important;
+  font-size:7.4px!important;
+}
+html body #mo-char .inv-filter-chip b{
+  min-width:15px!important;
+  height:15px!important;
+  font-size:7.3px!important;
+}
+html body #mo-char .inv-grid{
+  padding:5px!important;
+  border:1px solid rgba(218,169,69,.16)!important;
+  border-radius:15px!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.07),transparent 42%),
+    rgba(2,2,1,.28)!important;
+}
+html body #mo-char .inv-grid .inv-item{
+  min-height:100px!important;
+  border-radius:11px!important;
+  background:
+    radial-gradient(circle at 50% 28%,rgba(218,169,69,.11),transparent 42%),
+    linear-gradient(180deg,rgba(11,7,3,.98),rgba(2,2,1,.99))!important;
+}
+html body #mo-char .inv-grid .inv-item-icon-wrap{
+  width:48px!important;
+  height:48px!important;
+  min-width:48px!important;
+  border-radius:10px!important;
+}
+html body #mo-char .inv-detail-card{
+  border-radius:14px!important;
+  background:
+    radial-gradient(circle at 10% 0,rgba(218,169,69,.12),transparent 30%),
+    linear-gradient(180deg,rgba(16,10,4,.98),rgba(4,3,2,.99))!important;
+}
+html body #mo-char .inv-detail-title small{
+  color:#d0a04b!important;
+}
+html body #mo-char .inv-detail-action{
+  color:#c8922a!important;
 }
 @media(max-width:370px){
   html body #mo-char .inv-grid{
@@ -23822,7 +24012,7 @@ html body #mo-char .inv-detail-card{
 }
 html body #mo-char .inv-detail-card{
   margin:12px 2px 2px!important;
-  padding:12px!important;
+  padding:10px 11px!important;
   border-radius:16px!important;
   border:1px solid rgba(218,169,69,.40)!important;
   background:
@@ -23843,19 +24033,19 @@ html body #mo-char .inv-detail-head{
   display:flex!important;
   align-items:center!important;
   gap:10px!important;
-  margin-bottom:9px!important;
+  margin-bottom:7px!important;
 }
 html body #mo-char .inv-detail-icon{
-  width:42px!important;
-  height:42px!important;
-  min-width:42px!important;
+  width:38px!important;
+  height:38px!important;
+  min-width:38px!important;
   display:grid!important;
   place-items:center!important;
   border-radius:12px!important;
   border:1px solid rgba(218,169,69,.42)!important;
   background:linear-gradient(180deg,rgba(33,22,9,.98),rgba(5,3,2,.99))!important;
   box-shadow:inset 0 1px 0 rgba(255,236,175,.12),0 0 12px rgba(218,169,69,.12)!important;
-  font-size:21px!important;
+  font-size:19px!important;
 }
 html body #mo-char .inv-detail-title{
   min-width:0!important;
@@ -23881,7 +24071,7 @@ html body #mo-char .inv-detail-tags{
   display:flex!important;
   flex-wrap:wrap!important;
   gap:5px!important;
-  margin-bottom:9px!important;
+  margin-bottom:7px!important;
 }
 html body #mo-char .inv-detail-tags span{
   padding:3px 7px!important;
@@ -23896,8 +24086,21 @@ html body #mo-char .inv-detail-tags span{
 }
 html body #mo-char .inv-detail-desc{
   color:rgba(240,221,176,.72)!important;
-  font-size:11.2px!important;
-  line-height:1.48!important;
+  font-size:10.6px!important;
+  line-height:1.42!important;
+}
+html body #mo-char .inv-detail-action{
+  margin-top:8px!important;
+  padding-top:7px!important;
+  border-top:1px solid rgba(218,169,69,.18)!important;
+  color:#d9aa45!important;
+  font-family:var(--font-title)!important;
+  font-size:8.2px!important;
+  font-weight:900!important;
+  letter-spacing:.85px!important;
+  text-align:center!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000!important;
 }
 @media(max-width:370px){
   html body #mo-char .inv-item{
@@ -23914,5 +24117,281 @@ html body #mo-char .inv-detail-desc{
   html body #mo-char .inv-item-desc{font-size:9.6px!important;}
   html body #mo-char .inv-detail-title strong{font-size:12.2px!important;}
   html body #mo-char .inv-detail-desc{font-size:10.4px!important;}
+html body #mo-char .inv-detail-action{font-size:7.6px!important;}
+}
+
+/* v6.1.76: inventario mobile com lista rolavel e barra fixa de acao do item. */
+html body #mo-char #tab-inv.sheet-page.active{
+  min-height:0!important;
+}
+html body #mo-char #inv-list{
+  min-height:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+html body #mo-char .inv-scroll-list{
+  min-height:178px!important;
+  max-height:clamp(220px,42vh,390px)!important;
+  overflow-y:auto!important;
+  padding:0 2px 8px!important;
+  margin:0 0 8px!important;
+  -webkit-overflow-scrolling:touch!important;
+  scrollbar-color:rgba(218,169,69,.72) rgba(0,0,0,.28)!important;
+}
+html body #mo-char .inv-scroll-list::-webkit-scrollbar{
+  width:5px!important;
+}
+html body #mo-char .inv-scroll-list::-webkit-scrollbar-track{
+  background:rgba(0,0,0,.26)!important;
+  border-radius:999px!important;
+}
+html body #mo-char .inv-scroll-list::-webkit-scrollbar-thumb{
+  border-radius:999px!important;
+  background:linear-gradient(180deg,#f0c66a,#8d5a18)!important;
+}
+html body #mo-char .inv-grid .inv-item.selected{
+  border-color:rgba(255,225,142,.82)!important;
+  box-shadow:
+    0 0 18px rgba(218,169,69,.22),
+    inset 0 1px 0 rgba(255,236,175,.18)!important;
+}
+html body #mo-char .inv-detail-card{
+  position:sticky!important;
+  bottom:0!important;
+  z-index:5!important;
+  margin:0 2px 2px!important;
+}
+html body #mo-char .inv-detail-action{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  text-align:left!important;
+}
+html body #mo-char .inv-detail-action span{
+  min-width:0!important;
+  flex:1 1 auto!important;
+}
+html body #mo-char .inv-detail-btn{
+  min-width:96px!important;
+  min-height:34px!important;
+  border:1px solid rgba(255,232,160,.62)!important;
+  border-radius:12px!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,247,203,.42),transparent 44%),
+    linear-gradient(180deg,#e4b95a,#8e5a18)!important;
+  color:#201104!important;
+  font-family:var(--font-title)!important;
+  font-size:10px!important;
+  font-weight:900!important;
+  letter-spacing:1.2px!important;
+  text-transform:uppercase!important;
+  box-shadow:
+    0 0 14px rgba(218,169,69,.20),
+    inset 0 1px 0 rgba(255,248,202,.35)!important;
+}
+html body #mo-char .inv-detail-btn.disabled{
+  opacity:.54!important;
+  pointer-events:none!important;
+  filter:saturate(.55)!important;
+}
+@media(max-height:720px){
+  html body #mo-char .inv-scroll-list{
+    max-height:36vh!important;
+  }
+  html body #mo-char .inv-detail-desc{
+    display:none!important;
+  }
+}
+
+/* v6.1.77: corrige barra fixa do inventario, preserva leitura e melhora carga. */
+html body #mo-char #tab-inv.sheet-page{
+  padding-bottom:88px!important;
+}
+html body #mo-char .inv-weight-bar{
+  display:grid!important;
+  grid-template-columns:auto 1fr auto!important;
+  align-items:center!important;
+  gap:8px 10px!important;
+  padding:10px 11px!important;
+}
+html body #mo-char .inv-wb-info{
+  min-width:48px!important;
+}
+html body #mo-char .inv-wb-track{
+  width:100%!important;
+  min-width:0!important;
+}
+html body #mo-char .inv-wb-right{
+  min-width:72px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-end!important;
+  gap:3px!important;
+}
+html body #mo-char .inv-wb-max{
+  font-size:8px!important;
+  line-height:1!important;
+}
+html body #mo-char .inv-wb-status{
+  max-width:78px!important;
+  white-space:nowrap!important;
+  font-size:7px!important;
+  padding:3px 7px!important;
+}
+html body #mo-char .inv-scroll-list{
+  max-height:clamp(250px,48vh,430px)!important;
+  padding-bottom:190px!important;
+}
+html body #mo-char .inv-detail-card{
+  bottom:calc(34px + env(safe-area-inset-bottom))!important;
+  margin:0 10px 0!important;
+  padding:9px 10px!important;
+}
+html body #mo-char .inv-detail-head{
+  margin-bottom:4px!important;
+}
+html body #mo-char .inv-detail-icon{
+  width:34px!important;
+  height:34px!important;
+  min-width:34px!important;
+  border-radius:11px!important;
+  font-size:17px!important;
+}
+html body #mo-char .inv-detail-tags{
+  gap:4px!important;
+  margin-bottom:4px!important;
+}
+html body #mo-char .inv-detail-tags span{
+  padding:2px 6px!important;
+  font-size:7px!important;
+}
+html body #mo-char .inv-detail-desc{
+  max-height:28px!important;
+  overflow:hidden!important;
+  font-size:10px!important;
+  line-height:1.32!important;
+}
+html body #mo-char .inv-detail-action{
+  margin-top:5px!important;
+  padding-top:5px!important;
+  font-size:7.2px!important;
+}
+@media(max-width:370px){
+  html body #mo-char #tab-inv.sheet-page{
+    padding-bottom:96px!important;
+  }
+  html body #mo-char .inv-detail-card{
+    bottom:calc(32px + env(safe-area-inset-bottom))!important;
+  }
+  html body #mo-char .inv-detail-btn{
+    min-width:82px!important;
+    min-height:32px!important;
+    font-size:9px!important;
+  }
+}
+
+/* v6.1.82: slots do inventario mais proximos da referencia premium. */
+html body #mo-char .inv-filter-row{
+  justify-content:flex-start!important;
+  padding-left:4px!important;
+  padding-right:4px!important;
+}
+html body #mo-char .inv-filter-chip{
+  min-width:64px!important;
+  justify-content:center!important;
+  border-color:rgba(218,169,69,.38)!important;
+}
+html body #mo-char .inv-filter-chip span{
+  max-width:72px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+html body #mo-char .inv-cat-header{
+  display:flex!important;
+  align-items:center!important;
+  gap:7px!important;
+  margin:10px 4px 5px!important;
+}
+html body #mo-char .inv-cat-header::after{
+  content:''!important;
+  flex:1!important;
+  height:1px!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.44),transparent)!important;
+}
+html body #mo-char .inv-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;
+  padding:7px!important;
+}
+html body #mo-char .inv-grid .inv-item{
+  min-height:96px!important;
+  justify-content:center!important;
+  padding:8px 5px!important;
+  overflow:hidden!important;
+  border-color:rgba(218,169,69,.34)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,236,175,.07),
+    0 8px 18px rgba(0,0,0,.22)!important;
+}
+html body #mo-char .inv-grid .inv-item::after{
+  display:none!important;
+}
+html body #mo-char .inv-grid .inv-item.selected{
+  transform:translateY(-1px)!important;
+}
+html body #mo-char .inv-grid .inv-item-icon-wrap{
+  width:58px!important;
+  height:58px!important;
+  min-width:58px!important;
+  margin:0 auto!important;
+  font-size:26px!important;
+  background:
+    radial-gradient(circle at 50% 32%,rgba(245,202,101,.20),transparent 58%),
+    linear-gradient(180deg,rgba(22,14,5,.98),rgba(2,2,1,.99))!important;
+}
+html body #mo-char .inv-grid .inv-item-name-row{
+  display:none!important;
+}
+html body #mo-char .inv-grid .inv-item-name{
+  display:none!important;
+}
+html body #mo-char .inv-grid .equipped-badge{
+  left:50%!important;
+  top:5px!important;
+  transform:translateX(-50%)!important;
+  max-width:72px!important;
+  z-index:3!important;
+}
+html body #mo-char .inv-grid .inv-item-weight{
+  top:5px!important;
+  right:5px!important;
+  z-index:3!important;
+}
+html body #mo-char .inv-grid .inv-qty-badge{
+  right:7px!important;
+  bottom:7px!important;
+  z-index:3!important;
+}
+html body #mo-char .inv-grid .inv-item.equipped::before{
+  left:10px!important;
+  right:10px!important;
+  bottom:3px!important;
+}
+@media(max-width:370px){
+  html body #mo-char .inv-grid{
+    gap:7px!important;
+    padding:6px!important;
+  }
+  html body #mo-char .inv-grid .inv-item{
+    min-height:88px!important;
+    padding-bottom:8px!important;
+  }
+  html body #mo-char .inv-grid .inv-item-icon-wrap{
+    width:50px!important;
+    height:50px!important;
+    min-width:50px!important;
+  }
 }
 </style>
