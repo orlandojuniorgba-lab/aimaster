@@ -23466,4 +23466,22 @@ html body #s-game.active .char-strip.hud-reference-v6 .portrait{
     bottom:-27px!important;
   }
 }
+
+/* v6.1.68: zona segura no topo para o HUD nao ficar sob a barra do celular. */
+html body #s-game.screen.active{
+  padding-top:calc(env(safe-area-inset-top, 0px) + 10px)!important;
+}
+html body #s-game.screen.active .char-strip.hud-reference-v6{
+  margin-top:0!important;
+}
+@supports(padding:max(0px)){
+  html body #s-game.screen.active{
+    padding-top:max(12px, env(safe-area-inset-top))!important;
+  }
+}
+@media(max-height:740px){
+  html body #s-game.screen.active{
+    padding-top:max(8px, env(safe-area-inset-top))!important;
+  }
+}
 </style>
