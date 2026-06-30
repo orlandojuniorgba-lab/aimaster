@@ -12011,6 +12011,9 @@ async function rollD20Modal(){
 
 // Abas da ficha
 function switchTab(id){
+  if(id!=='tab-inv' && typeof window!=='undefined'){
+    window.__lastInvFocus=-1;
+  }
   document.querySelectorAll('.sheet-page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.stab').forEach(t=>t.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -12675,15 +12678,18 @@ function renderInventory(){
     else{statusEl.textContent='SOBRECARREGADO';statusEl.classList.add('encumbrado');}
   }
 
+  const carryLabel=statusEl&&statusEl.textContent?statusEl.textContent:'LEVE';
+  const carryClass=statusEl&&statusEl.classList.contains('encumbrado')?'encumbrado':statusEl&&statusEl.classList.contains('normal')?'normal':'leve';
+
   // Build HTML by category
   let html='';
   const focusedIdx=(typeof window!=='undefined'&&Number.isInteger(window.__lastInvFocus))?window.__lastInvFocus:-1;
   const activeFilter=(typeof window!=='undefined'&&window.__invFilter)?window.__invFilter:'all';
   const filterBar=INV_FILTERS.map(f=>{
     const count=inventory.filter(item=>f.filter(item)).length;
-    return `<button type="button" class="inv-filter-chip ${activeFilter===f.key?'active':''}" onclick="window.__invFilter='${f.key}';renderInventory()"><span>${f.label}</span><b>${count}</b></button>`;
+    return `<button type="button" class="inv-filter-chip ${activeFilter===f.key?'active':''}" onclick="window.__invFilter='${f.key}';window.__lastInvFocus=-1;renderInventory()"><span>${f.label}</span><b>${count}</b></button>`;
   }).join('');
-  html+=`<div class="inv-filter-row">${filterBar}</div><div class="inv-scroll-list">`;
+  html+=`<div class="inv-filter-shell"><div class="inv-filter-row">${filterBar}</div></div><div class="inv-scroll-list">`;
   const activeFilterDef=INV_FILTERS.find(f=>f.key===activeFilter)||INV_FILTERS[0];
   const categoriesToRender=activeFilter==='all'?INV_CATEGORIES:[{key:activeFilterDef.key,label:activeFilterDef.label,filter:activeFilterDef.filter}];
   let renderedItemCount=0;
@@ -12721,7 +12727,7 @@ function renderInventory(){
     html+=`<p class="inv-empty-state">Nenhum item nesta categoria.</p>`;
   }
   html+=`</div>`;
-  const detailItem=renderedItemCount>0?(inventory[focusedIdx]||inventory.find(i=>i.equipped)||inventory[0]):null;
+  const detailItem=renderedItemCount>0&&focusedIdx>=0&&inventory[focusedIdx]&&activeFilterDef.filter(inventory[focusedIdx])?inventory[focusedIdx]:null;
   if(detailItem){
     const detailIdx=inventory.indexOf(detailItem);
     const detailWt=(detailItem.weight||0)*(detailItem.qty||1);
@@ -24392,6 +24398,280 @@ html body #mo-char .inv-grid .inv-item.equipped::before{
     width:50px!important;
     height:50px!important;
     min-width:50px!important;
+  }
+}
+
+/* v6.1.84: inventario mobile mais limpo, carga compacta e mais area para slots. */
+html body #mo-char .ms{
+  max-height:92vh!important;
+}
+html body #mo-char .mt{
+  margin-bottom:10px!important;
+  padding-bottom:8px!important;
+}
+html body #mo-char .sheet-tabs{
+  margin-bottom:8px!important;
+}
+html body #mo-char #tab-inv.sheet-page{
+  padding-top:2px!important;
+}
+html body #mo-char #tab-inv::before{
+  margin:0 0 8px!important;
+  font-size:11px!important;
+  letter-spacing:3.6px!important;
+}
+html body #mo-char #tab-inv .inv-weight-bar{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  overflow:hidden!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  margin:0!important;
+  padding:0!important;
+}
+html body #mo-char .inv-filter-shell{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:7px!important;
+  margin:0 2px 8px!important;
+}
+html body #mo-char .inv-filter-shell .inv-filter-row{
+  min-width:0!important;
+  margin:0!important;
+  padding:0 0 2px!important;
+}
+html body #mo-char .inv-load-pill{
+  min-width:82px!important;
+  min-height:28px!important;
+  display:grid!important;
+  grid-template-columns:auto auto!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:0 4px!important;
+  padding:4px 8px!important;
+  border-radius:999px!important;
+  border:1px solid rgba(218,169,69,.36)!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.18),transparent 48%),
+    linear-gradient(180deg,rgba(18,12,5,.96),rgba(3,2,1,.98))!important;
+  box-shadow:inset 0 1px 0 rgba(255,236,175,.07),0 0 10px rgba(0,0,0,.25)!important;
+  color:#d9b86a!important;
+  font-family:var(--font-title)!important;
+  text-align:center!important;
+}
+html body #mo-char .inv-load-pill span{
+  grid-column:1/3!important;
+  color:#9d7428!important;
+  font-size:6.4px!important;
+  font-weight:900!important;
+  letter-spacing:1.2px!important;
+  line-height:1!important;
+}
+html body #mo-char .inv-load-pill b{
+  color:#f0d087!important;
+  font-size:10.5px!important;
+  line-height:1!important;
+}
+html body #mo-char .inv-load-pill small{
+  color:rgba(240,221,176,.50)!important;
+  font-size:7.4px!important;
+  line-height:1!important;
+}
+html body #mo-char .inv-load-pill.leve{
+  border-color:rgba(74,192,109,.36)!important;
+}
+html body #mo-char .inv-load-pill.normal{
+  border-color:rgba(218,169,69,.48)!important;
+}
+html body #mo-char .inv-load-pill.encumbrado{
+  border-color:rgba(211,78,62,.50)!important;
+}
+html body #mo-char .inv-scroll-list{
+  max-height:clamp(300px,54vh,500px)!important;
+}
+html body #mo-char .inv-grid{
+  padding:8px!important;
+}
+html body #mo-char .inv-grid .inv-item{
+  min-height:104px!important;
+}
+@media(max-width:370px){
+  html body #mo-char .inv-filter-shell{
+    grid-template-columns:1fr!important;
+    gap:5px!important;
+  }
+  html body #mo-char .inv-load-pill{
+    justify-self:end!important;
+    min-height:24px!important;
+  }
+  html body #mo-char .inv-scroll-list{
+    max-height:50vh!important;
+  }
+}
+
+/* v6.1.85: inventario mais fiel a referencia - slots compactos e detalhe integrado. */
+html body #mo-char #tab-inv::before{
+  margin-bottom:7px!important;
+}
+html body #mo-char .inv-filter-shell{
+  display:block!important;
+  margin:0 0 8px!important;
+}
+html body #mo-char .inv-filter-row{
+  gap:5px!important;
+  padding:0 3px 4px!important;
+}
+html body #mo-char .inv-filter-chip{
+  min-width:58px!important;
+  min-height:22px!important;
+  padding:0 6px!important;
+  font-size:6.9px!important;
+}
+html body #mo-char .inv-filter-chip b{
+  min-width:14px!important;
+  height:14px!important;
+  font-size:6.8px!important;
+}
+html body #mo-char .inv-load-pill{
+  display:none!important;
+}
+html body #mo-char .inv-scroll-list{
+  max-height:clamp(330px,58vh,540px)!important;
+  padding-bottom:12px!important;
+}
+html body #mo-char .inv-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:7px!important;
+  padding:7px!important;
+}
+html body #mo-char .inv-grid .inv-item{
+  min-height:78px!important;
+  padding:6px 4px!important;
+  border-radius:10px!important;
+}
+html body #mo-char .inv-grid .inv-item-icon-wrap{
+  width:43px!important;
+  height:43px!important;
+  min-width:43px!important;
+  border-radius:9px!important;
+  font-size:21px!important;
+}
+html body #mo-char .inv-grid .inv-item-weight{
+  top:4px!important;
+  right:4px!important;
+  padding:1px 3px!important;
+  font-size:6.4px!important;
+}
+html body #mo-char .inv-grid .inv-qty-badge{
+  right:5px!important;
+  bottom:5px!important;
+  min-width:16px!important;
+  min-height:16px!important;
+  font-size:7px!important;
+}
+html body #mo-char .inv-grid .equipped-badge{
+  display:none!important;
+}
+html body #mo-char .inv-grid .inv-item.equipped::before{
+  left:8px!important;
+  right:8px!important;
+  bottom:4px!important;
+  height:2px!important;
+}
+html body #mo-char .inv-detail-card{
+  position:sticky!important;
+  bottom:calc(62px + env(safe-area-inset-bottom))!important;
+  z-index:8!important;
+  margin:10px 4px 0!important;
+  padding:10px 11px!important;
+  border-radius:13px!important;
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  grid-template-areas:
+    "ico title btn"
+    "ico tags btn"
+    "desc desc desc"!important;
+  align-items:center!important;
+  column-gap:10px!important;
+  row-gap:4px!important;
+}
+html body #mo-char .inv-scroll-list:has(+ .inv-detail-card){
+  padding-bottom:128px!important;
+}
+html body #mo-char .inv-detail-head{
+  display:contents!important;
+}
+html body #mo-char .inv-detail-icon{
+  grid-area:ico!important;
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  font-size:18px!important;
+}
+html body #mo-char .inv-detail-title{
+  grid-area:title!important;
+}
+html body #mo-char .inv-detail-title small{
+  font-size:7px!important;
+  letter-spacing:1.4px!important;
+}
+html body #mo-char .inv-detail-title strong{
+  font-size:12.8px!important;
+}
+html body #mo-char .inv-detail-tags{
+  grid-area:tags!important;
+  margin:0!important;
+  gap:4px!important;
+}
+html body #mo-char .inv-detail-desc{
+  grid-area:desc!important;
+  max-height:none!important;
+  padding-top:5px!important;
+  border-top:1px solid rgba(218,169,69,.16)!important;
+}
+html body #mo-char .inv-detail-action{
+  grid-area:btn!important;
+  display:block!important;
+  margin:0!important;
+  padding:0!important;
+  border-top:0!important;
+}
+html body #mo-char .inv-detail-action span{
+  display:none!important;
+}
+html body #mo-char .inv-detail-btn{
+  min-width:86px!important;
+  min-height:34px!important;
+  border-radius:11px!important;
+}
+@media(max-width:370px){
+  html body #mo-char .inv-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:6px!important;
+    padding:6px!important;
+  }
+  html body #mo-char .inv-grid .inv-item{
+    min-height:70px!important;
+  }
+  html body #mo-char .inv-grid .inv-item-icon-wrap{
+    width:38px!important;
+    height:38px!important;
+    min-width:38px!important;
+    font-size:19px!important;
+  }
+  html body #mo-char .inv-detail-card{
+    bottom:calc(60px + env(safe-area-inset-bottom))!important;
+    grid-template-columns:auto minmax(0,1fr)!important;
+    grid-template-areas:
+      "ico title"
+      "ico tags"
+      "desc desc"
+      "btn btn"!important;
+  }
+  html body #mo-char .inv-detail-action{
+    justify-self:end!important;
   }
 }
 </style>
