@@ -12647,9 +12647,10 @@ function getInvSlot(item){
 const INV_FILTERS=[
   {key:'all', label:'TODOS', filter:i=>true},
   {key:'weapons', label:'ARMAS', filter:i=>getInvSlot(i)==='rhand'},
-  {key:'armor', label:'PROTECAO', filter:i=>['head','body','lhand','shield'].includes(getInvSlot(i))},
+  {key:'armor', label:'ARMADURAS', filter:i=>['head','body','lhand','shield'].includes(getInvSlot(i))},
   {key:'magic', label:'MAGICOS', filter:i=>MAGIC_ITEMS_SLOTS.includes(i.slot||'')||i.magic},
   {key:'consumable', label:'CONSUMIVEIS', filter:i=>getInvSlot(i)===null&&/pocao|poção|poÃ§Ã£o|ration|racao|ração|raÃ§Ã£o|tocha|vela|kit/i.test(i.name||'')},
+  {key:'misc', label:'OUTROS', filter:i=>!i.equipped&&!['head','body','lhand','shield','rhand','ring1','ring2','neck','belt','hands','feet','back','shoulders'].includes(getInvSlot(i))&&!/pocao|poÃ§Ã£o|poÃƒÂ§ÃƒÂ£o|ration|racao|raÃ§Ã£o|raÃƒÂ§ÃƒÂ£o|tocha|vela|kit/i.test(i.name||'')},
 ];
 
 const HEAVY_ARMOR=['Cota de Malha','Armadura de Placas','Armadura de Escamas'];
@@ -12752,7 +12753,6 @@ function renderInventory(){
       <div class="inv-detail-tags">
         <span>${detailStatus}</span>
         <span>${detailSlot}</span>
-        <span>${detailWt>0?detailWt.toFixed(detailWt<1?2:1)+' KG':'SEM PESO'}</span>
         ${detailMagic}
       </div>
       <div class="inv-detail-desc">${detailItem.desc||'Item obtido durante a aventura.'}</div>
@@ -24766,6 +24766,18 @@ html body #mo-char .inv-detail-btn{
     radial-gradient(circle at 50% 0,rgba(255,249,211,.52),transparent 44%),
     linear-gradient(180deg,#edc76c,#9a641e 62%,#5d350d)!important;
 }
+html body #mo-char .inv-detail-desc{
+  font-size:9.8px!important;
+  line-height:1.28!important;
+  color:rgba(240,221,176,.76)!important;
+}
+html body #mo-char .inv-detail-tags span{
+  font-size:6.7px!important;
+  padding:2px 6px!important;
+}
+html body #mo-char .inv-scroll-list:has(+ .inv-detail-card){
+  padding-bottom:146px!important;
+}
 
 /* v6.1.91: filtros e categorias do inventario mais proximos da referencia. */
 html body #mo-char .inv-filter-shell{
@@ -24779,7 +24791,7 @@ html body #mo-char .inv-filter-shell{
 }
 html body #mo-char .inv-filter-row{
   display:grid!important;
-  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
   gap:4px!important;
   overflow:visible!important;
   padding:0!important;
@@ -24833,6 +24845,17 @@ html body #mo-char .inv-cat-header::before{
     font-size:6.1px!important;
     letter-spacing:.35px!important;
   }
+}
+
+/* v6.1.96: sexto filtro OUTROS e filtros em duas linhas compactas. */
+html body #mo-char .inv-filter-chip{
+  min-height:23px!important;
+}
+html body #mo-char .inv-filter-chip span{
+  padding-right:10px!important;
+}
+html body #mo-char .inv-filter-shell{
+  margin-bottom:8px!important;
 }
 
 /* v6.1.90: altura estavel do inventario ao trocar filtros. */
@@ -24908,5 +24931,46 @@ html body #mo-char .inv-scroll-list::-webkit-scrollbar-track{
 html body #mo-char .inv-scroll-list::-webkit-scrollbar-thumb{
   border-radius:999px!important;
   background:linear-gradient(180deg,rgba(240,198,106,.86),rgba(117,74,19,.86))!important;
+}
+
+/* v6.1.95: microinteracoes premium do inventario. */
+html body #mo-char .inv-grid .inv-item{
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    box-shadow .16s ease,
+    filter .16s ease!important;
+  will-change:transform!important;
+}
+html body #mo-char .inv-grid .inv-item:active{
+  transform:scale(.96)!important;
+  filter:brightness(1.18)!important;
+}
+html body #mo-char .inv-grid .inv-item.selected{
+  animation:invSlotPulse .9s ease-out 1!important;
+}
+@keyframes invSlotPulse{
+  0%{box-shadow:0 0 0 rgba(218,169,69,0),inset 0 1px 0 rgba(255,236,175,.16);}
+  38%{box-shadow:0 0 0 2px rgba(255,225,142,.22),0 0 22px rgba(218,169,69,.34),inset 0 1px 0 rgba(255,236,175,.22);}
+  100%{box-shadow:0 0 0 1px rgba(255,225,142,.18),0 0 18px rgba(218,169,69,.26),inset 0 1px 0 rgba(255,236,175,.18);}
+}
+html body #mo-char .inv-detail-card{
+  animation:invDetailRise .18s ease-out 1!important;
+}
+@keyframes invDetailRise{
+  from{opacity:0;transform:translateY(10px) scale(.985);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+html body #mo-char .inv-detail-btn:active{
+  transform:translateY(1px) scale(.98)!important;
+  filter:brightness(1.12)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body #mo-char .inv-grid .inv-item,
+  html body #mo-char .inv-grid .inv-item.selected,
+  html body #mo-char .inv-detail-card{
+    animation:none!important;
+    transition:none!important;
+  }
 }
 </style>
