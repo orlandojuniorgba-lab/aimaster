@@ -1,7 +1,7 @@
 Imagens premium dos itens do inventario
 =====================================
 
-Coloque aqui imagens .webp dos itens para o inventario usar automaticamente.
+Coloque aqui imagens .png dos itens para o inventario usar automaticamente.
 
 Formato recomendado:
 - WEBP com fundo transparente, quando possivel.
@@ -10,27 +10,54 @@ Formato recomendado:
 
 Nomes ja reconhecidos pelo AiMaster:
 
-sword.webp
-sword-long.webp
-sword-short.webp
-dagger.webp
-axe.webp
-bow.webp
-staff.webp
-shield.webp
-armor.webp
-chainmail.webp
-backpack.webp
-torch.webp
-ration.webp
-potion-red.webp
-book.webp
-scroll.webp
-key.webp
-instrument.webp
-holy-symbol.webp
-herb.webp
-ring.webp
-crystal.webp
+sword.png
+sword-long.png
+sword-short.png
+dagger.png
+axe.png
+bow.png
+staff.png
+shield.png
+armor.png
+chainmail.png
+backpack.png
+torch.png
+ration.png
+potion-red.png
+book.png
+scroll.png
+key.png
+instrument.png
+holy-symbol.png
+herb.png
+ring.png
+crystal.png
 
 Se uma imagem nao existir, o jogo usa automaticamente o icone CSS premium como fallback.
+
+Raridade visual
+===============
+
+O AiMaster tambem tenta usar imagens por raridade quando o item for especial:
+
+Exemplos:
+- sword-rare.png
+- sword-epic.png
+- sword-legendary.png
+- ring-legendary.png
+- crystal-epic.png
+
+Se a imagem de raridade nao existir, ele tenta a imagem generica.
+Exemplo:
+1. sword-legendary.png
+2. se nao existir, sword.png
+3. se tambem nao existir, icone CSS premium
+
+As raridades reconhecidas visualmente sao:
+- common
+- uncommon
+- rare
+- epic
+- legendary
+
+Isso nao cobra diamantes do jogador. E apenas acabamento visual automatico do inventario.
