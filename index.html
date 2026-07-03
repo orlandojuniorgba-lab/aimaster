@@ -12644,6 +12644,117 @@ function getInvSlot(item){
   return item.slot!==undefined ? item.slot : (ITEM_SLOT_MAP[item.name]||null);
 }
 
+function getInventoryIconType(item){
+  const name=String(item?.name||'').toLowerCase();
+  const slot=getInvSlot(item);
+  if(/arco|flecha|carcaj|besta/.test(name))return 'bow';
+  if(/machado/.test(name))return 'axe';
+  if(/cajado|bastao|bastÃ£o|varinha/.test(name))return 'staff';
+  if(/espada|adaga|rapieira|florete|lanÃ§a|lanca|maÃ§a|maca/.test(name)||slot==='rhand')return 'blade';
+  if(/escudo/.test(name)||slot==='lhand')return 'shield';
+  if(/armadura|cota|couro|peitoral|malha/.test(name)||slot==='body')return 'armor';
+  if(/mochila|pacote|bolsa|saco/.test(name)||slot==='back')return 'pack';
+  if(/tocha|lanterna|vela|Ã³leo|oleo/.test(name))return 'torch';
+  if(/raÃ§Ã£o|racao|pÃ£o|pao|comida/.test(name))return 'ration';
+  if(/poÃ§Ã£o|pocao|antÃ­doto|antidoto/.test(name))return 'potion';
+  if(/grimÃ³rio|grimorio|livro|pergaminho/.test(name))return 'book';
+  if(/ferramenta|chave|ladrÃ£o|ladrao/.test(name))return 'key';
+  if(/instrumento|musical|alaude|lira/.test(name))return 'music';
+  if(/sÃ­mbolo|simbolo|sagrado|amuleto|colar|pingente/.test(name)||slot==='neck')return 'holy';
+  if(/foco dru|folha|erva|carvalho|druÃ­dico|druidico/.test(name))return 'nature';
+  if(/anel/.test(name)||slot==='ring1'||slot==='ring2')return 'ring';
+  if(item?.magic||MAGIC_ITEMS_SLOTS.includes(slot||''))return 'magic';
+  return 'misc';
+}
+
+function getInventoryImageBaseFile(item){
+  const name=String(item?.name||'').toLowerCase();
+  const nameClean=name.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const type=getInventoryIconType(item);
+  const specific=[
+    [/espada longa|longsword/,'sword-long'],
+    [/espada curta|shortsword/,'sword-short'],
+    [/adaga|dagger/,'dagger'],
+    [/machado/,'axe'],
+    [/arco|bow/,'bow'],
+    [/escudo/,'shield'],
+    [/cota de malha|chain mail|malha/,'chainmail'],
+    [/armadura|peitoral|couro/,'armor'],
+    [/mochila|pacote.*explorador|pacote.*sacerdote|pacote.*aventureiro/,'backpack'],
+    [/tocha/,'torch'],
+    [/ra(c|ç|Ã§)(a|ã|Ã£)o|ration/,'ration'],
+    [/po(c|ç|Ã§)(a|ã|Ã£)o.*cura|pocao.*cura/,'potion-red'],
+    [/po(c|ç|Ã§)(a|ã|Ã£)o|pocao/,'potion-red'],
+    [/simbolo|sagrado|sagrado/,'holy-symbol'],
+    [/grimorio|grim(ó|Ã³)rio|livro/,'book'],
+    [/pergaminho/,'scroll'],
+    [/anel/,'ring'],
+    [/chave/,'key'],
+    [/alaude|lira|instrumento/,'instrument'],
+    [/cajado|bastao|bast(ã|Ã£)o|varinha/,'staff'],
+  ];
+  const hit=specific.find(([rx])=>rx.test(name)||rx.test(nameClean));
+  const file=hit?hit[1]:({
+    blade:'sword',
+    shield:'shield',
+    armor:'armor',
+    pack:'backpack',
+    torch:'torch',
+    ration:'ration',
+    potion:'potion-red',
+    book:'book',
+    key:'key',
+    music:'instrument',
+    holy:'holy-symbol',
+    nature:'herb',
+    ring:'ring',
+    magic:'crystal',
+    bow:'bow',
+    axe:'axe',
+    staff:'staff',
+  }[type]||null);
+  return file||'';
+}
+
+function getInventoryRarity(item){
+  const text=`${item?.rarity||''} ${item?.name||''} ${item?.desc||''}`.toLowerCase();
+  const textClean=text.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  if(/lendario|legendary|reliquia|artefato/.test(textClean))return 'legendary';
+  if(/epico|epic/.test(textClean))return 'epic';
+  if(/raro|rare/.test(textClean))return 'rare';
+  if(/incomum|uncommon/.test(textClean))return 'uncommon';
+  if(item?.magic||/magic|magico|encantad|arcano/.test(textClean))return 'uncommon';
+  if(/lend[aáÃ¡]rio|lendario|legendary|reliquia|rel[iíÃ­]quia|artefato/.test(text))return 'legendary';
+  if(/[eéÃ©]pico|epico|epic/.test(text))return 'epic';
+  if(/raro|rare/.test(text))return 'rare';
+  if(/incomum|uncommon/.test(text))return 'uncommon';
+  if(item?.magic||/m[aáÃ¡]gic|magico|m[aáÃ¡]gico|encantad|arcano/.test(text))return 'uncommon';
+  return 'common';
+}
+
+function getInventoryImageSrc(item){
+  const file=getInventoryImageBaseFile(item);
+  const rarity=getInventoryRarity(item);
+  if(!file)return '';
+  return rarity==='common'?`assets/items/${file}.png`:`assets/items/${file}-${rarity}.png`;
+}
+
+function getInventoryFallbackImageSrc(item){
+  const file=getInventoryImageBaseFile(item);
+  return file?`assets/items/${file}.png`:'';
+}
+
+function renderInventoryIcon(item){
+  const type=getInventoryIconType(item);
+  const rarity=getInventoryRarity(item);
+  const src=getInventoryImageSrc(item);
+  const fallback=getInventoryFallbackImageSrc(item);
+  const alt=String(item?.name||type).replace(/"/g,'&quot;');
+  const fallbackAttr=fallback&&fallback!==src?` data-fallback="${fallback}"`:'';
+  const img=src?`<img class="inv-item-art" src="${src}"${fallbackAttr} alt="${alt}" loading="lazy" onerror="if(this.dataset.fallback&&this.src.indexOf(this.dataset.fallback)===-1){this.src=this.dataset.fallback;this.dataset.fallback='';}else{this.classList.add('missing');this.closest('.inv-premium-icon')?.classList.add('no-art')}">`:'';
+  return `<span class="inv-premium-icon inv-pi-${type} inv-rarity-${rarity} ${src?'has-art':'no-art'}" aria-hidden="true">${img}</span>`;
+}
+
 const INV_FILTERS=[
   {key:'all', label:'TODOS', filter:i=>true},
   {key:'weapons', label:'ARMAS', filter:i=>getInvSlot(i)==='rhand'},
@@ -12714,7 +12825,7 @@ function renderInventory(){
       const wt=(item.weight*(item.qty||1));
       html+=`<button type="button" class="${itemClass}" onclick="window.__invScrollTop=this.closest('.inv-scroll-list')?this.closest('.inv-scroll-list').scrollTop:0;window.__lastInvFocus=${i};renderInventory();requestAnimationFrame(()=>{const el=document.querySelector('#mo-char .inv-scroll-list');if(el)el.scrollTop=window.__invScrollTop||0;})">
         ${qtyBadge}
-        <div class="inv-item-icon-wrap ${iconWrapClass}">${item.icon}</div>
+        <div class="inv-item-icon-wrap ${iconWrapClass}">${renderInventoryIcon(item)}</div>
         <div class="inv-item-info">
           <div class="inv-item-name-row">
             <span class="inv-item-name">${item.name}</span>
@@ -12742,9 +12853,10 @@ function renderInventory(){
     const detailBtnClass=detailSlotRaw?'inv-detail-btn':'inv-detail-btn disabled';
     const detailBtnClick=detailSlotRaw?`onclick="toggleEquip(${detailIdx})"`:'aria-disabled="true"';
     const detailMagic=(MAGIC_ITEMS_SLOTS.includes(detailItem.slot)||detailItem.magic)?'<span>ITEM MAGICO</span>':'';
+    const detailIconHtml=renderInventoryIcon(detailItem);
     html+=`<div class="inv-detail-card ${detailItem.equipped?'equipped':''} ${detailIdx===focusedIdx?'selected':''}">
       <div class="inv-detail-head">
-        <div class="inv-detail-icon">${detailItem.icon||'📦'}</div>
+        <div class="inv-detail-icon">${detailIconHtml}</div>
         <div class="inv-detail-title">
           <small>DETALHE DO ITEM</small>
           <strong>${detailItem.name}${detailItem.qty>1?' ×'+detailItem.qty:''}</strong>
@@ -24972,5 +25084,662 @@ html body #mo-char .inv-detail-btn:active{
     animation:none!important;
     transition:none!important;
   }
+}
+
+/* v6.1.97: camada de icones premium por tipo de item. */
+html body #mo-char .inv-premium-icon{
+  width:100%!important;
+  height:100%!important;
+  display:grid!important;
+  place-items:center!important;
+  position:relative!important;
+  color:#f3cf75!important;
+  font-family:Georgia,serif!important;
+  font-size:22px!important;
+  line-height:1!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.30)!important;
+}
+html body #mo-char .inv-premium-icon::before{
+  content:'◆'!important;
+}
+html body #mo-char .inv-premium-icon::after{
+  content:''!important;
+  position:absolute!important;
+  inset:7px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(218,169,69,.18)!important;
+  box-shadow:inset 0 0 10px rgba(218,169,69,.10)!important;
+}
+html body #mo-char .inv-pi-blade::before{content:'⚔'!important;}
+html body #mo-char .inv-pi-bow::before{content:'⌁'!important;font-size:25px!important;transform:rotate(-28deg)!important;}
+html body #mo-char .inv-pi-axe::before{content:'◭'!important;font-size:25px!important;}
+html body #mo-char .inv-pi-staff::before{content:'✦'!important;font-size:24px!important;}
+html body #mo-char .inv-pi-shield::before{content:'⬟'!important;font-size:23px!important;}
+html body #mo-char .inv-pi-armor::before{content:'▣'!important;font-size:24px!important;}
+html body #mo-char .inv-pi-pack::before{content:'▰'!important;font-size:23px!important;}
+html body #mo-char .inv-pi-torch::before{content:'♜'!important;font-size:22px!important;}
+html body #mo-char .inv-pi-ration::before{content:'◒'!important;font-size:23px!important;}
+html body #mo-char .inv-pi-potion::before{content:'♢'!important;font-size:25px!important;color:#ff8a7a!important;}
+html body #mo-char .inv-pi-book::before{content:'▤'!important;font-size:24px!important;}
+html body #mo-char .inv-pi-key::before{content:'⚿'!important;font-size:24px!important;}
+html body #mo-char .inv-pi-music::before{content:'♪'!important;font-size:25px!important;}
+html body #mo-char .inv-pi-holy::before{content:'✚'!important;font-size:23px!important;}
+html body #mo-char .inv-pi-nature::before{content:'☘'!important;font-size:22px!important;color:#a9d36d!important;}
+html body #mo-char .inv-pi-ring::before{content:'○'!important;font-size:27px!important;}
+html body #mo-char .inv-pi-magic::before{content:'✧'!important;font-size:25px!important;color:#d9c2ff!important;}
+html body #mo-char .inv-grid .inv-item-icon-wrap{
+  font-size:0!important;
+}
+/* v6.1.99: icones vetoriais premium para aproximar o inventario da referencia. */
+html body #mo-char .inv-premium-icon{
+  --inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M32 6l7 19 19 7-19 7-7 19-7-19-19-7 19-7 7-19z'/%3E%3C/svg%3E");
+}
+html body #mo-char .inv-premium-icon::before{
+  content:''!important;
+  width:33px!important;
+  height:33px!important;
+  display:block!important;
+  margin:auto!important;
+  background:linear-gradient(135deg,#fff4c6 0%,#d7a948 31%,#6f4212 66%,#f4cb6b 100%)!important;
+  -webkit-mask:var(--inv-icon) center/contain no-repeat!important;
+  mask:var(--inv-icon) center/contain no-repeat!important;
+  filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 7px rgba(218,169,69,.38))!important;
+  transform:none!important;
+}
+html body #mo-char .inv-premium-icon::after{
+  inset:5px!important;
+  border-color:rgba(218,169,69,.22)!important;
+  box-shadow:inset 0 0 12px rgba(218,169,69,.12),0 0 10px rgba(218,169,69,.08)!important;
+}
+html body #mo-char .inv-pi-blade{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M47 4l13 13-9 4-21 21 5 5-6 6-7-7-11 11-5-5 11-11-7-7 6-6 5 5 21-21 5-8z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-bow{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M47 5c11 15 11 39 0 54l-5-4c8-14 8-32 0-46l5-4zM12 32h40l-8-8 4-4 15 12-15 12-4-4 8-8H12zM17 5l5 4c-8 14-8 32 0 46l-5 4C6 44 6 20 17 5z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-axe{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M29 6h8v52h-8V6zm8 9c9-9 20-8 25 2-6 3-9 8-9 15-7-2-12-6-16-17zM27 15C18 6 7 7 2 17c6 3 9 8 9 15 7-2 12-6 16-17z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-staff{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M35 3l9 9-9 9-9-9 9-9zM31 20h8l-6 40h-8l6-40zm-9-9h27v6H22v-6z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-shield{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M32 4l24 9v17c0 15-10 25-24 31C18 55 8 45 8 30V13l24-9zm0 9v38c9-5 15-12 15-22V19l-15-6z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-armor{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M20 8h24l12 10-7 10-5-4v32H20V24l-5 4-7-10L20 8zm6 8c2 4 10 4 12 0H26z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-pack{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M20 6h24l5 10h6v42H9V16h6l5-10zm5 8l-1 2h16l-1-2H25zm-8 14h30v22H17V28z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-torch{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M32 3c8 9 13 17 5 26 1-7-3-10-6-16-9 8-12 17-5 26-9-4-15-13-7-25 3-5 8-8 13-11zm-8 35h16l-3 22H27l-3-22z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-ration{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M12 24c2-10 12-16 24-14 8 1 14 7 16 14 5 3 7 9 4 15-4 8-14 13-26 13S9 47 6 39c-2-6 0-12 6-15zm8 2c8 4 18 4 28 0-3-5-8-8-14-9-7-1-12 2-14 9z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-potion{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M24 6h16v10l-5 7 16 22c5 8-1 15-10 15H23c-9 0-15-7-10-15l16-22-5-7V6zm3 34l-7 10c-1 2 0 3 3 3h18c3 0 4-1 3-3l-7-10H27z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-book{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M10 8h22c5 0 9 3 10 8V8h12v48H41c-1-3-4-5-9-5H10V8zm8 9v25h14c4 0 7 1 10 4V21c-2-3-5-4-10-4H18z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-key{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M24 40a18 18 0 1112-5l22 22-6 6-6-6-5 5-6-6 5-5-10-10a18 18 0 01-6 1zm0-24a6 6 0 100 12 6 6 0 000-12z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-music{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M42 5h8v37a10 10 0 11-8-10V18l-20 4v25a10 10 0 11-8-10V15l28-6V5z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-holy{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M27 4h10v15h15v10H37v31H27V29H12V19h15V4z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-nature{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M52 6c-22 2-36 14-39 36 13 0 25-7 31-20-2 14-10 25-25 32l4 7c23-10 32-29 29-55z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-ring{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M32 14a18 18 0 1018 18 18 18 0 00-18-18zm0-10l10 10H22L32 4zm0 20a8 8 0 110 16 8 8 0 010-16z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-magic{--inv-icon:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='black' d='M32 4l5 18 18-6-10 16 15 11-19 1-9 16-9-16-19-1 15-11L9 16l18 6 5-18z'/%3E%3C/svg%3E");}
+html body #mo-char .inv-pi-potion::before{background:linear-gradient(135deg,#ffe0cf 0%,#dc5d4b 42%,#57111d 72%,#ff987e 100%)!important;}
+html body #mo-char .inv-pi-magic::before{background:linear-gradient(135deg,#f1ddff 0%,#b78aff 38%,#4e238f 72%,#dfc9ff 100%)!important;}
+html body #mo-char .inv-pi-nature::before{background:linear-gradient(135deg,#f2ffd5 0%,#a9d36d 38%,#315f24 72%,#d6f29a 100%)!important;}
+html body #mo-char .inv-detail-icon .inv-premium-icon::before{
+  width:25px!important;
+  height:25px!important;
+}
+html body #mo-char .inv-detail-icon{
+  font-size:0!important;
+}
+html body #mo-char .inv-detail-icon::before{
+  content:'◆'!important;
+  color:#f3cf75!important;
+  font-family:Georgia,serif!important;
+  font-size:20px!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(218,169,69,.30)!important;
+}
+html body #mo-char .inv-detail-icon::before{
+  content:none!important;
+  display:none!important;
+}
+/* v6.2.00: itens ocupando mais area do slot, como inventario premium de referencia. */
+html body #mo-char .inv-grid .inv-item{
+  min-height:82px!important;
+  padding:7px!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+}
+html body #mo-char .inv-grid .inv-item-icon-wrap{
+  width:68px!important;
+  height:58px!important;
+  min-width:68px!important;
+  border:0!important;
+  border-radius:10px!important;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(255,229,143,.18),transparent 52%),
+    linear-gradient(180deg,rgba(22,15,6,.42),rgba(0,0,0,.16))!important;
+  box-shadow:none!important;
+}
+html body #mo-char .inv-premium-icon::before{
+  width:50px!important;
+  height:50px!important;
+  filter:
+    drop-shadow(0 2px 2px rgba(0,0,0,.9))
+    drop-shadow(0 0 9px rgba(218,169,69,.42))!important;
+}
+html body #mo-char .inv-premium-icon::after{
+  inset:0!important;
+  border:0!important;
+  border-radius:12px!important;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(218,169,69,.12),transparent 55%),
+    linear-gradient(90deg,transparent,rgba(255,225,142,.12),transparent)!important;
+  box-shadow:none!important;
+}
+html body #mo-char .inv-grid .inv-item.selected .inv-premium-icon::before{
+  filter:
+    drop-shadow(0 2px 2px rgba(0,0,0,.92))
+    drop-shadow(0 0 13px rgba(255,225,142,.60))!important;
+}
+html body #mo-char .inv-grid .inv-item.mg-wrap,
+html body #mo-char .inv-grid .inv-item.magic{
+  border-color:rgba(176,137,255,.35)!important;
+}
+html body #mo-char .inv-detail-icon .inv-premium-icon::before{
+  width:28px!important;
+  height:28px!important;
+}
+@media(max-width:370px){
+  html body #mo-char .inv-grid .inv-item{
+    min-height:76px!important;
+    padding:6px!important;
+  }
+  html body #mo-char .inv-grid .inv-item-icon-wrap{
+    width:60px!important;
+    height:52px!important;
+  }
+  html body #mo-char .inv-premium-icon::before{
+    width:44px!important;
+    height:44px!important;
+  }
+}
+/* v6.2.01: slots como vitrines e detalhe mais integrado ao inventario. */
+html body #mo-char .inv-grid{
+  gap:7px!important;
+  padding:7px!important;
+  background:
+    radial-gradient(circle at 50% 0,rgba(218,169,69,.075),transparent 48%),
+    linear-gradient(135deg,rgba(20,14,7,.74),rgba(4,3,2,.86) 48%,rgba(0,0,0,.74))!important;
+}
+html body #mo-char .inv-grid .inv-item{
+  border-radius:11px!important;
+  background:
+    radial-gradient(circle at 50% 39%,rgba(218,169,69,.15),transparent 42%),
+    radial-gradient(ellipse at 50% 100%,rgba(244,198,94,.24),transparent 34%),
+    linear-gradient(180deg,rgba(15,11,5,.92),rgba(0,0,0,.98))!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,225,142,.08),
+    inset 0 12px 18px rgba(255,225,142,.035),
+    inset 0 -10px 18px rgba(218,169,69,.08),
+    0 8px 16px rgba(0,0,0,.38)!important;
+}
+html body #mo-char .inv-grid .inv-item::after{
+  content:''!important;
+  position:absolute!important;
+  inset:6px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(218,169,69,.18)!important;
+  pointer-events:none!important;
+  box-shadow:inset 0 0 16px rgba(0,0,0,.52)!important;
+}
+html body #mo-char .inv-grid .inv-item::before{
+  left:16px!important;
+  right:16px!important;
+  bottom:7px!important;
+  height:3px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,225,142,.78),transparent)!important;
+  filter:blur(.15px)!important;
+}
+html body #mo-char .inv-grid .inv-item.selected{
+  border-color:rgba(255,225,142,.92)!important;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(255,225,142,.22),transparent 44%),
+    radial-gradient(ellipse at 50% 100%,rgba(255,225,142,.30),transparent 35%),
+    linear-gradient(180deg,rgba(21,15,6,.96),rgba(0,0,0,.98))!important;
+}
+html body #mo-char .inv-grid .inv-item.selected::after{
+  border-color:rgba(255,225,142,.40)!important;
+  box-shadow:
+    inset 0 0 14px rgba(0,0,0,.50),
+    0 0 14px rgba(218,169,69,.18)!important;
+}
+html body #mo-char .inv-detail-card{
+  margin:8px 4px 0!important;
+  border-radius:13px!important;
+  background:
+    radial-gradient(circle at 8% 0,rgba(218,169,69,.18),transparent 32%),
+    linear-gradient(180deg,rgba(18,12,5,.98),rgba(6,4,2,.99))!important;
+}
+html body #mo-char .inv-detail-card::after{
+  content:''!important;
+  position:absolute!important;
+  left:12px!important;
+  right:12px!important;
+  bottom:0!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,225,142,.55),transparent)!important;
+}
+html body #mo-char .inv-detail-icon{
+  width:40px!important;
+  height:40px!important;
+  min-width:40px!important;
+  border-radius:10px!important;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(255,225,142,.20),transparent 52%),
+    linear-gradient(180deg,rgba(12,8,3,.98),rgba(0,0,0,.96))!important;
+}
+html body #mo-char .inv-detail-title small{
+  color:#b98c35!important;
+}
+html body #mo-char .inv-detail-title strong{
+  font-size:13.4px!important;
+}
+html body #mo-char .inv-detail-desc{
+  color:rgba(240,221,176,.82)!important;
+}
+/* v6.2.02: mini artes CSS para itens comuns, mais proximas de objetos reais. */
+html body #mo-char .inv-premium-icon{
+  isolation:isolate!important;
+}
+html body #mo-char .inv-premium-icon::before{
+  position:relative!important;
+  z-index:2!important;
+}
+html body #mo-char .inv-premium-icon::after{
+  z-index:1!important;
+}
+html body #mo-char .inv-pi-blade::before{
+  width:58px!important;
+  height:58px!important;
+  transform:rotate(-38deg)!important;
+  background:
+    linear-gradient(90deg,transparent 0 38%,#4d2c0a 39% 45%,#f4d27a 46% 53%,#4d2c0a 54% 60%,transparent 61%),
+    linear-gradient(180deg,#fff8d8 0%,#d1a24f 28%,#7b4b16 62%,#241405 100%)!important;
+}
+html body #mo-char .inv-pi-shield::before{
+  width:50px!important;
+  height:54px!important;
+  background:
+    radial-gradient(circle at 50% 24%,rgba(255,245,190,.72),transparent 18%),
+    linear-gradient(135deg,#fff1b6 0%,#bd8d3c 32%,#5b3510 65%,#e1b257 100%)!important;
+}
+html body #mo-char .inv-pi-armor::before{
+  width:52px!important;
+  height:54px!important;
+  background:
+    linear-gradient(90deg,rgba(0,0,0,.22),transparent 18% 82%,rgba(0,0,0,.22)),
+    linear-gradient(135deg,#f3d78a 0%,#a97628 35%,#4e2e10 70%,#d8aa51 100%)!important;
+}
+html body #mo-char .inv-pi-pack::before{
+  width:52px!important;
+  height:50px!important;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(255,226,132,.55),transparent 16%),
+    linear-gradient(135deg,#f0bc57 0%,#a76220 42%,#4c260d 72%,#d28b32 100%)!important;
+}
+html body #mo-char .inv-pi-potion::before{
+  width:43px!important;
+  height:52px!important;
+  background:
+    radial-gradient(circle at 38% 30%,rgba(255,255,255,.78),transparent 12%),
+    linear-gradient(180deg,#ffd5cb 0%,#f76f5d 35%,#8b1727 72%,#26050d 100%)!important;
+}
+html body #mo-char .inv-pi-torch::before{
+  width:46px!important;
+  height:54px!important;
+  background:
+    radial-gradient(circle at 50% 16%,#fff0a3 0 10%,#ff8a2a 22%,#9b1e08 38%,transparent 42%),
+    linear-gradient(90deg,transparent 0 43%,#a36524 44% 56%,transparent 57%),
+    linear-gradient(180deg,transparent 0 34%,#f3c36e 35%,#5a2d0e 100%)!important;
+}
+html body #mo-char .inv-pi-ration::before{
+  width:48px!important;
+  height:42px!important;
+  background:
+    radial-gradient(circle at 38% 34%,rgba(255,232,154,.46),transparent 18%),
+    linear-gradient(135deg,#d4943c 0%,#8a4b18 48%,#3b1d09 78%,#bf7930 100%)!important;
+}
+html body #mo-char .inv-pi-book::before{
+  width:50px!important;
+  height:48px!important;
+  background:
+    linear-gradient(90deg,rgba(255,236,175,.36) 0 6%,transparent 7% 49%,rgba(0,0,0,.35) 50% 52%,transparent 53%),
+    linear-gradient(135deg,#e7bd65 0%,#7d4816 48%,#2b1607 76%,#c48a38 100%)!important;
+}
+html body #mo-char .inv-pi-holy::before,
+html body #mo-char .inv-pi-magic::before{
+  width:50px!important;
+  height:50px!important;
+}
+html body #mo-char .inv-pi-holy::after,
+html body #mo-char .inv-pi-magic::after,
+html body #mo-char .inv-pi-nature::after{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(178,126,255,.20),transparent 52%),
+    radial-gradient(circle at 50% 50%,rgba(218,169,69,.12),transparent 64%)!important;
+}
+html body #mo-char .inv-detail-icon .inv-pi-blade::before,
+html body #mo-char .inv-detail-icon .inv-pi-shield::before,
+html body #mo-char .inv-detail-icon .inv-pi-armor::before,
+html body #mo-char .inv-detail-icon .inv-pi-pack::before,
+html body #mo-char .inv-detail-icon .inv-pi-potion::before,
+html body #mo-char .inv-detail-icon .inv-pi-torch::before,
+html body #mo-char .inv-detail-icon .inv-pi-book::before{
+  width:30px!important;
+  height:30px!important;
+  transform:none!important;
+}
+/* v6.2.03: refinamento das demais categorias de icones do inventario. */
+html body #mo-char .inv-pi-bow::before{
+  width:56px!important;
+  height:56px!important;
+  transform:rotate(-18deg)!important;
+  background:
+    radial-gradient(circle at 72% 46%,rgba(255,242,177,.62),transparent 9%),
+    linear-gradient(135deg,#ffe9a4 0%,#c28b33 35%,#53300e 70%,#e7b85a 100%)!important;
+}
+html body #mo-char .inv-pi-axe::before{
+  width:58px!important;
+  height:56px!important;
+  transform:rotate(-22deg)!important;
+  background:
+    linear-gradient(90deg,transparent 0 43%,#7b4615 44% 55%,transparent 56%),
+    linear-gradient(135deg,#fff0bc 0%,#c18b3a 30%,#63401c 68%,#e9bd66 100%)!important;
+}
+html body #mo-char .inv-pi-staff::before{
+  width:54px!important;
+  height:56px!important;
+  transform:rotate(10deg)!important;
+  background:
+    radial-gradient(circle at 50% 15%,#fff1b4 0 9%,#ba7dff 15%,transparent 24%),
+    linear-gradient(90deg,transparent 0 45%,#edc86c 46% 54%,transparent 55%),
+    linear-gradient(180deg,#f3d584 0%,#6f4315 100%)!important;
+}
+html body #mo-char .inv-pi-key::before{
+  width:52px!important;
+  height:52px!important;
+  transform:rotate(-28deg)!important;
+  background:
+    radial-gradient(circle at 31% 32%,transparent 0 12%,#f6d47c 13% 22%,transparent 23%),
+    linear-gradient(135deg,#fff4bf 0%,#d3a34f 34%,#704314 68%,#f0c96d 100%)!important;
+}
+html body #mo-char .inv-pi-ring::before{
+  width:50px!important;
+  height:50px!important;
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 35%,#fff1af 37% 45%,#b77b25 52%,transparent 54%),
+    radial-gradient(circle at 50% 18%,#cbb3ff 0 8%,transparent 10%),
+    linear-gradient(135deg,#f6d47c,#71420f)!important;
+}
+html body #mo-char .inv-pi-music::before{
+  width:54px!important;
+  height:54px!important;
+  transform:rotate(-8deg)!important;
+  background:
+    radial-gradient(circle at 39% 72%,#f6d47c 0 12%,transparent 13%),
+    radial-gradient(circle at 70% 66%,#f6d47c 0 11%,transparent 12%),
+    linear-gradient(90deg,transparent 0 48%,#e9bd66 49% 55%,transparent 56%),
+    linear-gradient(135deg,#fff1b6 0%,#a66a22 60%,#4c280b 100%)!important;
+}
+html body #mo-char .inv-pi-nature::before{
+  width:54px!important;
+  height:54px!important;
+  transform:rotate(-10deg)!important;
+  background:
+    radial-gradient(circle at 48% 34%,rgba(242,255,213,.62),transparent 12%),
+    linear-gradient(135deg,#f2ffd5 0%,#a9d36d 35%,#315f24 72%,#d6f29a 100%)!important;
+}
+html body #mo-char .inv-pi-holy::before{
+  background:
+    radial-gradient(circle at 50% 50%,rgba(255,247,194,.72),transparent 22%),
+    linear-gradient(135deg,#fff4c6 0%,#d7a948 35%,#6f4212 68%,#f4cb6b 100%)!important;
+}
+html body #mo-char .inv-pi-magic::before{
+  transform:rotate(8deg)!important;
+  filter:
+    drop-shadow(0 2px 2px rgba(0,0,0,.9))
+    drop-shadow(0 0 11px rgba(183,138,255,.58))!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-pi-potion){
+  border-color:rgba(220,93,75,.34)!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-pi-nature){
+  border-color:rgba(142,190,86,.32)!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-pi-magic),
+html body #mo-char .inv-grid .inv-item:has(.inv-pi-holy){
+  border-color:rgba(176,137,255,.34)!important;
+}
+html body #mo-char .inv-detail-icon .inv-pi-bow::before,
+html body #mo-char .inv-detail-icon .inv-pi-axe::before,
+html body #mo-char .inv-detail-icon .inv-pi-staff::before,
+html body #mo-char .inv-detail-icon .inv-pi-key::before,
+html body #mo-char .inv-detail-icon .inv-pi-ring::before,
+html body #mo-char .inv-detail-icon .inv-pi-music::before,
+html body #mo-char .inv-detail-icon .inv-pi-nature::before,
+html body #mo-char .inv-detail-icon .inv-pi-holy::before,
+html body #mo-char .inv-detail-icon .inv-pi-magic::before{
+  width:30px!important;
+  height:30px!important;
+  transform:none!important;
+}
+/* v6.2.04: composicao mais proxima da referencia do inventario. */
+html body #mo-char .inv-filter-shell{
+  margin:0 3px 10px!important;
+  padding:3px!important;
+  border-radius:9px!important;
+  border-color:rgba(218,169,69,.18)!important;
+  background:
+    linear-gradient(180deg,rgba(11,8,4,.92),rgba(0,0,0,.96))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,236,175,.06),
+    0 6px 14px rgba(0,0,0,.20)!important;
+}
+html body #mo-char .inv-filter-row{
+  gap:3px!important;
+}
+html body #mo-char .inv-filter-chip{
+  min-height:25px!important;
+  border-radius:6px!important;
+  font-size:6.6px!important;
+  letter-spacing:.9px!important;
+  background:
+    linear-gradient(180deg,rgba(9,7,4,.94),rgba(0,0,0,.98))!important;
+  box-shadow:inset 0 0 0 1px rgba(255,225,142,.035)!important;
+}
+html body #mo-char .inv-filter-chip.active{
+  background:
+    radial-gradient(circle at 50% 0,rgba(255,248,203,.60),transparent 44%),
+    linear-gradient(180deg,#f1cc72 0%,#b17624 58%,#6b3b0c 100%)!important;
+  box-shadow:
+    0 0 12px rgba(218,169,69,.24),
+    inset 0 1px 0 rgba(255,248,203,.55),
+    inset 0 -1px 0 rgba(90,48,8,.45)!important;
+}
+html body #mo-char .inv-filter-chip b{
+  right:4px!important;
+  top:50%!important;
+  transform:translateY(-50%)!important;
+  background:rgba(0,0,0,.38)!important;
+  color:#f4d78a!important;
+  border-color:rgba(255,225,142,.22)!important;
+}
+html body #mo-char .inv-cat-header{
+  margin:9px 7px 5px!important;
+  gap:7px!important;
+  color:#d4aa52!important;
+  text-shadow:0 0 7px rgba(218,169,69,.18)!important;
+}
+html body #mo-char .inv-cat-header::before{
+  color:#ffe6a1!important;
+  text-shadow:0 0 8px rgba(218,169,69,.35)!important;
+}
+html body #mo-char .inv-cat-header::after{
+  height:1px!important;
+  background:
+    linear-gradient(90deg,rgba(218,169,69,.46),rgba(218,169,69,.13),transparent)!important;
+}
+html body #mo-char .inv-grid{
+  border-radius:12px!important;
+  border-color:rgba(218,169,69,.25)!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,225,142,.04),
+    inset 0 16px 32px rgba(218,169,69,.035),
+    0 10px 22px rgba(0,0,0,.20)!important;
+}
+html body #mo-char .inv-grid::before{
+  opacity:.12!important;
+}
+html body #mo-char .inv-grid .inv-item-weight{
+  right:5px!important;
+  top:5px!important;
+  min-width:20px!important;
+  min-height:12px!important;
+  padding:1px 4px!important;
+  border-radius:999px!important;
+  color:#d9b45d!important;
+  background:rgba(4,3,2,.70)!important;
+  border:1px solid rgba(218,169,69,.26)!important;
+}
+html body #mo-char .inv-grid .inv-item-weight .kg{
+  display:none!important;
+}
+html body #mo-char .inv-detail-card{
+  padding:9px 10px!important;
+  grid-template-columns:42px minmax(0,1fr) 96px!important;
+  column-gap:9px!important;
+  border-color:rgba(245,202,101,.58)!important;
+}
+html body #mo-char .inv-detail-title small{
+  letter-spacing:1.8px!important;
+}
+html body #mo-char .inv-detail-tags{
+  margin-top:1px!important;
+}
+html body #mo-char .inv-detail-tags span{
+  border-radius:999px!important;
+  background:linear-gradient(180deg,rgba(218,169,69,.20),rgba(55,32,9,.55))!important;
+}
+html body #mo-char .inv-detail-btn{
+  min-width:94px!important;
+  min-height:36px!important;
+  letter-spacing:1.7px!important;
+  color:#2a1605!important;
+}
+@media(max-width:370px){
+  html body #mo-char .inv-detail-card{
+    grid-template-columns:38px minmax(0,1fr)!important;
+  }
+  html body #mo-char .inv-detail-btn{
+    min-width:88px!important;
+  }
+}
+/* v6.2.05: suporte a imagens reais de itens com fallback para icones CSS. */
+html body #mo-char .inv-premium-icon.has-art{
+  width:100%!important;
+  height:100%!important;
+}
+html body #mo-char .inv-premium-icon.has-art:not(.no-art)::before{
+  content:none!important;
+  display:none!important;
+}
+html body #mo-char .inv-premium-icon.has-art:not(.no-art)::after{
+  inset:0!important;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(255,229,143,.14),transparent 55%),
+    radial-gradient(ellipse at 50% 100%,rgba(218,169,69,.18),transparent 42%)!important;
+}
+html body #mo-char .inv-item-art{
+  position:relative!important;
+  z-index:3!important;
+  display:block!important;
+  width:92%!important;
+  height:92%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  filter:
+    drop-shadow(0 3px 3px rgba(0,0,0,.88))
+    drop-shadow(0 0 9px rgba(218,169,69,.28))!important;
+}
+html body #mo-char .inv-grid .inv-item.selected .inv-item-art{
+  filter:
+    drop-shadow(0 3px 3px rgba(0,0,0,.90))
+    drop-shadow(0 0 14px rgba(255,225,142,.50))!important;
+}
+html body #mo-char .inv-item-art.missing{
+  display:none!important;
+}
+html body #mo-char .inv-detail-icon .inv-item-art{
+  width:86%!important;
+  height:86%!important;
+}
+/* v6.2.06: raridade visual gratuita para itens novos e loot do Mestre. */
+html body #mo-char .inv-premium-icon.inv-rarity-uncommon .inv-item-art,
+html body #mo-char .inv-premium-icon.inv-rarity-uncommon::before{
+  filter:
+    drop-shadow(0 3px 3px rgba(0,0,0,.88))
+    drop-shadow(0 0 10px rgba(108,210,126,.34))!important;
+}
+html body #mo-char .inv-premium-icon.inv-rarity-rare .inv-item-art,
+html body #mo-char .inv-premium-icon.inv-rarity-rare::before{
+  filter:
+    drop-shadow(0 3px 3px rgba(0,0,0,.88))
+    drop-shadow(0 0 12px rgba(87,168,255,.48))!important;
+}
+html body #mo-char .inv-premium-icon.inv-rarity-epic .inv-item-art,
+html body #mo-char .inv-premium-icon.inv-rarity-epic::before{
+  filter:
+    drop-shadow(0 3px 3px rgba(0,0,0,.90))
+    drop-shadow(0 0 14px rgba(184,119,255,.58))!important;
+}
+html body #mo-char .inv-premium-icon.inv-rarity-legendary .inv-item-art,
+html body #mo-char .inv-premium-icon.inv-rarity-legendary::before{
+  filter:
+    drop-shadow(0 3px 3px rgba(0,0,0,.92))
+    drop-shadow(0 0 16px rgba(255,196,75,.72))!important;
+}
+html body #mo-char .inv-premium-icon.inv-rarity-uncommon::after{
+  background:radial-gradient(circle at 50% 48%,rgba(108,210,126,.16),transparent 57%)!important;
+}
+html body #mo-char .inv-premium-icon.inv-rarity-rare::after{
+  background:radial-gradient(circle at 50% 48%,rgba(87,168,255,.18),transparent 57%)!important;
+}
+html body #mo-char .inv-premium-icon.inv-rarity-epic::after{
+  background:radial-gradient(circle at 50% 48%,rgba(184,119,255,.22),transparent 57%)!important;
+}
+html body #mo-char .inv-premium-icon.inv-rarity-legendary::after{
+  background:
+    radial-gradient(circle at 50% 48%,rgba(255,196,75,.25),transparent 55%),
+    conic-gradient(from 0deg,transparent,rgba(255,225,142,.20),transparent 35%)!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-rarity-uncommon){
+  border-color:rgba(108,210,126,.32)!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-rarity-rare){
+  border-color:rgba(87,168,255,.36)!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-rarity-epic){
+  border-color:rgba(184,119,255,.40)!important;
+}
+html body #mo-char .inv-grid .inv-item:has(.inv-rarity-legendary){
+  border-color:rgba(255,196,75,.58)!important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,225,142,.10),
+    inset 0 -10px 18px rgba(255,196,75,.12),
+    0 0 18px rgba(255,196,75,.12),
+    0 8px 16px rgba(0,0,0,.38)!important;
+}
+html body #mo-char .inv-detail-card:has(.inv-rarity-rare){
+  border-color:rgba(87,168,255,.44)!important;
+}
+html body #mo-char .inv-detail-card:has(.inv-rarity-epic){
+  border-color:rgba(184,119,255,.50)!important;
+}
+html body #mo-char .inv-detail-card:has(.inv-rarity-legendary){
+  border-color:rgba(255,196,75,.70)!important;
+  box-shadow:
+    0 -8px 18px rgba(0,0,0,.36),
+    0 0 22px rgba(255,196,75,.16),
+    inset 0 1px 0 rgba(255,236,175,.16)!important;
 }
 </style>
