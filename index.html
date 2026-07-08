@@ -1607,6 +1607,122 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
 }
 </style>
 
+<style id="aimaster-v6230-collapsible-actions-panel-final">
+/* v6.2.30 final: painel de acoes recolhivel para dar palco a narrativa. */
+html body #s-game.screen.active .actions-wrap::before,
+html body #s-game.active .actions-wrap::before{
+  display:none!important;
+  content:none!important;
+}
+html body #s-game.screen.active #acts-lbl,
+html body #s-game.active #acts-lbl{
+  display:block!important;
+  cursor:pointer!important;
+  user-select:none!important;
+  margin:0!important;
+  padding:8px 8px 7px!important;
+  border-radius:14px!important;
+  border:1px solid rgba(217,169,68,.22)!important;
+  background:linear-gradient(180deg,rgba(28,20,10,.82),rgba(10,8,5,.58))!important;
+  color:rgba(238,197,102,.82)!important;
+  font-family:var(--font-title)!important;
+  font-size:8.8px!important;
+  letter-spacing:2.6px!important;
+  text-align:center!important;
+  text-shadow:0 0 13px rgba(217,169,68,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 0 16px rgba(217,169,68,.08)!important;
+}
+html body #s-game.screen.active #acts-lbl:active,
+html body #s-game.active #acts-lbl:active{
+  transform:translateY(1px)!important;
+}
+html body #s-game.screen.active.actions-collapsed .actions-wrap,
+html body #s-game.active.actions-collapsed .actions-wrap{
+  padding:6px 8px!important;
+  margin-top:7px!important;
+  margin-bottom:6px!important;
+  min-height:0!important;
+}
+html body #s-game.screen.active.actions-collapsed #act-grid,
+html body #s-game.active.actions-collapsed #act-grid,
+html body #s-game.screen.active.actions-collapsed .immersive-scene-card,
+html body #s-game.active.actions-collapsed .immersive-scene-card,
+html body #s-game.screen.active.actions-collapsed #d20-hint-txt,
+html body #s-game.active.actions-collapsed #d20-hint-txt,
+html body #s-game.screen.active.actions-collapsed .ooc-toggle-row,
+html body #s-game.active.actions-collapsed .ooc-toggle-row{
+  display:none!important;
+}
+html body #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
+html body #s-game.active:not(.actions-collapsed) .actions-wrap{
+  padding-top:8px!important;
+}
+html body #s-game.screen.active:not(.actions-collapsed) #acts-lbl,
+html body #s-game.active:not(.actions-collapsed) #acts-lbl{
+  margin-bottom:8px!important;
+  border-color:rgba(232,184,75,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 20px rgba(217,169,68,.12)!important;
+}
+</style>
+
+<style id="aimaster-v6230-collapsible-actions-panel">
+/* v6.2.30: painel de acoes recolhivel para dar palco a narrativa. */
+html body #s-game.screen.active .actions-wrap::before,
+html body #s-game.active .actions-wrap::before{
+  display:none!important;
+  content:none!important;
+}
+html body #s-game.screen.active #acts-lbl,
+html body #s-game.active #acts-lbl{
+  display:block!important;
+  cursor:pointer!important;
+  user-select:none!important;
+  margin:0!important;
+  padding:8px 8px 7px!important;
+  border-radius:14px!important;
+  border:1px solid rgba(217,169,68,.22)!important;
+  background:linear-gradient(180deg,rgba(28,20,10,.82),rgba(10,8,5,.58))!important;
+  color:rgba(238,197,102,.82)!important;
+  font-family:var(--font-title)!important;
+  font-size:8.8px!important;
+  letter-spacing:2.6px!important;
+  text-align:center!important;
+  text-shadow:0 0 13px rgba(217,169,68,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 0 16px rgba(217,169,68,.08)!important;
+}
+html body #s-game.screen.active #acts-lbl:active,
+html body #s-game.active #acts-lbl:active{
+  transform:translateY(1px)!important;
+}
+html body #s-game.screen.active.actions-collapsed .actions-wrap,
+html body #s-game.active.actions-collapsed .actions-wrap{
+  padding:6px 8px!important;
+  margin-top:7px!important;
+  margin-bottom:6px!important;
+  min-height:0!important;
+}
+html body #s-game.screen.active.actions-collapsed #act-grid,
+html body #s-game.active.actions-collapsed #act-grid,
+html body #s-game.screen.active.actions-collapsed .immersive-scene-card,
+html body #s-game.active.actions-collapsed .immersive-scene-card,
+html body #s-game.screen.active.actions-collapsed #d20-hint-txt,
+html body #s-game.active.actions-collapsed #d20-hint-txt,
+html body #s-game.screen.active.actions-collapsed .ooc-toggle-row,
+html body #s-game.active.actions-collapsed .ooc-toggle-row{
+  display:none!important;
+}
+html body #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
+html body #s-game.active:not(.actions-collapsed) .actions-wrap{
+  padding-top:8px!important;
+}
+html body #s-game.screen.active:not(.actions-collapsed) #acts-lbl,
+html body #s-game.active:not(.actions-collapsed) #acts-lbl{
+  margin-bottom:8px!important;
+  border-color:rgba(232,184,75,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 20px rgba(217,169,68,.12)!important;
+}
+</style>
+
 <style id="aimaster-v6214-status-reference-lock">
 /* Trava visual: esta ficha deve prevalecer sobre a camada antiga do Status. */
 html body #mo-char#mo-char #tab-stats.sheet-page.active{
@@ -9675,6 +9791,39 @@ function updateActionButtons(actions){
 
   const lbl=document.getElementById('acts-lbl');
   if(lbl) lbl.textContent='— O QUE VOCÊ FAZ? —';
+  setActionsPanelCollapsed(true);
+}
+
+
+let actionsPanelCollapsed=false;
+function setActionsPanelCollapsed(collapsed){
+  const game=document.getElementById('s-game');
+  const lbl=document.getElementById('acts-lbl');
+  actionsPanelCollapsed=!!collapsed;
+  if(game) game.classList.toggle('actions-collapsed', actionsPanelCollapsed);
+  if(lbl){
+    lbl.textContent=actionsPanelCollapsed
+      ? '\u2014 O QUE VOC\u00ca FAZ? \u02c5 \u2014'
+      : '\u2014 O QUE VOC\u00ca FAZ? \u02c4 \u2014';
+    lbl.setAttribute('role','button');
+    lbl.setAttribute('tabindex','0');
+    lbl.setAttribute('aria-expanded', String(!actionsPanelCollapsed));
+  }
+}
+function toggleActionsPanel(){
+  setActionsPanelCollapsed(!actionsPanelCollapsed);
+}
+function initActionsPanelToggle(){
+  const lbl=document.getElementById('acts-lbl');
+  if(!lbl || lbl.dataset.toggleReady==='1') return;
+  lbl.dataset.toggleReady='1';
+  lbl.addEventListener('click',toggleActionsPanel);
+  lbl.addEventListener('keydown',e=>{
+    if(e.key==='Enter' || e.key===' '){
+      e.preventDefault();
+      toggleActionsPanel();
+    }
+  });
 }
 
 
@@ -13042,6 +13191,8 @@ function updateShopContext(){
 function closeMo(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 document.getElementById('free-in').addEventListener('keydown',e=>{if(e.key==='Enter')sendFree();});
+initActionsPanelToggle();
+setActionsPanelCollapsed(true);
 updatePreview();
 
 // ══ MERGED ══
@@ -28373,5 +28524,63 @@ html body #mo-char#mo-char #tab-spells #spells-content{
   html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
     white-space:normal!important;
   }
+}
+</style>
+
+<style id="aimaster-v6230-collapsible-actions-panel-eof">
+/* v6.2.30 EOF: painel de acoes recolhivel com prioridade final. */
+html body #s-game.screen.active .actions-wrap::before,
+html body #s-game.active .actions-wrap::before{
+  display:none!important;
+  content:none!important;
+}
+html body #s-game.screen.active #acts-lbl,
+html body #s-game.active #acts-lbl{
+  display:block!important;
+  cursor:pointer!important;
+  user-select:none!important;
+  margin:0!important;
+  padding:8px 8px 7px!important;
+  border-radius:14px!important;
+  border:1px solid rgba(217,169,68,.22)!important;
+  background:linear-gradient(180deg,rgba(28,20,10,.82),rgba(10,8,5,.58))!important;
+  color:rgba(238,197,102,.82)!important;
+  font-family:var(--font-title)!important;
+  font-size:8.8px!important;
+  letter-spacing:2.6px!important;
+  text-align:center!important;
+  text-shadow:0 0 13px rgba(217,169,68,.22)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 0 16px rgba(217,169,68,.08)!important;
+}
+html body #s-game.screen.active #acts-lbl:active,
+html body #s-game.active #acts-lbl:active{
+  transform:translateY(1px)!important;
+}
+html body #s-game.screen.active.actions-collapsed .actions-wrap,
+html body #s-game.active.actions-collapsed .actions-wrap{
+  padding:6px 8px!important;
+  margin-top:7px!important;
+  margin-bottom:6px!important;
+  min-height:0!important;
+}
+html body #s-game.screen.active.actions-collapsed #act-grid,
+html body #s-game.active.actions-collapsed #act-grid,
+html body #s-game.screen.active.actions-collapsed .immersive-scene-card,
+html body #s-game.active.actions-collapsed .immersive-scene-card,
+html body #s-game.screen.active.actions-collapsed #d20-hint-txt,
+html body #s-game.active.actions-collapsed #d20-hint-txt,
+html body #s-game.screen.active.actions-collapsed .ooc-toggle-row,
+html body #s-game.active.actions-collapsed .ooc-toggle-row{
+  display:none!important;
+}
+html body #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
+html body #s-game.active:not(.actions-collapsed) .actions-wrap{
+  padding-top:8px!important;
+}
+html body #s-game.screen.active:not(.actions-collapsed) #acts-lbl,
+html body #s-game.active:not(.actions-collapsed) #acts-lbl{
+  margin-bottom:8px!important;
+  border-color:rgba(232,184,75,.34)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 20px rgba(217,169,68,.12)!important;
 }
 </style>
