@@ -9683,16 +9683,21 @@ let actionsPanelCollapsed=false;
 function setActionsPanelCollapsed(collapsed){
   const game=document.getElementById('s-game');
   const lbl=document.getElementById('acts-lbl');
+  const combatActive=!!(typeof inCombat!=='undefined' && inCombat);
+  const label=combatActive ? 'SEU TURNO' : 'O QUE VOC\u00ca FAZ?';
   actionsPanelCollapsed=!!collapsed;
   if(game) game.classList.toggle('actions-collapsed', actionsPanelCollapsed);
   if(lbl){
     lbl.textContent=actionsPanelCollapsed
-      ? '\u2014 O QUE VOC\u00ca FAZ? \u02c5 \u2014'
-      : '\u2014 O QUE VOC\u00ca FAZ? \u02c4 \u2014';
+      ? `\u2014 ${label} \u02c5 \u2014`
+      : `\u2014 ${label} \u02c4 \u2014`;
     lbl.setAttribute('role','button');
     lbl.setAttribute('tabindex','0');
     lbl.setAttribute('aria-expanded', String(!actionsPanelCollapsed));
   }
+}
+function refreshActionsPanelLabel(){
+  setActionsPanelCollapsed(actionsPanelCollapsed);
 }
 function toggleActionsPanel(){
   setActionsPanelCollapsed(!actionsPanelCollapsed);
@@ -12819,6 +12824,7 @@ function updateContextUI(){
       b.style.pointerEvents=inCombat?'none':'auto';
     }
   });
+  if(typeof refreshActionsPanelLabel==='function') refreshActionsPanelLabel();
   // Botão mercador aparece nas ações se não estiver em combate e não estiver já listado
   // (o mestre sugere via AÇÕES, mas garantimos aqui)
 }
@@ -28493,5 +28499,28 @@ html body #s-game.active:not(.actions-collapsed) #acts-lbl{
   margin-bottom:8px!important;
   border-color:rgba(232,184,75,.34)!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 0 20px rgba(217,169,68,.12)!important;
+}
+html body #s-game.screen.active.v33-combat-mode #acts-lbl,
+html body #s-game.active.v33-combat-mode #acts-lbl{
+  border-color:rgba(225,78,56,.58)!important;
+  color:#ffd9a0!important;
+  background:
+    radial-gradient(circle at 50% -18%,rgba(255,118,72,.24),transparent 52%),
+    linear-gradient(180deg,rgba(54,18,10,.96),rgba(18,8,5,.82))!important;
+  text-shadow:0 1px 2px #000,0 0 16px rgba(255,112,64,.36)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,220,170,.08),
+    0 0 20px rgba(225,78,56,.18),
+    0 0 0 1px rgba(0,0,0,.42)!important;
+}
+html body #s-game.screen.active.v33-combat-mode .actions-wrap,
+html body #s-game.active.v33-combat-mode .actions-wrap{
+  border-color:rgba(225,78,56,.32)!important;
+  box-shadow:0 0 18px rgba(225,78,56,.10),inset 0 0 22px rgba(80,12,8,.22)!important;
+}
+html body #s-game.screen.active.v33-combat-mode .act-btn.type-combat,
+html body #s-game.active.v33-combat-mode .act-btn.type-combat{
+  border-color:rgba(225,78,56,.68)!important;
+  box-shadow:0 0 18px rgba(225,78,56,.16),inset 0 0 18px rgba(90,16,10,.22)!important;
 }
 </style>
