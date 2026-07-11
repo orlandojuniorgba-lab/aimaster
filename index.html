@@ -28535,15 +28535,29 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
   }
   html body #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
   html body #s-game.active:not(.actions-collapsed) .actions-wrap{
-    padding-bottom:142px!important;
+    padding-bottom:96px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) #act-grid,
   html body #s-game.active:not(.actions-collapsed) #act-grid{
-    padding-bottom:42px!important;
+    padding-bottom:22px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) #act-grid .act-btn:last-child,
   html body #s-game.active:not(.actions-collapsed) #act-grid .act-btn:last-child{
     margin-bottom:18px!important;
+  }
+  html body #s-game.screen.active:not(.actions-collapsed) .narr,
+  html body #s-game.active:not(.actions-collapsed) .narr{
+    flex:0 1 clamp(168px,25vh,215px)!important;
+    min-height:168px!important;
+    max-height:215px!important;
+  }
+  @media(max-height:760px){
+    html body #s-game.screen.active:not(.actions-collapsed) .narr,
+    html body #s-game.active:not(.actions-collapsed) .narr{
+      flex-basis:158px!important;
+      min-height:158px!important;
+      max-height:182px!important;
+    }
   }
 }
 </style>
