@@ -19,19 +19,30 @@ bow.png
 staff.png
 shield.png
 armor.png
+armor-light.png
+armor-medium.png
+armor-heavy.png
 chainmail.png
 backpack.png
 torch.png
+lantern.png
+rope.png
+tool-kit.png
+waterskin.png
 ration.png
 potion-red.png
+potion-blue.png
 book.png
 scroll.png
+map.png
 key.png
 instrument.png
 holy-symbol.png
 herb.png
 ring.png
 crystal.png
+gem.png
+coin-pouch.png
 
 Se uma imagem nao existir, o jogo usa automaticamente o icone CSS premium como fallback.
 
