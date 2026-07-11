@@ -1607,6 +1607,148 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
 }
 </style>
 
+<style id="aimaster-v6240-status-premium-mobile-final">
+/* v6.2.40: ficha Status mobile com composicao premium e sem vazamento sob o footer. */
+@media(max-width:430px){
+  html body #mo-char#mo-char .ms{
+    padding-bottom:118px!important;
+    overflow-y:auto!important;
+    scroll-padding-bottom:150px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:148px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"
+      "profile profile"!important;
+    gap:8px 10px!important;
+    padding:8px 4px 268px!important;
+    min-height:auto!important;
+    align-content:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:first-of-type,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:nth-of-type(2){
+    display:none!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    margin-top:4px!important;
+    padding:8px 6px!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+    grid-area:hero!important;
+    margin-top:4px!important;
+    min-height:68px!important;
+    padding:8px 5px!important;
+    grid-template-columns:36px minmax(0,1fr)!important;
+    gap:7px!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-resources{
+    grid-area:res!important;
+    margin:0!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-combat-bar{
+    grid-area:combat!important;
+    margin-top:2px!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-profile-tags{
+    grid-area:profile!important;
+    grid-column:1 / -1!important;
+    margin-top:12px!important;
+    padding-top:10px!important;
+    border-top:1px solid rgba(218,169,69,.18)!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-profile-bonuses{
+    grid-column:1 / -1!important;
+    margin-top:8px!important;
+    margin-bottom:0!important;
+    padding-bottom:112px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .stats-row{
+    gap:5px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sb{
+    grid-template-columns:50px 34px 24px!important;
+    min-height:28px!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sn,
+  html body #mo-char#mo-char #tab-stats #sh-stats .sv,
+  html body #mo-char#mo-char #tab-stats #sh-stats .sm{
+    min-height:26px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sn{
+    font-size:10.1px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sv{
+    font-size:15.1px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-box{
+    margin-top:7px!important;
+    padding-top:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-pill{
+    font-size:5.65px!important;
+    padding:2px 3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-portrait{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-info{
+    padding-top:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-name{
+    font-size:6.6px!important;
+    margin-bottom:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-meta{
+    font-size:10.6px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-align{
+    font-size:7.3px!important;
+    line-height:1.2!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-card{
+    min-height:33px!important;
+    padding-top:3px!important;
+    padding-bottom:3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-cb{
+    min-height:24px!important;
+    padding-top:3px!important;
+    padding-bottom:3px!important;
+  }
+  html body:has(#mo-char.open) #s-game.screen.active .footer-bar{
+    z-index:190!important;
+    background:linear-gradient(180deg,rgba(16,13,9,.99),rgba(3,3,2,1))!important;
+  }
+  html body:has(#mo-char.open)::after{
+    content:''!important;
+    position:fixed!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    height:calc(96px + env(safe-area-inset-bottom))!important;
+    z-index:175!important;
+    pointer-events:none!important;
+    background:linear-gradient(180deg,rgba(3,3,2,0),#030302 22%,#030302 100%)!important;
+  }
+}
+</style>
+
 <style id="aimaster-v6239-status-mobile-balance-scroll-eof">
 /* v6.2.39 EOF: Status mobile equilibrado e scroll completo ate bonus raciais. */
 @media(max-width:430px){
@@ -28891,6 +29033,148 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
   html body #mo-char#mo-char #tab-stats #sh-profile-bonuses{
     margin-bottom:34px!important;
     padding-bottom:20px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6240-status-premium-mobile-final-eof">
+/* v6.2.40 EOF: ficha Status mobile premium, sem titulos internos e sem vazamento no footer. */
+@media(max-width:430px){
+  html body #mo-char#mo-char .ms{
+    padding-bottom:118px!important;
+    overflow-y:auto!important;
+    scroll-padding-bottom:150px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:148px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"
+      "profile profile"!important;
+    gap:8px 10px!important;
+    padding:8px 4px 268px!important;
+    min-height:auto!important;
+    align-content:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:first-of-type,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:nth-of-type(2){
+    display:none!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    margin-top:4px!important;
+    padding:8px 6px!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+    grid-area:hero!important;
+    margin-top:4px!important;
+    min-height:68px!important;
+    padding:8px 5px!important;
+    grid-template-columns:36px minmax(0,1fr)!important;
+    gap:7px!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-resources{
+    grid-area:res!important;
+    margin:0!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-combat-bar{
+    grid-area:combat!important;
+    margin-top:2px!important;
+    align-self:start!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-profile-tags{
+    grid-area:profile!important;
+    grid-column:1 / -1!important;
+    margin-top:12px!important;
+    padding-top:10px!important;
+    border-top:1px solid rgba(218,169,69,.18)!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-profile-bonuses{
+    grid-column:1 / -1!important;
+    margin-top:8px!important;
+    margin-bottom:0!important;
+    padding-bottom:112px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .stats-row{
+    gap:5px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sb{
+    grid-template-columns:50px 34px 24px!important;
+    min-height:28px!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sn,
+  html body #mo-char#mo-char #tab-stats #sh-stats .sv,
+  html body #mo-char#mo-char #tab-stats #sh-stats .sm{
+    min-height:26px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sn{
+    font-size:10.1px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sv{
+    font-size:15.1px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-box{
+    margin-top:7px!important;
+    padding-top:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-pill{
+    font-size:5.65px!important;
+    padding:2px 3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-portrait{
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-info{
+    padding-top:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-name{
+    font-size:6.6px!important;
+    margin-bottom:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-meta{
+    font-size:10.6px!important;
+    line-height:1.08!important;
+    white-space:normal!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-align{
+    font-size:7.3px!important;
+    line-height:1.2!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-card{
+    min-height:33px!important;
+    padding-top:3px!important;
+    padding-bottom:3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-cb{
+    min-height:24px!important;
+    padding-top:3px!important;
+    padding-bottom:3px!important;
+  }
+  html body:has(#mo-char.open) #s-game.screen.active .footer-bar{
+    z-index:190!important;
+    background:linear-gradient(180deg,rgba(16,13,9,.99),rgba(3,3,2,1))!important;
+  }
+  html body:has(#mo-char.open)::after{
+    content:''!important;
+    position:fixed!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    height:calc(96px + env(safe-area-inset-bottom))!important;
+    z-index:175!important;
+    pointer-events:none!important;
+    background:linear-gradient(180deg,rgba(3,3,2,0),#030302 22%,#030302 100%)!important;
   }
 }
 </style>
