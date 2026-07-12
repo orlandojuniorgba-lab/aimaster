@@ -1607,6 +1607,216 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
 }
 </style>
 
+<style id="aimaster-v6242-status-racial-under-saves-eof">
+/* v6.2.42 EOF: raciais dentro da coluna de atributos, abaixo das salvaguardas. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:150px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"!important;
+    gap:8px 10px!important;
+    padding-bottom:184px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-self:start!important;
+    max-height:460px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile{
+    margin-top:8px!important;
+    padding-top:8px!important;
+    border-top:1px solid rgba(218,169,69,.18)!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:4px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    font-size:5.8px!important;
+    padding:2px 5px!important;
+    letter-spacing:.45px!important;
+    border-radius:999px!important;
+    max-width:68px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses{
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:4px!important;
+    max-height:92px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child{
+    margin:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child > div:first-child{
+    font-size:6.1px!important;
+    letter-spacing:.8px!important;
+    margin-bottom:3px!important;
+    opacity:.78!important;
+  }
+  html body #mo-char#mo-char #tab-stats .racial-bonus-tag{
+    display:inline-flex!important;
+    align-items:center!important;
+    min-height:15px!important;
+    margin:0 3px 3px 0!important;
+    padding:2px 5px!important;
+    border-radius:999px!important;
+    border:1px solid rgba(46,204,113,.35)!important;
+    background:rgba(18,90,50,.24)!important;
+    color:#7ee0a2!important;
+    font-size:6.4px!important;
+    font-family:var(--font-title)!important;
+    letter-spacing:.35px!important;
+    white-space:nowrap!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .pp-bonus{
+    min-height:18px!important;
+    padding:4px 6px!important;
+    border-radius:9px!important;
+    border:1px solid rgba(218,169,69,.20)!important;
+    background:rgba(9,7,4,.54)!important;
+    color:rgba(240,221,176,.82)!important;
+    font-size:7px!important;
+    line-height:1.15!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row span[style*="font-size:12px"]{
+    font-size:7px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-icon{
+    font-size:8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-val{
+    font-size:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats > #sh-profile-tags,
+  html body #mo-char#mo-char #tab-stats > #sh-profile-bonuses{
+    display:none!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6242-status-racial-under-saves">
+/* v6.2.42: informacoes raciais abaixo das salvaguardas, proporcionais ao bloco direito. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:150px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"!important;
+    gap:8px 10px!important;
+    padding-bottom:184px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-self:start!important;
+    max-height:460px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile{
+    margin-top:8px!important;
+    padding-top:8px!important;
+    border-top:1px solid rgba(218,169,69,.18)!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:4px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    font-size:5.8px!important;
+    padding:2px 5px!important;
+    letter-spacing:.45px!important;
+    border-radius:999px!important;
+    max-width:68px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses{
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:4px!important;
+    max-height:92px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child{
+    margin:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child > div:first-child{
+    font-size:6.1px!important;
+    letter-spacing:.8px!important;
+    margin-bottom:3px!important;
+    opacity:.78!important;
+  }
+  html body #mo-char#mo-char #tab-stats .racial-bonus-tag{
+    display:inline-flex!important;
+    align-items:center!important;
+    min-height:15px!important;
+    margin:0 3px 3px 0!important;
+    padding:2px 5px!important;
+    border-radius:999px!important;
+    border:1px solid rgba(46,204,113,.35)!important;
+    background:rgba(18,90,50,.24)!important;
+    color:#7ee0a2!important;
+    font-size:6.4px!important;
+    font-family:var(--font-title)!important;
+    letter-spacing:.35px!important;
+    white-space:nowrap!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .pp-bonus{
+    min-height:18px!important;
+    padding:4px 6px!important;
+    border-radius:9px!important;
+    border:1px solid rgba(218,169,69,.20)!important;
+    background:rgba(9,7,4,.54)!important;
+    color:rgba(240,221,176,.82)!important;
+    font-size:7px!important;
+    line-height:1.15!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row span[style*="font-size:12px"]{
+    font-size:7px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-icon{
+    font-size:8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-val{
+    font-size:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats > #sh-profile-tags,
+  html body #mo-char#mo-char #tab-stats > #sh-profile-bonuses{
+    display:none!important;
+  }
+}
+</style>
+
 <style id="aimaster-v6240-status-premium-mobile-final">
 /* v6.2.40: ficha Status mobile com composicao premium e sem vazamento sob o footer. */
 @media(max-width:430px){
@@ -1745,6 +1955,111 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
     z-index:175!important;
     pointer-events:none!important;
     background:linear-gradient(180deg,rgba(3,3,2,0),#030302 22%,#030302 100%)!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6242-status-racial-under-saves-final">
+/* v6.2.42 final: raciais abaixo das salvaguardas, sem ultrapassar a coluna de Diamantes. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:150px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"!important;
+    gap:8px 10px!important;
+    padding-bottom:184px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-self:start!important;
+    max-height:460px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile{
+    margin-top:8px!important;
+    padding-top:8px!important;
+    border-top:1px solid rgba(218,169,69,.18)!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:4px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    font-size:5.8px!important;
+    padding:2px 5px!important;
+    letter-spacing:.45px!important;
+    border-radius:999px!important;
+    max-width:68px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses{
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:4px!important;
+    max-height:92px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child{
+    margin:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child > div:first-child{
+    font-size:6.1px!important;
+    letter-spacing:.8px!important;
+    margin-bottom:3px!important;
+    opacity:.78!important;
+  }
+  html body #mo-char#mo-char #tab-stats .racial-bonus-tag{
+    display:inline-flex!important;
+    align-items:center!important;
+    min-height:15px!important;
+    margin:0 3px 3px 0!important;
+    padding:2px 5px!important;
+    border-radius:999px!important;
+    border:1px solid rgba(46,204,113,.35)!important;
+    background:rgba(18,90,50,.24)!important;
+    color:#7ee0a2!important;
+    font-size:6.4px!important;
+    font-family:var(--font-title)!important;
+    letter-spacing:.35px!important;
+    white-space:nowrap!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .pp-bonus{
+    min-height:18px!important;
+    padding:4px 6px!important;
+    border-radius:9px!important;
+    border:1px solid rgba(218,169,69,.20)!important;
+    background:rgba(9,7,4,.54)!important;
+    color:rgba(240,221,176,.82)!important;
+    font-size:7px!important;
+    line-height:1.15!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row span[style*="font-size:12px"]{
+    font-size:7px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-icon{
+    font-size:8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-val{
+    font-size:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats > #sh-profile-tags,
+  html body #mo-char#mo-char #tab-stats > #sh-profile-bonuses{
+    display:none!important;
   }
 }
 </style>
@@ -8375,6 +8690,34 @@ function buildFullStatBlock(finalStats, cls, level){
   return `<div class="stats-row" style="margin-bottom:8px">${rows}</div><div class="sh-save-box"><span class="sh-save-title">SALVAGUARDAS</span><div class="sh-save-grid">${saveRows}</div></div>`;
 }
 
+function ensureSheetProfileUnderSaves(){
+  const statsBox=document.getElementById('sh-stats');
+  if(!statsBox) return {};
+  let holder=document.getElementById('sh-left-profile');
+  let tags=document.getElementById('sh-profile-tags');
+  let bonuses=document.getElementById('sh-profile-bonuses');
+  if(!holder){
+    holder=document.createElement('div');
+    holder.id='sh-left-profile';
+  }
+  if(!tags){
+    tags=document.createElement('div');
+    tags.id='sh-profile-tags';
+    tags.className='pp-tags';
+  }
+  if(!bonuses){
+    bonuses=document.createElement('div');
+    bonuses.id='sh-profile-bonuses';
+    bonuses.className='pp-bonuses';
+  }
+  tags.classList.add('pp-tags');
+  bonuses.classList.add('pp-bonuses');
+  holder.appendChild(tags);
+  holder.appendChild(bonuses);
+  statsBox.appendChild(holder);
+  return {tags,bonuses,holder};
+}
+
 
 // ══ D&D 5e SPELLS & CANTRIPS DATA ══
 
@@ -9311,6 +9654,7 @@ function startAdventure(){
   }
   const shStats=document.getElementById('sh-stats');
   if(shStats) shStats.innerHTML=buildFullStatBlock(stats,cls,1);
+  ensureSheetProfileUnderSaves();
 
   // Perfil ativo
   const rp=PROFILES.race[race]||{};
@@ -15435,6 +15779,7 @@ function updateCharSheet(){
   }
 
   // Estilo de combate (se tiver)
+  ensureSheetProfileUnderSaves();
   const profileBonuses = document.getElementById('sh-profile-bonuses');
   if(profileBonuses){
     let bonusTxt = '';
@@ -29175,6 +29520,111 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
     z-index:175!important;
     pointer-events:none!important;
     background:linear-gradient(180deg,rgba(3,3,2,0),#030302 22%,#030302 100%)!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6242-status-racial-under-saves-final-real">
+/* v6.2.42 real: raciais abaixo das salvaguardas, sem ultrapassar a coluna de Diamantes. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:150px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"!important;
+    gap:8px 10px!important;
+    padding-bottom:184px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-self:start!important;
+    max-height:460px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile{
+    margin-top:8px!important;
+    padding-top:8px!important;
+    border-top:1px solid rgba(218,169,69,.18)!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags{
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:4px!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    font-size:5.8px!important;
+    padding:2px 5px!important;
+    letter-spacing:.45px!important;
+    border-radius:999px!important;
+    max-width:68px!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses{
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:4px!important;
+    max-height:92px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child{
+    margin:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses > div:first-child > div:first-child{
+    font-size:6.1px!important;
+    letter-spacing:.8px!important;
+    margin-bottom:3px!important;
+    opacity:.78!important;
+  }
+  html body #mo-char#mo-char #tab-stats .racial-bonus-tag{
+    display:inline-flex!important;
+    align-items:center!important;
+    min-height:15px!important;
+    margin:0 3px 3px 0!important;
+    padding:2px 5px!important;
+    border-radius:999px!important;
+    border:1px solid rgba(46,204,113,.35)!important;
+    background:rgba(18,90,50,.24)!important;
+    color:#7ee0a2!important;
+    font-size:6.4px!important;
+    font-family:var(--font-title)!important;
+    letter-spacing:.35px!important;
+    white-space:nowrap!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .pp-bonus{
+    min-height:18px!important;
+    padding:4px 6px!important;
+    border-radius:9px!important;
+    border:1px solid rgba(218,169,69,.20)!important;
+    background:rgba(9,7,4,.54)!important;
+    color:rgba(240,221,176,.82)!important;
+    font-size:7px!important;
+    line-height:1.15!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row span[style*="font-size:12px"]{
+    font-size:7px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-icon{
+    font-size:8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .b-val{
+    font-size:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats > #sh-profile-tags,
+  html body #mo-char#mo-char #tab-stats > #sh-profile-bonuses{
+    display:none!important;
   }
 }
 </style>
