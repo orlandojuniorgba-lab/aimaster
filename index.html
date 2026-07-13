@@ -1607,6 +1607,147 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
 }
 </style>
 
+<style id="aimaster-v6243-status-mobile-polish-final">
+/* v6.2.43: ajustes finais pedidos para Status mobile. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:172px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"!important;
+    gap:8px 9px!important;
+    padding:6px 3px 180px!important;
+  }
+  html body #mo-char#mo-char #tab-stats > .sec-hdr,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:first-of-type,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:nth-of-type(2){
+    display:none!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    margin-top:0!important;
+    padding:8px 7px!important;
+    max-height:458px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sb{
+    grid-template-columns:62px 36px 26px!important;
+    gap:5px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sn{
+    font-size:10.8px!important;
+    padding-left:8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sv{
+    font-size:15.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sm{
+    font-size:9.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-pill{
+    font-size:5.85px!important;
+    padding:2px 4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+    grid-area:hero!important;
+    margin-top:0!important;
+    grid-template-columns:34px minmax(0,1fr)!important;
+    gap:6px!important;
+    min-height:66px!important;
+    padding:7px 4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-portrait{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-name{
+    font-size:6.35px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-meta{
+    font-size:10.2px!important;
+    line-height:1.06!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-align{
+    font-size:7px!important;
+    line-height:1.15!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-resources{
+    grid-area:res!important;
+    margin:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-card,
+  html body #mo-char#mo-char #tab-stats .sh-cb{
+    grid-template-columns:15px minmax(0,1fr) auto!important;
+    gap:3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-icon,
+  html body #mo-char#mo-char #tab-stats .sh-cb-ic{
+    width:14px!important;
+    min-width:14px!important;
+    text-align:center!important;
+    justify-self:start!important;
+    margin-right:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-sub,
+  html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
+    padding-left:0!important;
+    margin-left:0!important;
+    font-size:7.8px!important;
+    line-height:1.12!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-val,
+  html body #mo-char#mo-char #tab-stats .sh-cb-val{
+    font-size:8.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-combat-bar{
+    grid-area:combat!important;
+    margin-top:1px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile{
+    margin-top:8px!important;
+    padding-top:7px!important;
+    gap:5px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    max-width:none!important;
+    width:100%!important;
+    text-align:center!important;
+    font-size:6px!important;
+    padding:2px 3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses{
+    max-height:76px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses .pp-bonus,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses .bonus-row{
+    font-size:6.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses .pp-bonus:first-child:last-child,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses .pp-bonus:has(+ .pp-bonus):first-child{
+    display:none!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses .pp-bonus{
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+}
+</style>
+
 <style id="aimaster-v6242-status-racial-under-saves-eof">
 /* v6.2.42 EOF: raciais dentro da coluna de atributos, abaixo das salvaguardas. */
 @media(max-width:430px){
@@ -15795,6 +15936,9 @@ function updateCharSheet(){
       bonusTxt += `<span class="pp-bonus">✨ Truques: ${heroKnownCantrips.slice(0,3).join(', ')}${heroKnownCantrips.length>3?'...':''}</span>`;
     }
     if(bonusTxt) profileBonuses.innerHTML = bonusTxt;
+    Array.from(profileBonuses.querySelectorAll('.pp-bonus')).forEach(el=>{
+      if(/truques/i.test(el.textContent||'')) el.remove();
+    });
   }
 
   // Skills
@@ -29625,6 +29769,139 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
   html body #mo-char#mo-char #tab-stats > #sh-profile-tags,
   html body #mo-char#mo-char #tab-stats > #sh-profile-bonuses{
     display:none!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6243-status-mobile-polish-final-real">
+/* v6.2.43 real: ajustes finais pedidos para Status mobile. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:172px minmax(0,1fr)!important;
+    grid-template-areas:
+      "attrs hero"
+      "attrs res"
+      "attrs combat"!important;
+    gap:8px 9px!important;
+    padding:6px 3px 180px!important;
+  }
+  html body #mo-char#mo-char #tab-stats > .sec-hdr,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:first-of-type,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:nth-of-type(2){
+    display:none!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats{
+    grid-area:attrs!important;
+    margin-top:0!important;
+    padding:8px 7px!important;
+    max-height:458px!important;
+    overflow:hidden!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sb{
+    grid-template-columns:62px 36px 26px!important;
+    gap:5px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sn{
+    font-size:10.8px!important;
+    padding-left:8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sv{
+    font-size:15.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-stats .sm{
+    font-size:9.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-save-pill{
+    font-size:5.85px!important;
+    padding:2px 4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+    grid-area:hero!important;
+    margin-top:0!important;
+    grid-template-columns:34px minmax(0,1fr)!important;
+    gap:6px!important;
+    min-height:66px!important;
+    padding:7px 4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-portrait{
+    width:32px!important;
+    height:32px!important;
+    min-width:32px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-name{
+    font-size:6.35px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-meta{
+    font-size:10.2px!important;
+    line-height:1.06!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-align{
+    font-size:7px!important;
+    line-height:1.15!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-resources{
+    grid-area:res!important;
+    margin:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-card,
+  html body #mo-char#mo-char #tab-stats .sh-cb{
+    grid-template-columns:15px minmax(0,1fr) auto!important;
+    gap:3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-icon,
+  html body #mo-char#mo-char #tab-stats .sh-cb-ic{
+    width:14px!important;
+    min-width:14px!important;
+    text-align:center!important;
+    justify-self:start!important;
+    margin-right:0!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-sub,
+  html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
+    padding-left:0!important;
+    margin-left:0!important;
+    font-size:7.8px!important;
+    line-height:1.12!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-val,
+  html body #mo-char#mo-char #tab-stats .sh-cb-val{
+    font-size:8.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-combat-bar{
+    grid-area:combat!important;
+    margin-top:1px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile{
+    margin-top:8px!important;
+    padding-top:7px!important;
+    gap:5px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    max-width:none!important;
+    width:100%!important;
+    text-align:center!important;
+    font-size:6px!important;
+    padding:2px 3px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses{
+    max-height:76px!important;
+  }
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses .pp-bonus,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses .bonus-row{
+    font-size:6.8px!important;
   }
 }
 </style>
