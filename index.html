@@ -1607,6 +1607,182 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
 }
 </style>
 
+<style id="aimaster-v6245-status-icons-alignment-final">
+/* v6.2.45: brasao de classe maior e alinhamento premium das linhas de status. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:176px minmax(0,1fr)!important;
+    gap:8px 7px!important;
+    padding-bottom:150px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+    grid-template-columns:46px minmax(0,1fr)!important;
+    min-height:82px!important;
+    gap:8px!important;
+    padding:8px 5px 9px!important;
+    align-items:center!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-portrait{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    border-radius:10px!important;
+    font-size:21px!important;
+    background-size:cover!important;
+    background-position:center!important;
+    filter:brightness(1.16) contrast(1.12) saturate(1.08)!important;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,.88),
+      0 0 0 2px rgba(201,146,42,.42),
+      inset 0 0 16px rgba(0,0,0,.48),
+      0 0 18px rgba(201,146,42,.20)!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-portrait::after{
+    border-radius:10px!important;
+    background:
+      linear-gradient(135deg, rgba(255,230,154,.24), transparent 34%),
+      radial-gradient(circle at 50% 50%, transparent 42%, rgba(0,0,0,.36) 78%)!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-info{
+    min-width:0!important;
+    align-self:center!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-name{
+    margin-bottom:3px!important;
+    font-size:6.7px!important;
+    letter-spacing:.82px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-meta{
+    font-size:11.8px!important;
+    line-height:1.03!important;
+    letter-spacing:.25px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-align{
+    margin-top:3px!important;
+    font-size:7.15px!important;
+    line-height:1.15!important;
+    max-width:100%!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-resources{
+    gap:5px!important;
+    padding-top:0!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-card{
+    display:grid!important;
+    grid-template-columns:18px minmax(0,1fr) auto!important;
+    grid-template-areas:
+      "ico label val"
+      "ico bar bar"!important;
+    align-items:center!important;
+    column-gap:4px!important;
+    row-gap:2px!important;
+    min-height:34px!important;
+    padding:3px 0 4px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-icon{
+    grid-area:ico!important;
+    width:18px!important;
+    min-width:18px!important;
+    height:18px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:14px!important;
+    line-height:1!important;
+    transform:none!important;
+    filter:drop-shadow(0 0 6px rgba(255,215,126,.18))!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-sub{
+    grid-area:label!important;
+    align-self:center!important;
+    padding:0!important;
+    margin:0!important;
+    font-size:8.2px!important;
+    line-height:1!important;
+    letter-spacing:.12px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-val{
+    grid-area:val!important;
+    align-self:center!important;
+    padding:0!important;
+    margin:0!important;
+    font-size:9.6px!important;
+    line-height:1!important;
+    min-width:28px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-bar{
+    grid-area:bar!important;
+    margin-top:0!important;
+    height:4px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-combat-bar{
+    padding-top:8px!important;
+    gap:4px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb{
+    grid-template-columns:17px minmax(0,1fr) auto!important;
+    align-items:center!important;
+    min-height:25px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb-ic{
+    width:17px!important;
+    min-width:17px!important;
+    height:17px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    line-height:1!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
+    align-self:center!important;
+    line-height:1.05!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb-val{
+    align-self:center!important;
+    line-height:1!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    min-height:17px!important;
+    font-size:6.05px!important;
+    color:rgba(240,221,176,.84)!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .pp-bonus{
+    min-height:22px!important;
+    padding:4px 7px!important;
+  }
+}
+</style>
+
 <style id="aimaster-v6244-status-premium-balance-final">
 /* v6.2.44: refino premium da ficha Status mobile, sem alterar motor. */
 @media(max-width:430px){
@@ -1816,6 +1992,182 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
     border-top:1px solid rgba(218,169,69,.12)!important;
     margin-top:2px!important;
     padding-top:5px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6245-status-icons-alignment-final-real">
+/* v6.2.45 real: brasao de classe maior e alinhamento premium das linhas de status. */
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    grid-template-columns:176px minmax(0,1fr)!important;
+    gap:8px 7px!important;
+    padding-bottom:150px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+    grid-template-columns:46px minmax(0,1fr)!important;
+    min-height:82px!important;
+    gap:8px!important;
+    padding:8px 5px 9px!important;
+    align-items:center!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-portrait{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    border-radius:10px!important;
+    font-size:21px!important;
+    background-size:cover!important;
+    background-position:center!important;
+    filter:brightness(1.16) contrast(1.12) saturate(1.08)!important;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,.88),
+      0 0 0 2px rgba(201,146,42,.42),
+      inset 0 0 16px rgba(0,0,0,.48),
+      0 0 18px rgba(201,146,42,.20)!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-portrait::after{
+    border-radius:10px!important;
+    background:
+      linear-gradient(135deg, rgba(255,230,154,.24), transparent 34%),
+      radial-gradient(circle at 50% 50%, transparent 42%, rgba(0,0,0,.36) 78%)!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-info{
+    min-width:0!important;
+    align-self:center!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-name{
+    margin-bottom:3px!important;
+    font-size:6.7px!important;
+    letter-spacing:.82px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-meta{
+    font-size:11.8px!important;
+    line-height:1.03!important;
+    letter-spacing:.25px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-hero-align{
+    margin-top:3px!important;
+    font-size:7.15px!important;
+    line-height:1.15!important;
+    max-width:100%!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-resources{
+    gap:5px!important;
+    padding-top:0!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-card{
+    display:grid!important;
+    grid-template-columns:18px minmax(0,1fr) auto!important;
+    grid-template-areas:
+      "ico label val"
+      "ico bar bar"!important;
+    align-items:center!important;
+    column-gap:4px!important;
+    row-gap:2px!important;
+    min-height:34px!important;
+    padding:3px 0 4px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-icon{
+    grid-area:ico!important;
+    width:18px!important;
+    min-width:18px!important;
+    height:18px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:14px!important;
+    line-height:1!important;
+    transform:none!important;
+    filter:drop-shadow(0 0 6px rgba(255,215,126,.18))!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-sub{
+    grid-area:label!important;
+    align-self:center!important;
+    padding:0!important;
+    margin:0!important;
+    font-size:8.2px!important;
+    line-height:1!important;
+    letter-spacing:.12px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-val{
+    grid-area:val!important;
+    align-self:center!important;
+    padding:0!important;
+    margin:0!important;
+    font-size:9.6px!important;
+    line-height:1!important;
+    min-width:28px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-res-bar{
+    grid-area:bar!important;
+    margin-top:0!important;
+    height:4px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-combat-bar{
+    padding-top:8px!important;
+    gap:4px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb{
+    grid-template-columns:17px minmax(0,1fr) auto!important;
+    align-items:center!important;
+    min-height:25px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb-ic{
+    width:17px!important;
+    min-width:17px!important;
+    height:17px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    line-height:1!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
+    align-self:center!important;
+    line-height:1.05!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-cb-val{
+    align-self:center!important;
+    line-height:1!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
+    min-height:17px!important;
+    font-size:6.05px!important;
+    color:rgba(240,221,176,.84)!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row,
+  html body #mo-char#mo-char #tab-stats #sh-left-profile .pp-bonus{
+    min-height:22px!important;
+    padding:4px 7px!important;
   }
 }
 </style>
@@ -8404,7 +8756,6 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
       </div>
     </div>
     <!-- Atributos com barra proporcional -->
-    <div class="sec-hdr" style="margin-bottom:6px">ATRIBUTOS</div>
     <div id="sh-stats"></div>
     <!-- Combat bar -->
     <div class="sh-combat-bar">
@@ -8417,7 +8768,6 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
       <div class="sh-cb sh-cb-currency"><div class="sh-cb-ic">💎</div><div class="sh-cb-val" id="sh-diamonds">0</div><div class="sh-cb-lbl">Diamantes</div></div>
     </div>
     <!-- Perfil ativo -->
-    <div class="sec-hdr" style="margin-top:10px;margin-bottom:6px">PERFIL ATIVO</div>
     <div id="sh-profile-tags" class="pp-tags"></div>
     <div id="sh-profile-bonuses" class="pp-bonuses" style="margin-top:6px"></div>
   </div>
@@ -30119,14 +30469,26 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
 }
 </style>
 
-<style id="aimaster-v6244-status-premium-balance-final-real">
-/* v6.2.44 real: camada final para equilibrar Status mobile. */
+<style id="aimaster-v6245-status-polish-final-real">
+/* v6.2.45: refino final da ficha Status mobile, mantendo apenas visual. */
 @media(max-width:430px){
   html body #mo-char#mo-char #tab-stats.sheet-page.active{
-    grid-template-columns:178px minmax(0,1fr)!important;
-    gap:8px 8px!important;
-    padding:4px 3px 145px!important;
+    grid-template-columns:176px minmax(0,1fr)!important;
+    gap:8px 7px!important;
+    padding:4px 3px 150px!important;
     align-content:start!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats > .sec-hdr,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:first-of-type,
+  html body #mo-char#mo-char #tab-stats > .sec-hdr:nth-of-type(2){
+    display:none!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+    opacity:0!important;
+    pointer-events:none!important;
   }
 
   html body #mo-char#mo-char #tab-stats #sh-stats{
@@ -30139,52 +30501,69 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
       linear-gradient(180deg, rgba(15,11,6,.88), rgba(2,2,1,.78))!important;
   }
 
-  html body #mo-char#mo-char #tab-stats #sh-stats .stats-row{
-    gap:6px!important;
-  }
-
+  html body #mo-char#mo-char #tab-stats #sh-stats .stats-row{gap:6px!important;}
   html body #mo-char#mo-char #tab-stats #sh-stats .sb{
     grid-template-columns:72px 38px 28px!important;
     min-height:36px!important;
     gap:6px!important;
+    align-items:center!important;
+    padding:0!important;
+    background:linear-gradient(180deg, rgba(18,13,8,.74), rgba(4,3,2,.82))!important;
+    border:1px solid rgba(218,169,69,.22)!important;
+    border-radius:9px!important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,224,145,.07),
+      0 0 10px rgba(0,0,0,.20)!important;
   }
-
   html body #mo-char#mo-char #tab-stats #sh-stats .sn{
+    height:100%!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:0!important;
     font-size:11px!important;
     letter-spacing:.45px!important;
+    border-right:1px solid rgba(218,169,69,.14)!important;
+    color:#f0ddb0!important;
+    text-shadow:0 1px 0 #000!important;
   }
-
   html body #mo-char#mo-char #tab-stats #sh-stats .sv{
+    height:100%!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
     font-size:17px!important;
     text-shadow:0 1px 0 #000,0 0 10px rgba(240,221,176,.22)!important;
+    color:#f6e7ba!important;
   }
-
   html body #mo-char#mo-char #tab-stats #sh-stats .sm{
+    height:100%!important;
+    min-width:26px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    padding:0!important;
     font-size:9.2px!important;
+    border-left:1px solid rgba(218,169,69,.12)!important;
+    color:#f0ddb0!important;
   }
 
   html body #mo-char#mo-char #tab-stats .sh-save-box{
     margin-top:7px!important;
     padding-top:7px!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-save-title{
     font-size:6.1px!important;
     letter-spacing:.85px!important;
     opacity:.74!important;
   }
-
-  html body #mo-char#mo-char #tab-stats .sh-save-grid{
-    gap:4px!important;
-  }
-
+  html body #mo-char#mo-char #tab-stats .sh-save-grid{gap:4px!important;}
   html body #mo-char#mo-char #tab-stats .sh-save-pill{
     min-height:14px!important;
     padding:2px 4px!important;
     font-size:5.9px!important;
     border-color:rgba(218,169,69,.18)!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-save-pill.prof{
     background:linear-gradient(180deg, rgba(31,128,75,.38), rgba(6,36,22,.48))!important;
     border-color:rgba(76,218,126,.44)!important;
@@ -30197,30 +30576,27 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
     border-top:1px solid rgba(218,169,69,.16)!important;
     gap:6px!important;
   }
-
   html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags{
     display:grid!important;
     grid-template-columns:repeat(2,minmax(0,1fr))!important;
     gap:5px!important;
   }
-
   html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-tags .tag{
-    min-height:18px!important;
+    min-height:17px!important;
     padding:3px 5px!important;
-    font-size:6.2px!important;
+    font-size:6.05px!important;
     letter-spacing:.48px!important;
     border-radius:999px!important;
     border-color:rgba(218,169,69,.30)!important;
     background:linear-gradient(180deg, rgba(31,22,12,.76), rgba(8,7,5,.62))!important;
     box-shadow:inset 0 1px 0 rgba(255,224,145,.10)!important;
+    color:rgba(240,221,176,.84)!important;
   }
-
   html body #mo-char#mo-char #tab-stats #sh-left-profile #sh-profile-bonuses{
     max-height:none!important;
     overflow:visible!important;
     gap:5px!important;
   }
-
   html body #mo-char#mo-char #tab-stats .racial-bonus-tag{
     min-height:16px!important;
     padding:2px 6px!important;
@@ -30228,11 +30604,10 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
     background:linear-gradient(180deg, rgba(20,104,60,.34), rgba(7,45,28,.42))!important;
     border-color:rgba(78,220,132,.42)!important;
   }
-
   html body #mo-char#mo-char #tab-stats #sh-left-profile .bonus-row,
   html body #mo-char#mo-char #tab-stats #sh-left-profile .pp-bonus{
-    min-height:24px!important;
-    padding:5px 7px!important;
+    min-height:22px!important;
+    padding:4px 7px!important;
     border-radius:10px!important;
     font-size:7px!important;
     background:linear-gradient(180deg, rgba(18,13,8,.84), rgba(5,4,3,.70))!important;
@@ -30240,90 +30615,172 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
   }
 
   html body #mo-char#mo-char #tab-stats .sh-hero-banner{
-    min-height:68px!important;
-    padding:7px 5px 8px!important;
+    grid-template-columns:46px minmax(0,1fr)!important;
+    min-height:82px!important;
+    gap:8px!important;
+    padding:8px 5px 9px!important;
+    align-items:center!important;
     border-bottom:1px solid rgba(218,169,69,.16)!important;
   }
-
+  html body #mo-char#mo-char #tab-stats .sh-portrait{
+    width:44px!important;
+    height:44px!important;
+    min-width:44px!important;
+    border-radius:10px!important;
+    font-size:21px!important;
+    background-size:cover!important;
+    background-position:center!important;
+    filter:brightness(1.16) contrast(1.12) saturate(1.08)!important;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,.88),
+      0 0 0 2px rgba(201,146,42,.42),
+      inset 0 0 16px rgba(0,0,0,.48),
+      0 0 18px rgba(201,146,42,.20)!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-portrait::after{
+    border-radius:10px!important;
+    background:
+      linear-gradient(135deg, rgba(255,230,154,.24), transparent 34%),
+      radial-gradient(circle at 50% 50%, transparent 42%, rgba(0,0,0,.36) 78%)!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-hero-info{
+    min-width:0!important;
+    align-self:center!important;
+  }
   html body #mo-char#mo-char #tab-stats .sh-hero-name{
-    font-size:6.6px!important;
+    margin-bottom:3px!important;
+    font-size:6.7px!important;
+    letter-spacing:.82px!important;
     color:#c8922a!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-hero-meta{
-    font-size:10.8px!important;
+    font-size:11.8px!important;
+    line-height:1.03!important;
+    letter-spacing:.25px!important;
     color:#f0ddb0!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-hero-align{
-    font-size:7.2px!important;
+    margin-top:3px!important;
+    font-size:7.15px!important;
+    line-height:1.15!important;
     color:rgba(240,221,176,.82)!important;
+    max-width:100%!important;
   }
 
   html body #mo-char#mo-char #tab-stats .sh-resources{
-    padding-top:2px!important;
-    gap:7px!important;
+    padding-top:0!important;
+    gap:5px!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-res-card{
-    min-height:31px!important;
-    grid-template-columns:16px minmax(0,1fr) auto!important;
-    column-gap:5px!important;
-    padding:2px 0!important;
+    display:grid!important;
+    grid-template-columns:18px minmax(0,1fr) auto!important;
+    grid-template-areas:"ico label val" "ico bar bar"!important;
+    align-items:center!important;
+    column-gap:4px!important;
+    row-gap:2px!important;
+    min-height:34px!important;
+    padding:3px 0 4px!important;
   }
-
+  html body #mo-char#mo-char #tab-stats .sh-res-card > *{
+    min-width:0!important;
+  }
   html body #mo-char#mo-char #tab-stats .sh-res-icon{
-    width:16px!important;
-    min-width:16px!important;
-    font-size:13px!important;
-    transform:translateY(1px)!important;
+    grid-area:ico!important;
+    width:18px!important;
+    min-width:18px!important;
+    height:18px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    font-size:14px!important;
+    line-height:1!important;
+    transform:none!important;
+    filter:drop-shadow(0 0 6px rgba(255,215,126,.18))!important;
   }
-
+  html body #mo-char#mo-char #tab-stats .sh-res-card .sh-res-val{
+    grid-area:val!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-card .sh-res-sub{
+    grid-area:label!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-card .sh-res-bar{
+    grid-area:bar!important;
+  }
   html body #mo-char#mo-char #tab-stats .sh-res-sub{
-    font-size:8px!important;
-    letter-spacing:.15px!important;
+    grid-area:label!important;
+    align-self:center!important;
+    padding:0!important;
+    margin:0!important;
+    font-size:8.2px!important;
+    line-height:1!important;
+    letter-spacing:.12px!important;
     color:rgba(240,221,176,.78)!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-res-val{
-    font-size:9.4px!important;
+    grid-area:val!important;
+    align-self:center!important;
+    padding:0!important;
+    margin:0!important;
+    font-size:9.6px!important;
+    line-height:1!important;
+    min-width:28px!important;
     color:#f6e7ba!important;
     text-shadow:0 0 8px rgba(201,146,42,.18)!important;
+    text-align:right!important;
+  }
+  html body #mo-char#mo-char #tab-stats .sh-res-bar{
+    grid-area:bar!important;
+    margin-top:0!important;
+    height:4px!important;
   }
 
   html body #mo-char#mo-char #tab-stats .sh-combat-bar{
     margin-top:2px!important;
-    padding-top:7px!important;
+    padding-top:8px!important;
     border-top:1px solid rgba(218,169,69,.18)!important;
+    gap:4px!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-cb{
-    grid-template-columns:16px minmax(0,1fr) auto!important;
+    grid-template-columns:17px minmax(0,1fr) auto!important;
     column-gap:5px!important;
-    min-height:24px!important;
+    align-items:center!important;
+    min-height:25px!important;
     padding:2px 0!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-cb-ic{
-    width:16px!important;
-    min-width:16px!important;
+    width:17px!important;
+    min-width:17px!important;
+    height:17px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
     font-size:11px!important;
+    line-height:1!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
+    align-self:center!important;
     font-size:7.9px!important;
     color:rgba(240,221,176,.76)!important;
     white-space:normal!important;
-    line-height:1.1!important;
+    line-height:1.05!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-cb-val{
+    align-self:center!important;
     font-size:9.2px!important;
     color:#f4dfaa!important;
     min-width:24px!important;
     text-align:right!important;
+    line-height:1!important;
   }
-
   html body #mo-char#mo-char #tab-stats .sh-cb-currency{
     border-top:1px solid rgba(218,169,69,.12)!important;
     margin-top:2px!important;
