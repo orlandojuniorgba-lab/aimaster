@@ -1893,6 +1893,59 @@ html body #mo-char#mo-char #tab-stats .sh-hero-align{
 }
 </style>
 
+<style id="aimaster-v6263-status-micro-polish-eof">
+/* v6.2.63: micro-polimento final da aba Status. */
+html body #mo-char#mo-char #tab-stats.sheet-page.active{
+  box-shadow:
+    inset 0 0 42px rgba(0,0,0,.52),
+    inset 0 1px 0 rgba(255,232,165,.09),
+    0 0 22px rgba(0,0,0,.24)!important;
+}
+
+html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+  border-bottom-color:rgba(218,169,69,.27)!important;
+}
+
+html body #mo-char#mo-char #tab-stats .sh-res-card,
+html body #mo-char#mo-char #tab-stats .sh-cb{
+  border-bottom:1px solid rgba(218,169,69,.085)!important;
+}
+
+html body #mo-char#mo-char #tab-stats .sh-cb:last-child,
+html body #mo-char#mo-char #tab-stats .sh-res-card:last-child{
+  border-bottom-color:transparent!important;
+}
+
+html body #mo-char#mo-char #tab-stats .sh-res-sub,
+html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
+  text-shadow:0 1px 0 rgba(0,0,0,.55)!important;
+}
+
+html body #mo-char#mo-char #tab-stats .sh-save-box{
+  border-top-color:rgba(218,169,69,.19)!important;
+}
+
+html body #mo-char#mo-char #tab-stats #sh-profile-tags,
+html body #mo-char#mo-char #tab-stats #sh-left-profile{
+  border-top-color:rgba(218,169,69,.18)!important;
+}
+
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active{
+    padding-bottom:138px!important;
+    min-height:calc(92dvh - 205px)!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats .sh-combat-bar{
+    padding-top:8px!important;
+  }
+
+  html body #mo-char#mo-char #tab-stats #sh-profile-tags{
+    margin-top:2px!important;
+  }
+}
+</style>
+
 <style id="aimaster-v6262-status-readability-eof">
 /* v6.2.62: melhora leitura do nome, classe e caracteristicas raciais. */
 html body #mo-char#mo-char #tab-stats .sh-hero-info{
@@ -13775,6 +13828,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
 
 async function doAct(acao){
   if(thinking)return;
+  setActionsPanelCollapsed(true);
   const m=addMsg('msg-pl','');m.querySelector('.bbl').textContent='> '+acao;
   
   if(acao.toLowerCase().includes('mercador')){
@@ -13830,6 +13884,7 @@ async function sendFree(){
   const inp=document.getElementById('free-in');
   const txt=inp.value.trim();if(!txt)return;
   inp.value='';
+  setActionsPanelCollapsed(true);
 
   // ★ MODO OOC — pergunta fora do personagem
   if(isOOC){
@@ -31333,7 +31388,11 @@ html body #s-game.active.actions-collapsed .actions-wrap{
   padding:7px 8px 8px!important;
   margin-top:8px!important;
   margin-bottom:3px!important;
+  height:auto!important;
+  max-height:none!important;
   min-height:0!important;
+  flex:0 0 auto!important;
+  overflow:visible!important;
   position:relative!important;
   z-index:60!important;
 }
@@ -31361,12 +31420,14 @@ html body #s-game.active.actions-collapsed .ooc-toggle-row{
 html body #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
 html body #s-game.active:not(.actions-collapsed) .actions-wrap{
   padding-top:8px!important;
-  padding-bottom:104px!important;
-  margin-bottom:8px!important;
+  padding-bottom:128px!important;
+  margin-bottom:0!important;
+  min-height:0!important;
+  overflow:visible!important;
 }
 html body #s-game.screen.active:not(.actions-collapsed) #act-grid,
 html body #s-game.active:not(.actions-collapsed) #act-grid{
-  padding-bottom:18px!important;
+  padding-bottom:42px!important;
 }
 html body #s-game.screen.active:not(.actions-collapsed) #acts-lbl,
 html body #s-game.active:not(.actions-collapsed) #acts-lbl{
@@ -31403,34 +31464,44 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
     position:fixed!important;
     left:max(8px,calc((100vw - 430px)/2 + 8px))!important;
     right:max(8px,calc((100vw - 430px)/2 + 8px))!important;
-    bottom:calc(68px + env(safe-area-inset-bottom))!important;
+    bottom:calc(64px + env(safe-area-inset-bottom))!important;
     margin:0!important;
+    padding:6px 8px 7px!important;
+    height:auto!important;
+    max-height:none!important;
+    min-height:0!important;
     z-index:72!important;
+  }
+  html body #s-game.screen.active.actions-collapsed #acts-lbl,
+  html body #s-game.active.actions-collapsed #acts-lbl{
+    min-height:31px!important;
+    padding:8px 10px 7px!important;
+    margin:0!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
   html body #s-game.active:not(.actions-collapsed) .actions-wrap{
-    padding-bottom:96px!important;
+    padding-bottom:126px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) #act-grid,
   html body #s-game.active:not(.actions-collapsed) #act-grid{
-    padding-bottom:22px!important;
+    padding-bottom:52px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) #act-grid .act-btn:last-child,
   html body #s-game.active:not(.actions-collapsed) #act-grid .act-btn:last-child{
-    margin-bottom:18px!important;
+    margin-bottom:36px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) .narr,
   html body #s-game.active:not(.actions-collapsed) .narr{
-    flex:0 1 clamp(168px,25vh,215px)!important;
-    min-height:168px!important;
-    max-height:215px!important;
+    flex:0 1 clamp(138px,20vh,188px)!important;
+    min-height:138px!important;
+    max-height:188px!important;
   }
   @media(max-height:760px){
     html body #s-game.screen.active:not(.actions-collapsed) .narr,
     html body #s-game.active:not(.actions-collapsed) .narr{
-      flex-basis:158px!important;
-      min-height:158px!important;
-      max-height:182px!important;
+      flex-basis:126px!important;
+      min-height:126px!important;
+      max-height:158px!important;
     }
   }
 }
@@ -32316,6 +32387,35 @@ html body #mo-char#mo-char #tab-stats .racial-bonus-tag{background:linear-gradie
 
 <style id="aimaster-v6260-status-hero-seal-polish-eof">
 /* v6.2.60 EOF: centraliza o selo da classe e melhora a leitura da identidade. */
+/* v6.2.63: micro-polimento da aba Status. */
+html body #mo-char#mo-char #tab-stats.sheet-page.active{
+  box-shadow:
+    inset 0 0 42px rgba(0,0,0,.52),
+    inset 0 1px 0 rgba(255,232,165,.09),
+    0 0 22px rgba(0,0,0,.24)!important;
+}
+html body #mo-char#mo-char #tab-stats .sh-hero-banner{
+  border-bottom-color:rgba(218,169,69,.27)!important;
+}
+html body #mo-char#mo-char #tab-stats .sh-res-card,
+html body #mo-char#mo-char #tab-stats .sh-cb{
+  border-bottom:1px solid rgba(218,169,69,.085)!important;
+}
+html body #mo-char#mo-char #tab-stats .sh-cb:last-child,
+html body #mo-char#mo-char #tab-stats .sh-res-card:last-child{
+  border-bottom-color:transparent!important;
+}
+html body #mo-char#mo-char #tab-stats .sh-res-sub,
+html body #mo-char#mo-char #tab-stats .sh-cb-lbl{
+  text-shadow:0 1px 0 rgba(0,0,0,.55)!important;
+}
+html body #mo-char#mo-char #tab-stats .sh-save-box{
+  border-top-color:rgba(218,169,69,.19)!important;
+}
+html body #mo-char#mo-char #tab-stats #sh-profile-tags,
+html body #mo-char#mo-char #tab-stats #sh-left-profile{
+  border-top-color:rgba(218,169,69,.18)!important;
+}
 /* v6.2.62: leitura reforcada para nome, classe e caracteristicas raciais. */
 html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner .sh-hero-info .sh-hero-name{
   font-size:9.2px!important;
