@@ -1606,7 +1606,6 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
   }
 }
 </style>
-
 <style id="aimaster-v6261-status-premium-icons-eof">
 /* v6.2.61: icones premium da aba Status, sem alterar HTML ou logica. */
 html body #mo-char#mo-char #tab-stats .sh-res-icon,
@@ -11829,7 +11828,7 @@ function startAdventure(){
     shPortrait.dataset.symbol='1';
     shPortrait.dataset.class=cls;
     shPortrait.style.setProperty('--sheet-class-x',((classIndex % 4) * (100/3))+'%');
-    shPortrait.style.setProperty('--sheet-class-y',([0,43,86][Math.floor(classIndex / 4)]||0)+'%');
+    shPortrait.style.setProperty('--sheet-class-y',([0,50,100][Math.floor(classIndex / 4)]||0)+'%');
     shPortrait.textContent=classAv[cls]||'⚔️';
   }
   const shStats=document.getElementById('sh-stats');
@@ -17896,7 +17895,7 @@ function updateCharSheet(){
     portrait.dataset.symbol='1';
     portrait.dataset.class=hero.cls||'';
     portrait.style.setProperty('--sheet-class-x',((classIndex % 4) * (100/3))+'%');
-    portrait.style.setProperty('--sheet-class-y',([0,43,86][Math.floor(classIndex / 4)]||0)+'%');
+    portrait.style.setProperty('--sheet-class-y',([0,50,100][Math.floor(classIndex / 4)]||0)+'%');
   }
 
   const nm = document.getElementById('sh-nm');
@@ -32436,6 +32435,209 @@ html body #mo-char#mo-char #tab-stats .racial-bonus-tag{background:linear-gradie
 
 <style id="aimaster-v6260-status-hero-seal-polish-eof">
 /* v6.2.60 EOF: centraliza o selo da classe e melhora a leitura da identidade. */
+/* v6.2.66: identidade inspirada em BG3: brasao acima, dados abaixo, XP preservado. */
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  text-align:center!important;
+  gap:7px!important;
+  min-height:126px!important;
+  padding:3px 0 12px!important;
+  border-bottom:1px solid rgba(218,169,69,.24)!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+  width:74px!important;
+  height:74px!important;
+  min-width:74px!important;
+  margin:0 auto!important;
+  border-radius:13px!important;
+  background-size:cover!important;
+  background-position:center!important;
+  filter:brightness(1.34) contrast(1.20) saturate(1.12)!important;
+  box-shadow:
+    0 0 0 1px #050301,
+    0 0 0 2px rgba(218,169,69,.68),
+    inset 0 0 18px rgba(0,0,0,.45),
+    0 0 22px rgba(218,169,69,.22)!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-symbol]{
+  color:transparent!important;
+  text-shadow:none!important;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') var(--sheet-class-x) var(--sheet-class-y)/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Guerreiro"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 0% 0%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Mago"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 33.333% 0%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Ladino"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 66.666% 0%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Clérigo"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 100% 0%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Bardo"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 0% 50%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Paladino"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 33.333% 50%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Druida"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 66.666% 50%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Ranger"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 100% 50%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Bárbaro"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 0% 100%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Feiticeiro"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 33.333% 100%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Bruxo"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 66.666% 100%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-class="Monge"]{
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255,215,120,.12), transparent 36%),
+    linear-gradient(180deg, rgba(0,0,0,.04), rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') 100% 100%/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-info.sh-hero-info{
+  width:100%!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  text-align:center!important;
+  gap:0!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-info.sh-hero-info::before{
+  content:''!important;
+  display:block!important;
+  width:min(118px,86%)!important;
+  height:9px!important;
+  margin:0 auto 5px!important;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(231,199,123,.70) 0 2px,transparent 3px),
+    linear-gradient(90deg,transparent,rgba(218,169,69,.36),transparent)!important;
+  opacity:.88!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-name.sh-hero-name{
+  order:1!important;
+  width:100%!important;
+  color:#d9a94d!important;
+  font-family:var(--font-title)!important;
+  font-size:8.3px!important;
+  font-weight:900!important;
+  letter-spacing:1.05px!important;
+  line-height:1.05!important;
+  margin:0 0 4px!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-meta.sh-hero-meta{
+  order:2!important;
+  width:100%!important;
+  color:#f3dfab!important;
+  font-family:var(--font-title)!important;
+  font-size:15.2px!important;
+  font-weight:900!important;
+  line-height:1.02!important;
+  margin:0 0 4px!important;
+  letter-spacing:.2px!important;
+  text-shadow:0 1px 0 #000,0 0 12px rgba(218,169,69,.18)!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
+  order:3!important;
+  width:100%!important;
+  color:rgba(240,221,176,.86)!important;
+  font-size:8.7px!important;
+  line-height:1.16!important;
+  font-weight:700!important;
+  margin:0!important;
+  white-space:normal!important;
+  overflow:visible!important;
+}
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+    grid-area:hero!important;
+    min-height:132px!important;
+    padding:2px 0 11px!important;
+    gap:7px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+    width:72px!important;
+    height:72px!important;
+    min-width:72px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-name.sh-hero-name{
+    font-size:8px!important;
+    letter-spacing:1px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-meta.sh-hero-meta{
+    font-size:14.4px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
+    font-size:8.4px!important;
+  }
+}
+@media(max-width:374px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+    min-height:122px!important;
+    gap:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+    width:62px!important;
+    height:62px!important;
+    min-width:62px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-name.sh-hero-name{font-size:7.4px!important;}
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-meta.sh-hero-meta{font-size:13px!important;}
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{font-size:7.8px!important;}
+}
 /* v6.2.63: micro-polimento da aba Status. */
 html body #mo-char#mo-char #tab-stats.sheet-page.active{
   box-shadow:
