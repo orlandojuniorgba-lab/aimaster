@@ -1890,6 +1890,136 @@ html body #mo-char#mo-char #tab-stats .sh-hero-align{
     font-size:7.8px!important;
   }
 }
+
+/* v6.2.68: trava final de consistencia do layout Status para todas as classes/racas. */
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  text-align:center!important;
+  gap:7px!important;
+  min-height:126px!important;
+  padding:3px 0 12px!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:74px!important;
+  height:74px!important;
+  min-width:74px!important;
+  margin:0 auto!important;
+  border-radius:13px!important;
+  overflow:hidden!important;
+  filter:brightness(1.34) contrast(1.20) saturate(1.12)!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-symbol]{
+  color:transparent!important;
+  font-size:0!important;
+  text-shadow:none!important;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(255,215,120,.12),transparent 36%),
+    linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') var(--sheet-class-x) var(--sheet-class-y)/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-info.sh-hero-info{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  width:100%!important;
+  min-width:0!important;
+  text-align:center!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-info.sh-hero-info::before{
+  content:''!important;
+  display:block!important;
+  width:min(118px,86%)!important;
+  height:9px!important;
+  margin:0 auto 5px!important;
+  background:radial-gradient(circle at 50% 50%,rgba(231,199,123,.70) 0 2px,transparent 3px),linear-gradient(90deg,transparent,rgba(218,169,69,.36),transparent)!important;
+  opacity:.88!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-name.sh-hero-name{
+  order:1!important;
+  width:100%!important;
+  margin:0 0 4px!important;
+  color:#d9a94d!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:1px!important;
+  line-height:1.05!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-meta.sh-hero-meta{
+  order:2!important;
+  width:100%!important;
+  margin:0 0 4px!important;
+  color:#f3dfab!important;
+  font-family:var(--font-title)!important;
+  font-size:14.2px!important;
+  font-weight:900!important;
+  letter-spacing:.18px!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-shadow:0 1px 0 #000,0 0 12px rgba(218,169,69,.18)!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
+  order:3!important;
+  width:100%!important;
+  margin:0!important;
+  color:rgba(240,221,176,.86)!important;
+  font-size:8.4px!important;
+  line-height:1.18!important;
+  font-weight:700!important;
+  white-space:pre-line!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-tags,
+html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-bonuses{
+  min-width:0!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-tags .tag{
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+    min-height:132px!important;
+    gap:7px!important;
+    padding:2px 0 11px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+    width:72px!important;
+    height:72px!important;
+    min-width:72px!important;
+  }
+}
+@media(max-width:374px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+    min-height:122px!important;
+    gap:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+    width:62px!important;
+    height:62px!important;
+    min-width:62px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-meta.sh-hero-meta{
+    font-size:12.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
+    font-size:7.8px!important;
+  }
+}
 </style>
 
 <style id="aimaster-v6263-status-micro-polish-eof">
@@ -32919,6 +33049,137 @@ html body #mo-char#mo-char #tab-stats .sh-hero-align{
     font-size:12.4px!important;
   }
   html body #mo-char#mo-char #tab-stats .sh-hero-align{
+    font-size:7.8px!important;
+  }
+}
+</style>
+<style id="aimaster-v6268-status-consistency-lock-eof">
+/* v6.2.68 EOF: trava final de consistencia do Status para todas as classes e racas. */
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  text-align:center!important;
+  gap:7px!important;
+  min-height:126px!important;
+  padding:3px 0 12px!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:74px!important;
+  height:74px!important;
+  min-width:74px!important;
+  margin:0 auto!important;
+  border-radius:13px!important;
+  overflow:hidden!important;
+  filter:brightness(1.34) contrast(1.20) saturate(1.12)!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait[data-symbol]{
+  color:transparent!important;
+  font-size:0!important;
+  text-shadow:none!important;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(255,215,120,.12),transparent 36%),
+    linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.48)),
+    url('assets/classes/class-symbol-atlas-v1.jpg') var(--sheet-class-x) var(--sheet-class-y)/400% 300% no-repeat!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-info.sh-hero-info{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  width:100%!important;
+  min-width:0!important;
+  text-align:center!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-info.sh-hero-info::before{
+  content:''!important;
+  display:block!important;
+  width:min(118px,86%)!important;
+  height:9px!important;
+  margin:0 auto 5px!important;
+  background:radial-gradient(circle at 50% 50%,rgba(231,199,123,.70) 0 2px,transparent 3px),linear-gradient(90deg,transparent,rgba(218,169,69,.36),transparent)!important;
+  opacity:.88!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-name.sh-hero-name{
+  order:1!important;
+  width:100%!important;
+  margin:0 0 4px!important;
+  color:#d9a94d!important;
+  font-family:var(--font-title)!important;
+  font-size:8px!important;
+  font-weight:900!important;
+  letter-spacing:1px!important;
+  line-height:1.05!important;
+  text-transform:uppercase!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-meta.sh-hero-meta{
+  order:2!important;
+  width:100%!important;
+  margin:0 0 4px!important;
+  color:#f3dfab!important;
+  font-family:var(--font-title)!important;
+  font-size:14.2px!important;
+  font-weight:900!important;
+  letter-spacing:.18px!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  text-shadow:0 1px 0 #000,0 0 12px rgba(218,169,69,.18)!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
+  order:3!important;
+  width:100%!important;
+  margin:0!important;
+  color:rgba(240,221,176,.86)!important;
+  font-size:8.4px!important;
+  line-height:1.18!important;
+  font-weight:700!important;
+  white-space:pre-line!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-tags,
+html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-bonuses{
+  min-width:0!important;
+}
+html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-tags .tag{
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+@media(max-width:430px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+    min-height:132px!important;
+    gap:7px!important;
+    padding:2px 0 11px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+    width:72px!important;
+    height:72px!important;
+    min-width:72px!important;
+  }
+}
+@media(max-width:374px){
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-banner.sh-hero-banner{
+    min-height:122px!important;
+    gap:6px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-portrait.sh-portrait{
+    width:62px!important;
+    height:62px!important;
+    min-width:62px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-meta.sh-hero-meta{
+    font-size:12.8px!important;
+  }
+  html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
     font-size:7.8px!important;
   }
 }
