@@ -145,97 +145,11 @@ body{font-family:var(--font-narr);color:var(--parch);}
 
 /* ══ NARRATIVA ══ */
 .narr{flex:1;overflow-y:auto;padding:12px 14px 80px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;}
-.narr::-webkit-scrollbar{width:3px;}
-.narr::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:2px;}
-.msg{animation:fadein .35s ease;max-width:100%;}
-@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-
-/* Mensagem DM */
-.msg-dm .lbl{font-family:var(--font-title);font-size:10px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
-.msg-dm .lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,146,42,.2),transparent);}
-.msg-dm .bbl{
-  background:rgba(20,14,6,.88);
-  border:1px solid rgba(200,146,42,.2);
-  border-left:3px solid var(--gold-d);
-  border-radius:0 12px 12px 12px;
-  padding:14px 16px;
-  font-family:var(--font-narr);
-  font-size:17px;
-  font-weight:400;
-  color:var(--parch);
-  line-height:1.85;
-  box-shadow:0 0 20px rgba(200,146,42,.06),inset 0 0 30px rgba(200,146,42,.02);
-  letter-spacing:.01em;
-}
-/* NPC speech destaque */
-.npc-speech{
-  display:block;
-  background:rgba(91,63,160,.18);
-  border-left:3px solid rgba(139,111,208,.7);
-  border-radius:0 8px 8px 8px;
-  padding:8px 12px;
-  margin:6px 0;
-  font-style:italic;
-  color:#D4C8F8;
-  font-size:16px;
-}
-.npc-name{font-family:var(--font-title);font-size:10px;color:#A090D8;letter-spacing:1.5px;display:block;margin-bottom:3px;}
-
-/* Mensagem jogador */
-.msg-pl{text-align:right;}
-.msg-pl .bbl{background:rgba(60,35,120,.32);border:1px solid rgba(91,63,160,.38);border-right:3px solid rgba(139,111,208,.65);border-radius:12px 0 0 12px;padding:10px 14px;font-family:var(--font-narr);font-size:16px;color:#D4C8F8;display:inline-block;max-width:90%;line-height:1.65;box-shadow:0 0 14px rgba(91,63,160,.1);}
-
-/* ★ CARD DE DADO */
-.roll-wrap{align-self:center;width:100%;display:flex;justify-content:center;margin:4px 0;}
-.roll-card{background:linear-gradient(135deg,rgba(26,18,8,.97),rgba(42,30,14,.92));border:1px solid var(--gold-d);border-radius:14px;padding:13px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 0 22px rgba(200,146,42,.14),inset 0 1px 0 rgba(200,146,42,.1);min-width:230px;}
-.dice-face{width:52px;height:52px;background:var(--bg4);border:2px solid var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:24px;font-weight:700;color:var(--gold-l);box-shadow:0 0 14px var(--gold-glow);flex-shrink:0;transition:all .3s;}
-.dice-face.d-crit{border-color:#2ECC71;color:#2ECC71;box-shadow:0 0 20px rgba(46,204,113,.5);}
-.dice-face.d-fail{border-color:#E74C3C;color:#E74C3C;box-shadow:0 0 20px rgba(231,76,60,.4);}
-@keyframes dice-spin{0%{transform:rotateY(0)}100%{transform:rotateY(720deg)}}
-.dice-face.spinning{animation:dice-spin .5s ease-out;}
-.roll-info{flex:1;}
-.roll-type{font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:1.5px;margin-bottom:4px;}
-.roll-formula{font-size:15px;color:var(--parch);font-weight:600;font-family:var(--font-title);line-height:1.4;}
-.roll-outcome{font-size:13px;margin-top:4px;font-family:var(--font-title);letter-spacing:1px;font-weight:700;}
-.roll-outcome.suc{color:#2ECC71;}
-.roll-outcome.fal{color:#E74C3C;}
-
-/* ★ PAINEL DE COMBATE */
-.combat-panel{
-  position:relative;overflow:hidden;border-radius:14px;
-  border:1px solid rgba(220,30,30,.45);
-  background:linear-gradient(180deg,rgba(80,0,0,.65) 0%,rgba(30,5,5,.9) 60%,rgba(15,5,5,.97) 100%);
-  padding:16px 16px 14px;
-  box-shadow:0 0 40px rgba(200,0,0,.25),inset 0 0 60px rgba(200,0,0,.08);
-  animation:combat-appear .5s ease;
-}
-@keyframes combat-appear{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
-/* Aura vermelha pulsante */
-.combat-panel::before{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 40px rgba(220,0,0,.18);animation:aura-pulse 2s ease-in-out infinite;pointer-events:none;}
-@keyframes aura-pulse{0%,100%{box-shadow:inset 0 0 40px rgba(220,0,0,.18);}50%{box-shadow:inset 0 0 60px rgba(220,0,0,.35);}}
-.combat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.combat-badge{font-family:var(--font-title);font-size:9px;color:#FF6B6B;letter-spacing:2.5px;display:flex;align-items:center;gap:5px;}
-.combat-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#E74C3C;animation:blink .6s infinite;}
-.enemy-section{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
-/* Emoji inimigo grande ao fundo */
-.enemy-bg-emoji{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:100px;opacity:.07;pointer-events:none;user-select:none;filter:grayscale(1);}
-.enemy-icon{width:52px;height:52px;border-radius:50%;background:rgba(200,0,0,.15);border:2px solid rgba(220,50,50,.45);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;position:relative;z-index:1;}
-.enemy-info{flex:1;position:relative;z-index:1;}
-.enemy-name{font-family:var(--font-title);font-size:18px;font-weight:700;color:#FF9999;letter-spacing:.5px;text-shadow:0 0 20px rgba(255,50,50,.4);}
-.enemy-type{font-size:11px;color:rgba(255,150,150,.7);margin-top:2px;font-family:var(--font-title);letter-spacing:1px;}
-.enemy-hp-bar{height:8px;background:rgba(0,0,0,.5);border-radius:4px;overflow:hidden;margin-top:8px;border:1px solid rgba(200,0,0,.3);}
-.enemy-hp-fill{height:100%;background:linear-gradient(90deg,#8B0000,#E74C3C);border-radius:4px;transition:width .6s;box-shadow:0 0 8px rgba(231,76,60,.5);}
-.combat-text{font-family:var(--font-narr);font-size:16px;color:rgba(255,220,220,.9);line-height:1.75;position:relative;z-index:1;}
-
-/* ★ AÇÕES */
-.actions-wrap{background:linear-gradient(180deg,rgba(26,18,8,.98),var(--bg3));border-top:1px solid var(--border);padding:8px 12px 6px;flex-shrink:0;}
-.acts-lbl{font-family:var(--font-title);font-size:9px;color:var(--gold-dim);letter-spacing:2px;text-align:center;margin-bottom:6px;}
-.act-grid{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
 .act-btn{
-  background:linear-gradient(135deg,rgba(22,14,4,.95),rgba(38,26,10,.9));
-  border:1px solid var(--gold-dim);
-  border-left:3px solid var(--gold-d);
-  border-radius:10px;
+  background:rgba(15,10,4,.78);
+  border:1px solid rgba(200,146,42,.22);
+  border-left:3px solid var(--gold-dim);
+  border-radius:12px;
   padding:9px 12px;
   cursor:pointer;
   text-align:left;
@@ -410,6 +324,90 @@ body{font-family:var(--font-narr);color:var(--parch);}
 }
 .dice-face.spinning{animation:inline-spin 0.55s ease-out;}
 .inline-rolling{animation:fadein .2s ease;}
+
+/* Card premium de rolagem */
+html body #s-game.screen.active .roll-wrap,
+html body .roll-wrap{
+  align-self:center!important;
+  width:100%!important;
+  display:flex!important;
+  justify-content:center!important;
+  margin:6px 0 10px!important;
+}
+html body #s-game.screen.active .roll-card,
+html body .roll-card{
+  width:min(92%,360px)!important;
+  background:
+    radial-gradient(circle at 18% 10%,rgba(232,184,75,.18),transparent 36%),
+    linear-gradient(135deg,rgba(26,18,8,.98),rgba(7,5,3,.96))!important;
+  border:1px solid rgba(200,146,42,.58)!important;
+  border-radius:16px!important;
+  padding:13px 16px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  box-shadow:0 0 22px rgba(200,146,42,.16),inset 0 1px 0 rgba(255,226,128,.14)!important;
+}
+html body #s-game.screen.active .dice-face,
+html body .dice-face{
+  width:52px!important;
+  height:52px!important;
+  flex:0 0 52px!important;
+  border-radius:12px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:linear-gradient(145deg,rgba(10,7,4,.98),rgba(37,24,9,.94))!important;
+  border:2px solid rgba(232,184,75,.85)!important;
+  font-family:var(--font-title)!important;
+  font-size:24px!important;
+  font-weight:800!important;
+  color:var(--gold-l)!important;
+  text-shadow:0 1px 2px #000,0 0 10px rgba(232,184,75,.35)!important;
+  box-shadow:0 0 15px rgba(200,146,42,.32),inset 0 0 16px rgba(200,146,42,.08)!important;
+}
+html body .dice-face.d-crit{
+  border-color:#2ECC71!important;
+  color:#2ECC71!important;
+  box-shadow:0 0 20px rgba(46,204,113,.45),inset 0 0 14px rgba(46,204,113,.12)!important;
+}
+html body .dice-face.d-fail{
+  border-color:#E74C3C!important;
+  color:#E74C3C!important;
+  box-shadow:0 0 20px rgba(231,76,60,.4),inset 0 0 14px rgba(231,76,60,.1)!important;
+}
+html body #s-game.screen.active .roll-info,
+html body .roll-info{
+  flex:1!important;
+  min-width:0!important;
+}
+html body #s-game.screen.active .roll-type,
+html body .roll-type{
+  font-family:var(--font-title)!important;
+  font-size:11px!important;
+  line-height:1.2!important;
+  color:var(--gold-d)!important;
+  letter-spacing:1.1px!important;
+  margin-bottom:5px!important;
+}
+html body #s-game.screen.active .roll-formula,
+html body .roll-formula{
+  font-family:var(--font-title)!important;
+  font-size:15px!important;
+  line-height:1.45!important;
+  color:var(--parch)!important;
+  font-weight:700!important;
+}
+html body #s-game.screen.active .roll-outcome,
+html body .roll-outcome{
+  font-family:var(--font-title)!important;
+  font-size:12px!important;
+  margin-top:4px!important;
+  letter-spacing:.8px!important;
+  font-weight:800!important;
+}
+html body .roll-outcome.suc{color:#2ECC71!important;}
+html body .roll-outcome.fal{color:#E74C3C!important;}
 /* D20 SVG no círculo da ação */
 .a-circle svg{display:block;}
 
@@ -1606,6 +1604,7 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
   }
 }
 </style>
+
 <style id="aimaster-v6261-status-premium-icons-eof">
 /* v6.2.61: icones premium da aba Status, sem alterar HTML ou logica. */
 html body #mo-char#mo-char #tab-stats .sh-res-icon,
@@ -8193,7 +8192,7 @@ body #s-game.active .char-strip.hud-ref .hud-location::before{
   text-shadow:0 1px 2px #000!important;
 }
 body #s-game.active .char-strip.hud-ref .hud-location::after{
-  content:'Anoitecer'!important;
+  content:var(--hud-time-label,"Tempo desconhecido")!important;
   position:absolute!important;
   left:20px!important;
   bottom:1px!important;
@@ -10040,7 +10039,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 </svg>
       <span class="fbl">Dados</span>
     </button>
-    <button class="fbar-btn" onclick="openMo('mo-shop')" title="Diamantes"><span class="fbi">💎</span><span class="fbl">Diamantes</span></button>
+    <button class="fbar-btn" onclick="openDiamondShop('normal')" title="Diamantes"><span class="fbi">💎</span><span class="fbl">Diamantes</span></button>
     <button class="fbar-btn" onclick="openMo('mo-map')" title="Mapa"><span class="fbi">🗺️</span><span class="fbl">Mapa</span></button>
     <button class="fbar-btn" onclick="openRestModal()" title="Descanso" id="rest-footer-btn-old">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.6" style="display:block;margin:0 auto">
@@ -10092,7 +10091,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
   <div class="mt">Menu <button class="mc" onclick="closeMo('mo-game-menu')">×</button></div>
   <div class="game-menu-grid">
     <button class="game-menu-tile" onclick="closeMo('mo-game-menu');toggleDiceTray()"><span>🎲</span><b>Dados</b><small>Bandeja e rolagens</small></button>
-    <button class="game-menu-tile gem" onclick="closeMo('mo-game-menu');openMo('mo-shop')"><span>💎</span><b>Diamantes</b><small>Recursos premium</small></button>
+    <button class="game-menu-tile gem" onclick="closeMo('mo-game-menu');openDiamondShop('normal')"><span>💎</span><b>Diamantes</b><small>Recursos premium</small></button>
     <button class="game-menu-tile" onclick="closeMo('mo-game-menu');openMo('mo-map')"><span>🗺️</span><b>Mapa</b><small>Regiões e jornada</small></button>
     <button class="game-menu-tile" onclick="closeMo('mo-game-menu');openRestModal()" id="rest-footer-btn"><span>☾</span><b>Descanso</b><small>Recuperar forças</small></button>
     <button class="game-menu-tile" onclick="closeMo('mo-game-menu');openMo('mo-tutorial')" id="fbar-tutorial-btn"><span>?</span><b>Guia</b><small>Como jogar</small></button>
@@ -10910,6 +10909,8 @@ const CLASS_SKILL_PROFS={
   Druida:['Adestramento','Medicina','Natureza','Percepção','Sobrevivência'],
   Ranger:['Adestramento','Atletismo','Furtividade','Natureza','Percepção','Sobrevivência'],
   Bárbaro:['Adestramento','Atletismo','Intimidação','Natureza','Percepção','Sobrevivência'],
+  Bruxo:['Arcanismo','Enganação','História','Intimidação','Investigação','Natureza','Religião'],
+  Monge:['Acrobacia','Atletismo','História','Intuição','Religião','Furtividade'],
   Feiticeiro:['Arcanismo','Enganação','Intimidação','Persuasão','Religião']
 };
 
@@ -10922,6 +10923,73 @@ const ALL_SKILLS=[
   {name:'Percepção',attr:'wis'},{name:'Performance',attr:'cha'},{name:'Persuasão',attr:'cha'},
   {name:'Prestidigitação',attr:'dex'},{name:'Religião',attr:'int'},{name:'Sobrevivência',attr:'wis'},
 ];
+
+function normRollKey(v){
+  return String(v||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+}
+
+function getSkillAttrFromLabel(label){
+  const key = normRollKey(label);
+  const found = ALL_SKILLS.find(sk=>{
+    const skKey = normRollKey(sk.name);
+    return key === skKey || key.includes(skKey) || skKey.includes(key);
+  });
+  return found || null;
+}
+
+function getHeroSkillProfSet(){
+  const profs = new Set();
+  const savedSkills = Array.isArray(hero.skills) ? hero.skills :
+    Array.isArray(hero.skillProfs) ? hero.skillProfs :
+    Array.isArray(hero.proficiencies) ? hero.proficiencies : [];
+  savedSkills.forEach(s=>profs.add(normRollKey(s)));
+  (CLASS_SKILL_PROFS[hero.cls] || []).forEach(s=>profs.add(normRollKey(s)));
+  return profs;
+}
+
+function getHeroSkillProfNames(){
+  const names = new Map();
+  const savedSkills = Array.isArray(hero.skills) ? hero.skills :
+    Array.isArray(hero.skillProfs) ? hero.skillProfs :
+    Array.isArray(hero.proficiencies) ? hero.proficiencies : [];
+  savedSkills.forEach(s=>{
+    if(s) names.set(normRollKey(s), String(s));
+  });
+  (CLASS_SKILL_PROFS[hero.cls] || []).forEach(s=>names.set(normRollKey(s), s));
+  return [...names.values()];
+}
+
+function getRollBreakdown(attrKey, label, rollType){
+  const pb = PROF_BONUS[Math.min(hero.level||1,20)] || 2;
+  const attrMod = mod(stats[attrKey]||10);
+  const type = rollType || 'check';
+  const skill = getSkillAttrFromLabel(label);
+  let isProficient = false;
+  let profReason = '';
+
+  if(type === 'attack'){
+    isProficient = true;
+    profReason = 'ataque';
+  } else if(type === 'save'){
+    isProficient = (CLASS_SAVES[hero.cls] || []).includes(attrKey);
+    profReason = isProficient ? 'salvaguarda' : '';
+  } else if(type === 'initiative'){
+    isProficient = false;
+  } else if(skill && skill.attr === attrKey){
+    const profs = getHeroSkillProfSet();
+    const skKey = normRollKey(skill.name);
+    isProficient = profs.has(skKey);
+    profReason = isProficient ? skill.name : '';
+  }
+
+  const profBonus = isProficient ? pb : 0;
+  return {attrMod, profBonus, totalMod:attrMod+profBonus, isProficient, skill, profReason};
+}
+
+function getPassivePerception(){
+  const breakdown = getRollBreakdown('wis','Percepção','check');
+  return 10 + breakdown.totalMod;
+}
 
 function buildSkillsTab(cls, race, level){
   const pb=PROF_BONUS[Math.min(level,20)]||2;
@@ -12088,6 +12156,41 @@ function updateTurnCounter(){
   }
 }
 
+function normalizeWorldTimeLabel(value){
+  const normalized=String(value||'')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase();
+  if(/amanhecer|aurora|manha|manhã/.test(normalized)) return 'Manha';
+  if(/meio-dia|meio dia/.test(normalized)) return 'Meio-dia';
+  if(/tarde/.test(normalized)) return 'Tarde';
+  if(/anoitecer|entardecer|crepusculo|crepúsculo/.test(normalized)) return 'Anoitecer';
+  if(/noite|luar|meia-noite|meia noite/.test(normalized)) return 'Noite';
+  return String(value||'Tempo desconhecido').trim() || 'Tempo desconhecido';
+}
+
+function setHUDTimeLabel(value){
+  window.visualTimeHint=normalizeWorldTimeLabel(value);
+  const gameScreen=document.getElementById('s-game');
+  if(gameScreen) gameScreen.style.setProperty('--hud-time-label',`"${window.visualTimeHint}"`);
+}
+
+function inferSpecificLocation(text, officialLocation){
+  const official=String(officialLocation||'').replace(/^Chegou em:\s*/i,'').trim();
+  if(official) return official;
+  const source=String(text||'').replace(/\[[^\]]+\]/g,' ');
+  const properPatterns=[
+    /\b(Taverna|Estalagem|Taberna|Pouso)\s+(do|da|de|dos|das)\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ÿ'-]*(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ÿ'-]*){0,3})/,
+    /\b(cidade|vila|aldeia|vilarejo)\s+(de|do|da)\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ÿ'-]*(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ÿ'-]*){0,3})/i
+  ];
+  for(const re of properPatterns){
+    const m=source.match(re);
+    if(m) return `${m[1].charAt(0).toUpperCase()+m[1].slice(1)} ${m[2]} ${m[3]}`;
+  }
+  const cityMatch=source.match(/\b(?:em|para|rumo a|chega a|chegou a)\s+([A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ÿ'-]{3,}(?:\s+[A-ZÁÉÍÓÚÂÊÔÃÕÇ][\wÀ-ÿ'-]{2,}){0,2})/);
+  if(cityMatch && !/Mestre|Modo|PV|MP|CA|XP|Turno|Ataque|Dano/.test(cityMatch[1])) return cityMatch[1];
+  return '';
+}
+
 function updateLocationBackdrop(locationName){
   const gameScreen = document.getElementById('s-game');
   if(!gameScreen) return;
@@ -12136,7 +12239,12 @@ function updateVisualWorldContext(text, officialLocation){
       if(match.index>=latestLocation){ latestLocation=match.index; inferredLocation=label; }
     }
   });
-  window.visualLocationHint = officialLocation || inferredLocation || window.visualLocationHint || '';
+  const specificLocation = inferSpecificLocation(text, officialLocation);
+  window.visualLocationHint = specificLocation || inferredLocation || window.visualLocationHint || '';
+  if(window.visualLocationHint){
+    window.currentLocation = window.visualLocationHint;
+    if(hero) hero.location = window.visualLocationHint;
+  }
 
   const currentTimeText = normalized
     .replace(/noite anterior|na noite anterior|ontem a noite|na vespera/g,'');
@@ -12154,9 +12262,8 @@ function updateVisualWorldContext(text, officialLocation){
       if(match.index<earliestTime){ earliestTime=match.index; inferredTime=label; }
     }
   });
-  if(inferredTime) window.visualTimeHint = inferredTime;
-  const gameScreen = document.getElementById('s-game');
-  if(gameScreen) gameScreen.style.setProperty('--hud-time-label',`"${window.visualTimeHint||'Tempo desconhecido'}"`);
+  if(inferredTime) setHUDTimeLabel(inferredTime);
+  else if(!window.visualTimeHint) setHUDTimeLabel('Tempo desconhecido');
 }
 
 function updateHUDRacePortrait(){
@@ -12368,12 +12475,13 @@ function setThinking(v){
 // ★ CARD DE DADO detalhado
 function addRollCard(label,diceVal,modVal,total,cd,grayed=false){
   const narr=document.getElementById('narr');
+  const isD20Roll = /^d?20$/i.test(label) || !/^\d*d\d+/i.test(label);
   const ok=cd!=null?total>=cd:null;
-  const isCrit=diceVal===20;
-  const isFail=diceVal===1;
+  const isCrit=isD20Roll && diceVal===20;
+  const isFail=isD20Roll && diceVal===1;
   const ms=modVal>=0?`+${modVal}`:String(modVal);
   // Detecta se é dado livre (label contém fórmula de dados ex: "1d12", "2d6+1d8")
-  const isFreeDice = /^\d*d\d+/i.test(label) && cd===null && modVal===0;
+  const isFreeDice = /^\d*d\d+/i.test(label) && cd===null;
   // Cor do número total
   let totalColor='#E8B84B';
   if(grayed) totalColor='rgba(180,160,100,.4)';
@@ -12391,14 +12499,15 @@ function addRollCard(label,diceVal,modVal,total,cd,grayed=false){
   }
   // Fórmula: livre = "1d12 = 11" | d20 = "d20(14) +3 = 17"
   const formula = isFreeDice
-    ? `${label}${eqSign}${outcomeStr}`
+    ? `${label}${modVal?` ${ms}`:''}${eqSign}`
     : `d20(${diceVal}) ${ms}${eqSign}${outcomeStr}`;
   const cdLabel=cd!=null?` · CD ${cd}`:'';
+  const typeLabel = isFreeDice ? 'Rolagem livre' : `${label}${cdLabel}`;
   const m=document.createElement('div');m.className='msg roll-wrap';
   m.innerHTML=`<div class="roll-card">
     <div class="dice-face${isCrit?' d-crit':isFail?' d-fail':ok===true?' d-crit':ok===false?' d-fail':''}" style="color:${totalColor};border-color:${totalColor}40">${total}</div>
     <div class="roll-info">
-      <div class="roll-type">${label}${cdLabel}</div>
+      <div class="roll-type">${typeLabel}</div>
       <div class="roll-formula">${formula}</div>
     </div>
   </div>`;
@@ -12535,6 +12644,7 @@ function cleanTextForDisplay(text){
     .replace(/\[ITEM:[^\]]+\]/gi, '')
     .replace(/\[NPC:[^\]]+\]/gi, '')
     .replace(/\[LOCALIZAÇÃO:[^\]]+\]/gi, '')
+    .replace(/\[TEMPO:[^\]]+\]/gi, '')
     .replace(/\[TESTE:[^\]]+\]/gi, '')
     .replace(/\[REP:[^\]]+\]/gi, '')
     .replace(/\[FIM[^\]]*\]/gi, '')
@@ -12831,11 +12941,14 @@ function detectPendingRoll(text){
 
   let foundAttr = null;
   let foundCD = null;
+  let foundLabel = null;
+  pendingRollType = 'check';
 
   // Padrão 1: tag explícita [TESTE:atributo:CD] ou [TESTE:atributo]
   const tagMatch = text.match(/\[TESTE:\s*([^:\]]+)(?::(\d+))?(?::([^\]]+))?\]/i);
   if(tagMatch){
     const rawLabel = tagMatch[1].trim();
+    foundLabel = rawLabel;
     const key = rawLabel.toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g,''); // remove acentos para comparação
     // Procura com e sem acento
@@ -12851,6 +12964,11 @@ function detectPendingRoll(text){
       foundCD = null; // iniciativa sem CD
     } else if(/ataque|attack|acertar/.test(lbl)){
       pendingRollType  = 'attack';
+      if(/dist|arco|besta|funda|arremess/i.test(lbl)){
+        foundAttr = 'dex';
+      } else if(/mag|feiti|truque|spell/i.test(lbl)){
+        foundAttr = (CASTING_ATTR[hero.cls] || 'int');
+      }
     } else if(/salva|save|resist/.test(lbl)){
       pendingRollType  = 'save';
     }
@@ -12874,17 +12992,19 @@ function detectPendingRoll(text){
     if(initMatch && !foundAttr){
       foundAttr = 'dex';
       foundCD   = null;
-      pendingRollLabel  = 'Iniciativa';
+      foundLabel = 'Iniciativa';
       pendingRollType   = 'initiative';
     }
     for(const p of patterns){
       const m = text.match(p);
       if(m){
+        if(!m[1]) continue;
         const skillName = m[1].toLowerCase().trim();
         const mapped = ATTR_MAP[skillName];
         if(mapped){
           foundAttr = mapped;
           foundCD   = m[2] ? parseInt(m[2]) : null;
+          foundLabel = m[1].trim();
           break;
         }
       }
@@ -12895,7 +13015,7 @@ function detectPendingRoll(text){
   if(!foundAttr){
     // Padrão de ataque: "role para atacar", "role o dado de ataque", "ataque corpo a corpo"
     const atkMatch = /role?\s+(?:o\s+dado\s+de\s+)?(?:ataque|para\s+atacar|para\s+acertar)|jogada\s+de\s+ataque/i.test(text);
-    if(atkMatch){ foundAttr = 'str'; pendingRollType = 'attack'; }
+    if(atkMatch){ foundAttr = 'str'; foundLabel = 'Ataque'; pendingRollType = 'attack'; }
   }
 
   // Aplica só se encontrou algo novo
@@ -12903,7 +13023,8 @@ function detectPendingRoll(text){
     pendingRollAttr  = foundAttr;
     pendingRollCD    = foundCD;
     // Guarda o nome legível da perícia/atributo
-    if(tagMatch) pendingRollLabel = tagMatch[1].trim();
+    if(foundLabel) pendingRollLabel = foundLabel;
+    else if(tagMatch) pendingRollLabel = tagMatch[1].trim();
     else if(foundAttr) {
       const ATTR_NAMES = {str:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',wis:'Sabedoria',cha:'Carisma'};
       pendingRollLabel = ATTR_NAMES[foundAttr] || foundAttr;
@@ -12920,6 +13041,62 @@ function detectPendingRoll(text){
   }
 }
 
+function buildHeroStatusSnapshot(){
+  if(!hero || !hero.cls){
+    return 'Sem personagem ativo.';
+  }
+
+  const pb=PROF_BONUS[Math.min(hero.level||1,20)]||2;
+  const saves=CLASS_SAVES[hero.cls]||[];
+  const keys=['str','dex','con','int','wis','cha'];
+  const attrLine=keys.map(k=>{
+    const value=stats[k]||10;
+    return `${attrLabels[k]||k.toUpperCase()} ${value} (${modStr(value)})`;
+  }).join(', ');
+  const saveLine=keys.map(k=>{
+    const value=stats[k]||10;
+    const total=mod(value)+(saves.includes(k)?pb:0);
+    return `${attrLabels[k]||k.toUpperCase()} ${total>=0?'+':''}${total}${saves.includes(k)?' prof':''}`;
+  }).join(', ');
+  const equipped=inventory
+    .filter(i=>i && i.equipped)
+    .map(i=>`${i.name}${i.slot?' ('+i.slot+')':''}`)
+    .join(', ') || 'nenhum';
+  const castAttr=CASTING_ATTR[hero.cls];
+  const spellInfo=castAttr
+    ? `atributo ${attrLabels[castAttr]||castAttr.toUpperCase()}, ataque magico ${mod(stats[castAttr]||10)+pb>=0?'+':''}${mod(stats[castAttr]||10)+pb}, CD ${8+mod(stats[castAttr]||10)+pb}`
+    : 'sem conjuracao no nivel atual';
+  const cantrips=(heroKnownCantrips||[]).join(', ') || 'nenhum';
+  const spells=[...new Set([...(preparedSpells||[]),...(heroKnownSpells||[]),...(learnedSpells||[])])].join(', ') || 'nenhuma';
+  const maxHP=hero.maxHP || hero.maxHp || 0;
+  const maxMP=hero.maxMP || hero.maxMp || 0;
+  const diamonds=hero.credits || hero.diamonds || 0;
+  const currentLoc=window.currentLocation || window.visualLocationHint || hero.location || 'Local desconhecido';
+  const currentTime=window.visualTimeHint || 'Tempo desconhecido';
+  const passivePerception=getPassivePerception();
+  const skillLine=ALL_SKILLS.map(sk=>{
+    const b=getRollBreakdown(sk.attr, sk.name, 'check');
+    return `${sk.name} ${b.totalMod>=0?'+':''}${b.totalMod}${b.isProficient?' prof':''}`;
+  }).join(', ');
+
+  return [
+    `Nome: ${hero.name || 'Heroi desconhecido'}`,
+    `Raca: ${hero.race || '-'} | Classe: ${hero.cls || '-'} | Nivel: ${hero.level || 1}`,
+    `Antecedente: ${hero.bg || '-'} | Alinhamento: ${hero.align || '-'}`,
+    `PV: ${hero.hp || 0}/${maxHP} | Magia por dia/MP: ${hero.mp || 0}/${maxMP} | CA: ${hero.ca || 10} | XP: ${hero.xp || 0}`,
+    `Ouro: ${hero.gold || 0} | Diamantes: ${diamonds} | Reputacao: ${hero.rep || 0}`,
+    `Atributos: ${attrLine}`,
+    `Salvaguardas: ${saveLine}`,
+    `Pericias: ${skillLine}`,
+    `Percepcao passiva: ${passivePerception}`,
+    `Equipados: ${equipped}`,
+    `Magia: ${spellInfo}`,
+    `Truques: ${cantrips}`,
+    `Magias: ${spells}`,
+    `Local: ${currentLoc} | Tempo: ${currentTime} | Combate: ${inCombat ? (currentEnemy || 'ativo') : 'nao'}`
+  ].join('\n');
+}
+
 function buildSystemPrompt(){
   const rp=PROFILES.race[hero.race]||{};const cp=PROFILES.class[hero.cls]||{};const bp=PROFILES.bg[hero.bg]||{};
   const allTags=[...(rp.tags||[]),...(cp.tags||[])].map(t=>t.l).join(', ');
@@ -12932,6 +13109,8 @@ function buildSystemPrompt(){
     const sv=saves.includes(k)?m+pb:m;
     return `${attrNames[k]}:${v}(${modStr(v)},Salv:${sv>=0?'+'+sv:sv})`;
   }).join(', ');
+  const passivePerception=getPassivePerception();
+  const skillProfs=getHeroSkillProfNames().join(', ') || '-';
   let especiais='';
   if(hero.race==='Tiefling')especiais+='\n- NPCs religiosos desconfiados. Criminosos receptivos.';
   if(hero.race==='Elfo'||hero.race==='Meio-Elfo')especiais+='\n- Percepção apurada, sentidos élfico.';
@@ -12973,6 +13152,20 @@ function buildSystemPrompt(){
     weapon ? `Dano: ${weaponDmgDice}${meleeMod>=0?'+':''}${meleeMod}${duelBonus?'+2':''}` : '',
     castAttr2 ? `Ataque Mágico: d20${spellAtk2>=0?'+':''}${spellAtk2} | CD Magia: ${spellDC2}` : '',
   ].filter(Boolean).join(' | ');
+  const weaponRuleSource = weapon ? normRollKey(`${weapon.name||''} ${weapon.desc||''}`) : '';
+  const weaponIsRanged = /arco|besta|funda|zarabatana|flecha|virote|alcance\s*\d/.test(weaponRuleSource);
+  const weaponIsThrown = /arremess|azagaia|dardo|lanca|machadinha|martelo leve|tridente/.test(weaponRuleSource);
+  const weaponIsFinesse = /finesse|acuidade|adaga|rapieira|florete|espada curta|cimitarra|chicote/.test(weaponRuleSource);
+  const weaponIsMonk = hero.cls==='Monge' && /bastao|bordao|cajado|clava|adaga|espada curta|lanca/.test(weaponRuleSource);
+  const bestWeaponAttr = (weaponIsFinesse || weaponIsMonk) && dexMod2 > strMod2 ? 'DES' : 'FOR';
+  const bestWeaponMod = bestWeaponAttr==='DES' ? dexMod2 : strMod2;
+  const weaponAtkAttr = weaponIsRanged && !weaponIsThrown ? 'DES' : bestWeaponAttr;
+  const weaponAtkMod = weaponAtkAttr==='DES' ? dexMod2 : bestWeaponMod;
+  const weaponAtkBonus = weaponAtkMod + pb + ((weaponAtkAttr==='DES' && weaponIsRanged && !weaponIsThrown && heroCombatStyle==='archery') ? 2 : 0);
+  const weaponDmgBonus = weaponAtkMod + ((weaponAtkAttr==='FOR' && heroCombatStyle==='dueling') ? 2 : 0);
+  const weaponRuleNote = weapon
+    ? `Arma equipada: ${weapon.name}. Regra 5e para esta arma: ataque usa ${weaponAtkAttr}+proficiencia${weaponIsRanged&&!weaponIsThrown&&heroCombatStyle==='archery'?'+2 arqueiria':''} (total d20${weaponAtkBonus>=0?'+':''}${weaponAtkBonus}); dano usa ${weaponDmgDice}${weaponDmgBonus>=0?'+':''}${weaponDmgBonus}. ${weaponIsFinesse?'Finesse: pode usar FOR ou DES, use o melhor. ':''}${weaponIsThrown?'Arremessavel: respeite a habilidade da propria arma. ':''}Nao declare acerto automatico; compare ataque contra a CA do inimigo.`
+    : 'Sem arma equipada: ataque desarmado usa FOR+proficiencia quando aplicavel; dano desarmado padrao 1+FOR.';
   // ★ Magias reais do personagem (truques + preparados/conhecidos)
   const _cantrips = heroKnownCantrips.length > 0 ? heroKnownCantrips : [];
   const _spells   = [...new Set([...preparedSpells,...heroKnownSpells,...learnedSpells])];
@@ -13004,19 +13197,25 @@ Narre como um grimório vivo: frases claras, sensoriais, tensão crescente, esco
 ESTADO DO HERÓI
 Nome: ${hero.name || 'Herói desconhecido'}
 Raça/Classe/Nível: ${hero.race || '-'} / ${hero.cls || '-'} / ${hero.level || 1}
-PV: ${hero.hp}/${hero.maxHp} | MP: ${hero.mp}/${hero.maxMp}
-CA: ${combatStats.ac} | Ataque: +${combatStats.attackBonus} | Dano: ${combatStats.damageDie}${combatStats.damageBonus>=0?'+':''}${combatStats.damageBonus}
-Atributos: FOR ${atrs.str} DES ${atrs.dex} CON ${atrs.con} INT ${atrs.int} SAB ${atrs.wis} CAR ${atrs.cha}
-Ouro: ${hero.gold || 0} | Diamantes: ${hero.diamonds || 0}
+PV: ${hero.hp}/${hero.maxHP} | MP: ${hero.mp}/${hero.maxMP}
+CA: ${hero.ca || 10} | Inimigo atual: ${currentEnemy || 'nenhum'}
+Combate do heroi: ${combatStats}
+Regra de arma equipada para o Mestre: ${weaponRuleNote}
+Atributos e salvaguardas: ${atrs}
+Percepcao passiva: ${passivePerception}
+Ouro: ${hero.gold || 0} | Diamantes: ${hero.credits || 0}
 Reputação: ${hero.rep || 0} (${['Viajante','Aventureiro','Herói','Campeão','Lendário'].reduce((t,n,i)=>(hero.rep||0)>=[0,50,150,300,500][i]?n:t,'Viajante')})
 Local atual: ${hero.location || 'Local desconhecido'}
 Turnos restantes hoje: ${remainingTurns}${remainingTurns<=3 ? ' - avise com sutileza que o Mestre está quase se calando hoje.' : ''}
+
+FICHA ATUAL CONFIAVEL
+${buildHeroStatusSnapshot()}
 
 TRAÇOS DO PERSONAGEM
 Raça: ${rp?.flavor || '-'}
 Classe: ${cp?.flavor || '-'}
 Antecedente: ${bp?.flavor || '-'}
-Perícias: ${[...(rp?.skills||[]),...(cp?.skills||[]),...(bp?.skills||[])].join(', ') || '-'}
+Perícias treinadas: ${skillProfs}
 Equipamento: ${equippedItems}
 Magias conhecidas: ${spellList}
 Habilidades de classe: ${classAbilsNow}
@@ -13036,6 +13235,14 @@ REGRAS DE OURO
 5. Respeite D&D 5e SRD como base: atributos, perícias, CA, PV, iniciativa, economia e risco.
 6. Use consequências graduais. Nem toda ação precisa de rolagem, dano, combate ou recompensa.
 
+LOCAL E TEMPO
+Mantenha o HUD coerente com a cena atual.
+Sempre que o personagem mudar de ambiente, use [LOCALIZAÇÃO:...] com nome especifico quando existir.
+Exemplos: [LOCALIZAÇÃO:Taverna do Javali], [LOCALIZAÇÃO:Millhaven], [LOCALIZAÇÃO:Rua do Mercado], [LOCALIZAÇÃO:Trilha na Floresta Sombria].
+Se estiver dentro de uma taverna, templo, loja, quarto ou masmorra, use esse lugar especifico. Se sair para a rua ou cidade, use o nome da cidade, vila ou bairro.
+Sempre que a cena indicar periodo do dia, use [TEMPO:Manha], [TEMPO:Tarde], [TEMPO:Anoitecer] ou [TEMPO:Noite].
+Nao deixe o HUD em "Local desconhecido" se a narrativa ja revelou onde o personagem esta.
+
 TAGS DO MOTOR
 Use tags exatamente quando necessário. Elas podem ficar no fim da resposta.
 [PV:-X] dano ou cura com [PV:+X]
@@ -13044,17 +13251,19 @@ Use tags exatamente quando necessário. Elas podem ficar no fim da resposta.
 [OURO:+N] ou [OURO:-N]
 [ITEM:Nome do item]
 [LOCALIZAÇÃO:Nome do local]
+[TEMPO:Manha|Meio-dia|Tarde|Anoitecer|Noite]
 [REP:+N] ou [REP:-N]
 [COMBATE:Nome do inimigo]
 [FIM_COMBATE]
-[TESTE:atributo:CD]
+[TESTE:atributo ou pericia:CD]
 [TESTE:Iniciativa]
 [AÇÕES:opção 1|opção 2|opção 3|opção 4]
 
 TESTES
 Peça teste apenas quando houver incerteza real, perigo, custo, segredo, pressão social ou consequência interessante.
 Não peça teste para toda fala, caminhada, observação comum ou ação trivial.
-Quando pedir teste, escreva 1 ou 2 frases de tensão e encerre com a tag [TESTE:atributo:CD].
+Use Percepcao passiva para pistas, emboscadas e detalhes que o personagem poderia notar sem declarar busca ativa. Peça teste ativo de Percepcao/Investigacao apenas quando o jogador procurar, houver pressao ou a CD superar a percepcao passiva.
+Quando pedir teste, escreva 1 ou 2 frases de tensão e encerre com a tag [TESTE:atributo ou pericia:CD], por exemplo [TESTE:Percepcao:14], [TESTE:Furtividade:13] ou [TESTE:Sabedoria:15].
 Em resposta de teste, não inclua [AÇÕES:] e não narre o resultado antes da rolagem.
 Use CD 10 fácil, 12 comum, 15 difícil, 18 muito difícil, 20 heroico.
 
@@ -13065,18 +13274,32 @@ Não repita opções óbvias se a situação mudou.
 Evite opções longas demais para botões mobile.
 
 COMBATE
-Ao iniciar combate, use [COMBATE:Nome] e peça [TESTE:Iniciativa], encerrando a resposta ali.
-Durante combate, descreva posição, ameaça, intenção do inimigo e oportunidade tática.
-Use dano com moderação e sempre com tag [PV:-X]. Ao derrotar inimigo, use [FIM_COMBATE] e recompense de forma coerente.
-Não mate o personagem sem dar sinais claros de risco e chance de escolha.
+Em confronto, reduza a narrativa cinematografica e aja como Mestre de mesa D&D 5e: controle turno, ordem, dados, CA, dano e consequencia.
+Ao iniciar combate, use [COMBATE:Nome do inimigo] e peca [TESTE:Iniciativa], encerrando a resposta ali. Informe tambem que voce rolou a iniciativa dos inimigos e guardara a ordem.
+Depois que o jogador rolar iniciativa, compare com a iniciativa dos inimigos que voce rolou internamente. Declare a ordem de turnos em uma frase curta e diga de quem e o turno.
+Nunca de acerto automatico para ataque. Todo ataque do jogador exige jogada de ataque antes do dano.
+Ataque corpo a corpo com arma: peca [TESTE:Ataque Corpo a Corpo:CA_DO_INIMIGO].
+Ataque a distancia com arma: peca [TESTE:Ataque a Distancia:CA_DO_INIMIGO].
+Ataque magico: peca [TESTE:Ataque Magico:CA_DO_INIMIGO] quando a descricao da magia exigir ataque.
+Substitua CA_DO_INIMIGO por um numero real de CA, por exemplo [TESTE:Ataque Corpo a Corpo:13]. Nunca escreva CA_DO_INIMIGO literalmente.
+Magias com salvaguarda: voce rola internamente a salvaguarda do inimigo contra a CD de magia do personagem; narre sucesso/falha e peca o dano apropriado se houver.
+Se o ataque do jogador acertar, diga claramente: "acertou, role o dano: XdY + modificador se aplicavel". Nao aplique dano ao inimigo antes do jogador rolar o dano na bandeja.
+Quando o jogador informar o dano, aplique esse dano ao inimigo, narre em 1 paragrafo curto e avance para o proximo turno da ordem.
+No turno dos inimigos, role internamente d20 + bonus de ataque contra a CA ${hero.ca || 10} do personagem. Se acertar, role internamente o dano e use [PV:-X]. Se errar, nao use [PV:-X].
+Use turnos claros: "Turno de X", "Turno de ${hero.name || 'heroi'}", "Rodada 2". Mantenha a ordem ate [FIM_COMBATE].
+Durante combate, termine com [AÇÕES:] somente quando for o turno do jogador e nao houver rolagem pendente.
+Se pedir [TESTE:], pare a resposta ali, sem [AÇÕES:] e sem narrar o resultado antes da rolagem.
+Ao derrotar inimigo, use [FIM_COMBATE] e recompense de forma coerente. Nao mate o personagem sem dar sinais claros de risco e chance de escolha.
 
 MAGIA
-Só permita magias coerentes com a classe, nível e lista do personagem.
+So permita magias coerentes com a classe, nivel e lista do personagem.
 Gaste MP com [MP:-X] quando a magia tiver impacto real.
 Magia pode resolver problemas, mas também deve respeitar custo, alcance, risco e interpretação.
 
 ECONOMIA E MONETIZAÇÃO IMERSIVA
 Ouro e diamantes existem dentro do mundo. Ofereça compras apenas quando fizer sentido: mercadores, informantes, mapas, serviços raros, templos, pactos, oficinas ou itens especiais.
+Loja normal de diamantes só deve aparecer em cidade, vila, aldeia ou diante de um vendedor/mercador/NPC que negocie. Fora disso, o jogador precisa procurar um mercador na narrativa.
+Exceções globais: Destino Favorável e Reviver esta Cena sempre podem oferecer compra de diamantes, pois são recursos premium fora da loja comum.
 Diamantes podem aparecer como recurso premium para reviver cena, obter turnos extras, gerar momento cinematográfico ou acelerar oportunidades, mas nunca quebre a imersão com loja genérica.
 Mercador raro: Sobrevivência CD ${merchantCD} para encontrar.
 
@@ -13850,7 +14073,8 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
         }
       }
       // Pendente roll
-      detectPendingRoll(reply);
+      // Respostas em OFF nao podem limpar/substituir um teste pendente da cena.
+      if(!oocMode) detectPendingRoll(reply);
       updateD20ButtonState(); // Acende o botão se teste pendente
       // Processa mudanças de inventário
       processInventoryChanges(reply);
@@ -13860,7 +14084,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // Reroll controlado pelo Mestre via [TESTE:attr:CD:crítico]
       // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
       const testeMatch=reply.match(/\[TESTE:([^:]+):?(\d+)?\]/i);
-      if(testeMatch){
+      if(!oocMode && testeMatch){
         const attrName=testeMatch[1].trim().toLowerCase();
         const attrMap2={'força':'str','destreza':'dex','constituição':'con','inteligência':'int','sabedoria':'wis','carisma':'cha','percepção':'wis','furtividade':'dex','atletismo':'str','intimidação':'cha','persuasão':'cha','enganação':'cha','arcanismo':'int','história':'int','natureza':'int','religião':'int','medicina':'wis','sobrevivência':'wis','percepção de animais':'wis'};
         pendingRollAttr=attrMap2[attrName]||'str';
@@ -13868,11 +14092,13 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       }
       // ★ Detecta contexto via tag e palavras-chave
       const locMatch=reply.match(/\[LOCALIZAÇÃO:\s*([^\]]+)\]/i);
+      const timeMatch=reply.match(/\[TEMPO:\s*([^\]]+)\]/i);
       if(locMatch){inCity=locMatch[1].trim().toLowerCase()==='cidade';}
       else{
         if(/(?:cidade|vilarejo|taverna|mercado|aldeia|castelo|porto|estalagem|loja|ferreiro|boticário)/i.test(reply))inCity=true;
         else if(/(?:floresta|estrada aberta|ruínas|caverna|campo aberto|matagal|deserto|montanha|pântano)/i.test(reply))inCity=false;
       }
+      if(timeMatch) setHUDTimeLabel(timeMatch[1].trim());
       // Apoio somente visual quando o Mestre narra o local, mas nao envia a tag.
       updateLocationBackdrop(locMatch ? locMatch[1] : reply);
       updateVisualWorldContext(reply, locMatch ? locMatch[1].trim() : '');
@@ -13924,7 +14150,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
         }
         typewriterMsg(m,formatted);
       }
-      if(actions)updateActionButtons(actions);
+      if(!oocMode && actions)updateActionButtons(actions);
       // ★ Mostra botão Cena Ilustrada após narrativa significativa
       if(!oocMode && formatted.length > 100){
         setTimeout(()=>showSceneButton(cleanText), 800);
@@ -14026,8 +14252,19 @@ async function sendFree(){
     narr.appendChild(oocMsg);
     oocMsg.scrollIntoView({behavior:'smooth',block:'start'});
 
-    // Envia ao mestre com contexto OOC
-    askMaster(`[FORA DO PERSONAGEM — o jogador faz uma pergunta ou comentário como jogador, não como personagem]: "${txt}". Responda de forma direta e amigável, como um Mestre explicando regras, narrativa ou dando dicas. Use tom informal. Não narre como personagem.`, true);
+    // Envia ao mestre com contexto OOC e ficha atual fechada.
+    const statusSnapshot=buildHeroStatusSnapshot();
+    askMaster(`[FORA DO PERSONAGEM — o jogador faz uma pergunta ou comentário como jogador, não como personagem]
+
+FICHA ATUAL CONFIAVEL DO PERSONAGEM:
+${statusSnapshot}
+
+TESTE PENDENTE, SE EXISTIR:
+${pendingRollAttr ? `${pendingRollLabel||attrLabels[pendingRollAttr]||'Teste'}${pendingRollCD?' CD '+pendingRollCD:''} | tipo: ${pendingRollType||'check'}` : 'Nenhum teste pendente.'}
+
+Pergunta do jogador: "${txt}"
+
+Responda de forma direta e amigável, como um Mestre explicando regras, narrativa ou dando dicas. Use tom informal. Se a pergunta for sobre status, ficha, PV, CA, atributos, ouro, diamantes, equipamentos ou magias, use somente a FICHA ATUAL CONFIAVEL acima. Se houver TESTE PENDENTE, explique qual dado/modificador/proficiencia usar, mas nao substitua nem cancele o teste. Não use tags. Não narre como personagem e não avance a história.`, true);
     return;
   }
 
@@ -14599,7 +14836,7 @@ function showRerollButton(rollResult, context, isDramatic){
       <div style="background:rgba(91,63,160,.1);border:1px solid rgba(139,111,208,.25);border-radius:12px;padding:12px 16px;text-align:center;max-width:320px">
         <div style="font-size:11px;color:rgba(200,160,255,.5);margin-bottom:10px">Você não tem Diamantes para relançar o dado.</div>
         <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-          <button onclick="closeMo && closeMo('mo-shop'); openMo('mo-shop')" style="
+          <button onclick="closeMo && closeMo('mo-shop'); openDiamondShop('destino')" style="
             background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));
             border:1px solid rgba(139,111,208,.6);border-radius:10px;
             padding:10px 16px;display:flex;align-items:center;gap:6px;cursor:pointer;
@@ -14756,7 +14993,7 @@ function showTurnLimitModal(used, limit){
           💎 ${SESSION_COST} Diamantes — +${SESSION_TURNS} Turnos<br>
           <span style="font-size:10px;opacity:.6">Você tem ${hero.credits||0} 💎</span>
         </button>
-        <button onclick="document.getElementById('paywall-wrap').remove();openMo('mo-shop')" style="background:rgba(200,146,42,.12);border:1px solid rgba(200,146,42,.3);border-radius:12px;padding:12px;font-family:var(--font-title);font-size:12px;color:var(--gold-l);cursor:pointer">
+        <button onclick="document.getElementById('paywall-wrap').remove();openDiamondShop('turnos')" style="background:rgba(200,146,42,.12);border:1px solid rgba(200,146,42,.3);border-radius:12px;padding:12px;font-family:var(--font-title);font-size:12px;color:var(--gold-l);cursor:pointer">
           🛒 Comprar mais Diamantes
         </button>
         <button onclick="dismissPaywall()" style="background:none;border:none;font-size:11px;color:rgba(200,180,120,.3);cursor:pointer;padding:4px">
@@ -14787,7 +15024,7 @@ function dismissPaywall(){
 function buySession(){
   if((hero.credits||0) < SESSION_COST){
     showToast('❌ Diamantes insuficientes!');
-    openMo('mo-shop');
+    openDiamondShop('turnos');
     return;
   }
   hero.credits = (hero.credits||0) - SESSION_COST;
@@ -14859,7 +15096,7 @@ function showSceneButton(narrativeText){
 async function generateSceneImage(){
   if((hero.credits||0) < SCENE_COST){
     showToast('❌ Diamantes insuficientes!');
-    openMo('mo-shop');
+    openDiamondShop('reviver');
     return;
   }
   
@@ -15518,45 +15755,22 @@ async function rollInlineD20(attrKey, label, cd){
   clearInterval(anim);
   faceEl.classList.remove('spinning');
 
-  // Resultado real com proficiência (PHB p.173)
+  // Resultado real com modificador/proficiencia coerente com o tipo de rolagem.
   const diceVal = rollD(20);
-  const attrMod = mod(stats[attrKey]||10);
-  const profLv = hero.prof || (hero.level<=4?2:hero.level<=8?3:hero.level<=12?4:hero.level<=16?5:6);
-  const classSvs = CLASS_SAVES[hero.cls]||[];
-  const primSkills = {
-    str:['atletismo'],dex:['acrobacia','furtividade','prestidigitacao'],
-    con:[],int:['arcanismo','historia','investigacao','natureza','religiao'],
-    wis:['adestramento','intuicao','medicina','percepcao','sobrevivencia'],
-    cha:['atuacao','enganacao','intimidacao','persuasao'],
-  };
-  const lblNorm = (label||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-
-  // ★ Proficiência por tipo de rolagem (PHB)
-  let isProficient = false;
   const rollType = pendingRollType || 'check';
-  if(rollType === 'attack'){
-    isProficient = true; // sempre prof com armas da classe
-  } else if(rollType === 'initiative'){
-    isProficient = false; // DES puro
-  } else if(rollType === 'save'){
-    isProficient = classSvs.includes(attrKey);
-  } else {
-    // Teste de perícia padrão
-    const _hasProfSave  = classSvs.includes(attrKey);
-    const _hasProfSkill = (primSkills[attrKey]||[]).some(s=>lblNorm.includes(s)||s.includes(lblNorm));
-    isProficient = _hasProfSave || _hasProfSkill;
-  }
-  const profBonus = isProficient ? profLv : 0;
-  const modVal = attrMod + profBonus;
+  const breakdown = getRollBreakdown(attrKey, label, rollType);
+  const attrMod = breakdown.attrMod;
+  const profBonus = breakdown.profBonus;
+  const modVal = breakdown.totalMod;
   const profStr = profBonus>0 ? '+'+profBonus+'(prof)' : '';
   const total = diceVal + modVal;
   const isCrit = diceVal === 20;
   const isFail = diceVal === 1;
   const ok = cd ? total >= cd : null;
 
-  // Dado mostra o valor do d20 (não total) — total aparece na fórmula
-  faceEl.textContent = diceVal;
-  faceEl.className = 'dice-face' + (isCrit ? ' d-crit' : isFail ? ' d-fail' : '');
+  // O diagrama mostra o resultado final. O d20 bruto aparece na formula.
+  faceEl.textContent = total;
+  faceEl.className = 'dice-face' + (isCrit ? ' d-crit' : isFail ? ' d-fail' : ok===true ? ' d-crit' : ok===false ? ' d-fail' : '');
 
   const ms = modVal >= 0 ? '+'+modVal : String(modVal);
   // Cor do total igual ao addRollCard
@@ -15659,38 +15873,18 @@ async function rollD20Modal(){
   // Resultado real com proficiência
   const dr=rollD(20);
   const attr=pendingRollAttr||d20SelectedAttr;
-  const attrM=mod(stats[attr]||10);
-  // Calcula proficiência (igual ao rollInlineD20)
-  const _pb=PROF_BONUS[Math.min(hero.level||1,20)]||2;
-  const _saves=CLASS_SAVES[hero.cls]||[];
-  const _primSkills={str:['atletismo'],dex:['acrobacia','furtividade','prestidigitacao'],
-    con:[],int:['arcanismo','historia','investigacao','natureza','religiao'],
-    wis:['adestramento','intuicao','medicina','percepcao','sobrevivencia'],
-    cha:['atuacao','enganacao','intimidacao','persuasao']};
-  const _lbl=(pendingRollLabel||attrLabels[attr]||'').toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g,'');
   const _rollType = pendingRollType || 'check';
-  let _isProficient = false;
-  if(_rollType==='attack'){
-    _isProficient = true; // sempre prof com armas
-  } else if(_rollType==='initiative'){
-    _isProficient = false; // DES puro, sem prof
-  } else if(_rollType==='save'){
-    _isProficient = _saves.includes(attr);
-  } else {
-    const _hasProfSave  = _saves.includes(attr);
-    const _hasProfSkill = (_primSkills[attr]||[]).some(s=>_lbl.includes(s)||s.includes(_lbl));
-    _isProficient = _hasProfSave || _hasProfSkill;
-  }
-  const _profBonus = _isProficient ? _pb : 0;
-  const m=attrM+_profBonus;
+  const skillLbl=pendingRollLabel||attrLabels[attr];
+  const breakdown = getRollBreakdown(attr, skillLbl, _rollType);
+  const attrM=breakdown.attrMod;
+  const _profBonus = breakdown.profBonus;
+  const m=breakdown.totalMod;
   const total=dr+m;
   const cd=pendingRollCD;
   svgNum.textContent=total;
-  svgNum.style.fill=dr===20?'#2ECC71':dr===1?'#E74C3C':'#E8B84B';
+  svgNum.style.fill=dr===20 || (cd && total>=cd)?'#2ECC71':dr===1 || (cd && total<cd)?'#E74C3C':'#E8B84B';
   const profTxt=_profBonus>0?` +${_profBonus}(prof)`:'';
   const outcomeStr=cd?(total>=cd?'✓ SUCESSO':'✗ FALHA'):dr===20?'★ CRÍTICO!':dr===1?'✗ FALHA CRÍTICA':'';
-  const skillLbl=pendingRollLabel||attrLabels[attr];
   resultTxt.textContent=`${skillLbl}: d20(${dr}) ${modStr(attrM)}${profTxt} = ${total} ${outcomeStr}`;
   clearPendingRoll();
   // Fecha e adiciona no narr após 1s
@@ -15854,7 +16048,7 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-function openMo(id){
+function openMo(id, shopContext){
   if(id==='mo-rep')updateVitalsAndRep();
   if(id==='mo-api'){
     const provider=getApiProvider();
@@ -15866,7 +16060,10 @@ function openMo(id){
   }
   if(id==='mo-d20'){d20ActionMode=null;buildD20Attrs();buildD20AbilitiesPanel();document.querySelectorAll('.d20-action-btn').forEach(b=>b.classList.remove('active'));}
   if(id==='mo-xp')updateXPModal();
-  if(id==='mo-shop')updateShopContext();
+  if(id==='mo-shop'){
+    if(shopContext) diamondShopContext = shopContext;
+    updateShopContext();
+  }
   // ★ Ao abrir a ficha, rebuilda a aba de magias se tiver personagem
   if(id==='mo-char' && hero && hero.cls){
     updateCharSheet();
@@ -15892,6 +16089,29 @@ const CREDIT_PACKS = [
 
 // ★ Adiciona ouro via diamante (chamado pelo sistema de pagamento)
 // goldAmount = GP a adicionar | creditsUsed = diamantes gastos | source = 'purchase'|'test'
+let diamondShopContext = 'normal';
+
+function isPremiumDiamondContext(context){
+  return ['destino','reviver','turnos'].includes(context||'normal');
+}
+
+function hasMerchantOrCityContext(){
+  if(inCity) return true;
+  const hudLoc = document.getElementById('g-location')?.textContent || '';
+  const locText = [hudLoc, hero?.location, window.currentLocation].filter(Boolean).join(' ');
+  return /cidade|vila|aldeia|vilarejo|taverna|estalagem|mercado|loja|mercador|vendedor|lojista|comerciante|ferreiro|boticario|boticário|templo|porto/i.test(locText);
+}
+
+function diamondShopUnlocked(context){
+  const atLimit = getTurnsUsedToday() >= (FREE_TURNS_PER_DAY + getBonusTurns());
+  return isPremiumDiamondContext(context) || atLimit || hasMerchantOrCityContext();
+}
+
+function openDiamondShop(context='normal'){
+  diamondShopContext = context || 'normal';
+  openMo('mo-shop', diamondShopContext);
+}
+
 function addGold(goldAmount, creditsUsed=0, source='game'){
   const prev = Math.round(hero.gold||0);
   hero.gold = Math.round((hero.gold||0) + goldAmount);
@@ -15941,6 +16161,10 @@ function logEconomyEvent(type, goldDelta, creditsDelta, prevGold, newGold, reaso
 // Em produção: abre gateway de pagamento
 // Em modo teste: simula compra direto
 function buyCredits(packId){
+  if(!diamondShopUnlocked(diamondShopContext)){
+    showToast('Procure um mercador ou vendedor na regiao.');
+    return;
+  }
   const pack = CREDIT_PACKS[packId];
   if(!pack){ showToast('❌ Pacote inválido'); return; }
 
@@ -16052,6 +16276,9 @@ function updateShopContext(){
   const mercBtn  = document.getElementById('shop-mercador-btn');
   const packs    = ['shop-pack1','shop-pack2','shop-pack3'];
   const atLimit  = getTurnsUsedToday() >= (FREE_TURNS_PER_DAY + getBonusTurns());
+  const context  = diamondShopContext || 'normal';
+  const isPremiumContext = isPremiumDiamondContext(context);
+  const hasCommerceContext = hasMerchantOrCityContext();
 
   // Atualiza saldo + turnos usados
   const _used = getTurnsUsedToday();
@@ -16060,7 +16287,14 @@ function updateShopContext(){
   const _turnInfo = `<div style="font-size:10px;color:rgba(200,180,120,.5);text-align:center;margin-top:4px">⏱️ ${_used} de ${_total} turnos usados hoje · ${_remaining} restantes</div>`;
 
   if(banner){
-    if(inCity){
+    if(isPremiumContext){
+      const premiumLabel = context==='reviver' ? 'Reviver esta Cena' : (context==='destino' ? 'Destino Favoravel' : 'turnos extras');
+      banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:#C0A0FF;letter-spacing:.5px;text-align:center">
+        <strong>${premiumLabel}</strong> - compra de Diamantes liberada para este recurso premium.
+      </div>${_turnInfo}`;
+      banner.style.background='rgba(91,63,160,.12)';
+      banner.style.borderColor='rgba(139,111,208,.4)';
+    } else if(hasCommerceContext){
       banner.innerHTML = `<div style="font-family:var(--font-title);font-size:10px;color:rgba(46,200,80,.8);letter-spacing:.5px;text-align:center">
         🏙️ <strong>Cidade ou mercador disponível</strong> — compras liberadas!
       </div>${_turnInfo}`;
@@ -16081,8 +16315,8 @@ function updateShopContext(){
     }
   }
 
-  // Libera pacotes se cidade ou limite de turnos
-  const canBuy = inCity || atLimit;
+  // Libera pacotes em cidade/mercador, limite de turnos ou recurso premium global
+  const canBuy = isPremiumContext || hasCommerceContext || atLimit;
   packs.forEach(id=>{
     const el = document.getElementById(id);
     if(!el) return;
@@ -16095,7 +16329,7 @@ function updateShopContext(){
   });
 
   // Mostra/esconde botão de procurar mercador
-  if(mercBtn) mercBtn.style.display = inCity ? 'none' : 'block';
+  if(mercBtn) mercBtn.style.display = (isPremiumContext || hasCommerceContext) ? 'none' : 'block';
 }
 function closeMo(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
@@ -16228,6 +16462,45 @@ const ITEM_SLOT_MAP={
 
 const SLOT_ICONS={'head':'⛑️','body':'👕','lhand':'🖐️','rhand':'⚔️','legs':'👖','feet':'👢'};
 
+function getFighterStartingGear(style){
+  const armor={name:'Cota de Malha',icon:'🥋',desc:'CA 16 · Sem bônus DES · Penalidade Furtividade',slot:'body',weight:20};
+  const shield={name:'Escudo de Aço',icon:'🛡️',desc:'CA +2 · Impede uso de armas de 2 mãos',weight:2.7,equipped:true,slot:'lhand',qty:1,magic:false};
+  const kits={
+    archery:{
+      weapon:{name:'Arco Longo',icon:'🏹',desc:'1d8 perfurante · Alcance 45/180m · 2 mãos',slot:'rhand',weight:1},
+      offhand:null,
+      extra:[{name:'Carcaj + Flechas',icon:'🏹',desc:'20 flechas para arco',weight:0.5,equipped:true,slot:'back',qty:1,magic:false}]
+    },
+    great:{
+      weapon:{name:'Espada Grande',icon:'⚔️',desc:'2d6 cortante · Pesada · 2 mãos',slot:'rhand',weight:3},
+      offhand:null,
+      extra:[]
+    },
+    twf:{
+      weapon:{name:'Espada Curta',icon:'⚔️',desc:'1d6 perfurante · Finesse · Leve',slot:'rhand',weight:1},
+      offhand:{name:'Espada Curta',icon:'⚔️',desc:'1d6 perfurante · Finesse · Leve · mão secundária',slot:'lhand',weight:1,equipped:true,qty:1,magic:false},
+      extra:[]
+    },
+    dueling:{
+      weapon:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante · Versátil 1d10 · Duelo',slot:'rhand',weight:2},
+      offhand:shield,
+      extra:[]
+    },
+    protection:{
+      weapon:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante · Versátil 1d10',slot:'rhand',weight:2},
+      offhand:shield,
+      extra:[]
+    },
+    defense:{
+      weapon:{name:'Espada Longa',icon:'⚔️',desc:'1d8 cortante · Versátil 1d10',slot:'rhand',weight:2},
+      offhand:shield,
+      extra:[]
+    }
+  };
+  const kit=kits[style]||kits.defense;
+  return {weapon:kit.weapon,armor,offhand:kit.offhand,extra:kit.extra||[]};
+}
+
 function initInventory(cls){
   // Arma e armadura por classe
   const classGear={
@@ -16243,9 +16516,9 @@ function initInventory(cls){
     Monge:{weapon:{name:'Bastão',icon:'🥋',desc:'1d6 contundente · Versátil · Arma monástica',slot:'rhand',weight:2},armor:null},
     Feiticeiro:{weapon:{name:'Varinha de Cristal',icon:'🪄',desc:'Foco de conjuração · Frágil',slot:'rhand',weight:0.5},armor:null},
   };
-  const gear=classGear[cls]||classGear['Guerreiro'];
-  // Escudo apenas para classes de combate corpo a corpo com 1 mão
-  const hasShield=['Guerreiro','Clérigo','Paladino'].includes(cls);
+  const gear=cls==='Guerreiro' ? getFighterStartingGear(heroCombatStyle) : (classGear[cls]||classGear['Guerreiro']);
+  // Escudo apenas quando o kit inicial realmente pede escudo.
+  const hasShield=(cls==='Clérigo'||cls==='Paladino');
   inventory=[];
   // Mochila sempre equipada nas costas
   inventory.push({name:'Mochila do Aventureiro',icon:'🎒',desc:'Capacidade 15kg · Organização básica de aventureiro',weight:5,equipped:true,slot:'back',qty:1,magic:false});
@@ -16255,6 +16528,8 @@ function initInventory(cls){
   if(gear.armor) inventory.push({...gear.armor,equipped:true,qty:1,magic:false});
   // Escudo
   if(hasShield) inventory.push({name:'Escudo de Aço',icon:'🛡️',desc:'CA +2 · Impede uso de armas de 2 mãos',weight:2.7,equipped:true,slot:'lhand',qty:1,magic:false});
+  if(gear.offhand) inventory.push({...gear.offhand});
+  if(Array.isArray(gear.extra)) gear.extra.forEach(item=>inventory.push({...item}));
   // Pacotes iniciais por classe (PHB p.143-144) — SEM poção de cura inicial
   const startPacks = {
     'Guerreiro': [
@@ -16945,7 +17220,7 @@ function openDestino(){
     html += `<div style="text-align:center;padding:10px 0;font-size:12px;color:rgba(200,160,255,.5);margin-bottom:12px">
       Você precisa de ${DESTINO_COST} 💎 para usar o Destino Favorável.
     </div>
-    <button onclick="closeMo('mo-destino');openMo('mo-shop')" style="width:100%;background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:12px;font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
+    <button onclick="closeMo('mo-destino');openDiamondShop('destino')" style="width:100%;background:linear-gradient(135deg,rgba(91,63,160,.4),rgba(139,111,208,.3));border:1px solid rgba(139,111,208,.6);border-radius:10px;padding:12px;font-family:var(--font-title);font-size:12px;color:#C0A0FF;cursor:pointer;letter-spacing:.5px">
       💎 Obter Diamantes
     </button>`;
   } else {
@@ -17172,16 +17447,11 @@ function updateDiceTrayHint(){
     return diceTrayCounts[d]+''+lbl;
   });
   if(pendingRollAttr && diceTrayCounts[20]===1){
-    const pb = PROF_BONUS[Math.min(hero.level||1,20)]||2;
-    const attrM = mod(stats[pendingRollAttr]||10);
     const rollType2 = pendingRollType||'check';
-    let profB = 0;
-    if(rollType2==='attack') profB=pb;
-    else if(rollType2==='initiative') profB=0;
-    else if(rollType2==='save') profB=(CLASS_SAVES[hero.cls]||[]).includes(pendingRollAttr)?pb:0;
-    const totalMod = attrM+profB;
+    const rollLabel2 = pendingRollLabel || attrLabels[pendingRollAttr] || 'Teste';
+    const totalMod = getRollBreakdown(pendingRollAttr, rollLabel2, rollType2).totalMod;
     const extraNote = parts.length > 1 ? '<br><span style="font-size:9px;color:rgba(200,180,80,.6)">⚡ Bônus extra incluído</span>' : '';
-    hint.innerHTML = `${parts.join('+')} <span style="color:#ffe080">+${totalMod}</span> = ?<br>
+    hint.innerHTML = `${parts.join('+')} <span style="color:#ffe080">${totalMod>=0?'+':''}${totalMod}</span> = ?<br>
       <span style="font-size:9px;color:rgba(200,180,120,.6)">${pendingRollLabel||'Teste'}${pendingRollCD?' CD '+pendingRollCD:''}</span>${extraNote}`;
   } else {
     hint.textContent = parts.join(' + ') + ' = ?';
@@ -17312,7 +17582,7 @@ function generateImmersiveScene(){
   hero.credits = Math.round(hero.credits||0);
   if(hero.credits < cost){
     addMsg('msg-dm', `<span style="color:#E8B84B">✨ Reviver esta Cena</span><br>Você precisa de ${cost} 💎 para transformar este momento em uma cena cinematográfica. Abra a aba Diamantes quando quiser carregar sua bolsa.`);
-    try{ openMo('mo-shop'); }catch(e){}
+    try{ openDiamondShop('reviver'); }catch(e){}
     return;
   }
   hero.credits -= cost;
@@ -31658,15 +31928,22 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
   }
   html body #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
   html body #s-game.active:not(.actions-collapsed) .actions-wrap{
-    padding-bottom:126px!important;
+    padding-bottom:92px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) #act-grid,
   html body #s-game.active:not(.actions-collapsed) #act-grid{
-    padding-bottom:52px!important;
+    gap:6px!important;
+    padding-bottom:16px!important;
+  }
+  html body #s-game.screen.active:not(.actions-collapsed) #act-grid .act-btn,
+  html body #s-game.active:not(.actions-collapsed) #act-grid .act-btn{
+    min-height:48px!important;
+    padding-top:7px!important;
+    padding-bottom:7px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) #act-grid .act-btn:last-child,
   html body #s-game.active:not(.actions-collapsed) #act-grid .act-btn:last-child{
-    margin-bottom:36px!important;
+    margin-bottom:16px!important;
   }
   html body #s-game.screen.active:not(.actions-collapsed) .narr,
   html body #s-game.active:not(.actions-collapsed) .narr{
@@ -31677,9 +31954,18 @@ html body #s-game.active.v33-combat-mode .act-btn.type-combat{
   @media(max-height:760px){
     html body #s-game.screen.active:not(.actions-collapsed) .narr,
     html body #s-game.active:not(.actions-collapsed) .narr{
-      flex-basis:126px!important;
-      min-height:126px!important;
-      max-height:158px!important;
+      flex-basis:112px!important;
+      min-height:112px!important;
+      max-height:142px!important;
+    }
+    html body #s-game.screen.active:not(.actions-collapsed) #act-grid .act-btn,
+    html body #s-game.active:not(.actions-collapsed) #act-grid .act-btn{
+      min-height:44px!important;
+    }
+    html body #s-game.screen.active:not(.actions-collapsed) #act-grid .a-title,
+    html body #s-game.active:not(.actions-collapsed) #act-grid .a-title{
+      font-size:12.6px!important;
+      line-height:1.16!important;
     }
   }
 }
