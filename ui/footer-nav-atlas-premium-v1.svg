@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 128">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="10" x2="92" y2="118" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff2bb"/>
+      <stop offset=".28" stop-color="#d6af63"/>
+      <stop offset=".58" stop-color="#73542d"/>
+      <stop offset=".82" stop-color="#b98b42"/>
+      <stop offset="1" stop-color="#ffe08f"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="8" x2="76" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f0d39a"/>
+      <stop offset=".32" stop-color="#8a806e"/>
+      <stop offset=".66" stop-color="#31271b"/>
+      <stop offset="1" stop-color="#cf9f4d"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".9"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#e3aa43" flood-opacity=".44"/>
+    </filter>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".9"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#c58d35" flood-opacity=".24"/>
+    </filter>
+    <style>
+      .g{fill:none;stroke:url(#gold);stroke-linecap:round;stroke-linejoin:round;filter:url(#glow)}
+      .m{fill:url(#steel);stroke:url(#gold);stroke-linecap:round;stroke-linejoin:round;filter:url(#soft)}
+      .d{stroke:#140d05;stroke-linecap:round;stroke-linejoin:round}
+      .h{stroke:#fff0b2;stroke-linecap:round;opacity:.45}
+    </style>
+  </defs>
+
+  <!-- JORNADA -->
+  <g transform="translate(18 16)">
+    <circle class="g" cx="46" cy="48" r="20" stroke-width="4"/>
+    <path class="g" d="M46 2 57 38 94 48 57 58 46 94 35 58 0 48 35 38Z" stroke-width="4"/>
+    <path class="g" d="M46 19 52 43 76 48 52 53 46 77 40 53 16 48 40 43Z" stroke-width="2.4"/>
+    <circle cx="46" cy="48" r="7" fill="#120b04" stroke="#ffe4a0" stroke-width="3" filter="url(#glow)"/>
+    <path class="h" d="M46 5v26M46 65v26M3 48h26M63 48h26" stroke-width="1.6"/>
+  </g>
+
+  <!-- INVENTARIO -->
+  <g transform="translate(146 17)">
+    <path class="m" d="M28 40V30C28 16 39 8 51 8s23 8 23 22v10" stroke-width="7" fill="none"/>
+    <path class="m" d="M12 42h78c7 0 13 6 13 13v36c0 8-6 14-14 14H13C6 105 0 99 0 91V55c0-7 5-13 12-13Z" stroke-width="4"/>
+    <path class="d" d="M2 65h100M27 43v61M76 43v61" stroke-width="3.5" opacity=".65"/>
+    <path class="g" d="M38 42v29c0 7 5 12 13 12s13-5 13-12V42" stroke-width="4"/>
+    <rect x="43" y="61" width="16" height="13" rx="2" fill="#100a04" stroke="#f0cb74" stroke-width="3" filter="url(#soft)"/>
+    <path class="h" d="M16 52h20M67 52h20" stroke-width="2.2"/>
+  </g>
+
+  <!-- PERSONAGEM -->
+  <g transform="translate(276 13)">
+    <path class="m" d="M52 2c25 3 42 21 44 43L83 55l-4 36-27 20-27-20-4-36L8 45C10 23 27 5 52 2Z" stroke-width="4.5"/>
+    <path class="h" d="M52 4v104" stroke-width="3"/>
+    <path class="g" d="M21 49h62M27 65h50" stroke-width="4.4"/>
+    <path class="d" d="M38 70 48 88h8l10-18" stroke-width="6"/>
+    <path class="g" d="M33 44 43 26h18l10 18" stroke-width="4" fill="none"/>
+    <path class="h" d="M22 38c4-12 12-21 23-27M82 38C78 26 70 17 59 11" stroke-width="2"/>
+  </g>
+
+  <!-- DIARIO -->
+  <g transform="translate(399 18)">
+    <path class="m" d="M8 12h36c8 0 11 5 11 12v72c0-6-6-10-15-10H8Z" stroke-width="4.5"/>
+    <path class="m" d="M102 12H66c-8 0-11 5-11 12v72c0-6 6-10 15-10h32Z" stroke-width="4.5"/>
+    <path class="g" d="M55 23v73" stroke-width="3.6"/>
+    <path class="g" d="M20 31h22M20 45h22M20 59h18M69 31h22M69 45h22M69 59h18" stroke-width="3.4" opacity=".75"/>
+    <path class="h" d="M9 13c10 4 22 6 35 5M101 13c-10 4-22 6-35 5" stroke-width="2.2"/>
+  </g>
+
+  <!-- MENU -->
+  <g transform="translate(528 26)">
+    <path class="g" d="M5 16h80M5 45h80M5 74h80" stroke-width="8"/>
+    <path class="h" d="M9 11h72M9 40h72M9 69h72" stroke-width="2.2"/>
+    <path d="M5 16h80M5 45h80M5 74h80" stroke="#5c3c14" stroke-width="1.4" opacity=".6"/>
+  </g>
+</svg>
