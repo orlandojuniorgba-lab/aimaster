@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AiMaster - Previa Barra de Navegacao</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#080604;
+      --gold:#c8922a;
+      --text:#f0ddb0;
+      --muted:#9a8a65;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      padding:22px;
+      background:
+        radial-gradient(circle at 50% 0,rgba(200,146,42,.18),transparent 34%),
+        linear-gradient(180deg,#120d07,#030302 70%);
+      color:var(--text);
+      font-family:Georgia,serif;
+    }
+    h1{
+      margin:0 0 6px;
+      text-align:center;
+      color:#f4d890;
+      letter-spacing:4px;
+      font-size:22px;
+      text-transform:uppercase;
+    }
+    p{
+      margin:0 auto 22px;
+      max-width:760px;
+      text-align:center;
+      color:var(--muted);
+      font-family:Arial,sans-serif;
+      font-size:14px;
+      line-height:1.45;
+    }
+    .wrap{
+      display:grid;
+      gap:22px;
+      max-width:1120px;
+      margin:0 auto;
+    }
+    .card{
+      padding:14px;
+      border:1px solid rgba(200,146,42,.55);
+      border-radius:18px;
+      background:rgba(10,8,5,.78);
+      box-shadow:0 18px 50px rgba(0,0,0,.55), inset 0 0 40px rgba(200,146,42,.05);
+    }
+    .card h2{
+      margin:0 0 10px;
+      color:#e5c075;
+      letter-spacing:2px;
+      font-size:15px;
+      text-transform:uppercase;
+    }
+    img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:10px;
+      background:#050403;
+    }
+  </style>
+</head>
+<body>
+  <h1>Barra de Navegacao Premium</h1>
+  <p>Estas sao apenas opcoes visuais para aprovacao. Nenhuma delas esta ligada ao jogo ainda.</p>
+  <main class="wrap">
+    <section class="card">
+      <h2>Opcao 1 - AAA Dark</h2>
+      <img src="footer-nav-concept-01-aaa-dark.svg" alt="Opcao 1 AAA Dark">
+    </section>
+    <section class="card">
+      <h2>Opcao 2 - Metal Relic</h2>
+      <img src="footer-nav-concept-02-metal-relic.svg" alt="Opcao 2 Metal Relic">
+    </section>
+    <section class="card">
+      <h2>Opcao 3 - Ornate Glow</h2>
+      <img src="footer-nav-concept-03-ornate-glow.svg" alt="Opcao 3 Ornate Glow">
+    </section>
+  </main>
+</body>
+</html>
