@@ -79,159 +79,7 @@ body{font-family:var(--font-narr);color:var(--parch);}
 .pp-name{font-family:var(--font-title);font-size:13px;color:var(--gold-l);font-weight:600;}
 .pp-arch{font-size:12px;color:var(--parch-d);}
 .pp-tags{display:flex;flex-wrap:wrap;gap:5px;}
-.tag{font-size:10px;padding:3px 9px;border-radius:12px;font-family:var(--font-title);letter-spacing:.5px;white-space:nowrap;}
-.tag-dark{background:rgba(100,0,150,0.22);border:1px solid rgba(150,50,200,0.3);color:#C090F0;}
-.tag-light{background:rgba(200,160,0,0.12);border:1px solid rgba(200,146,42,0.28);color:var(--gold-l);}
-.tag-combat{background:rgba(180,0,0,0.16);border:1px solid rgba(200,50,50,0.3);color:#E08080;}
-.tag-social{background:rgba(0,120,180,0.16);border:1px solid rgba(0,150,220,0.28);color:#80C0E0;}
-.tag-divine{background:rgba(220,200,0,0.1);border:1px solid rgba(220,200,50,0.28);color:#E0D060;}
-.tag-nature{background:rgba(0,140,60,0.15);border:1px solid rgba(0,180,80,0.28);color:#60D090;}
-.pp-bonuses{display:flex;flex-direction:column;gap:4px;}
-.bonus-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--parch-d);}
-.b-icon{font-size:13px;flex-shrink:0;}
-.b-val{font-family:var(--font-title);font-size:10px;margin-left:auto;}
-.b-pos{color:#60D090;}.b-neg{color:#E08080;}.b-neu{color:var(--gold);}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
-.sb{background:var(--bg4);border:1px solid var(--border);border-radius:7px;padding:10px 6px;text-align:center;}
-.sb.rolling{border-color:var(--gold);animation:pgold .3s ease;}
-@keyframes pgold{50%{box-shadow:0 0 10px var(--gold-glow);}}
-.sn{font-size:10px;color:var(--gold-d);letter-spacing:1px;font-family:var(--font-title);}
-.sv{font-size:22px;font-weight:600;color:var(--parch);line-height:1.2;}
-.sm{font-size:12px;color:var(--gold);}
-.btn-roll{background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);padding:11px;font-family:var(--font-title);font-size:11px;letter-spacing:1px;border-radius:5px;cursor:pointer;width:100%;}
-.btn-primary{background:linear-gradient(135deg,var(--gold),#B8820A);color:var(--ink);border:none;padding:14px;font-family:var(--font-title);font-size:13px;font-weight:700;letter-spacing:1px;border-radius:6px;cursor:pointer;width:100%;}
-.btn-secondary{background:transparent;border:1px solid var(--gold-dim);color:var(--gold-d);padding:11px;font-family:var(--font-title);font-size:12px;border-radius:5px;cursor:pointer;width:100%;}
-
-/* ══ GAME ══ */
-#s-game{background:var(--bg2);}
-.thinking-bar{height:2px;flex-shrink:0;display:none;background:linear-gradient(90deg,transparent,var(--gold),var(--gold-l),var(--gold),transparent);background-size:200% 100%;animation:shimmer 1.2s linear infinite;}
-.thinking-bar.active{display:block;}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* Scene header */
-.hdr-scene{width:100%;height:36px;position:relative;overflow:hidden;flex-shrink:0;background:linear-gradient(180deg,#050A02,#0A1506 60%,#101C08);}
-.moon{position:absolute;top:8px;right:16px;width:14px;height:14px;background:radial-gradient(circle at 35% 35%,#F0E8C0,#C8B870);border-radius:50%;box-shadow:0 0 10px rgba(220,200,100,0.5);}
-.ia-badge{position:absolute;top:50%;left:10px;transform:translateY(-50%);background:rgba(10,20,10,0.85);border:1px solid rgba(46,204,113,0.5);border-radius:20px;padding:3px 10px;font-size:10px;font-family:var(--font-title);letter-spacing:1px;display:flex;align-items:center;gap:5px;z-index:10;}
-.ia-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
-.ia-dot.thinking{background:#F39C12;animation:blink .4s infinite;}
-#ia-lbl{color:var(--green);}
-#ia-lbl.thinking-txt{color:#F39C12;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.forest-svg{position:absolute;bottom:0;left:0;width:100%;height:28px;}
-
-/* ★ XP Ring + Portrait */
-.char-strip{display:flex;align-items:center;gap:11px;padding:9px 14px 10px;background:linear-gradient(180deg,var(--bg3),rgba(26,18,8,.95));border-top:1px solid var(--border);border-bottom:1px solid rgba(200,146,42,.1);flex-shrink:0;}
-.xp-portrait-wrap{position:relative;width:50px;height:50px;flex-shrink:0;cursor:pointer;}
-.xp-ring{position:absolute;inset:0;}
-.portrait{position:absolute;inset:5px;border-radius:50%;border:1.5px solid var(--gold-d);display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg4);}
-.xp-label{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--gold-l);font-family:var(--font-title);white-space:nowrap;letter-spacing:.5px;font-weight:600;text-shadow:0 0 6px rgba(200,146,42,0.4);}
-.char-info{flex:1;min-width:0;}
-.c-name{font-family:var(--font-title);font-size:13px;font-weight:600;color:var(--gold-l);line-height:1.15;}
-.c-meta{font-size:10px;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-title);margin-bottom:4px;opacity:0.9;}
-.bars{display:flex;flex-direction:column;gap:4px;}
-.bar-row{display:flex;align-items:center;gap:6px;}
-.bar-lbl{font-size:9px;color:var(--parch-d);font-family:var(--font-title);letter-spacing:1px;width:16px;flex-shrink:0;}
-.bar-track{flex:1;height:6px;background:rgba(0,0,0,.6);border-radius:3px;overflow:hidden;}
-.bar-fill{height:100%;border-radius:3px;transition:width .7s;}
-.bar-fill.hp{background:linear-gradient(90deg,var(--hp),var(--hp-l));}
-.bar-fill.mp{background:linear-gradient(90deg,var(--mp),var(--mp-l));}
-.bar-val{font-size:10px;color:var(--parch-dim);min-width:30px;text-align:right;}
-.mini-stats{display:flex;gap:10px;margin-top:4px;}
-.mstat{font-size:10px;color:var(--gold);font-family:var(--font-title);letter-spacing:.5px;font-weight:600;}
-.mstat span{color:var(--parch-d);font-weight:600;}
-/* Gold pill top right */
-.gold-pill{display:flex;align-items:center;gap:4px;background:rgba(200,146,42,.1);border:1px solid rgba(200,146,42,.22);border-radius:20px;padding:4px 10px;font-size:13px;color:var(--gold-l);font-weight:600;flex-shrink:0;cursor:default;}
-.narr-border{height:1px;flex-shrink:0;background:linear-gradient(90deg,transparent,var(--gold-d),rgba(200,146,42,.5),var(--gold-d),transparent);}
-
-/* ══ NARRATIVA ══ */
-.narr{flex:1;overflow-y:auto;padding:12px 14px 80px 14px;display:flex;flex-direction:column;gap:12px;background:var(--bg2);scrollbar-width:thin;scrollbar-color:var(--gold-dim) transparent;-webkit-overflow-scrolling:touch;}
-.act-btn{
-  background:rgba(15,10,4,.78);
-  border:1px solid rgba(200,146,42,.22);
-  border-left:3px solid var(--gold-dim);
-  border-radius:12px;
-  padding:9px 12px;
-  cursor:pointer;
-  text-align:left;
-  color:var(--parch);
-  display:flex;align-items:center;gap:12px;
-  transition:all .18s;
-  position:relative;overflow:hidden;
-  width:100%;
-}
-.act-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(200,146,42,.06),transparent);opacity:0;transition:opacity .2s;}
-.act-btn:hover{border-left-color:var(--gold-l);transform:translateX(2px);box-shadow:-2px 0 12px rgba(200,146,42,.15);}
-.act-btn:hover::before{opacity:1;}
-.act-btn:active{transform:translateX(0);}
-.act-btn:disabled{opacity:.3;cursor:not-allowed;transform:none;}
-.act-btn.suggested{border-left-color:var(--gold);box-shadow:0 0 14px rgba(200,146,42,.1);}
-.a-circle{
-  width:36px;height:36px;min-width:36px;
-  border-radius:50%;
-  background:rgba(200,146,42,.1);
-  border:1.5px solid rgba(200,146,42,.3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:17px;
-  transition:background .18s,border-color .18s;
-}
-.act-btn:hover .a-circle{background:rgba(200,146,42,.2);border-color:rgba(200,146,42,.6);}
-.a-text{flex:1;min-width:0;}
-.a-title{font-family:var(--font-narr);font-size:15px;color:var(--parch);display:block;font-weight:500;line-height:1.2;}
-.a-hint{font-size:10px;color:var(--gold);display:block;margin-top:2px;font-family:var(--font-title);letter-spacing:.5px;text-transform:uppercase;opacity:0.85;}
-.a-arrow{font-size:13px;color:var(--gold-dim);flex-shrink:0;}
-.free-row{display:flex;gap:7px;align-items:center;}
-.free-in{flex:1;background:rgba(26,18,8,.8);border:1px solid rgba(200,146,42,.2);border-radius:8px;padding:10px 13px;color:var(--parch);font-family:var(--font-narr);font-size:16px;outline:none;}
-.free-in::placeholder{color:rgba(200,146,42,.28);}
-.free-in:focus{border-color:var(--gold-d);}
-.free-in:disabled,.free-send:disabled{opacity:.3;cursor:not-allowed;}
-.free-send{background:var(--gold-d);border:none;border-radius:8px;padding:10px 15px;color:var(--parch);cursor:pointer;font-size:17px;flex-shrink:0;}
-.free-send:hover{background:var(--gold);}
-
-/* ★ FOOTER MELHORADO */
-.footer-bar{height:58px;background:linear-gradient(180deg,var(--bg),#080502);border-top:1px solid rgba(200,146,42,.12);display:none;align-items:center;justify-content:space-around;padding:0 4px;flex-shrink:0;position:fixed;bottom:0;left:0;right:0;z-index:80;}
-.fbar-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:10px;transition:background .15s;flex:1;min-width:0;}
-.fbar-btn:active{background:rgba(200,146,42,.12);}
-.fbi{font-size:22px;line-height:1;display:block;}
-.fbl{font-size:8px;color:var(--gold-d);font-family:var(--font-title);letter-spacing:.5px;white-space:nowrap;}
-/* ★ D20 SVG especial */
-.d20-icon-svg{width:28px;height:28px;display:block;margin:0 auto;}
-
-/* ══ MODAIS ══ */
-.mo{position:fixed;inset:0;background:rgba(0,0,0,.84);z-index:200;display:none;align-items:flex-end;}
-.mo.open{display:flex;}
-.ms{background:var(--bg3);border-radius:20px 20px 0 0;border-top:2px solid var(--gold-d);padding:1.4rem;width:100%;max-height:85vh;overflow-y:auto;display:flex;flex-direction:column;gap:12px;animation:slideup .25s ease;}
-@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.mt{font-family:var(--font-title);font-size:15px;color:var(--gold-l);letter-spacing:1px;display:flex;justify-content:space-between;align-items:center;}
-.mc{background:none;border:none;color:var(--gold-d);font-size:22px;cursor:pointer;line-height:1;padding:0;}
-.mo-note{font-size:13px;color:var(--gold-d);text-align:center;}
-.sp-pack{background:rgba(10,8,2,.7);border:1px solid rgba(200,146,42,.2);border-radius:10px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:all .15s;}
-.sp-pack:hover:not([disabled]){background:rgba(200,146,42,.08);border-color:rgba(200,146,42,.4);}
-.sp-pack.featured{border-color:rgba(200,146,42,.5);background:rgba(200,146,42,.06);}
-.sp-pack.locked{opacity:.3;pointer-events:none;filter:grayscale(.7);}
-.sp-nm{font-family:var(--font-title);font-size:13px;color:var(--parch-l);letter-spacing:.3px;}
-.sp-cr{font-size:11px;color:var(--parch-d);margin-top:2px;}
-.sp-pr-sm{font-size:10px;color:rgba(200,180,120,.5);margin-top:2px;}
-.btn-buy{background:linear-gradient(135deg,rgba(200,146,42,.25),rgba(180,120,20,.15));border:1px solid rgba(200,146,42,.5);border-radius:8px;padding:8px 14px;font-family:var(--font-title);font-size:11px;color:var(--gold-l);cursor:pointer;letter-spacing:.5px;flex-shrink:0;transition:all .15s;}
-.btn-buy:hover{background:rgba(200,146,42,.35);border-color:rgba(200,146,42,.8);}
-
-.sp-nm{font-family:var(--font-title);font-size:12px;color:var(--gold);}
-.sp-cr{font-size:13px;color:var(--parch-d);}
-.sp-nm{font-family:var(--font-title);font-size:12px;color:var(--gold);}
-.sp-cr{font-size:13px;color:var(--parch-d);}
-.sp-pr{font-size:11px;color:var(--gold-d);}
-.btn-buy{background:var(--gold);border:none;border-radius:6px;padding:9px 15px;font-family:var(--font-title);font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;flex-shrink:0;}
-.rep-bar-wrap{background:var(--bg2);border-radius:8px;padding:10px 12px;}
-.rep-current{font-family:var(--font-title);font-size:12px;color:var(--gold);margin-bottom:6px;}
-.rep-track{height:6px;background:rgba(0,0,0,.5);border-radius:3px;overflow:hidden;}
-.rep-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:3px;transition:width .5s;}
-.rt{background:var(--bg2);border-radius:8px;padding:11px 13px;border-left:3px solid var(--gold-dim);}
-.rt.active{border-left-color:var(--gold);}
-.rt .rn{font-family:var(--font-title);font-size:12px;color:var(--gold);}
-.rt .rb{font-size:13px;color:var(--parch-d);margin-top:2px;}
-
-/* ★ FICHA COM ABAS DESLIZÁVEIS */
-.sheet-tabs{display:flex;gap:4px;margin-bottom:4px;}
-.stab{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:.5px;transition:all .15s;}
+.tag{font-size:10px;padding:3px 9px;cursor:pointer;font-family:var(--font-title);font-size:10px;color:var(--gold-d);letter-spacing:.5px;transition:all .15s;}
 .stab.active{background:rgba(200,146,42,.15);border-color:var(--gold-d);color:var(--gold-l);}
 .sheet-page{display:none;}
 .sheet-page.active{display:block;}
@@ -1605,6 +1453,1308 @@ html body #mo-char .inv-detail-card.narrative .inv-detail-desc{
 }
 </style>
 
+<style id="aimaster-v6385-loja-diamantes-premium">
+/* Loja premium: visual de mercador arcano sem alterar a lógica de compra/liberação. */
+html body #mo-shop.open .ms{
+  overflow:hidden auto!important;
+  padding:18px 18px 20px!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(93,191,255,.10),transparent 24%),
+    radial-gradient(circle at 88% 18%,rgba(139,111,208,.18),transparent 30%),
+    linear-gradient(135deg,rgba(34,22,9,.96),rgba(7,5,3,.98) 55%,rgba(15,10,6,.98))!important;
+  border:1px solid rgba(218,169,69,.58)!important;
+  box-shadow:
+    0 28px 70px rgba(0,0,0,.78),
+    0 0 34px rgba(218,169,69,.14),
+    inset 0 1px 0 rgba(255,235,170,.14)!important;
+}
+html body #mo-shop .mt{
+  position:relative!important;
+  padding:6px 44px 16px 12px!important;
+  margin-bottom:14px!important;
+  border-bottom:1px solid rgba(218,169,69,.20)!important;
+  color:#f4d58a!important;
+  font-size:18px!important;
+  letter-spacing:2.3px!important;
+  text-shadow:0 2px 3px #000,0 0 14px rgba(218,169,69,.24)!important;
+}
+html body #mo-shop .mt::before{
+  content:'✦'!important;
+  color:#f3ce72!important;
+  margin-right:8px!important;
+  text-shadow:0 0 12px rgba(218,169,69,.62)!important;
+}
+html body #mo-shop .mc{
+  top:4px!important;
+  right:4px!important;
+  width:38px!important;
+  height:38px!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 50% 35%,rgba(70,43,14,.82),rgba(5,4,3,.96))!important;
+  border:1px solid rgba(218,169,69,.42)!important;
+  color:#f4d58a!important;
+  box-shadow:0 0 18px rgba(218,169,69,.16),inset 0 1px 0 rgba(255,239,180,.14)!important;
+}
+html body #mo-shop #shop-context-banner{
+  margin:0 0 14px!important;
+  padding:12px 14px!important;
+  border-radius:14px!important;
+  background:
+    radial-gradient(circle at 12% 50%,rgba(139,111,208,.20),transparent 36%),
+    linear-gradient(135deg,rgba(31,17,54,.78),rgba(9,7,13,.86))!important;
+  border:1px solid rgba(161,126,238,.46)!important;
+  box-shadow:inset 0 1px 0 rgba(231,211,255,.11),0 0 22px rgba(109,73,198,.10)!important;
+}
+html body #mo-shop #shop-context-banner strong{
+  color:#d8c2ff!important;
+  letter-spacing:1.2px!important;
+}
+html body #mo-shop .sp-pack{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:54px minmax(0,1fr) auto!important;
+  align-items:center!important;
+  gap:12px!important;
+  min-height:86px!important;
+  margin:10px 0!important;
+  padding:12px 12px!important;
+  cursor:pointer!important;
+  border-radius:18px!important;
+  border:1px solid rgba(218,169,69,.28)!important;
+  background:
+    radial-gradient(circle at 18% 18%,rgba(255,218,119,.14),transparent 34%),
+    linear-gradient(135deg,rgba(31,21,9,.92),rgba(6,5,3,.96) 62%,rgba(22,13,6,.94))!important;
+  box-shadow:
+    0 12px 24px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,234,170,.10),
+    inset 0 -22px 26px rgba(0,0,0,.22)!important;
+  transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease,filter .16s ease!important;
+}
+html body #mo-shop .sp-pack::before{
+  content:'◆'!important;
+  width:48px!important;
+  height:48px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:15px!important;
+  color:#7fe3ff!important;
+  font-size:25px!important;
+  line-height:1!important;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(122,225,255,.30),transparent 40%),
+    linear-gradient(145deg,rgba(15,33,45,.86),rgba(4,6,8,.96))!important;
+  border:1px solid rgba(92,204,255,.36)!important;
+  box-shadow:0 0 18px rgba(92,204,255,.18),inset 0 1px 0 rgba(223,250,255,.14)!important;
+}
+html body #mo-shop #shop-pack2::before{
+  content:'✦'!important;
+  color:#f3d27a!important;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(255,216,106,.32),transparent 42%),
+    linear-gradient(145deg,rgba(52,34,10,.88),rgba(8,6,3,.96))!important;
+  border-color:rgba(218,169,69,.44)!important;
+}
+html body #mo-shop #shop-pack3::before{
+  content:'♛'!important;
+  color:#ffe4a0!important;
+  background:
+    radial-gradient(circle at 50% 40%,rgba(255,226,138,.38),transparent 45%),
+    linear-gradient(145deg,rgba(76,45,12,.92),rgba(9,6,3,.98))!important;
+  border-color:rgba(255,214,119,.62)!important;
+}
+html body #mo-shop .sp-pack:hover,
+html body #mo-shop .sp-pack:active{
+  transform:translateY(-1px)!important;
+  border-color:rgba(255,218,119,.58)!important;
+  box-shadow:0 16px 30px rgba(0,0,0,.45),0 0 22px rgba(218,169,69,.14),inset 0 1px 0 rgba(255,239,180,.18)!important;
+}
+html body #mo-shop .sp-pack.featured{
+  border-color:rgba(255,213,106,.56)!important;
+  background:
+    radial-gradient(circle at 82% 10%,rgba(255,218,119,.20),transparent 36%),
+    linear-gradient(135deg,rgba(52,31,9,.96),rgba(9,6,3,.98) 58%,rgba(40,22,6,.94))!important;
+}
+html body #mo-shop .sp-pack.featured::after{
+  content:'MELHOR OFERTA'!important;
+  position:absolute!important;
+  top:-8px!important;
+  right:16px!important;
+  padding:3px 9px!important;
+  border-radius:99px!important;
+  font:800 8px var(--font-title)!important;
+  letter-spacing:1px!important;
+  color:#1a0f03!important;
+  background:linear-gradient(180deg,#ffe39a,#b9791f)!important;
+  box-shadow:0 0 14px rgba(218,169,69,.28)!important;
+}
+html body #mo-shop .sp-nm{
+  color:#f3dc9f!important;
+  font-family:var(--font-title)!important;
+  font-size:15px!important;
+  font-weight:800!important;
+  letter-spacing:.85px!important;
+  text-shadow:0 2px 2px #000!important;
+}
+html body #mo-shop .sp-cr{
+  margin-top:4px!important;
+  color:#f8efd1!important;
+  font-size:17px!important;
+  font-weight:800!important;
+  line-height:1.1!important;
+}
+html body #mo-shop .sp-pr-sm{
+  margin-top:5px!important;
+  color:#b9a777!important;
+  font-size:12px!important;
+  letter-spacing:.25px!important;
+}
+html body #mo-shop .btn-buy{
+  min-width:92px!important;
+  height:42px!important;
+  border-radius:14px!important;
+  padding:0 13px!important;
+  color:#231405!important;
+  font:900 10px var(--font-title)!important;
+  letter-spacing:1.2px!important;
+  border:1px solid rgba(255,230,154,.74)!important;
+  background:linear-gradient(180deg,#ffe49c 0%,#ca8c2c 48%,#6b3d0c 100%)!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.45),0 0 18px rgba(218,169,69,.18),inset 0 1px 0 rgba(255,255,220,.52)!important;
+  text-shadow:0 1px 0 rgba(255,238,174,.42)!important;
+}
+html body #mo-shop .sp-pack.locked{
+  opacity:.45!important;
+  filter:saturate(.55) brightness(.72)!important;
+}
+html body #mo-shop .sp-pack.locked::after{
+  content:'BLOQUEADO'!important;
+  position:absolute!important;
+  inset:auto 12px 8px auto!important;
+  padding:3px 8px!important;
+  border-radius:99px!important;
+  color:#9a8863!important;
+  border:1px solid rgba(200,146,42,.22)!important;
+  background:rgba(0,0,0,.42)!important;
+  font:800 8px var(--font-title)!important;
+  letter-spacing:.8px!important;
+}
+html body #mo-shop .ms > div[style*="display:flex"][style*="gap:6px"]{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:8px!important;
+  margin-top:14px!important;
+}
+html body #mo-shop .ms > div[style*="display:flex"][style*="gap:6px"] button{
+  min-height:38px!important;
+  border-radius:13px!important;
+  text-transform:uppercase!important;
+  box-shadow:inset 0 1px 0 rgba(255,239,180,.10),0 8px 18px rgba(0,0,0,.24)!important;
+}
+html body #mo-shop #shop-mercador-btn{
+  margin-top:14px!important;
+  padding-top:14px!important;
+  border-top:1px solid rgba(218,169,69,.18)!important;
+}
+html body #mo-shop #shop-mercador-btn button{
+  border-radius:15px!important;
+  padding:13px!important;
+  background:linear-gradient(135deg,rgba(200,146,42,.16),rgba(6,5,3,.72))!important;
+  border:1px solid rgba(218,169,69,.38)!important;
+  color:#f2d58b!important;
+  box-shadow:inset 0 1px 0 rgba(255,239,180,.10)!important;
+}
+@media(max-width:430px){
+  html body #mo-shop.open .ms{
+    padding:16px 14px 18px!important;
+  }
+  html body #mo-shop .sp-pack{
+    grid-template-columns:46px minmax(0,1fr)!important;
+    gap:10px!important;
+    padding:11px!important;
+  }
+  html body #mo-shop .sp-pack::before{
+    width:42px!important;
+    height:42px!important;
+    font-size:22px!important;
+  }
+  html body #mo-shop .btn-buy{
+    grid-column:1 / -1!important;
+    width:100%!important;
+    height:38px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6381-pensando-dentro-da-narrativa">
+/* Mestre pensando dentro da caixa narrativa, sem alterar motor ou DOM. */
+html body:has(#thinking-bar.active) #thinking-bar{
+  height:0!important;
+  opacity:0!important;
+  transform:translate(-50%,-14px)!important;
+  pointer-events:none!important;
+}
+html body:has(#thinking-bar.active) #s-game.screen.active .narr{
+  border-color:rgba(232,184,75,.36)!important;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(217,169,68,.12),transparent 32%),
+    linear-gradient(180deg,rgba(9,6,4,.94),rgba(0,0,0,.88))!important;
+  box-shadow:
+    0 20px 48px rgba(0,0,0,.64),
+    inset 0 0 0 1px rgba(232,184,75,.08),
+    inset 0 18px 36px rgba(0,0,0,.42),
+    inset 0 -28px 44px rgba(0,0,0,.48)!important;
+}
+html body:has(#thinking-bar.active) #s-game.screen.active .narr::before{
+  content:'Muito bem... vejamos onde isso leva.'!important;
+  position:sticky!important;
+  top:-24px!important;
+  z-index:40!important;
+  display:block!important;
+  margin:-24px -20px 18px!important;
+  padding:13px 14px 11px!important;
+  text-align:center!important;
+  border-bottom:1px solid rgba(232,184,75,.20)!important;
+  background:
+    linear-gradient(180deg,rgba(30,19,8,.98),rgba(9,6,3,.88),rgba(9,6,3,.44))!important;
+  color:#f8dc94!important;
+  font-family:var(--font-title)!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  letter-spacing:1.15px!important;
+  text-transform:none!important;
+  text-shadow:0 1px 2px #000,0 0 14px rgba(232,184,75,.46)!important;
+  animation:aimasterNarrThinkingText 1.3s ease-in-out infinite!important;
+}
+html body:has(#thinking-bar.active) #s-game.screen.active .narr::after{
+  background:
+    linear-gradient(180deg,transparent,rgba(0,0,0,.72))!important;
+}
+@keyframes aimasterNarrThinkingText{
+  0%,100%{opacity:.78}
+  50%{opacity:1}
+}
+@media(max-width:430px){
+  html body:has(#thinking-bar.active) #s-game.screen.active .narr::before{
+    font-size:10.2px!important;
+    letter-spacing:.9px!important;
+    padding-top:12px!important;
+    padding-bottom:10px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6379-refino-pensando-e-teste">
+/* Refino seguro: indicador mais discreto e rótulo do teste mais legível. */
+#thinking-bar{
+  width:min(322px,calc(100vw - 72px))!important;
+  top:calc(8px + env(safe-area-inset-top,0px))!important;
+}
+#thinking-bar.active{
+  height:36px!important;
+}
+#thinking-bar.active::before{
+  border-radius:14px!important;
+  font-size:8.6px!important;
+  letter-spacing:1.55px!important;
+  background:
+    radial-gradient(circle at 50% -30%,rgba(255,225,135,.22),transparent 56%),
+    linear-gradient(90deg,rgba(48,29,8,.90),rgba(8,6,4,.92),rgba(48,29,8,.90))!important;
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.54),
+    0 0 18px rgba(217,169,68,.16),
+    inset 0 1px 0 rgba(255,239,178,.16),
+    inset 0 -10px 18px rgba(0,0,0,.30)!important;
+}
+#thinking-bar.active::after{
+  left:38px!important;
+  right:38px!important;
+  bottom:6px!important;
+  opacity:.88!important;
+}
+html body #s-game.screen.active .roll-type,
+html body .roll-type{
+  color:#d8b866!important;
+  opacity:1!important;
+  font-size:11.5px!important;
+  letter-spacing:1.15px!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(232,184,75,.26)!important;
+}
+@media(max-width:430px){
+  #thinking-bar{
+    width:calc(100vw - 96px)!important;
+    min-width:252px!important;
+  }
+  #thinking-bar.active::before{
+    font-size:8px!important;
+    letter-spacing:1.18px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6361-respiro-narrativa-botao-acoes-final">
+/* Trava final: narrativa/card com respiro antes do botao "O que voce faz?". */
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .narr{
+  margin-bottom:12px!important;
+  padding-bottom:38px!important;
+  scroll-padding-bottom:38px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .immersive-scene-card{
+  margin-bottom:14px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+  margin-top:10px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #acts-lbl{
+  margin-top:0!important;
+  margin-bottom:12px!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .narr{
+    margin-bottom:10px!important;
+    padding-bottom:36px!important;
+    scroll-padding-bottom:36px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .immersive-scene-card{
+    margin-bottom:12px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+    margin-top:9px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #acts-lbl{
+    margin-bottom:11px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6360-respiro-narrativa-botao-acoes">
+/* Respiro entre o fim da narrativa/card premium e o botao "O que voce faz?". */
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .narr{
+  margin-bottom:12px!important;
+  padding-bottom:38px!important;
+  scroll-padding-bottom:38px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .immersive-scene-card{
+  margin-bottom:14px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+  margin-top:10px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #acts-lbl{
+  margin-top:0!important;
+  margin-bottom:12px!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .narr{
+    margin-bottom:10px!important;
+    padding-bottom:36px!important;
+    scroll-padding-bottom:36px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .immersive-scene-card{
+    margin-bottom:12px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+    margin-top:9px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #acts-lbl{
+    margin-bottom:11px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6357-separacao-acao-footer-toggle">
+/* Respiro final: separa a Acao Livre da navegacao e afasta o botao "O que voce faz?". */
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  bottom:82px!important;
+  border-bottom:1px solid rgba(230,181,80,.70)!important;
+  border-radius:15px!important;
+  box-shadow:
+    0 -8px 20px rgba(0,0,0,.36),
+    0 10px 14px rgba(0,0,0,.52),
+    0 0 0 1px rgba(255,219,129,.10),
+    inset 0 1px 0 rgba(255,232,158,.17),
+    inset 0 -12px 22px rgba(0,0,0,.30)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row::after{
+  bottom:-2px!important;
+  opacity:.72!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  bottom:154px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active #acts-lbl{
+  margin-bottom:10px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  border-top-color:rgba(226,174,73,.64)!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+    bottom:80px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+    bottom:150px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active #acts-lbl{
+    margin-bottom:9px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6346-footer-proporcao-premium-final">
+/* Refinamento de proporcao: mantem icones premium, mas deixa a navegacao menos pesada. */
+html body:has(#s-game.screen.active){
+  --aim-footer-gap:8px;
+}
+html body:has(#s-game.screen.active) .free-row{
+  margin-bottom:var(--aim-footer-gap)!important;
+}
+html body #s-game.screen.active .ooc-toggle-row{
+  bottom:78px!important;
+  padding:8px!important;
+  border-radius:20px!important;
+  border:1px solid rgba(214,166,68,.48)!important;
+  background:
+    radial-gradient(ellipse at 12% 50%,rgba(198,139,38,.18),transparent 42%),
+    linear-gradient(180deg,rgba(34,23,10,.96),rgba(7,5,3,.98))!important;
+  box-shadow:
+    0 -10px 24px rgba(0,0,0,.42),
+    0 0 0 1px rgba(255,219,129,.08),
+    inset 0 1px 0 rgba(255,232,158,.16),
+    inset 0 -16px 28px rgba(0,0,0,.32)!important;
+}
+html body #s-game.screen.active .ooc-toggle-row::after{
+  content:''!important;
+  position:absolute!important;
+  left:18px!important;
+  right:18px!important;
+  bottom:-9px!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(219,170,70,.62),transparent)!important;
+  box-shadow:0 0 9px rgba(217,169,68,.22)!important;
+  pointer-events:none!important;
+}
+html body #s-game.screen.active .ooc-toggle-row .free-in{
+  border-color:rgba(218,169,68,.36)!important;
+  background:
+    linear-gradient(180deg,rgba(8,6,3,.94),rgba(0,0,0,.96))!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,233,164,.06),
+    inset 0 0 22px rgba(0,0,0,.58)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref{
+  margin-top:var(--aim-footer-gap)!important;
+  height:66px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn{
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+  gap:1px!important;
+  align-content:center!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi{
+  width:52px!important;
+  height:36px!important;
+  background-image:url('assets/ui/footer-nav-premium-transparent.png')!important;
+  background-size:500% 100%!important;
+  background-repeat:no-repeat!important;
+  background-position-y:center!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::before,
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::after{
+  content:none!important;
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(1) .fbi.fbi{background-position-x:0%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(2) .fbi.fbi{background-position-x:25%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(3) .fbi.fbi{background-position-x:50%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(4) .fbi.fbi{background-position-x:75%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(5) .fbi.fbi{background-position-x:100%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbl.fbl{
+  margin-top:0!important;
+  font-size:7.75px!important;
+  line-height:1!important;
+  letter-spacing:.55px!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active){
+    --aim-footer-gap:7px;
+  }
+  html body #s-game.screen.active .ooc-toggle-row{
+    bottom:74px!important;
+    padding:7px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref{
+    height:63px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn{
+    padding-top:5px!important;
+    padding-bottom:5px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi{
+    width:46px!important;
+    height:32px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbl.fbl{
+    font-size:7px!important;
+    letter-spacing:.45px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6330-footer-reference-premium-eof">
+/* EOF: barra inferior mais proxima da referencia premium, preservando cliques e largura aprovada. */
+html body:has(#s-game.screen.active){
+  --aim-footer-h:64px;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  height:var(--aim-footer-h)!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr)!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(90deg,rgba(255,221,126,.10),transparent 11%,transparent 89%,rgba(255,221,126,.10)),
+    radial-gradient(ellipse at 10% 100%,rgba(218,169,69,.20),transparent 34%),
+    radial-gradient(ellipse at 50% 0,rgba(255,218,126,.08),transparent 46%),
+    linear-gradient(180deg,rgba(21,18,13,.98),rgba(5,5,4,.99))!important;
+  border:1px solid rgba(190,132,36,.64)!important;
+  border-top-color:rgba(230,181,80,.58)!important;
+  border-radius:0 0 18px 18px!important;
+  box-shadow:
+    0 -9px 22px rgba(0,0,0,.62),
+    inset 0 1px 0 rgba(255,232,154,.16),
+    inset 0 -1px 0 rgba(255,203,86,.16),
+    inset 0 0 32px rgba(201,146,42,.045)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:1px!important;
+  opacity:1!important;
+  background:linear-gradient(90deg,rgba(87,50,12,.35),rgba(255,223,142,.88),rgba(87,50,12,.35))!important;
+  pointer-events:none!important;
+  z-index:4!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::after{
+  content:''!important;
+  position:absolute!important;
+  left:10px!important;
+  right:10px!important;
+  bottom:1px!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(226,174,73,.35),transparent)!important;
+  pointer-events:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  position:relative!important;
+  height:100%!important;
+  min-width:0!important;
+  padding:7px 2px 6px!important;
+  gap:3px!important;
+  border:0!important;
+  border-right:1px solid rgba(191,137,51,.26)!important;
+  border-radius:0!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(255,232,154,.045),transparent 48%),
+    linear-gradient(180deg,rgba(255,255,255,.018),rgba(0,0,0,.14))!important;
+  box-shadow:inset -1px 0 0 rgba(0,0,0,.42)!important;
+  opacity:.92!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:last-child{
+  border-right:0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi{
+  position:relative!important;
+  display:block!important;
+  width:34px!important;
+  height:29px!important;
+  margin:0 auto!important;
+  font-size:0!important;
+  color:transparent!important;
+  filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 5px rgba(213,162,66,.20))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::before,
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::after{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  box-sizing:border-box!important;
+}
+/* Jornada: rosa dos ventos */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(1) .fbi::before{
+  width:30px!important;
+  height:30px!important;
+  background:
+    linear-gradient(45deg,transparent 43%,#d9b45e 44% 56%,transparent 57%),
+    linear-gradient(-45deg,transparent 43%,#f0cf7a 44% 56%,transparent 57%),
+    linear-gradient(90deg,transparent 45%,#9b6b24 46% 54%,transparent 55%),
+    linear-gradient(0deg,transparent 45%,#9b6b24 46% 54%,transparent 55%)!important;
+  clip-path:polygon(50% 0,59% 39%,100% 50%,59% 61%,50% 100%,41% 61%,0 50%,41% 39%)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(1) .fbi::after{
+  width:11px!important;
+  height:11px!important;
+  border:2px solid #f3d47c!important;
+  border-radius:50%!important;
+  background:#120c04!important;
+}
+/* Inventario: mochila/bau de aventura */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi::before{
+  width:27px!important;
+  height:19px!important;
+  top:57%!important;
+  border:2px solid #c59b4d!important;
+  border-radius:8px 8px 4px 4px!important;
+  background:linear-gradient(180deg,rgba(225,183,91,.22),rgba(91,62,25,.16))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi::after{
+  width:17px!important;
+  height:11px!important;
+  top:34%!important;
+  border:2px solid #daba68!important;
+  border-bottom:0!important;
+  border-radius:10px 10px 0 0!important;
+}
+/* Personagem: elmo/brasao */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi::before{
+  width:24px!important;
+  height:29px!important;
+  clip-path:polygon(50% 0,84% 18%,76% 75%,50% 100%,24% 75%,16% 18%)!important;
+  background:linear-gradient(90deg,#72501f,#e5bf69 45%,#8a6028)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,232,154,.26)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi::after{
+  width:3px!important;
+  height:25px!important;
+  background:#211406!important;
+  box-shadow:-6px 6px 0 -1px rgba(33,20,6,.78),6px 6px 0 -1px rgba(33,20,6,.78)!important;
+}
+/* Diario: livro */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(4) .fbi::before{
+  width:27px!important;
+  height:21px!important;
+  border:2px solid #cfa95a!important;
+  border-radius:3px!important;
+  background:
+    linear-gradient(90deg,transparent 48%,rgba(13,9,4,.92) 49% 51%,transparent 52%),
+    repeating-linear-gradient(180deg,transparent 0 5px,rgba(239,203,124,.34) 6px 7px)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(4) .fbi::after{
+  width:1px!important;
+  height:19px!important;
+  background:#0e0904!important;
+}
+/* Menu: linhas */
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(5) .fbi::before{
+  width:27px!important;
+  height:20px!important;
+  background:
+    linear-gradient(#d8b665,#d8b665) 0 0/27px 3px no-repeat,
+    linear-gradient(#c99f4c,#c99f4c) 0 8px/27px 3px no-repeat,
+    linear-gradient(#a97727,#a97727) 0 16px/27px 3px no-repeat!important;
+  box-shadow:0 0 8px rgba(218,169,69,.18)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(5) .fbi::after{
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-family:var(--font-title)!important;
+  font-size:8.1px!important;
+  line-height:1!important;
+  letter-spacing:.72px!important;
+  color:rgba(221,185,108,.86)!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 7px rgba(214,163,67,.16)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2),
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3),
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4),
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5){
+  opacity:1!important;
+  background:
+    radial-gradient(ellipse at 50% 100%,rgba(255,215,110,.34),transparent 54%),
+    linear-gradient(180deg,rgba(78,52,16,.46),rgba(28,18,7,.26))!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey::after,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2)::after,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3)::after,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4)::after,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5)::after{
+  content:''!important;
+  position:absolute!important;
+  left:18%!important;
+  right:18%!important;
+  bottom:1px!important;
+  height:3px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,transparent,#f2c45f,transparent)!important;
+  box-shadow:0 0 12px rgba(255,205,84,.62)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey .fbi,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4) .fbi,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5) .fbi{
+  filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 10px rgba(255,213,99,.45))!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active){
+    --aim-footer-h:62px;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+    padding-top:6px!important;
+    padding-bottom:5px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+    width:32px!important;
+    height:27px!important;
+  }
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+    font-size:7.4px!important;
+    letter-spacing:.58px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6335-footer-nav-atlas-premium-hard-final">
+/* Atlas premium da barra inferior: imagem unica, sem alterar cliques ou fluxo do jogo. */
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi{
+  width:50px!important;
+  height:40px!important;
+  font-size:0!important;
+  color:transparent!important;
+  background-image:url('assets/ui/footer-nav-premium-transparent.png')!important;
+  background-size:500% 100%!important;
+  background-repeat:no-repeat!important;
+  background-position-y:center!important;
+  filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 5px rgba(211,165,72,.28))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::before,
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::after{
+  display:none!important;
+  content:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(1) .fbi.fbi{background-position-x:0%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(2) .fbi.fbi{background-position-x:25%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(3) .fbi.fbi{background-position-x:50%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(4) .fbi.fbi{background-position-x:75%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(5) .fbi.fbi{background-position-x:100%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbl.fbl{
+  font-size:8.3px!important;
+  letter-spacing:.68px!important;
+  color:rgba(232,196,121,.9)!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(217,168,70,.18)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref.footer-main-ref .fbar-btn.is-journey .fbi.fbi,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(2) .fbi.fbi,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(3) .fbi.fbi,
+html body:has(#mo-memory.open) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(4) .fbi.fbi,
+html body:has(#mo-game-menu.open) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(5) .fbi.fbi{
+  filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 12px rgba(255,213,99,.58)) brightness(1.18)!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi{
+    width:43px!important;
+    height:34px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbl.fbl{
+    font-size:7.45px!important;
+    letter-spacing:.54px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6334-footer-nav-atlas-premium-final">
+/* Trava final: icones da navegacao via atlas de imagem, no mesmo metodo das racas/classes. */
+html body:has(#s-game.screen.active){
+  --aim-footer-h:68px;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  height:var(--aim-footer-h)!important;
+  background:
+    linear-gradient(90deg,rgba(255,215,111,.10),transparent 10%,transparent 90%,rgba(255,215,111,.08)),
+    radial-gradient(ellipse at 9% 100%,rgba(255,191,48,.18),transparent 38%),
+    radial-gradient(ellipse at 50% 0,rgba(255,230,151,.08),transparent 46%),
+    linear-gradient(180deg,rgba(18,17,14,.99),rgba(5,5,4,.99))!important;
+  border-top-color:rgba(238,185,73,.66)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+  gap:4px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+  width:42px!important;
+  height:36px!important;
+  font-size:0!important;
+  color:transparent!important;
+  background-image:url('assets/ui/footer-nav-atlas-premium-v1.svg')!important;
+  background-repeat:no-repeat!important;
+  background-size:500% 100%!important;
+  background-position-y:center!important;
+  filter:
+    drop-shadow(0 2px 2px rgba(0,0,0,.92))
+    drop-shadow(0 0 6px rgba(220,164,60,.25))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi::before,
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi::after{
+  content:none!important;
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(1) .fbi{background-position-x:0%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi{background-position-x:25%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi{background-position-x:50%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(4) .fbi{background-position-x:75%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(5) .fbi{background-position-x:100%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-size:8.7px!important;
+  letter-spacing:.74px!important;
+  color:#d8b874!important;
+  text-shadow:0 2px 2px #000,0 0 7px rgba(218,169,69,.18)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey .fbi,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4) .fbi,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5) .fbi{
+  filter:
+    drop-shadow(0 2px 2px rgba(0,0,0,.92))
+    drop-shadow(0 0 10px rgba(255,210,94,.55))!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active){
+    --aim-footer-h:66px;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+    width:39px!important;
+    height:34px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+    font-size:7.8px!important;
+    letter-spacing:.62px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6315-dock-seam-final">
+/* Refinamento do encaixe: acao livre e footer viram um unico bloco visual. */
+html body:has(#s-game.screen.active) .footer-main-ref,
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  left:50%!important;
+  right:auto!important;
+  width:var(--aim-dock-w)!important;
+  max-width:420px!important;
+  transform:translateX(-50%)!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  bottom:4px!important;
+  border-top:0!important;
+  border-radius:0 0 15px 15px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::before{
+  opacity:.58!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  bottom:calc(var(--aim-footer-h) + 4px + env(safe-area-inset-bottom,0px))!important;
+  border-bottom:1px solid rgba(201,146,42,.38)!important;
+  border-radius:15px 15px 0 0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row::after{
+  left:1px!important;
+  right:1px!important;
+  bottom:-1px!important;
+  height:1px!important;
+  opacity:.78!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row + .footer-main-ref{
+  margin-top:0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:first-child{
+  border-left:0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:last-child{
+  border-right:0!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) .footer-main-ref,
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+    width:calc(100vw - 18px)!important;
+    max-width:calc(100vw - 18px)!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6316-remove-dock-step-final">
+/* Remove o degrau lateral: footer cobre a borda externa da acao livre. */
+html body:has(#s-game.screen.active) .footer-main-ref{
+  width:calc(var(--aim-dock-w) + 2px)!important;
+  max-width:422px!important;
+  bottom:4px!important;
+  border-left-color:rgba(201,146,42,.55)!important;
+  border-right-color:rgba(201,146,42,.55)!important;
+  box-shadow:
+    0 -1px 0 rgba(201,146,42,.40),
+    0 -7px 18px rgba(0,0,0,.58),
+    inset 0 1px 0 rgba(255,228,150,.12),
+    inset 0 0 0 1px rgba(0,0,0,.45)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  width:var(--aim-dock-w)!important;
+  max-width:420px!important;
+  bottom:calc(var(--aim-footer-h) + 3px + env(safe-area-inset-bottom,0px))!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row::after{
+  left:0!important;
+  right:0!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) .footer-main-ref{
+    width:calc(100vw - 16px)!important;
+    max-width:calc(100vw - 16px)!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+    width:calc(100vw - 18px)!important;
+    max-width:calc(100vw - 18px)!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6313-footer-polish-eof">
+/* Refino premium do encaixe inferior: leitura, brilho e estado ativo consistentes. */
+html body:has(#s-game.screen.active) .footer-main-ref{
+  isolation:isolate!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::after{
+  content:''!important;
+  position:absolute!important;
+  left:12px!important;
+  right:12px!important;
+  bottom:0!important;
+  height:1px!important;
+  z-index:5!important;
+  background:linear-gradient(90deg,transparent,rgba(218,169,69,.46),transparent)!important;
+  pointer-events:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  opacity:.90!important;
+  transition:filter .16s ease, background .16s ease, opacity .16s ease!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:hover,
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:focus-visible{
+  opacity:1!important;
+  filter:brightness(1.1)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"],
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"],
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"],
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"]{
+  opacity:1!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(255,223,128,.26),transparent 60%),
+    linear-gradient(180deg,rgba(89,57,17,.50),rgba(8,6,3,.92))!important;
+  box-shadow:inset 0 1px 0 rgba(255,232,169,.16),inset 0 -10px 20px rgba(200,146,42,.08)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey .fbl,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"] .fbl,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"] .fbl,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"] .fbl,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"] .fbl{
+  color:#f1cf79!important;
+  text-shadow:0 0 9px rgba(218,169,69,.36),0 1px 2px #000!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .is-journey::after,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn[title="Inventário"]::after,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn[title="Personagem"]::after,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn[title="Diário de Aventura"]::after,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn[title="Menu"]::after{
+  content:''!important;
+  position:absolute!important;
+  left:18%!important;
+  right:18%!important;
+  bottom:0!important;
+  height:3px!important;
+  z-index:6!important;
+  border-radius:99px 99px 0 0!important;
+  background:linear-gradient(90deg,transparent,#f1cf79,transparent)!important;
+  box-shadow:0 0 10px rgba(218,169,69,.55)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  border-bottom:0!important;
+  box-shadow:0 -8px 18px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,232,169,.12)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed #acts-lbl{
+  box-shadow:inset 0 1px 0 rgba(255,246,205,.14),0 0 16px rgba(217,169,68,.18),0 5px 14px rgba(0,0,0,.30)!important;
+}
+</style>
+
+<style id="aimaster-v6312-footer-modal-alignment-lock">
+/* Alinhamento visual final: mesma caixa, mesma borda, mesma leitura em Jornada e abas. */
+html body{
+  --aim-shell-w:min(420px,calc(100vw - 18px));
+  --aim-footer-h:56px;
+}
+html body:has(#s-game.screen.active) .footer-main-ref,
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row,
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap,
+html body .mo.open .ms{
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  left:50%!important;
+  right:auto!important;
+  width:var(--aim-shell-w)!important;
+  max-width:420px!important;
+  height:var(--aim-footer-h)!important;
+  bottom:4px!important;
+  transform:translateX(-50%)!important;
+  border:1px solid rgba(201,146,42,.50)!important;
+  border-top-color:rgba(236,190,90,.48)!important;
+  border-radius:0 0 15px 15px!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(90deg,rgba(218,169,69,.10),transparent 18%,transparent 82%,rgba(218,169,69,.10)),
+    linear-gradient(180deg,rgba(24,17,9,.98),rgba(5,4,3,.99))!important;
+  box-shadow:
+    0 -7px 18px rgba(0,0,0,.58),
+    inset 0 1px 0 rgba(255,228,150,.16),
+    inset 0 0 0 1px rgba(0,0,0,.45)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::before{
+  display:block!important;
+  content:''!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:1px!important;
+  z-index:5!important;
+  background:linear-gradient(90deg,transparent,rgba(255,224,135,.78),transparent)!important;
+  opacity:1!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  height:100%!important;
+  padding:4px 2px 3px!important;
+  border-right:1px solid rgba(201,146,42,.22)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  left:50%!important;
+  right:auto!important;
+  width:var(--aim-shell-w)!important;
+  max-width:420px!important;
+  bottom:calc(var(--aim-footer-h) + 8px + env(safe-area-inset-bottom,0px))!important;
+  transform:translateX(-50%)!important;
+  border-radius:15px 15px 0 0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  left:50%!important;
+  right:auto!important;
+  width:var(--aim-shell-w)!important;
+  max-width:420px!important;
+  bottom:calc(var(--aim-footer-h) + 68px + env(safe-area-inset-bottom,0px))!important;
+  transform:translateX(-50%)!important;
+}
+html body .mo.open{
+  inset:0 0 calc(var(--aim-footer-h) + 10px + env(safe-area-inset-bottom,0px)) 0!important;
+}
+html body .mo.open .ms,
+html body #mo-char#mo-char.open .ms,
+html body #mo-game-menu.open .ms,
+html body #mo-memory.open .ms,
+html body #mo-shop.open .ms,
+html body #mo-xp.open .ms,
+html body #mo-api.open .ms,
+html body #mo-tutorial.open .ms{
+  width:var(--aim-shell-w)!important;
+  max-width:420px!important;
+  border-radius:18px!important;
+}
+@media(max-width:430px){
+  html body{
+    --aim-shell-w:calc(100vw - 18px);
+    --aim-footer-h:55px;
+  }
+  html body .mo.open .ms,
+  html body #mo-char#mo-char.open .ms,
+  html body #mo-game-menu.open .ms,
+  html body #mo-memory.open .ms,
+  html body #mo-shop.open .ms,
+  html body #mo-xp.open .ms,
+  html body #mo-api.open .ms,
+  html body #mo-tutorial.open .ms{
+    border-radius:18px 18px 0 0!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6311-shell-proportion-final-lock">
+/* Trava final real: todas as abas e a barra inferior usam a mesma largura visual. */
+html body{
+  --aim-shell-w:min(430px,calc(100vw - 12px));
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  left:50%!important;
+  right:auto!important;
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  height:56px!important;
+  bottom:4px!important;
+  transform:translateX(-50%)!important;
+  border-radius:0 0 16px 16px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  min-width:0!important;
+  height:100%!important;
+  gap:2px!important;
+  padding:4px 2px 3px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+  width:25px!important;
+  height:22px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-size:6.7px!important;
+  line-height:1!important;
+  letter-spacing:.52px!important;
+}
+html body .mo.open{
+  inset:0 0 calc(64px + env(safe-area-inset-bottom,0px)) 0!important;
+  padding:12px 6px!important;
+}
+html body .mo.open .ms,
+html body #mo-char#mo-char.open .ms,
+html body #mo-game-menu.open .ms,
+html body #mo-memory.open .ms,
+html body #mo-shop.open .ms,
+html body #mo-xp.open .ms,
+html body #mo-api.open .ms,
+html body #mo-tutorial.open .ms{
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  max-height:calc(100dvh - 84px)!important;
+  box-sizing:border-box!important;
+}
+html body .mo.open .mt{
+  padding-left:2px!important;
+  padding-right:0!important;
+  overflow:visible!important;
+  font-size:14px!important;
+  letter-spacing:1.15px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  bottom:calc(64px + env(safe-area-inset-bottom,0px))!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  bottom:calc(124px + env(safe-area-inset-bottom,0px))!important;
+}
+@media(max-width:430px){
+  html body{
+    --aim-shell-w:calc(100vw - 12px);
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref{
+    height:55px!important;
+    bottom:4px!important;
+  }
+  html body .mo.open{
+    inset:0 0 calc(63px + env(safe-area-inset-bottom,0px)) 0!important;
+    padding:8px 6px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6311-shell-proportion-standard">
+/* Padrao final de proporcao: Jornada, modais e footer usam a mesma coluna premium. */
+html body{
+  --aim-shell-w:min(430px,calc(100vw - 12px));
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  left:50%!important;
+  right:auto!important;
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  height:56px!important;
+  bottom:4px!important;
+  transform:translateX(-50%)!important;
+  border-radius:0 0 16px 16px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  min-width:0!important;
+  height:100%!important;
+  gap:2px!important;
+  padding:4px 2px 3px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+  width:25px!important;
+  height:22px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-size:6.7px!important;
+  line-height:1!important;
+  letter-spacing:.52px!important;
+}
+html body .mo.open{
+  inset:0 0 calc(64px + env(safe-area-inset-bottom,0px)) 0!important;
+  padding:12px 6px!important;
+}
+html body .mo.open .ms,
+html body #mo-char#mo-char.open .ms,
+html body #mo-game-menu.open .ms,
+html body #mo-memory.open .ms,
+html body #mo-shop.open .ms,
+html body #mo-xp.open .ms,
+html body #mo-api.open .ms,
+html body #mo-tutorial.open .ms{
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  max-height:calc(100dvh - 84px)!important;
+  box-sizing:border-box!important;
+}
+html body .mo.open .mt{
+  padding-left:2px!important;
+  padding-right:0!important;
+  overflow:visible!important;
+}
+html body .mo.open .mt{
+  font-size:14px!important;
+  letter-spacing:1.15px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  bottom:calc(64px + env(safe-area-inset-bottom,0px))!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  width:var(--aim-shell-w)!important;
+  max-width:430px!important;
+  bottom:calc(124px + env(safe-area-inset-bottom,0px))!important;
+}
+@media(max-width:430px){
+  html body{
+    --aim-shell-w:calc(100vw - 12px);
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref{
+    height:55px!important;
+    bottom:4px!important;
+  }
+  html body .mo.open{
+    inset:0 0 calc(63px + env(safe-area-inset-bottom,0px)) 0!important;
+    padding:8px 6px!important;
+  }
+}
+</style>
+
 <style id="aimaster-v6261-status-premium-icons-eof">
 /* v6.2.61: icones premium da aba Status, sem alterar HTML ou logica. */
 html body #mo-char#mo-char #tab-stats .sh-res-icon,
@@ -2017,6 +3167,13 @@ html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-tags .tag{
   }
   html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
     font-size:7.8px!important;
+  }
+}
+
+/* Alinha o dado flutuante ao "celular" centralizado no navegador. */
+@media(min-width:431px){
+  html body:has(#s-game.screen.active) .dice-float-btn{
+    right:max(10px, calc((100vw - 430px) / 2 + 10px))!important;
   }
 }
 </style>
@@ -9749,7 +10906,7 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
   <div class="t-sub">Motor D&amp;D 5e · IA Narrador</div>
   <div class="t-divider"></div>
   <p class="t-desc">Raça, classe e antecedente moldam cada evento, teste e diálogo. O dado decide o destino.</p>
-  <button class="btn-start" onclick="baseStats={};stats={};goTo('s-char');setTimeout(initCreationFlow,50)">CRIAR PERSONAGEM</button>
+  <button class="btn-start" onclick="document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));baseStats={};stats={};goTo('s-char');setTimeout(initCreationFlow,50)">CRIAR PERSONAGEM</button>
   <div class="auth-quick" aria-label="Acesso de conta em preparação">
     <button type="button" onclick="openMo('mo-login')">ENTRAR</button>
     <button type="button" onclick="openMo('mo-login')">CRIAR CONTA</button>
@@ -10070,19 +11227,19 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 </button>
 
 <div class="footer-bar footer-main-ref">
-  <button class="fbar-btn is-journey" onclick="document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));if(window.closeDiceTray)closeDiceTray();" title="Jornada">
+  <button class="fbar-btn is-journey" onclick="footerGoJourney()" title="Jornada">
     <span class="fbi">✥</span><span class="fbl">Jornada</span>
   </button>
-  <button class="fbar-btn" onclick="openMo('mo-char');setTimeout(()=>switchTab('tab-inv'),0)" title="Inventário">
+  <button class="fbar-btn" onclick="footerOpenCharTab('tab-inv')" title="Inventário">
     <span class="fbi">▣</span><span class="fbl">Inventário</span>
   </button>
-  <button class="fbar-btn" onclick="openMo('mo-char');setTimeout(()=>switchTab('tab-stats'),0)" title="Personagem">
+  <button class="fbar-btn" onclick="footerOpenCharTab('tab-stats')" title="Personagem">
     <span class="fbi">◆</span><span class="fbl">Personagem</span>
   </button>
-  <button class="fbar-btn" onclick="openMemoryModal()" title="Diário de Aventura">
+  <button class="fbar-btn" onclick="footerOpenMemory()" title="Diário de Aventura">
     <span class="fbi">▤</span><span class="fbl">Diário</span>
   </button>
-  <button class="fbar-btn" onclick="openMo('mo-game-menu')" title="Menu">
+  <button class="fbar-btn" onclick="footerToggleMenu()" title="Menu">
     <span class="fbi">☰</span><span class="fbl">Menu</span>
   </button>
 </div>
@@ -11826,6 +12983,7 @@ function goTo(id){
   const footer = document.querySelector('.footer-bar');
   if(footer) footer.style.display = (id==='s-game') ? 'flex' : 'none';
 }
+
 function rollD(s){return Math.ceil(Math.random()*s);}
 function roll4d6drop(){let r=[rollD(6),rollD(6),rollD(6),rollD(6)];r.sort((a,b)=>a-b);return Math.max(11,r[1]+r[2]+r[3]);}
 function mod(v){return Math.floor((v-10)/2);}
@@ -12110,7 +13268,11 @@ function startAdventure(){
   const _startPool = _tier1quests.length>0 ? _tier1quests : QUESTS;
   hero.questId = QUESTS.indexOf(_startPool[Math.floor(Math.random()*_startPool.length)]);
   const q = QUESTS[hero.questId];
+  document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+  if(window.closeDiceTray) closeDiceTray();
   goTo('s-game');
+  document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+  if(window.closeDiceTray) closeDiceTray();
   updateCharSheet();
   updateVitals(); // ★ Atualiza contador de turnos ao iniciar
   askMaster(`CENA DE ABERTURA — INÍCIO TRANQUILO.
@@ -12501,7 +13663,9 @@ function addRollCard(label,diceVal,modVal,total,cd,grayed=false){
   const formula = isFreeDice
     ? `${label}${modVal?` ${ms}`:''}${eqSign}`
     : `d20(${diceVal}) ${ms}${eqSign}${outcomeStr}`;
-  const cdLabel=cd!=null?` · CD ${cd}`:'';
+  const cdLabel=cd!=null
+    ? (/ataque|attack/i.test(label) ? ` · CA ${cd}` : ` · CD ${cd}`)
+    : '';
   const typeLabel = isFreeDice ? 'Rolagem livre' : `${label}${cdLabel}`;
   const m=document.createElement('div');m.className='msg roll-wrap';
   m.innerHTML=`<div class="roll-card">
@@ -12875,8 +14039,8 @@ function updateD20ButtonState(){
     if(actGrid){ actGrid.style.opacity=''; actGrid.style.pointerEvents=''; }
     if(freeIn){ freeIn.disabled=false; freeIn.placeholder='Outra decisão...'; }
     if(diceTrayBtn){
-      diceTrayBtn.classList.remove('pending');
-      diceTrayBtn.title='Bandeja de Dados';
+      diceTrayBtn.classList.toggle('pending', !!pendingDamageRoll);
+      diceTrayBtn.title=pendingDamageRoll ? 'Role o dano: '+pendingDamageRoll.formula : 'Bandeja de Dados';
     }
     // ★ NÃO fecha automaticamente — jogador controla
   }
@@ -12971,6 +14135,13 @@ function detectPendingRoll(text){
       }
     } else if(/salva|save|resist/.test(lbl)){
       pendingRollType  = 'save';
+      const saveKey = lbl.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      if(/forca|\bfor\b|\bstr\b|strength/.test(saveKey)) foundAttr = 'str';
+      else if(/destreza|\bdes\b|\bdex\b|dexterity/.test(saveKey)) foundAttr = 'dex';
+      else if(/constituicao|\bcon\b|constitution/.test(saveKey)) foundAttr = 'con';
+      else if(/inteligencia|\bint\b|intelligence/.test(saveKey)) foundAttr = 'int';
+      else if(/sabedoria|\bsab\b|\bwis\b|wisdom/.test(saveKey)) foundAttr = 'wis';
+      else if(/carisma|\bcar\b|\bcha\b|charisma/.test(saveKey)) foundAttr = 'cha';
     }
     // default 'check' já está definido globalmente
   }
@@ -13097,6 +14268,46 @@ function buildHeroStatusSnapshot(){
   ].join('\n');
 }
 
+function normalizeRuleText(text){
+  return String(text||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+}
+
+function isBarbarianRageLikelyActive(){
+  if(hero?.cls!=='Bárbaro') return false;
+  const recent = normalizeRuleText(gameHistory.slice(-14).map(m=>m.content||'').join('\n'));
+  const start = Math.max(
+    recent.lastIndexOf('furia'),
+    recent.lastIndexOf('entra em furia'),
+    recent.lastIndexOf('ativou furia'),
+    recent.lastIndexOf('fica em furia')
+  );
+  const end = Math.max(
+    recent.lastIndexOf('furia termina'),
+    recent.lastIndexOf('fim da furia'),
+    recent.lastIndexOf('acalma'),
+    recent.lastIndexOf('inconsciente'),
+    recent.lastIndexOf('descansou longamente')
+  );
+  return start >= 0 && start > end;
+}
+
+function buildRuleStateForMaster(){
+  const lines = [];
+  if(hero?.cls==='Bárbaro'){
+    lines.push('- Bárbaro: Fúria dá +2 dano em ataques corpo a corpo com FOR e resistência a dano físico (cortante, perfurante e concussão).');
+    if(isBarbarianRageLikelyActive()){
+      lines.push('- ESTADO ATUAL INFERIDO: Fúria ativa. Antes de usar [PV:-X] por dano físico, reduza o dano pela metade, arredondando para baixo.');
+    }
+  }
+  if(hero?.race==='Meio-Orc'){
+    lines.push('- Meio-Orc: Resistência Implacável 1x por descanso longo. Se cair a 0 PV sem morrer instantaneamente, fica com 1 PV.');
+    lines.push('- Meio-Orc: Ataques Selvagens. Em crítico com arma corpo a corpo, adicione +1 dado da arma ao dano crítico.');
+  }
+  lines.push('- Crítico natural 20 em ataque: acerto automático. Dobre apenas os dados de dano; modificadores fixos entram uma vez.');
+  lines.push('- Ao pedir dano crítico, escreva no formato exato para a bandeja: "Role o dano crítico: XdY + bônus".');
+  return lines.join('\n');
+}
+
 function buildSystemPrompt(){
   const rp=PROFILES.race[hero.race]||{};const cp=PROFILES.class[hero.cls]||{};const bp=PROFILES.bg[hero.bg]||{};
   const allTags=[...(rp.tags||[]),...(cp.tags||[])].map(t=>t.l).join(', ');
@@ -13180,6 +14391,7 @@ function buildSystemPrompt(){
   }
   const classAbilsNow=(CLASS_ABILITIES[hero.cls]||[]).filter(a=>a.lv<=(hero.level||1)).map(a=>a.name).join(', ')||'nenhuma';
   const questData=QUESTS[hero.questId!==undefined?hero.questId:0];
+  const ruleStateForMaster = buildRuleStateForMaster();
 
   // ★ Injeta bloco de memória persistente
   const memoryBlock = buildMemoryBlock();
@@ -13219,6 +14431,8 @@ Perícias treinadas: ${skillProfs}
 Equipamento: ${equippedItems}
 Magias conhecidas: ${spellList}
 Habilidades de classe: ${classAbilsNow}
+REGRAS ATIVAS E TRAÇOS CRÍTICOS
+${ruleStateForMaster}
 ${prepSpellChunk}
 
 MEMÓRIA E MISSÕES
@@ -13277,19 +14491,56 @@ COMBATE
 Em confronto, reduza a narrativa cinematografica e aja como Mestre de mesa D&D 5e: controle turno, ordem, dados, CA, dano e consequencia.
 Ao iniciar combate, use [COMBATE:Nome do inimigo] e peca [TESTE:Iniciativa], encerrando a resposta ali. Informe tambem que voce rolou a iniciativa dos inimigos e guardara a ordem.
 Depois que o jogador rolar iniciativa, compare com a iniciativa dos inimigos que voce rolou internamente. Declare a ordem de turnos em uma frase curta e diga de quem e o turno.
+Ao mostrar iniciativa dos inimigos, fale como Mestre. Nunca escreva "voce rola internamente".
+Se forem poucos inimigos, liste individualmente: "Kobold Lanceiro: d20(11)+2 = 13".
+Se forem muitos inimigos, agrupe por tipo: "Kobolds saqueadores: d20(11)+2 = 13".
 Nunca de acerto automatico para ataque. Todo ataque do jogador exige jogada de ataque antes do dano.
 Ataque corpo a corpo com arma: peca [TESTE:Ataque Corpo a Corpo:CA_DO_INIMIGO].
 Ataque a distancia com arma: peca [TESTE:Ataque a Distancia:CA_DO_INIMIGO].
 Ataque magico: peca [TESTE:Ataque Magico:CA_DO_INIMIGO] quando a descricao da magia exigir ataque.
 Substitua CA_DO_INIMIGO por um numero real de CA, por exemplo [TESTE:Ataque Corpo a Corpo:13]. Nunca escreva CA_DO_INIMIGO literalmente.
 Magias com salvaguarda: voce rola internamente a salvaguarda do inimigo contra a CD de magia do personagem; narre sucesso/falha e peca o dano apropriado se houver.
-Se o ataque do jogador acertar, diga claramente: "acertou, role o dano: XdY + modificador se aplicavel". Nao aplique dano ao inimigo antes do jogador rolar o dano na bandeja.
+Se o ataque do jogador acertar, diga claramente no formato: "Role o dano: 2d6 + 4 (forca) + 2 (furia) = 2d6 + 6". Nao aplique dano ao inimigo antes do jogador rolar o dano na bandeja.
 Quando o jogador informar o dano, aplique esse dano ao inimigo, narre em 1 paragrafo curto e avance para o proximo turno da ordem.
 No turno dos inimigos, role internamente d20 + bonus de ataque contra a CA ${hero.ca || 10} do personagem. Se acertar, role internamente o dano e use [PV:-X]. Se errar, nao use [PV:-X].
 Use turnos claros: "Turno de X", "Turno de ${hero.name || 'heroi'}", "Rodada 2". Mantenha a ordem ate [FIM_COMBATE].
 Durante combate, termine com [AÇÕES:] somente quando for o turno do jogador e nao houver rolagem pendente.
 Se pedir [TESTE:], pare a resposta ali, sem [AÇÕES:] e sem narrar o resultado antes da rolagem.
 Ao derrotar inimigo, use [FIM_COMBATE] e recompense de forma coerente. Nao mate o personagem sem dar sinais claros de risco e chance de escolha.
+
+MESA REAL D&D 5E - REGRA SUPERIOR PARA TESTES E BANDEJA
+Esta secao substitui qualquer regra antiga repetida sobre testes, ataques e salvaguardas.
+Conduza como mesa real: declare a situacao, peca a rolagem correta, pare, espere o jogador rolar na bandeja, depois aplique o resultado.
+Antes de aplicar dano ao jogador com [PV:-X], confira obrigatoriamente Fúria, resistências, redução de dano, PV atual e traços raciais como Resistência Implacável do Meio-Orc.
+Se o personagem estiver em Fúria e receber dano físico (cortante, perfurante ou concussão), aplique resistência: dano pela metade, arredondado para baixo, antes de escrever [PV:-X].
+Se Meio-Orc cairia a 0 PV e Resistência Implacável ainda puder ser usada, ele fica com 1 PV; narre o traço racial e não aplique dano além do necessário.
+Em crítico natural 20 do jogador, peça dano crítico: dobre apenas os dados da arma. Se for Meio-Orc com arma corpo a corpo, adicione +1 dado da arma por Ataques Selvagens. Modificadores fixos entram uma vez.
+Teste comum: use [TESTE:Percepcao:14], [TESTE:Furtividade:13], [TESTE:Atletismo:12], [TESTE:Investigacao:15].
+Salvaguarda do jogador: use sempre o nome completo para a bandeja aplicar a regra correta: [TESTE:Salvaguarda Forca:CD], [TESTE:Salvaguarda Destreza:CD], [TESTE:Salvaguarda Constituicao:CD], [TESTE:Salvaguarda Inteligencia:CD], [TESTE:Salvaguarda Sabedoria:CD] ou [TESTE:Salvaguarda Carisma:CD].
+Ataque do jogador: use sempre a CA numerica real do inimigo: [TESTE:Ataque Corpo a Corpo:13], [TESTE:Ataque a Distancia:14] ou [TESTE:Ataque Magico:15].
+Nunca escreva CA_REAL nem CA_DO_INIMIGO literalmente.
+Nunca resolva ataque do jogador automaticamente. Primeiro ataque; se acertar, peca ao jogador para rolar o dano na bandeja. So aplique dano ao inimigo depois que o jogador informar o dano.
+Ataques dos inimigos voce rola internamente contra a CA ${hero.ca || 10}; se acertar, role dano internamente e use [PV:-X].
+Em combate, mantenha rodada e turno visiveis: "Rodada 1", "Turno de Goblin", "Turno de ${hero.name || 'heroi'}".
+Iniciativa dos inimigos: mostre como Mestre, sem dizer "voce rola internamente". Poucos inimigos devem aparecer separados; muitos podem ser agrupados por tipo.
+Pedido de dano ao jogador: sempre use "Role o dano: XdY + bonus = XdY + bonus" para a bandeja preparar os dados.
+Se pedir [TESTE:], nao inclua [AÇÕES:] nessa mesma resposta e nao narre sucesso/falha antes da rolagem.
+
+FORMATO DE TURNO EM COMBATE - ESTILO MESA
+Durante combate, use menos narrativa cinematografica e mais controle claro de mesa.
+Prefira blocos objetivos com rodada, turno, posicao, acao, rolagem e dano.
+Quando aliados ou NPCs agirem, voce rola internamente e pode mostrar o resumo da rolagem em texto comum, sem tags.
+Exemplo de aliado: "Markus dispara no lobo. Rolagem: d20 12 +3 = 15 - acerto. Dano: 1d8 = 4."
+Quando inimigos atacarem o personagem, voce rola internamente contra a CA ${hero.ca || 10}. NUNCA peca ao jogador para "defender contra o ataque" como se fosse CD/CA.
+Se o inimigo acertar, mostre resumo curto e aplique [PV:-X]. Exemplo: "Lobo morde: d20 16 +4 = 20 contra CA ${hero.ca || 10}. Dano 1d6+2 = 5. [PV:-5]"
+Se o inimigo errar, diga a rolagem curta e nao aplique [PV:-X].
+No turno do jogador, apresente o estado tatico antes das opcoes:
+"Rodada 2 - Turno de ${hero.name || 'heroi'}"
+"Lobo 1 esta a 3m de Brenn. Lobo 2 esta a 5m da carroca. Voce esta a 15m, com arco em maos."
+Depois ofereca [AÇÕES:] quando nao houver rolagem pendente.
+Se a acao escolhida exigir ataque, peca [TESTE:Ataque Corpo a Corpo:CA] ou [TESTE:Ataque a Distancia:CA] e pare.
+Se a acao escolhida exigir manobra incerta, peca a pericia adequada: Atletismo, Acrobacia, Furtividade, Intimidacao, Percepcao, Investigacao etc.
+Use este modelo sempre que houver combate com mais de um participante.
 
 MAGIA
 So permita magias coerentes com a classe, nivel e lista do personagem.
@@ -13756,9 +15007,23 @@ COMO PEDIR ROLAGEM DE ATAQUE ao jogador:
 ▸ O sistema detecta 'ataque' e aplica: d20 + mod + proficiência automaticamente
 ▸ NÃO coloque CD no ataque — o resultado será comparado com a CA do inimigo
 
+CORRECAO OBRIGATORIA PARA ATAQUES:
+Ignore qualquer instrucao anterior que diga para nao colocar CD/CA em ataque.
+Ataques do jogador DEVEM usar [TESTE:tipo de ataque:CA_REAL] e a resposta deve parar ali.
+Exemplos validos: [TESTE:Ataque Corpo a Corpo:13], [TESTE:Ataque a Distancia:14], [TESTE:Ataque Magico:15].
+O numero e a CA real do inimigo. Nunca escreva CA_DO_INIMIGO literalmente.
+O sistema aplica d20 + modificador correto + proficiencia automaticamente.
+So depois da rolagem de ataque acertar voce pede o dano ao jogador.
+Ataques de inimigos contra o heroi NAO usam [TESTE:] e NAO pedem defesa do jogador. Voce rola internamente d20 + bonus contra a CA do heroi e aplica [PV:-X] somente se acertar.
+Nunca escreva "role para defender contra CA". Defesa normal e CA passiva; salvaguarda so existe para magia, veneno, armadilha, area ou efeito especial.
+
 SALVAGUARDAS (saves):
 ▸ [TESTE:des:15] para "DEX CD 15 para metade do dano" — o sistema aplica proficiência de save
 ▸ Salvaguardas NÃO adicionam proficiência (a menos que a classe tenha save naquele atributo)
+
+CORRECAO OBRIGATORIA PARA SALVAGUARDAS:
+Salvaguardas adicionam proficiencia somente se a classe tiver proficiencia naquele atributo.
+Use salvaguarda para magia, veneno, area, armadilha ou efeito especial; nunca para esquivar de ataque normal.
 
 QUANDO USAR [TESTE:] em combate:
 ✅ Magia com salvaguarda: "DEX CD 15 para metade do dano de Bola de Fogo"
@@ -14081,15 +15346,8 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
       // ★ Processa memória — extrai NPCs e eventos
       processMemory(reply);
       
-      // Reroll controlado pelo Mestre via [TESTE:attr:CD:crítico]
-      // ★ Detecta tag [TESTE:Atributo:CD] explícita do mestre
-      const testeMatch=reply.match(/\[TESTE:([^:]+):?(\d+)?\]/i);
-      if(!oocMode && testeMatch){
-        const attrName=testeMatch[1].trim().toLowerCase();
-        const attrMap2={'força':'str','destreza':'dex','constituição':'con','inteligência':'int','sabedoria':'wis','carisma':'cha','percepção':'wis','furtividade':'dex','atletismo':'str','intimidação':'cha','persuasão':'cha','enganação':'cha','arcanismo':'int','história':'int','natureza':'int','religião':'int','medicina':'wis','sobrevivência':'wis','percepção de animais':'wis'};
-        pendingRollAttr=attrMap2[attrName]||'str';
-        pendingRollCD=testeMatch[2]?parseInt(testeMatch[2]):null;
-      }
+      // A tag [TESTE:] já foi processada por detectPendingRoll(reply), que normaliza acentos,
+      // guarda o nome da perícia e define o tipo correto da rolagem.
       // ★ Detecta contexto via tag e palavras-chave
       const locMatch=reply.match(/\[LOCALIZAÇÃO:\s*([^\]]+)\]/i);
       const timeMatch=reply.match(/\[TEMPO:\s*([^\]]+)\]/i);
@@ -14133,6 +15391,8 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
         const nextNewline = reply.indexOf('\n\n', cutIdx);
         replyToShow = nextNewline > 0 ? reply.substring(0, nextNewline).trim() : reply.substring(0, cutIdx + 60).trim();
       }
+      const damageRollRequest = !oocMode ? parseDamageRollRequest(replyToShow) : null;
+      if(damageRollRequest) setPendingDamageRoll(damageRollRequest);
       const cleanText=cleanTextForDisplay(replyToShow);
       const formatted=formatNarrative(cleanText);
       // Exibe
@@ -14151,6 +15411,7 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
         typewriterMsg(m,formatted);
       }
       if(!oocMode && actions)updateActionButtons(actions);
+      if(damageRollRequest) setTimeout(()=>openDiceTray(), 450);
       // ★ Mostra botão Cena Ilustrada após narrativa significativa
       if(!oocMode && formatted.length > 100){
         setTimeout(()=>showSceneButton(cleanText), 800);
@@ -15688,7 +16949,7 @@ function detectActionRequiresRoll(action){
   // CASO 2: Mestre pediu teste via [TESTE:Atributo:CD] e jogador confirma ação de teste
   // Só rola se a ação contém "rolar", "testar" ou "fazer teste"
   if(pendingRollAttr && /^(rolar|testar|fazer teste|jogar|tentar a sorte)/i.test(a)){
-    return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
+    return {attr:pendingRollAttr, label:pendingRollLabel||attrLabels[pendingRollAttr]||'FOR'};
   }
 
   // Demais ações → sem rolagem automática
@@ -15707,14 +16968,14 @@ function detectFreeActionRoll(text){
       if(m.re.test(t)) return {attr:m.attr, label:m.label};
     }
     // Se tem teste pendente do Mestre, usa ele
-    if(pendingRollAttr) return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
+    if(pendingRollAttr) return {attr:pendingRollAttr, label:pendingRollLabel||attrLabels[pendingRollAttr]||'FOR'};
   }
 
   // Teste pendente do Mestre ([TESTE:]) + ação do campo livre → usa o pendente
   if(pendingRollAttr && t.length > 3){
     // Mas só se a ação for claramente um teste
     if(/^(rolar|testar|tentar a sorte|verificar|checar)/i.test(t)){
-      return {attr:pendingRollAttr, label:attrLabels[pendingRollAttr]||'FOR'};
+      return {attr:pendingRollAttr, label:pendingRollLabel||attrLabels[pendingRollAttr]||'FOR'};
     }
   }
 
@@ -15724,6 +16985,9 @@ function detectFreeActionRoll(text){
 // ★ Rola o dado inline na narrativa com animação
 async function rollInlineD20(attrKey, label, cd){
   const narr = document.getElementById('narr');
+  const pendingRollTypeLabel = pendingRollType==='attack'
+    ? (cd ? ' vs CA '+cd : ' vs CA')
+    : (cd ? ' · CD '+cd : '');
   
   // Cria o card de dado com animação
   const diceEl = document.createElement('div');
@@ -15732,7 +16996,7 @@ async function rollInlineD20(attrKey, label, cd){
     <div class="roll-card inline-rolling">
       <div class="dice-face spinning" id="inline-dice-face">?</div>
       <div class="roll-info">
-        <div class="roll-type">${label} ${cd?'· CD '+cd:''}</div>
+        <div class="roll-type">${label}${pendingRollTypeLabel}</div>
         <div class="roll-formula" id="inline-roll-formula">Rolando...</div>
         <div class="roll-outcome" id="inline-roll-outcome"></div>
       </div>
@@ -15895,7 +17159,8 @@ async function rollD20Modal(){
     const _rollResult = {diceVal:dr, modVal:m, total, isCrit:dr===20, isFail:dr===1,
                          ok:cd?(total>=cd):null, label:skillLbl, attrKey:attr, cd};
     // Reroll via 🌟 Destino Favorável — lastRollData setado em rollInlineD20
-    askMaster(`Jogador rolou ${skillLbl}: d20(${dr}) ${modStr(attrM)}${profTxt} = ${total}${cd?` vs CD ${cd}`:''} — ${total>=(cd||0)?'SUCESSO':'FALHA'}. Aplique o resultado na narrativa e continue.`);
+    const masterOutcome = cd ? (total>=cd?'SUCESSO':'FALHA') : `total ${total}`;
+    askMaster(`Jogador rolou ${skillLbl}: d20(${dr}) ${modStr(attrM)}${profTxt} = ${total}${cd?` vs CD ${cd}`:''} — ${masterOutcome}. Aplique o resultado na narrativa e continue.`);
   },900);
 }
 
@@ -16332,6 +17597,28 @@ function updateShopContext(){
   if(mercBtn) mercBtn.style.display = (isPremiumContext || hasCommerceContext) ? 'none' : 'block';
 }
 function closeMo(id){document.getElementById(id).classList.remove('open');}
+function footerCloseOverlays(){
+  document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
+  if(window.closeDiceTray) closeDiceTray();
+}
+function footerGoJourney(){
+  footerCloseOverlays();
+}
+function footerOpenCharTab(tabId){
+  footerCloseOverlays();
+  openMo('mo-char');
+  if(tabId) setTimeout(()=>switchTab(tabId),0);
+}
+function footerOpenMemory(){
+  footerCloseOverlays();
+  openMemoryModal();
+}
+function footerToggleMenu(){
+  const menu=document.getElementById('mo-game-menu');
+  const wasOpen=!!menu && menu.classList.contains('open');
+  footerCloseOverlays();
+  if(!wasOpen) openMo('mo-game-menu');
+}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 document.getElementById('free-in').addEventListener('keydown',e=>{if(e.key==='Enter')sendFree();});
 initActionsPanelToggle();
@@ -17360,6 +18647,38 @@ function updateWorldTab(){
 const DICE_TYPES = [4, 6, 8, 10, 12, 20, 100];
 let diceTrayCounts = {4:0, 6:0, 8:0, 10:0, 12:0, 20:0, 100:0};
 let diceTrayOpen = false;
+let pendingDamageRoll = null;
+
+function parseDamageRollRequest(text){
+  const source = String(text||'').replace(/\s+/g,' ');
+  const safe = source.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const requestRe = /role\s+(?:o\s+|os\s+)?(?:dados?\s+de\s+)?dano(?:\s+(?:critico|do critico|da arma|total))?\s*[:\-–—]?\s*(.*)$/i;
+  const request = safe.match(requestRe);
+  if(!request) return null;
+  const body = request[1] || '';
+  const match = body.match(/=\s*(\d+)d(4|6|8|10|12|20|100)\s*([+-]\s*\d+)?/i)
+    || body.match(/(\d+)d(4|6|8|10|12|20|100)\s*([+-]\s*\d+)?/i);
+  if(!match) return null;
+  const count = Math.max(1, Math.min(9, parseInt(match[1],10)||1));
+  const sides = parseInt(match[2],10);
+  const bonus = match[3] ? parseInt(match[3].replace(/\s+/g,''),10) : 0;
+  const critical = /critico|natural\s*20/i.test(safe);
+  return {count, sides, bonus:bonus||0, critical, formula:`${count}d${sides}${bonus?` ${bonus>0?'+':'-'} ${Math.abs(bonus)}`:''}`};
+}
+
+function setPendingDamageRoll(request){
+  pendingDamageRoll = request || null;
+  const btn = document.getElementById('dados-fbar-btn');
+  if(btn){
+    btn.classList.toggle('pending', !!pendingDamageRoll);
+    btn.title = pendingDamageRoll ? `Role o dano: ${pendingDamageRoll.formula}` : (pendingRollAttr ? btn.title : 'Bandeja de Dados');
+  }
+}
+
+function selectedDiceMatchesPendingDamage(){
+  if(!pendingDamageRoll) return true;
+  return DICE_TYPES.every(d => (diceTrayCounts[d]||0) === (d===pendingDamageRoll.sides ? pendingDamageRoll.count : 0));
+}
 
 function toggleDiceTray(){
   if(diceTrayOpen) closeDiceTray();
@@ -17378,8 +18697,9 @@ function openDiceTray(){
   btn.style.borderColor='rgba(139,111,208,.8)';
   // Reset counts
   DICE_TYPES.forEach(d => diceTrayCounts[d] = 0);
-  // If pending test, pre-set d20=1
+  // If pending test, pre-set d20=1. If pending damage, pre-set requested dice.
   if(pendingRollAttr) diceTrayCounts[20] = 1;
+  else if(pendingDamageRoll) diceTrayCounts[pendingDamageRoll.sides] = pendingDamageRoll.count;
   renderDiceTrayRows();
   updateDiceTrayHint();
 }
@@ -17446,7 +18766,10 @@ function updateDiceTrayHint(){
     const lbl = d===100?'d%':'d'+d;
     return diceTrayCounts[d]+''+lbl;
   });
-  if(pendingRollAttr && diceTrayCounts[20]===1){
+  if(pendingDamageRoll && !pendingRollAttr){
+    hint.innerHTML = `${parts.join('+')} <span style="color:#ffe080">${pendingDamageRoll.bonus>=0?'+':''}${pendingDamageRoll.bonus}</span> = ?<br>
+      <span style="font-size:9px;color:rgba(200,180,120,.6)">Dano pedido pelo Mestre: ${pendingDamageRoll.formula}</span>`;
+  } else if(pendingRollAttr && diceTrayCounts[20]===1){
     const rollType2 = pendingRollType||'check';
     const rollLabel2 = pendingRollLabel || attrLabels[pendingRollAttr] || 'Teste';
     const totalMod = getRollBreakdown(pendingRollAttr, rollLabel2, rollType2).totalMod;
@@ -17461,6 +18784,11 @@ function updateDiceTrayHint(){
 async function rollDiceTray(){
   const total = DICE_TYPES.reduce((s,d)=>s+diceTrayCounts[d],0);
   if(total === 0){ showToast('Selecione pelo menos 1 dado!'); return; }
+
+  if(pendingDamageRoll && !pendingRollAttr && !selectedDiceMatchesPendingDamage()){
+    showToast('O Mestre pediu: '+pendingDamageRoll.formula);
+    return;
+  }
 
   closeDiceTray();
 
@@ -17523,9 +18851,16 @@ async function rollDiceTray(){
     results.push({sides, count, rolls});
   }
 
+  const damageRequest = pendingDamageRoll;
+
   // Add damage modifier if in combat
   let bonusTxt = '';
-  if(inCombat && results.length===1){
+  if(damageRequest){
+    if(damageRequest.bonus !== 0){
+      grandTotal += damageRequest.bonus;
+      bonusTxt = ` ${damageRequest.bonus>=0?'+':''} ${damageRequest.bonus}(pedido)`;
+    }
+  } else if(inCombat && results.length===1){
     const weapon = inventory.find(i=>i.equipped&&i.slot==='rhand');
     const hasFinesse = weapon&&/finesse|adaga|rapieira/i.test(weapon.name||'');
     const strM = mod(stats.str||10), dexM = mod(stats.dex||10);
@@ -17541,7 +18876,7 @@ async function rollDiceTray(){
 
   // ★ Se em combate: envia resultado de dano ao mestre
   // Se fora de combate: funciona apenas como calculadora (sem chamar o mestre)
-  if(inCombat){
+  if(inCombat || damageRequest){
     // Detecta contexto do dano pelo tipo/quantidade de dados
     const hasD6  = diceTrayCounts[6]  > 0;
     const hasD8  = diceTrayCounts[8]  > 0;
@@ -17550,6 +18885,7 @@ async function rollDiceTray(){
     const likelySpell = multiDice && !diceTrayCounts[12] && !diceTrayCounts[20];
     const dmgType = likelySpell ? 'dano de magia' : 'dano de arma';
     askMaster(`⚔️ DANO: Jogador rolou ${formula}${bonusTxt} = **${grandTotal}** de ${dmgType}. Aplique ${grandTotal} de dano ao inimigo e narre o resultado — descreva o impacto visualmente.`, false);
+    setPendingDamageRoll(null);
   }
   // Fora de combate: calculadora silenciosa
 }
@@ -22186,7 +23522,7 @@ body #s-game.active .char-strip.hud-ref .bar-track{
   left:76px!important;
   right:5px!important;
   top:2px!important;
-  bottom:2px!important;
+  bottom:0!important;
   overflow:hidden!important;
   z-index:2!important;
   clip-path:polygon(0 0,calc(100% - 5px) 0,100% 50%,calc(100% - 5px) 100%,0 100%)!important;
@@ -23163,13 +24499,28 @@ html body #s-game.screen.active #fbar-tutorial-btn .fbl{
 <style id="aimaster-v561-modal-premium-shell">
 /* Modais premium: acabamento visual consistente para ficha, loja, mapa, API e sistemas. */
 html body .mo{
+  display:none!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
   background:
     radial-gradient(circle at 50% 100%,rgba(201,146,42,.12),transparent 42%),
     rgba(0,0,0,.86)!important;
   backdrop-filter:blur(7px)!important;
 }
 html body .mo.open{
+  display:flex!important;
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
   align-items:flex-end!important;
+}
+/* O modal de conta pertence apenas à tela inicial; fora dela, nunca cobre criação ou jogo. */
+html body:not(:has(#s-title.screen.active)) #mo-login{
+  display:none!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
 }
 html body .mo .ms{
   position:relative!important;
@@ -23885,9 +25236,12 @@ html body:has(#s-game.screen.active) #s-game.screen.active .footer-bar:not(.foot
 }
 html body:has(#s-game.screen.active) .footer-main-ref{
   display:grid!important;
-  z-index:260!important;
+  z-index:420!important;
   visibility:visible!important;
   opacity:1!important;
+  pointer-events:auto!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
   pointer-events:auto!important;
 }
 html body:has(#s-game.screen.active) .dice-float-btn{
@@ -23895,6 +25249,13 @@ html body:has(#s-game.screen.active) .dice-float-btn{
 }
 html body:has(#s-game.screen.active) #mo-game-menu{
   z-index:300!important;
+}
+html body:has(#s-game.screen.active) #mo-game-menu.open{
+  pointer-events:none!important;
+}
+html body:has(#s-game.screen.active) #mo-game-menu.open .ms{
+  margin-bottom:72px!important;
+  pointer-events:auto!important;
 }
 </style>
 
@@ -33467,6 +34828,1096 @@ html body #mo-char#mo-char #tab-stats.sheet-page.active #sh-profile-tags .tag{
   }
   html body #mo-char#mo-char #tab-stats.sheet-page.active .sh-hero-align.sh-hero-align{
     font-size:7.8px!important;
+  }
+}
+
+/* v6.2.98 seguro: card de encontro tatico premium. */
+html body #s-game.screen.active .combat-panel{
+  position:relative!important;
+  overflow:hidden!important;
+  border-radius:12px!important;
+  padding:11px 12px 12px!important;
+  margin:0 0 10px!important;
+  background:
+    radial-gradient(circle at 0 0,rgba(179,41,35,.34),transparent 34%),
+    linear-gradient(135deg,rgba(70,9,8,.94),rgba(28,6,5,.96) 52%,rgba(9,5,4,.98))!important;
+  border:1px solid rgba(224,67,54,.48)!important;
+  box-shadow:0 12px 24px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,210,160,.05),0 0 22px rgba(160,20,15,.16)!important;
+}
+html body #s-game.screen.active .combat-badge{
+  display:flex!important;
+  align-items:center!important;
+  gap:5px!important;
+  font-family:var(--font-title)!important;
+  font-size:7.8px!important;
+  letter-spacing:2px!important;
+  color:#f1a394!important;
+  text-transform:uppercase!important;
+}
+html body #s-game.screen.active .combat-badge::before{
+  content:''!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:50%!important;
+  background:#f04b43!important;
+  box-shadow:0 0 8px rgba(240,75,67,.75)!important;
+}
+html body #s-game.screen.active .enemy-section{
+  display:grid!important;
+  grid-template-columns:38px minmax(0,1fr)!important;
+  gap:10px!important;
+  align-items:center!important;
+  margin:8px 0 7px!important;
+}
+html body #s-game.screen.active .enemy-icon{
+  width:36px!important;
+  height:36px!important;
+  border-radius:50%!important;
+  border:1px solid rgba(255,120,92,.48)!important;
+  background:radial-gradient(circle at 45% 35%,rgba(190,35,25,.42),rgba(25,5,4,.94) 70%)!important;
+  box-shadow:inset 0 0 12px rgba(0,0,0,.55),0 0 12px rgba(220,55,42,.18)!important;
+}
+html body #s-game.screen.active .enemy-name{
+  font-family:var(--font-title)!important;
+  font-size:14.5px!important;
+  color:#f3dcc2!important;
+  letter-spacing:.25px!important;
+  text-shadow:0 1px 2px #000!important;
+}
+html body #s-game.screen.active .enemy-type{
+  margin-top:2px!important;
+  font-size:8px!important;
+  letter-spacing:1.1px!important;
+  color:rgba(255,184,150,.68)!important;
+}
+html body #s-game.screen.active .enemy-hp-bar{
+  height:4px!important;
+  margin-top:7px!important;
+  border-radius:999px!important;
+  background:rgba(15,5,4,.82)!important;
+  border:1px solid rgba(255,150,120,.12)!important;
+}
+html body #s-game.screen.active .enemy-hp-fill{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,#7d1511,#d33c32,#ff725d)!important;
+  box-shadow:0 0 10px rgba(230,50,38,.45)!important;
+}
+html body #s-game.screen.active .combat-text{
+  margin-top:9px!important;
+  padding-top:9px!important;
+  border-top:1px solid rgba(232,120,92,.18)!important;
+  color:#f4ddc7!important;
+  font-size:14px!important;
+  line-height:1.55!important;
+}</style>
+
+<style id="aimaster-v6306-footer-freeaction-state-lock">
+/* Trava final: no desktop o HUD inferior pertence a coluna do jogo, nao a tela inteira. */
+html body:has(#s-game.screen.active) .footer-main-ref{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:3px!important;
+  width:min(430px,calc(100vw - 12px))!important;
+  max-width:430px!important;
+  transform:translateX(-50%)!important;
+  z-index:520!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  pointer-events:auto!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  pointer-events:auto!important;
+  cursor:pointer!important;
+  touch-action:manipulation!important;
+}
+html body .mo{
+  position:fixed!important;
+  inset:0!important;
+  z-index:440!important;
+  align-items:flex-end!important;
+  justify-content:center!important;
+  box-sizing:border-box!important;
+}
+html body .mo.open{
+  display:flex!important;
+}
+html body .mo .ms{
+  width:min(460px,calc(100vw - 16px))!important;
+  max-width:460px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  position:fixed!important;
+  left:50%!important;
+  right:auto!important;
+  bottom:calc(60px + env(safe-area-inset-bottom,0px))!important;
+  width:min(430px,calc(100vw - 12px))!important;
+  max-width:430px!important;
+  transform:translateX(-50%)!important;
+  z-index:510!important;
+  display:grid!important;
+  grid-template-columns:54px minmax(0,1fr) 56px!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:7px 8px!important;
+  box-sizing:border-box!important;
+  pointer-events:auto!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle{
+  width:54px!important;
+  min-width:54px!important;
+  height:48px!important;
+  min-height:48px!important;
+  margin:0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .free-in{
+  width:100%!important;
+  min-width:0!important;
+  height:48px!important;
+  min-height:48px!important;
+  max-height:86px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .free-send{
+  width:56px!important;
+  min-width:56px!important;
+  height:48px!important;
+  min-height:48px!important;
+  margin:0!important;
+  justify-self:end!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+  padding-bottom:124px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  position:fixed!important;
+  bottom:calc(118px + env(safe-area-inset-bottom,0px))!important;
+  left:50%!important;
+  right:auto!important;
+  width:min(430px,calc(100vw - 12px))!important;
+  max-width:430px!important;
+  transform:translateX(-50%)!important;
+  margin:0!important;
+  padding:6px 8px 7px!important;
+  z-index:505!important;
+  pointer-events:none!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed #acts-lbl{
+  pointer-events:auto!important;
+  margin:0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed #acts-lbl{
+  min-height:38px!important;
+  padding:9px 14px 8px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+  position:relative!important;
+  z-index:80!important;
+  pointer-events:auto!important;
+}
+</style>
+
+<style id="aimaster-v6308-modal-overlay-polish">
+/* Quando uma janela esta aberta, a acao livre nao deve cobrir os comandos do modal. */
+html body:has(.mo.open) #s-game.screen.active .ooc-toggle-row,
+html body:has(.mo.open) #s-game.screen.active .actions-wrap{
+  display:none!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+html body:has(.mo.open) #s-game.screen.active .footer-main-ref{
+  display:grid!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  z-index:900!important;
+}
+html body:has(.mo.open) #s-game.screen.active .footer-main-ref .fbar-btn{
+  pointer-events:auto!important;
+}
+html body .mo.open{
+  z-index:760!important;
+  inset:0 0 calc(62px + env(safe-area-inset-bottom,0px)) 0!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:14px 8px!important;
+}
+html body .mo.open .ms{
+  width:min(460px,calc(100vw - 16px))!important;
+  max-width:460px!important;
+  max-height:calc(100dvh - 104px)!important;
+  overflow-y:auto!important;
+  padding:18px 16px 26px!important;
+  box-sizing:border-box!important;
+}
+html body #mo-char#mo-char.open .ms{
+  padding:20px 16px 28px!important;
+  max-height:calc(100dvh - 104px)!important;
+  scroll-padding-bottom:32px!important;
+}
+html body #mo-game-menu.open .ms,
+html body #mo-memory.open .ms,
+html body #mo-shop.open .ms,
+html body #mo-xp.open .ms,
+html body #mo-api.open .ms,
+html body #mo-tutorial.open .ms{
+  padding-bottom:26px!important;
+  max-height:calc(100dvh - 104px)!important;
+}
+html body .mo.open .mt{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:10px!important;
+  margin:0 0 14px!important;
+  padding:0 0 11px!important;
+  min-height:34px!important;
+  line-height:1.15!important;
+}
+html body .mo.open .mt .mc,
+html body .mo.open .mc{
+  flex:0 0 auto!important;
+  margin-left:auto!important;
+}
+html body #mo-game-menu.open .game-menu-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+  padding-bottom:2px!important;
+}
+html body #mo-game-menu.open .game-menu-tile{
+  min-height:74px!important;
+}
+@media(max-width:430px){
+  html body .mo.open{
+    align-items:flex-end!important;
+    inset:0 0 calc(64px + env(safe-area-inset-bottom,0px)) 0!important;
+    padding:8px 6px!important;
+  }
+  html body .mo.open .ms{
+    max-height:calc(100dvh - 86px)!important;
+    width:calc(100vw - 12px)!important;
+    border-radius:18px 18px 0 0!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6311-shell-proportion-eof-lock">
+/* Trava EOF: largura, borda e proporcao final das abas, Jornada e footer. */
+html body{--aim-shell-w:min(420px,calc(100vw - 18px));--aim-footer-h:56px;}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  left:50%!important;right:auto!important;width:var(--aim-shell-w)!important;max-width:420px!important;
+  height:var(--aim-footer-h)!important;bottom:4px!important;transform:translateX(-50%)!important;
+  box-sizing:border-box!important;border:1px solid rgba(201,146,42,.50)!important;border-top-color:rgba(236,190,90,.48)!important;
+  border-radius:0 0 15px 15px!important;overflow:hidden!important;
+  background:linear-gradient(90deg,rgba(218,169,69,.10),transparent 18%,transparent 82%,rgba(218,169,69,.10)),linear-gradient(180deg,rgba(24,17,9,.98),rgba(5,4,3,.99))!important;
+  box-shadow:0 -7px 18px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,228,150,.16),inset 0 0 0 1px rgba(0,0,0,.45)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::before{
+  display:block!important;content:''!important;position:absolute!important;left:0!important;right:0!important;top:0!important;height:1px!important;z-index:5!important;
+  background:linear-gradient(90deg,transparent,rgba(255,224,135,.78),transparent)!important;opacity:1!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  box-sizing:border-box!important;min-width:0!important;height:100%!important;gap:2px!important;padding:4px 2px 3px!important;border-right:1px solid rgba(201,146,42,.22)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{width:25px!important;height:22px!important;}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-size:6.7px!important;line-height:1!important;letter-spacing:.52px!important;
+}
+html body .mo.open{
+  inset:0 0 calc(var(--aim-footer-h) + 10px + env(safe-area-inset-bottom,0px)) 0!important;padding:12px 6px!important;
+}
+html body .mo.open .ms,
+html body #mo-char#mo-char.open .ms,
+html body #mo-game-menu.open .ms,
+html body #mo-memory.open .ms,
+html body #mo-shop.open .ms,
+html body #mo-xp.open .ms,
+html body #mo-api.open .ms,
+html body #mo-tutorial.open .ms{
+  width:var(--aim-shell-w)!important;max-width:420px!important;max-height:calc(100dvh - 84px)!important;box-sizing:border-box!important;border-radius:18px!important;
+}
+html body .mo.open .mt{
+  padding-left:2px!important;padding-right:0!important;overflow:visible!important;font-size:14px!important;letter-spacing:1.15px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  left:50%!important;right:auto!important;width:var(--aim-shell-w)!important;max-width:420px!important;
+  bottom:calc(var(--aim-footer-h) + 8px + env(safe-area-inset-bottom,0px))!important;transform:translateX(-50%)!important;box-sizing:border-box!important;border-radius:15px 15px 0 0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  left:50%!important;right:auto!important;width:var(--aim-shell-w)!important;max-width:420px!important;
+  bottom:calc(var(--aim-footer-h) + 68px + env(safe-area-inset-bottom,0px))!important;transform:translateX(-50%)!important;box-sizing:border-box!important;
+}
+@media(max-width:430px){
+  html body{--aim-shell-w:calc(100vw - 18px);--aim-footer-h:55px;}
+  html body:has(#s-game.screen.active) .footer-main-ref{height:var(--aim-footer-h)!important;bottom:4px!important;}
+  html body .mo.open{inset:0 0 calc(var(--aim-footer-h) + 8px + env(safe-area-inset-bottom,0px)) 0!important;padding:8px 6px!important;}
+  html body .mo.open .ms,
+  html body #mo-char#mo-char.open .ms,
+  html body #mo-game-menu.open .ms,
+  html body #mo-memory.open .ms,
+  html body #mo-shop.open .ms,
+  html body #mo-xp.open .ms,
+  html body #mo-api.open .ms,
+  html body #mo-tutorial.open .ms{border-radius:18px 18px 0 0!important;}
+}
+</style>
+
+<style id="aimaster-v6313-footer-polish-final-lock-eof">
+/* Refino final EOF: encaixe inferior premium, sem alterar cliques ou motor. */
+html body:has(#s-game.screen.active) .footer-main-ref{
+  isolation:isolate!important;
+  backdrop-filter:blur(10px)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::after{
+  content:''!important;
+  position:absolute!important;
+  left:10px!important;
+  right:10px!important;
+  bottom:0!important;
+  height:1px!important;
+  z-index:4!important;
+  background:linear-gradient(90deg,transparent,rgba(255,210,105,.62),transparent)!important;
+  opacity:.78!important;
+  pointer-events:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  position:relative!important;
+  opacity:.9!important;
+  transition:background .18s ease, box-shadow .18s ease, opacity .18s ease, color .18s ease!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:last-child{
+  border-right:0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:hover,
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:focus-visible{
+  opacity:1!important;
+  background:linear-gradient(180deg,rgba(201,146,42,.16),rgba(201,146,42,.04))!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2),
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3),
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4),
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5){
+  opacity:1!important;
+  background:
+    radial-gradient(circle at 50% 100%,rgba(255,208,94,.32),transparent 46%),
+    linear-gradient(180deg,rgba(201,146,42,.18),rgba(52,33,11,.28))!important;
+  box-shadow:inset 0 1px 0 rgba(255,231,151,.18), inset 0 -10px 18px rgba(201,146,42,.14)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey::after,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2)::after,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3)::after,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4)::after,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5)::after{
+  content:''!important;
+  position:absolute!important;
+  left:22%!important;
+  right:22%!important;
+  bottom:1px!important;
+  height:2px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,transparent,#f4cf77,transparent)!important;
+  box-shadow:0 0 9px rgba(244,207,119,.65)!important;
+  pointer-events:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+  filter:drop-shadow(0 0 5px rgba(230,178,68,.30))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  color:rgba(235,202,135,.88)!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.75)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  border-bottom:0!important;
+  box-shadow:0 -7px 18px rgba(0,0,0,.46), inset 0 1px 0 rgba(255,231,151,.17)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap #acts-lbl{
+  box-shadow:0 8px 20px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,231,151,.18)!important;
+}
+</style>
+
+<style id="aimaster-v6314-dock-width-alignment-final">
+/* Trava final: footer, acao livre e "O que voce faz?" com a mesma largura visual. */
+html body{
+  --aim-dock-w:min(420px,calc(100vw - 18px));
+  --aim-dock-left:50%;
+}
+html body:has(#s-game.screen.active) .footer-main-ref,
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row,
+html body:has(#s-game.screen.active) #s-game.screen.active .actions-wrap,
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  left:var(--aim-dock-left)!important;
+  right:auto!important;
+  width:var(--aim-dock-w)!important;
+  max-width:420px!important;
+  min-width:0!important;
+  transform:translateX(-50%)!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  border-radius:0 0 15px 15px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  padding:7px 8px 8px!important;
+  border-radius:15px 15px 0 0!important;
+  border-left:1px solid rgba(201,146,42,.55)!important;
+  border-right:1px solid rgba(201,146,42,.55)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  padding-left:0!important;
+  padding-right:0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap #acts-lbl{
+  width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .free-in{
+  min-width:0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .free-send{
+  flex:0 0 58px!important;
+  width:58px!important;
+  min-width:58px!important;
+}
+@media(max-width:430px){
+  html body{
+    --aim-dock-w:calc(100vw - 18px);
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+    padding:7px 7px 8px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active .free-send{
+    flex-basis:56px!important;
+    width:56px!important;
+    min-width:56px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6315-dock-seam-final-eof">
+/* Refinamento EOF: acao livre e footer alinhados pela mesma borda externa. */
+html body:has(#s-game.screen.active) .footer-main-ref,
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  left:50%!important;
+  right:auto!important;
+  min-width:0!important;
+  transform:translateX(-50%)!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  width:var(--aim-dock-w)!important;
+  max-width:420px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  width:calc(var(--aim-dock-w) + 1px)!important;
+  max-width:421px!important;
+  margin-left:0!important;
+  bottom:0!important;
+  border-top:1px solid transparent!important;
+  border-radius:0 0 15px 15px!important;
+  border-left-color:rgba(201,146,42,.55)!important;
+  border-right-color:rgba(201,146,42,.55)!important;
+  z-index:860!important;
+  box-shadow:
+    0 -7px 18px rgba(0,0,0,.58),
+    inset 0 1px 0 rgba(255,228,150,.12),
+    inset 0 0 0 1px rgba(0,0,0,.45)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::before{
+  opacity:0!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  bottom:calc(var(--aim-footer-h) + 2px + env(safe-area-inset-bottom,0px))!important;
+  border-bottom:0!important;
+  border-radius:15px 15px 0 0!important;
+  z-index:850!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row::after{
+  left:0!important;
+  right:0!important;
+  bottom:-1px!important;
+  height:1px!important;
+  opacity:.78!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:first-child{
+  border-left:0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:last-child{
+  border-right:0!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) .footer-main-ref{
+    width:calc(100vw - 17px)!important;
+    max-width:calc(100vw - 17px)!important;
+    margin-left:0!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+    width:calc(100vw - 18px)!important;
+    max-width:calc(100vw - 18px)!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6326-narrative-toggle-alignment-eof">
+/* EOF: narrativa e botao "O que voce faz?" usando a mesma coluna visual. */
+html body{
+  --aim-narr-w:var(--aim-dock-w);
+}
+html body #s-game.screen.active .narr{
+  width:var(--aim-narr-w)!important;
+  max-width:420px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+  left:auto!important;
+  right:auto!important;
+  width:var(--aim-narr-w)!important;
+  max-width:420px!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  transform:none!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  left:50%!important;
+  right:auto!important;
+  width:var(--aim-narr-w)!important;
+  max-width:420px!important;
+  transform:translateX(-50%)!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed #acts-lbl{
+  width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  box-sizing:border-box!important;
+}
+@media(max-width:430px){
+  html body{
+    --aim-narr-w:calc(100vw - 18px);
+  }
+  html body #s-game.screen.active .narr,
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap,
+  html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+    width:var(--aim-narr-w)!important;
+    max-width:var(--aim-narr-w)!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6331-footer-reference-premium-final">
+/* Trava final: footer premium inspirado na referencia, sem alterar HTML ou funcoes. */
+html body:has(#s-game.screen.active){
+  --aim-footer-h:64px;
+}
+html body:has(#s-game.screen.active) .footer-main-ref{
+  height:var(--aim-footer-h)!important;
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr)!important;
+  overflow:hidden!important;
+  background:
+    linear-gradient(90deg,rgba(255,221,126,.10),transparent 11%,transparent 89%,rgba(255,221,126,.10)),
+    radial-gradient(ellipse at 10% 100%,rgba(218,169,69,.20),transparent 34%),
+    radial-gradient(ellipse at 50% 0,rgba(255,218,126,.08),transparent 46%),
+    linear-gradient(180deg,rgba(21,18,13,.98),rgba(5,5,4,.99))!important;
+  border:1px solid rgba(190,132,36,.64)!important;
+  border-top-color:rgba(230,181,80,.58)!important;
+  border-radius:0 0 18px 18px!important;
+  box-shadow:
+    0 -9px 22px rgba(0,0,0,.62),
+    inset 0 1px 0 rgba(255,232,154,.16),
+    inset 0 -1px 0 rgba(255,203,86,.16),
+    inset 0 0 32px rgba(201,146,42,.045)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::before{
+  content:''!important;
+  display:block!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  top:0!important;
+  height:1px!important;
+  opacity:1!important;
+  background:linear-gradient(90deg,rgba(87,50,12,.35),rgba(255,223,142,.88),rgba(87,50,12,.35))!important;
+  pointer-events:none!important;
+  z-index:4!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref::after{
+  content:''!important;
+  position:absolute!important;
+  left:10px!important;
+  right:10px!important;
+  bottom:1px!important;
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(226,174,73,.35),transparent)!important;
+  pointer-events:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+  position:relative!important;
+  height:100%!important;
+  min-width:0!important;
+  padding:7px 2px 6px!important;
+  gap:3px!important;
+  border:0!important;
+  border-right:1px solid rgba(191,137,51,.26)!important;
+  border-radius:0!important;
+  background:
+    radial-gradient(ellipse at 50% 0,rgba(255,232,154,.045),transparent 48%),
+    linear-gradient(180deg,rgba(255,255,255,.018),rgba(0,0,0,.14))!important;
+  box-shadow:inset -1px 0 0 rgba(0,0,0,.42)!important;
+  opacity:.92!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:last-child{
+  border-right:0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+  position:relative!important;
+  display:block!important;
+  width:34px!important;
+  height:29px!important;
+  margin:0 auto!important;
+  font-size:0!important;
+  color:transparent!important;
+  filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 5px rgba(213,162,66,.20))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi::before,
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi::after{
+  content:''!important;
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  box-sizing:border-box!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(1) .fbi::before{
+  width:30px!important;
+  height:30px!important;
+  background:
+    linear-gradient(45deg,transparent 43%,#d9b45e 44% 56%,transparent 57%),
+    linear-gradient(-45deg,transparent 43%,#f0cf7a 44% 56%,transparent 57%),
+    linear-gradient(90deg,transparent 45%,#9b6b24 46% 54%,transparent 55%),
+    linear-gradient(0deg,transparent 45%,#9b6b24 46% 54%,transparent 55%)!important;
+  clip-path:polygon(50% 0,59% 39%,100% 50%,59% 61%,50% 100%,41% 61%,0 50%,41% 39%)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(1) .fbi::after{
+  width:11px!important;
+  height:11px!important;
+  border:2px solid #f3d47c!important;
+  border-radius:50%!important;
+  background:#120c04!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi::before{
+  width:27px!important;
+  height:19px!important;
+  top:57%!important;
+  border:2px solid #c59b4d!important;
+  border-radius:8px 8px 4px 4px!important;
+  background:linear-gradient(180deg,rgba(225,183,91,.22),rgba(91,62,25,.16))!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi::after{
+  width:17px!important;
+  height:11px!important;
+  top:34%!important;
+  border:2px solid #daba68!important;
+  border-bottom:0!important;
+  border-radius:10px 10px 0 0!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi::before{
+  width:24px!important;
+  height:29px!important;
+  clip-path:polygon(50% 0,84% 18%,76% 75%,50% 100%,24% 75%,16% 18%)!important;
+  background:linear-gradient(90deg,#72501f,#e5bf69 45%,#8a6028)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,232,154,.26)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi::after{
+  width:3px!important;
+  height:25px!important;
+  background:#211406!important;
+  box-shadow:-6px 6px 0 -1px rgba(33,20,6,.78),6px 6px 0 -1px rgba(33,20,6,.78)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(4) .fbi::before{
+  width:27px!important;
+  height:21px!important;
+  border:2px solid #cfa95a!important;
+  border-radius:3px!important;
+  background:
+    linear-gradient(90deg,transparent 48%,rgba(13,9,4,.92) 49% 51%,transparent 52%),
+    repeating-linear-gradient(180deg,transparent 0 5px,rgba(239,203,124,.34) 6px 7px)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(4) .fbi::after{
+  width:1px!important;
+  height:19px!important;
+  background:#0e0904!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(5) .fbi::before{
+  width:27px!important;
+  height:20px!important;
+  background:
+    linear-gradient(#d8b665,#d8b665) 0 0/27px 3px no-repeat,
+    linear-gradient(#c99f4c,#c99f4c) 0 8px/27px 3px no-repeat,
+    linear-gradient(#a97727,#a97727) 0 16px/27px 3px no-repeat!important;
+  box-shadow:0 0 8px rgba(218,169,69,.18)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn:nth-child(5) .fbi::after{
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+  font-family:var(--font-title)!important;
+  font-size:8.1px!important;
+  line-height:1!important;
+  letter-spacing:.72px!important;
+  color:rgba(221,185,108,.86)!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 7px rgba(214,163,67,.16)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2),
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3),
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4),
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5){
+  opacity:1!important;
+  background:
+    radial-gradient(ellipse at 50% 100%,rgba(255,215,110,.34),transparent 54%),
+    linear-gradient(180deg,rgba(78,52,16,.46),rgba(28,18,7,.26))!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey::after,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2)::after,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3)::after,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4)::after,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5)::after{
+  content:''!important;
+  position:absolute!important;
+  left:18%!important;
+  right:18%!important;
+  bottom:1px!important;
+  height:3px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,transparent,#f2c45f,transparent)!important;
+  box-shadow:0 0 12px rgba(255,205,84,.62)!important;
+}
+html body:has(#s-game.screen.active):not(:has(.mo.open)) .footer-main-ref .fbar-btn.is-journey .fbi,
+html body:has(#mo-char.open):has(#tab-inv.active) .footer-main-ref .fbar-btn:nth-child(2) .fbi,
+html body:has(#mo-char.open):has(#tab-stats.active) .footer-main-ref .fbar-btn:nth-child(3) .fbi,
+html body:has(#mo-memory.open) .footer-main-ref .fbar-btn:nth-child(4) .fbi,
+html body:has(#mo-game-menu.open) .footer-main-ref .fbar-btn:nth-child(5) .fbi{
+  filter:drop-shadow(0 1px 1px #000) drop-shadow(0 0 10px rgba(255,213,99,.45))!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active){
+    --aim-footer-h:62px;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn{
+    padding-top:6px!important;
+    padding-bottom:5px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbi{
+    width:32px!important;
+    height:27px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref .fbar-btn .fbl{
+    font-size:7.4px!important;
+    letter-spacing:.58px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6344-footer-maior-separado-final">
+/* Ajuste seguro: icones maiores e respiro entre acao livre e navegacao. */
+html body:has(#s-game.screen.active){
+  --aim-footer-gap:7px;
+}
+html body:has(#s-game.screen.active) .ooc-toggle-row + .free-row,
+html body:has(#s-game.screen.active) .free-row{
+  margin-bottom:var(--aim-footer-gap)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref{
+  margin-top:var(--aim-footer-gap)!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn{
+  padding-top:5px!important;
+  padding-bottom:5px!important;
+  gap:2px!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi{
+  width:56px!important;
+  height:42px!important;
+  background-image:url('assets/ui/footer-nav-premium-transparent.png')!important;
+  background-size:500% 100%!important;
+  background-repeat:no-repeat!important;
+  background-position-y:center!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::before,
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi::after{
+  content:none!important;
+  display:none!important;
+}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(1) .fbi.fbi{background-position-x:0%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(2) .fbi.fbi{background-position-x:25%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(3) .fbi.fbi{background-position-x:50%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(4) .fbi.fbi{background-position-x:75%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn:nth-child(5) .fbi.fbi{background-position-x:100%!important;}
+html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbl.fbl{
+  margin-top:-1px!important;
+  font-size:8.2px!important;
+  line-height:1!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active){
+    --aim-footer-gap:6px;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbi.fbi{
+    width:49px!important;
+    height:37px!important;
+  }
+  html body:has(#s-game.screen.active) .footer-main-ref.footer-main-ref .fbar-btn .fbl.fbl{
+    font-size:7.35px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6350-subir-somente-acao-livre-final">
+/* Trava final: sobe somente a barra de acao livre para nao encostar na navegacao. */
+html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+  bottom:80px!important;
+  overflow:visible!important;
+  outline:1px solid rgba(226,178,76,.64)!important;
+  outline-offset:0!important;
+  border-bottom:1px solid rgba(229,181,78,.72)!important;
+  border-radius:15px!important;
+  box-shadow:
+    0 -18px 0 rgba(5,4,2,.96),
+    0 -8px 20px rgba(0,0,0,.36),
+    0 10px 16px rgba(0,0,0,.52),
+    0 0 0 1px rgba(255,219,129,.08),
+    inset 0 1px 0 rgba(255,232,158,.16),
+    inset 0 -12px 22px rgba(0,0,0,.30)!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+  bottom:152px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed #acts-lbl{
+  margin-bottom:10px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .narr{
+  padding-bottom:150px!important;
+  scroll-padding-bottom:170px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .narr{
+  flex:0 0 clamp(82px,14dvh,126px)!important;
+  min-height:82px!important;
+  max-height:126px!important;
+  margin-bottom:5px!important;
+  padding-bottom:22px!important;
+  scroll-padding-bottom:46px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .immersive-scene-card{
+  margin-bottom:14px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #scene-btn-wrap.v33-scene-card{
+  margin-bottom:14px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+  margin-top:2px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #acts-lbl{
+  margin-top:0!important;
+  margin-bottom:8px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #act-grid{
+  padding-bottom:118px!important;
+}
+html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #act-grid .act-btn:last-child{
+  margin-bottom:52px!important;
+}
+@media(max-width:430px){
+  html body:has(#s-game.screen.active) #s-game.screen.active .ooc-toggle-row{
+    bottom:78px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .actions-wrap{
+    bottom:148px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed #acts-lbl{
+    margin-bottom:10px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active.actions-collapsed .narr{
+    padding-bottom:144px!important;
+    scroll-padding-bottom:164px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .narr{
+    flex-basis:clamp(78px,13dvh,118px)!important;
+    min-height:78px!important;
+    max-height:118px!important;
+    margin-bottom:5px!important;
+    padding-bottom:20px!important;
+    scroll-padding-bottom:44px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .immersive-scene-card{
+    margin-bottom:14px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #scene-btn-wrap.v33-scene-card{
+    margin-bottom:14px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) .actions-wrap{
+    margin-top:2px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #acts-lbl{
+    margin-bottom:7px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #act-grid{
+    padding-bottom:116px!important;
+  }
+  html body:has(#s-game.screen.active) #s-game.screen.active:not(.actions-collapsed) #act-grid .act-btn:last-child{
+    margin-bottom:50px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6377-mestre-pensando-seguro">
+/* Indicador visual isolado: usa somente o estado existente setThinking(true/false). */
+#thinking-bar{
+  position:fixed!important;
+  left:50%!important;
+  top:calc(10px + env(safe-area-inset-top,0px))!important;
+  width:min(390px,calc(100vw - 26px))!important;
+  height:0!important;
+  transform:translate(-50%,-10px)!important;
+  opacity:0!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  z-index:9999!important;
+  transition:opacity .22s ease,transform .22s ease,height .22s ease!important;
+}
+#thinking-bar.active{
+  height:46px!important;
+  opacity:1!important;
+  transform:translate(-50%,0)!important;
+}
+#thinking-bar.active::before{
+  content:'MESTRE CONSULTANDO O GRIMORIO'!important;
+  position:absolute!important;
+  inset:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:16px!important;
+  border:1px solid rgba(232,184,75,.62)!important;
+  background:
+    radial-gradient(circle at 50% -25%,rgba(255,225,135,.28),transparent 58%),
+    linear-gradient(90deg,rgba(52,31,8,.96),rgba(8,6,4,.97),rgba(52,31,8,.96))!important;
+  color:#f7d98b!important;
+  font-family:var(--font-title)!important;
+  font-size:10px!important;
+  font-weight:800!important;
+  letter-spacing:1.8px!important;
+  text-transform:uppercase!important;
+  text-shadow:0 1px 2px #000,0 0 14px rgba(232,184,75,.58)!important;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,.62),
+    0 0 24px rgba(217,169,68,.20),
+    inset 0 1px 0 rgba(255,239,178,.18),
+    inset 0 -12px 24px rgba(0,0,0,.34)!important;
+}
+#thinking-bar.active::after{
+  content:''!important;
+  position:absolute!important;
+  left:24px!important;
+  right:24px!important;
+  bottom:7px!important;
+  height:2px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,230,145,.96),transparent)!important;
+  filter:drop-shadow(0 0 8px rgba(232,184,75,.72))!important;
+  animation:aimasterThinkingSweep 1.05s ease-in-out infinite!important;
+}
+#ia-dot.thinking{
+  background:#f7d98b!important;
+  box-shadow:0 0 0 4px rgba(232,184,75,.14),0 0 18px rgba(232,184,75,.82)!important;
+  animation:aimasterThinkingPulse .9s ease-in-out infinite!important;
+}
+#ia-lbl.thinking-txt{
+  color:#f7d98b!important;
+  text-shadow:0 0 12px rgba(232,184,75,.70)!important;
+}
+#thinking-bar.active ~ * #act-grid .act-btn,
+#thinking-bar.active ~ * #free-send{
+  cursor:wait!important;
+}
+@keyframes aimasterThinkingSweep{
+  0%,100%{opacity:.42;transform:scaleX(.48)}
+  50%{opacity:1;transform:scaleX(1)}
+}
+@keyframes aimasterThinkingPulse{
+  0%,100%{transform:scale(.88);opacity:.72}
+  50%{transform:scale(1.16);opacity:1}
+}
+@media(max-width:430px){
+  #thinking-bar{
+    top:calc(8px + env(safe-area-inset-top,0px))!important;
+    width:calc(100vw - 24px)!important;
+  }
+  #thinking-bar.active::before{
+    font-size:8.8px!important;
+    letter-spacing:1.25px!important;
+  }
+}
+</style>
+
+<style id="aimaster-v6380-refino-final-pensando-e-teste">
+/* Refino final: indicador mais discreto e rótulo do teste mais legível. */
+#thinking-bar{
+  width:min(322px,calc(100vw - 72px))!important;
+  top:calc(8px + env(safe-area-inset-top,0px))!important;
+}
+#thinking-bar.active{
+  height:36px!important;
+}
+#thinking-bar.active::before{
+  border-radius:14px!important;
+  font-size:8.6px!important;
+  letter-spacing:1.55px!important;
+  background:
+    radial-gradient(circle at 50% -30%,rgba(255,225,135,.22),transparent 56%),
+    linear-gradient(90deg,rgba(48,29,8,.90),rgba(8,6,4,.92),rgba(48,29,8,.90))!important;
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.54),
+    0 0 18px rgba(217,169,68,.16),
+    inset 0 1px 0 rgba(255,239,178,.16),
+    inset 0 -10px 18px rgba(0,0,0,.30)!important;
+}
+#thinking-bar.active::after{
+  left:38px!important;
+  right:38px!important;
+  bottom:6px!important;
+  opacity:.88!important;
+}
+html body #s-game.screen.active .roll-type,
+html body .roll-type{
+  color:#d8b866!important;
+  opacity:1!important;
+  font-size:11.5px!important;
+  letter-spacing:1.15px!important;
+  text-shadow:0 1px 2px #000,0 0 8px rgba(232,184,75,.26)!important;
+}
+@media(max-width:430px){
+  #thinking-bar{
+    width:calc(100vw - 96px)!important;
+    min-width:252px!important;
+  }
+  #thinking-bar.active::before{
+    font-size:8px!important;
+    letter-spacing:1.18px!important;
   }
 }
 </style>
