@@ -17429,6 +17429,22 @@ function setApiStatus(text,type='ok'){
   status.textContent=text;
   status.dataset.state=type;
 }
+function getApiStorageKey(provider){
+  return provider==='gemini'?'aimaster_gemini_api_key':'aimaster_api_key';
+}
+
+function getApiRuntimeLabel(){
+  const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone;
+  return standalone ? 'app instalado' : 'navegador';
+}
+
+function explainApiTestError(provider,error){
+  const raw=String(error?.message||error||'Sem conexao ao testar.');
+  if(provider==='gemini' && /Failed to fetch|NetworkError|Load failed/i.test(raw)){
+    return 'A chave foi salva, mas o app nao conseguiu conectar ao Gemini. Verifique internet, atualize/reabra o PWA e confira restricoes da chave para esta origem: '+(location.origin||'origem atual')+'.';
+  }
+  return raw;
+}
 async function callMasterProvider(provider,apiKey,messages,systemPrompt){
   if(provider==='gemini'){
     const beginnerSystemPrompt = systemPrompt + `
@@ -17495,21 +17511,28 @@ function saveApiKey(){
   const input=document.getElementById('api-key-input');
   const v=(input?.value||'').trim();
   const provider=document.getElementById('api-provider-select')?.value||'anthropic';
+  const storageKey=getApiStorageKey(provider);
+  const runtime=getApiRuntimeLabel();
   if(!v){showToast('Cole sua chave aqui');return;}
   if(provider==='anthropic'&&!v.startsWith('sk-ant-')){showToast('Chave Anthropic deve comecar com sk-ant-');return;}
-  if(provider==='gemini'&&!/^AIza/i.test(v)){
-    setApiStatus('A chave foi salva, mas confira se ela veio do Google AI Studio. Normalmente comeca com AIza.','warn');
-  }
   try{
     localStorage.setItem('aimaster_api_provider',provider);
-    if(provider==='gemini') localStorage.setItem('aimaster_gemini_api_key',v);
-    else localStorage.setItem('aimaster_api_key',v);
+    localStorage.setItem(storageKey,v);
+    const savedProvider=localStorage.getItem('aimaster_api_provider')||'';
+    const savedKey=localStorage.getItem(storageKey)||'';
+    if(savedProvider!==provider || savedKey!==v){
+      throw new Error('localStorage nao confirmou a gravacao.');
+    }
   }catch(e){
-    setApiStatus('Nao foi possivel salvar neste navegador. Verifique permissoes/localStorage.','error');
+    setApiStatus('A chave nao foi salva neste '+runtime+'. Verifique permissoes do navegador/localStorage.','error');
     showToast('Nao foi possivel salvar a chave');
     return;
   }
-  setApiStatus(provider==='gemini'?'Chave Gemini salva neste dispositivo. Testando conexao...':'Chave Anthropic salva neste dispositivo. Testando conexao...','testing');
+  if(provider==='gemini'&&!/^AIza/i.test(v)){
+    setApiStatus('Chave salva no '+runtime+', mas confira se ela veio do Google AI Studio. Normalmente comeca com AIza.','warn');
+  }else{
+    setApiStatus((provider==='gemini'?'Chave Gemini':'Chave Anthropic')+' salva no '+runtime+'. Testando conexao...','testing');
+  }
   showToast('Chave salva. Testando conexao...');
   Promise.race([
     callMasterProvider(provider,v,[{role:'user',content:'Responda apenas: ok'}],'Teste de conexao.'),
@@ -17520,8 +17543,8 @@ function saveApiKey(){
     showToast(provider==='gemini'?'Mestre Iniciante conectado!':'Mestre Profissional conectado!');
     setTimeout(()=>closeMo('mo-api'),900);
   }).catch(e=>{
-    const msg=e?.message||'Sem conexao ao testar.';
-    setApiStatus('Chave salva, mas o teste falhou: '+msg,'warn');
+    const msg=explainApiTestError(provider,e);
+    setApiStatus('Chave salva no '+runtime+', mas o teste falhou: '+msg,'warn');
     showToast('Chave salva. Teste falhou.');
   });
 }
@@ -18714,7 +18737,7 @@ function openRestModal(){
 
 updatePreview();
 
-if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{try{reg.update();}catch(e){}}).catch(()=>{});});}
 
 // ══ DESTINO FAVORÁVEL 🌟 ══
 const DESTINO_COST = 2; // diamantes por uso
