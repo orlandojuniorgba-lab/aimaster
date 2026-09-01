@@ -17444,9 +17444,12 @@ Não use markdown.`;
       role:m.role==='assistant'?'model':'user',
       parts:[{text:String(m.content||'')}]
     }));
-    const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent',{
+    const geminiUrl='https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key='+encodeURIComponent(apiKey);
+    const res=await fetch(geminiUrl,{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},
+      mode:'cors',
+      cache:'no-store',
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         systemInstruction:{parts:[{text:beginnerSystemPrompt}]},
         contents,
@@ -17454,8 +17457,16 @@ Não use markdown.`;
       })
     });
     if(!res.ok){
-      const errMsg=res.status===400?'Gemini recusou a requisicao. Verifique chave, modelo ou formato.':res.status===401||res.status===403?'Chave Gemini invalida ou sem permissao.':res.status===429?'Limite gratuito Gemini atingido. Aguarde e tente novamente.':res.status===503?'Gemini indisponivel agora. A chave pode estar certa; tente novamente em instantes.':'Erro Gemini '+res.status;
-      throw new Error(errMsg);
+      let detail='';
+      try{
+        const err=await res.clone().json();
+        detail=err?.error?.message||'';
+      }catch(_e){
+        try{ detail=await res.text(); }catch(_e2){}
+      }
+      detail=String(detail||'').replace(apiKey,'[chave ocultada]').slice(0,220);
+      const baseMsg=res.status===400?'Gemini recusou a requisicao. Verifique chave, modelo ou formato.':res.status===401||res.status===403?'Chave Gemini invalida, sem permissao ou bloqueada por restricao de origem.':res.status===429?'Limite gratuito Gemini atingido. Aguarde e tente novamente.':res.status===503?'Gemini indisponivel agora. A chave pode estar certa; tente novamente em instantes.':'Erro Gemini '+res.status;
+      throw new Error(detail ? baseMsg+' Detalhe: '+detail : baseMsg);
     }
     const data=await res.json();
     const text=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||'').join('').trim();
