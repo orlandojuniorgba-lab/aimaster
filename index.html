@@ -17423,6 +17423,12 @@ function updateApiProviderUI(){
   if(status) status.textContent='';
 }
 
+function setApiStatus(text,type='ok'){
+  const status=document.getElementById('api-status');
+  if(!status) return;
+  status.textContent=text;
+  status.dataset.state=type;
+}
 async function callMasterProvider(provider,apiKey,messages,systemPrompt){
   if(provider==='gemini'){
     const beginnerSystemPrompt = systemPrompt + `
@@ -17448,7 +17454,7 @@ Não use markdown.`;
       })
     });
     if(!res.ok){
-      const errMsg=res.status===400?'❌ Gemini recusou a requisição. Verifique a chave/modelo.':res.status===401||res.status===403?'🔑 Chave Gemini inválida ou sem permissão.':res.status===429?'⏳ Limite gratuito Gemini atingido. Aguarde.':'❌ Erro Gemini '+res.status;
+      const errMsg=res.status===400?'Gemini recusou a requisicao. Verifique chave, modelo ou formato.':res.status===401||res.status===403?'Chave Gemini invalida ou sem permissao.':res.status===429?'Limite gratuito Gemini atingido. Aguarde e tente novamente.':res.status===503?'Gemini indisponivel agora. A chave pode estar certa; tente novamente em instantes.':'Erro Gemini '+res.status;
       throw new Error(errMsg);
     }
     const data=await res.json();
@@ -17475,21 +17481,38 @@ Não use markdown.`;
 }
 
 function saveApiKey(){
-  const v=document.getElementById('api-key-input').value.trim();
+  const input=document.getElementById('api-key-input');
+  const v=(input?.value||'').trim();
   const provider=document.getElementById('api-provider-select')?.value||'anthropic';
   if(!v){showToast('Cole sua chave aqui');return;}
-  if(provider==='anthropic'&&!v.startsWith('sk-ant-')){showToast('⚠️ Chave Anthropic deve começar com sk-ant-');return;}
-  localStorage.setItem('aimaster_api_provider',provider);
-  if(provider==='gemini') localStorage.setItem('aimaster_gemini_api_key',v);
-  else localStorage.setItem('aimaster_api_key',v);
-  showToast('🔑 Chave salva! Testando...');
-  callMasterProvider(provider,v,[{role:'user',content:'Responda apenas: ok'}],'Teste de conexão.')
+  if(provider==='anthropic'&&!v.startsWith('sk-ant-')){showToast('Chave Anthropic deve comecar com sk-ant-');return;}
+  if(provider==='gemini'&&!/^AIza/i.test(v)){
+    setApiStatus('A chave foi salva, mas confira se ela veio do Google AI Studio. Normalmente comeca com AIza.','warn');
+  }
+  try{
+    localStorage.setItem('aimaster_api_provider',provider);
+    if(provider==='gemini') localStorage.setItem('aimaster_gemini_api_key',v);
+    else localStorage.setItem('aimaster_api_key',v);
+  }catch(e){
+    setApiStatus('Nao foi possivel salvar neste navegador. Verifique permissoes/localStorage.','error');
+    showToast('Nao foi possivel salvar a chave');
+    return;
+  }
+  setApiStatus(provider==='gemini'?'Chave Gemini salva neste dispositivo. Testando conexao...':'Chave Anthropic salva neste dispositivo. Testando conexao...','testing');
+  showToast('Chave salva. Testando conexao...');
+  Promise.race([
+    callMasterProvider(provider,v,[{role:'user',content:'Responda apenas: ok'}],'Teste de conexao.'),
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error('Teste demorou para responder. A chave ficou salva; tente novamente em instantes.')),14000))
+  ])
   .then(()=>{
-    showToast(provider==='gemini'?'✅ Mestre Iniciante conectado!':'✅ Mestre Profissional conectado!');
+    setApiStatus(provider==='gemini'?'Gemini conectado. Mestre Iniciante pronto.':'Anthropic conectado. Mestre Profissional pronto.','ok');
+    showToast(provider==='gemini'?'Mestre Iniciante conectado!':'Mestre Profissional conectado!');
+    setTimeout(()=>closeMo('mo-api'),900);
   }).catch(e=>{
-    showToast(e?.message||'🌐 Sem conexão ao testar');
+    const msg=e?.message||'Sem conexao ao testar.';
+    setApiStatus('Chave salva, mas o teste falhou: '+msg,'warn');
+    showToast('Chave salva. Teste falhou.');
   });
-  setTimeout(()=>closeMo('mo-api'),2500);
 }
 
 function updateVitalsAndRep(){
@@ -17531,7 +17554,7 @@ function openMo(id, shopContext){
     if(sel) sel.value=provider;
     updateApiProviderUI();
     const k=getApiKeyForProvider(provider);
-    if(k)document.getElementById('api-status').textContent=provider==='gemini'?'✅ Gemini configurado':'✅ Anthropic configurado';
+    if(k)setApiStatus(provider==='gemini'?'Gemini configurado neste dispositivo':'Anthropic configurado neste dispositivo','ok');
   }
   if(id==='mo-d20'){d20ActionMode=null;buildD20Attrs();buildD20AbilitiesPanel();document.querySelectorAll('.d20-action-btn').forEach(b=>b.classList.remove('active'));}
   if(id==='mo-xp')updateXPModal();
@@ -37104,5 +37127,38 @@ html body #memory-modal-content .diary-event.type-local + .diary-event.type-loca
 @media(max-width:430px){
   html body #memory-modal-content .diary-place{min-height:86px!important;padding:12px 11px!important}
   html body #memory-modal-content .diary-place strong{font-size:11.6px!important}
+}
+</style>
+<style id="aimaster-v6399-api-gemini-status">
+/* API: feedback claro entre chave salva e teste de conexao. */
+html body #api-status{
+  min-height:18px!important;
+  margin-top:10px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(91,208,118,.25)!important;
+  border-radius:10px!important;
+  background:rgba(15,55,26,.16)!important;
+  color:#84e49a!important;
+  font-size:11px!important;
+  line-height:1.35!important;
+  text-align:left!important;
+}
+html body #api-status:empty{
+  display:none!important;
+}
+html body #api-status[data-state="testing"]{
+  border-color:rgba(201,146,42,.38)!important;
+  background:rgba(201,146,42,.12)!important;
+  color:#f0d184!important;
+}
+html body #api-status[data-state="warn"]{
+  border-color:rgba(226,166,62,.46)!important;
+  background:rgba(90,56,10,.20)!important;
+  color:#f0c773!important;
+}
+html body #api-status[data-state="error"]{
+  border-color:rgba(224,80,70,.48)!important;
+  background:rgba(95,20,16,.20)!important;
+  color:#ff9b91!important;
 }
 </style>
