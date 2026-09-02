@@ -11496,11 +11496,12 @@ body:not(:has(#s-game.active)) #scene-btn-wrap{
 
 <div class="mo" id="mo-api"><div class="ms">
   <div class="mt">🔑 Mestre IA <button class="mc" onclick="closeMo('mo-api')">×</button></div>
-  <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo. Para testes grátis, use Gemini API.</p>
+  <p class="mo-note" style="text-align:left;color:var(--parch-d)">Chave salva apenas neste dispositivo. Para testes gratis, use Gemini ou OpenRouter.</p>
   <div class="api-field"><label>Tipo de Mestre</label>
     <select id="api-provider-select" onchange="updateApiProviderUI()" style="background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:11px 14px;color:var(--parch);font-family:var(--font-ui)">
       <option value="anthropic">Mestre Profissional · Anthropic</option>
       <option value="gemini">Mestre Iniciante · Gemini grátis</option>
+      <option value="openrouter">Mestre Alternativo · OpenRouter grátis</option>
     </select>
   </div>
   <div class="api-field"><label id="api-key-label">Chave Anthropic</label><input type="password" id="api-key-input" placeholder="sk-ant-..."/></div>
@@ -15367,7 +15368,9 @@ async function askMaster(acao, oocMode=false, skipTurn=false){
     const m=addMsg('msg-dm','');
     typewriterMsg(m,apiProvider==='gemini'
       ? '⚠️ Configure sua chave Gemini API gratuita. Toque em 🔑 na barra inferior.'
-      : '⚠️ Configure sua chave de API. Toque em 🔑 na barra inferior.');
+      : apiProvider==='openrouter'
+        ? '⚠️ Configure sua chave OpenRouter gratuita. Toque em 🔑 na barra inferior.'
+        : '⚠️ Configure sua chave de API. Toque em 🔑 na barra inferior.');
     return;
   }
   try{
@@ -17403,9 +17406,9 @@ function getApiProvider(){
 }
 
 function getApiKeyForProvider(provider){
-  return provider==='gemini'
-    ? (localStorage.getItem('aimaster_gemini_api_key')||'')
-    : (localStorage.getItem('aimaster_api_key')||'');
+  if(provider==='gemini') return localStorage.getItem('aimaster_gemini_api_key')||'';
+  if(provider==='openrouter') return localStorage.getItem('aimaster_openrouter_api_key')||'';
+  return localStorage.getItem('aimaster_api_key')||'';
 }
 
 function updateApiProviderUI(){
@@ -17414,12 +17417,12 @@ function updateApiProviderUI(){
   const label=document.getElementById('api-key-label');
   const help=document.getElementById('api-help');
   const status=document.getElementById('api-status');
-  if(label) label.textContent=provider==='gemini'?'Chave Gemini API':'Chave Anthropic';
+  if(label) label.textContent=provider==='gemini'?'Chave Gemini API':provider==='openrouter'?'Chave OpenRouter':'Chave Anthropic';
   if(input){
-    input.placeholder=provider==='gemini'?'AIza...':'sk-ant-...';
+    input.placeholder=provider==='gemini'?'AIza...':provider==='openrouter'?'sk-or-v1-...':'sk-ant-...';
     input.value=getApiKeyForProvider(provider);
   }
-  if(help) help.textContent=provider==='gemini'?'aistudio.google.com/app/apikey':'console.anthropic.com';
+  if(help) help.textContent=provider==='gemini'?'aistudio.google.com/app/apikey':provider==='openrouter'?'openrouter.ai/keys':'console.anthropic.com';
   if(status) status.textContent='';
 }
 
@@ -17430,7 +17433,9 @@ function setApiStatus(text,type='ok'){
   status.dataset.state=type;
 }
 function getApiStorageKey(provider){
-  return provider==='gemini'?'aimaster_gemini_api_key':'aimaster_api_key';
+  if(provider==='gemini') return 'aimaster_gemini_api_key';
+  if(provider==='openrouter') return 'aimaster_openrouter_api_key';
+  return 'aimaster_api_key';
 }
 
 function getApiRuntimeLabel(){
@@ -17505,6 +17510,40 @@ Não use markdown.`;
     throw new Error(lastGeminiError||'Gemini nao respondeu.');
   }
 
+  if(provider==='openrouter'){
+    const openRouterMessages=[{role:'system',content:systemPrompt},...messages];
+    const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+apiKey,
+        'HTTP-Referer':location.origin||'https://aimaster-a81.pages.dev',
+        'X-Title':'AiMaster RPG'
+      },
+      body:JSON.stringify({
+        model:'openrouter/free',
+        messages:openRouterMessages,
+        max_tokens:900,
+        temperature:.75
+      })
+    });
+    if(!res.ok){
+      let detail='';
+      try{
+        const err=await res.clone().json();
+        detail=err?.error?.message||err?.message||'';
+      }catch(_e){
+        try{ detail=await res.text(); }catch(_e2){}
+      }
+      detail=String(detail||'').replace(apiKey,'[chave ocultada]').slice(0,220);
+      const baseMsg=res.status===401||res.status===403?'Chave OpenRouter invalida ou sem permissao.':res.status===429?'Limite gratuito OpenRouter atingido. Aguarde e tente novamente.':'Erro OpenRouter '+res.status;
+      throw new Error(detail ? baseMsg+' Detalhe: '+detail : baseMsg);
+    }
+    const data=await res.json();
+    const text=data.choices?.[0]?.message?.content||'';
+    if(!text.trim()) throw new Error('OpenRouter nao retornou texto.');
+    return {text};
+  }
   const res=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
@@ -17541,17 +17580,19 @@ function saveApiKey(){
   }
   if(provider==='gemini'&&!/^AIza/i.test(v)){
     setApiStatus('Chave salva no '+runtime+', mas confira se ela veio do Google AI Studio. Normalmente comeca com AIza.','warn');
+  }else if(provider==='openrouter'&&!/^sk-or-/i.test(v)){
+    setApiStatus('Chave salva no '+runtime+', mas confira se ela veio do OpenRouter. Normalmente comeca com sk-or.','warn');
   }else{
-    setApiStatus((provider==='gemini'?'Chave Gemini':'Chave Anthropic')+' salva no '+runtime+'. Testando conexao...','testing');
+    setApiStatus((provider==='gemini'?'Chave Gemini':provider==='openrouter'?'Chave OpenRouter':'Chave Anthropic')+' salva no '+runtime+'. Testando conexao...','testing');
   }
   showToast('Chave salva. Testando conexao...');
   Promise.race([
     callMasterProvider(provider,v,[{role:'user',content:'Responda apenas: ok'}],'Teste de conexao.'),
-    new Promise((_,reject)=>setTimeout(()=>reject(new Error('O Google demorou para responder. A chave ficou salva; tente novamente em instantes.')),35000))
+    new Promise((_,reject)=>setTimeout(()=>reject(new Error((provider==='gemini'?'O Google':provider==='openrouter'?'O OpenRouter':'A API')+' demorou para responder. A chave ficou salva; tente novamente em instantes.')),35000))
   ])
   .then(()=>{
-    setApiStatus(provider==='gemini'?'Gemini conectado. Mestre Iniciante pronto.':'Anthropic conectado. Mestre Profissional pronto.','ok');
-    showToast(provider==='gemini'?'Mestre Iniciante conectado!':'Mestre Profissional conectado!');
+    setApiStatus(provider==='gemini'?'Gemini conectado. Mestre Iniciante pronto.':provider==='openrouter'?'OpenRouter conectado. Mestre Alternativo pronto.':'Anthropic conectado. Mestre Profissional pronto.','ok');
+    showToast(provider==='gemini'?'Mestre Iniciante conectado!':provider==='openrouter'?'Mestre Alternativo conectado!':'Mestre Profissional conectado!');
     setTimeout(()=>closeMo('mo-api'),900);
   }).catch(e=>{
     const msg=explainApiTestError(provider,e);
@@ -17599,7 +17640,7 @@ function openMo(id, shopContext){
     if(sel) sel.value=provider;
     updateApiProviderUI();
     const k=getApiKeyForProvider(provider);
-    if(k)setApiStatus(provider==='gemini'?'Gemini configurado neste dispositivo':'Anthropic configurado neste dispositivo','ok');
+    if(k)setApiStatus(provider==='gemini'?'Gemini configurado neste dispositivo':provider==='openrouter'?'OpenRouter configurado neste dispositivo':'Anthropic configurado neste dispositivo','ok');
   }
   if(id==='mo-d20'){d20ActionMode=null;buildD20Attrs();buildD20AbilitiesPanel();document.querySelectorAll('.d20-action-btn').forEach(b=>b.classList.remove('active'));}
   if(id==='mo-xp')updateXPModal();
